@@ -1,8 +1,10 @@
 ﻿CREATE PROCEDURE [dbo].[spUser_Update]
+	@Id uniqueidentifier,
 	@Username nvarchar(50),
 	@Password nvarchar(50)
 AS
 BEGIN
-	INSERT INTO dbo.[User] (Username, Password)
-	VALUES (@Username, @Password);
+	UPDATE dbo.[Users]
+	SET Username = @Username, Password = @Password
+	WHERE Id = @Id
 END

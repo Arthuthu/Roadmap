@@ -12,12 +12,12 @@ public class UserData : IUserData
 		_db = db;
 	}
 
-	public Task<IEnumerable<UserModel>> GetUsers()
+	public Task<IEnumerable<UserModel>> GetAllUsers()
 	{
 		return _db.LoadData<UserModel, dynamic>("dbo.spUser_GetAll", new { });
 	}
 
-	public async Task<UserModel?> GetUser(Guid id)
+	public async Task<UserModel?> GetUserById(Guid id)
 	{
 		var results = await _db.LoadData<UserModel, dynamic>(
 			"dbo.spUser_GetById",
@@ -26,9 +26,9 @@ public class UserData : IUserData
 		return results.FirstOrDefault();
 	}
 
-	public Task InsertUser(UserModel user)
+	public Task AddUser(UserModel user)
 	{
-		return _db.SaveData("dbo.spUser_Add", new { user.Username, user.Password });
+		return _db.SaveData("dbo.spUser_Add", new { user.Id, user.Username, user.Password });
 	}
 
 	public Task UpdateUser(UserModel user)

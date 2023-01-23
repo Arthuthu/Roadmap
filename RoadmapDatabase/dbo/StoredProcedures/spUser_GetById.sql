@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spUser_GetById]
-	@Id int
+	@Id uniqueidentifier
 AS
 BEGIN
-	SELECT * FROM dbo.[User]
+	SELECT * FROM dbo.[Users]
 	WHERE Id = @Id;
 END

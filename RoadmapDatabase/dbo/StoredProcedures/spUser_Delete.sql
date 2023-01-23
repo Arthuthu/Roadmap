@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spUser_Delete]
-	@Id int
+	@Id uniqueidentifier
 AS
 BEGIN
-	DELETE FROM dbo.[User]
+	DELETE FROM dbo.[Users]
 	WHERE Id = @Id;
 END
