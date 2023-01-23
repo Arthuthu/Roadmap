@@ -3,7 +3,7 @@ using RoadmapRepository.SqlDataAccess;
 
 namespace RoadmapRepository.Data;
 
-public class UserData
+public class UserData : IUserData
 {
 	private readonly ISqlDataAccess _db;
 
@@ -17,10 +17,10 @@ public class UserData
 		return _db.LoadData<UserModel, dynamic>("dbo.spUser_GetAll", new { });
 	}
 
-	public async Task<UserModel?> GetUser(int id)
+	public async Task<UserModel?> GetUser(Guid id)
 	{
 		var results = await _db.LoadData<UserModel, dynamic>(
-			"dbo.spUser_Get",
+			"dbo.spUser_GetById",
 			new { Id = id });
 
 		return results.FirstOrDefault();
@@ -28,7 +28,7 @@ public class UserData
 
 	public Task InsertUser(UserModel user)
 	{
-		return _db.SaveData("dbo.spUser_Insert", new { user.Username, user.Password });
+		return _db.SaveData("dbo.spUser_Add", new { user.Username, user.Password });
 	}
 
 	public Task UpdateUser(UserModel user)
@@ -36,7 +36,7 @@ public class UserData
 		return _db.SaveData("dbo.spUser_Update", user);
 	}
 
-	public Task DeleteUser(int id)
+	public Task DeleteUser(Guid id)
 	{
 		return _db.SaveData("dbo.spUser_Delete", new { Id = id });
 	}
