@@ -36,7 +36,13 @@ builder.Services.AddEndpointsApiExplorer();
 //	});
 //});
 
+//Fluent Validation
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserModel>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoadmapModel>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NodeModel>());
+
+//AutoMapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 //builder.Services.AddAuthorization(options =>
@@ -54,7 +60,6 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
