@@ -1,13 +1,13 @@
 ﻿using RoadmapRepository.Models;
 
-namespace RoadmapRepository.Data
+namespace RoadmapRepository.User
 {
-	public interface IUserData
+	public interface IUserRepository
 	{
-		Task DeleteUser(Guid id);
-		Task<UserModel?> GetUserById(Guid id);
 		Task<IEnumerable<UserModel>> GetAllUsers();
+		Task<UserModel?> GetUserById(Guid id);
 		Task AddUser(UserModel user);
 		Task UpdateUser(UserModel user);
+		Task DeleteUser(Guid id);
 	}
 }

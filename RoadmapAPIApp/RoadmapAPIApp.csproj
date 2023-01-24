@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RoadmapRepository\RoadmapRepository.csproj" />
+    <ProjectReference Include="..\RoadmapServices\RoadmapServices.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,13 @@
 ﻿using RoadmapRepository.Models;
 using RoadmapRepository.SqlDataAccess;
 
-namespace RoadmapRepository.Data;
+namespace RoadmapRepository.User;
 
-public class UserData : IUserData
+public class UserRepository : IUserRepository
 {
 	private readonly ISqlDataAccess _db;
 
-	public UserData(ISqlDataAccess db)
+	public UserRepository(ISqlDataAccess db)
 	{
 		_db = db;
 	}

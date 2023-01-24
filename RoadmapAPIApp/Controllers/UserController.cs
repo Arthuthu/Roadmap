@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RoadmapRepository.Data;
 using RoadmapRepository.Models;
+using RoadmapServices.User;
 
 namespace RoadmapAPIApp.Controllers;
 
@@ -8,17 +8,17 @@ namespace RoadmapAPIApp.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-	private readonly IUserData _userData;
+	private readonly IUserService _userService;
 
-	public UserController(IUserData userData)
+	public UserController(IUserService userService)
 	{
-		_userData = userData;
+		_userService = userService;
 	}
 
 	[HttpGet]
 	public async Task<ActionResult<List<UserModel>>> GetAllUsers()
 	{
-		var users = await _userData.GetAllUsers();
+		var users = await _userService.GetAllUsers();
 
 		return Ok(users);
 	}
@@ -26,7 +26,7 @@ public class UserController : ControllerBase
 	[HttpGet("{id}")]
 	public async Task<ActionResult<UserModel>> GetUserById(Guid id)
 	{
-		var user = await _userData.GetUserById(id);
+		var user = await _userService.GetUserById(id);
 
 		return Ok(user);
 	}
@@ -34,7 +34,7 @@ public class UserController : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult<List<UserModel>>> CreateUser(UserModel user)
 	{
-		await _userData.AddUser(user);
+		await _userService.AddUser(user);
 
 		return Ok(user);
 	}
@@ -42,7 +42,7 @@ public class UserController : ControllerBase
 	[HttpPut]
 	public async Task<ActionResult<List<UserModel>>> UpdateUser(UserModel requestedUser)
 	{
-		await _userData.UpdateUser(requestedUser);
+		await _userService.UpdateUser(requestedUser);
 
 		return Ok(requestedUser);
 	}
@@ -50,7 +50,7 @@ public class UserController : ControllerBase
 	[HttpDelete]
 	public async Task<ActionResult<UserModel>> DeleteUser(Guid id)
 	{
-		await _userData.DeleteUser(id);
+		await _userService.DeleteUser(id);
 
 		return Ok("User has been deleted");
 	}
