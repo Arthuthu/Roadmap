@@ -8,7 +8,8 @@ using RoadmapRepository.Interfaces;
 using RoadmapRepository.Models;
 using RoadmapRepository.SqlDataAccess;
 using RoadmapServices;
-using RoadmapServices.User;
+using RoadmapServices.Classes;
+using RoadmapServices.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

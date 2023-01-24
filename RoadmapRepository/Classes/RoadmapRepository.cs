@@ -1,9 +1,10 @@
-﻿using RoadmapRepository.Models;
+﻿using RoadmapRepository.Interfaces;
+using RoadmapRepository.Models;
 using RoadmapRepository.SqlDataAccess;
 
 namespace RoadmapRepository.Classes;
 
-public class RoadmapRepository
+public class RoadmapRepository : IRoadmapRepository
 {
 	private readonly ISqlDataAccess _db;
 
@@ -28,10 +29,13 @@ public class RoadmapRepository
 
 	public Task AddRoadmap(RoadmapModel roadmap)
 	{
-		return _db.SaveData("dbo.spRoadmap_Add", new { roadmap.Id,
+		return _db.SaveData("dbo.spRoadmap_Add", new
+		{
+			roadmap.Id,
 			roadmap.Name,
 			roadmap.Description,
-			roadmap.UserId});
+			roadmap.UserId
+		});
 	}
 
 	public Task UpdateRoadmap(RoadmapModel roadmap)
