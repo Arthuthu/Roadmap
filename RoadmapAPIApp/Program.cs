@@ -40,9 +40,6 @@ builder.Services.AddEndpointsApiExplorer();
 //});
 
 //Fluent Validation
-builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserModel>());
-builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoadmapModel>());
-builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NodeModel>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserRequest>());
 
 //AutoMapper

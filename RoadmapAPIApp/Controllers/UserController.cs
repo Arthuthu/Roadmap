@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using RoadmapAPIApp.Dtos;
 using RoadmapAPIApp.Request;
 using RoadmapAPIApp.Response;
-using RoadmapRepository.Classes;
 using RoadmapRepository.Models;
 using RoadmapServices.Interfaces;
 
