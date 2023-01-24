@@ -4,30 +4,30 @@ using RoadmapRepository.SqlDataAccess;
 
 namespace RoadmapRepository.Classes;
 
-public class RoadmapRepository : IRoadmapRepository
+public class RoadmapClassRepository : IRoadmapClassRepository
 {
 	private readonly ISqlDataAccess _db;
 
-	public RoadmapRepository(ISqlDataAccess db)
+	public RoadmapClassRepository(ISqlDataAccess db)
 	{
 		_db = db;
 	}
 
-	public Task<IEnumerable<RoadmapModel>> GetAllRoadmaps()
+	public Task<IEnumerable<RoadmapClassModel>> GetAllRoadmaps()
 	{
-		return _db.LoadData<RoadmapModel, dynamic>("dbo.spRoadmap_GetAll", new { });
+		return _db.LoadData<RoadmapClassModel, dynamic>("dbo.spRoadmap_GetAll", new { });
 	}
 
-	public async Task<RoadmapModel?> GetRoadmapById(Guid id)
+	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
 	{
-		var results = await _db.LoadData<RoadmapModel, dynamic>(
+		var results = await _db.LoadData<RoadmapClassModel, dynamic>(
 			"dbo.spRoadmap_GetById",
 			new { Id = id });
 
 		return results.FirstOrDefault();
 	}
 
-	public Task AddRoadmap(RoadmapModel roadmap)
+	public Task AddRoadmap(RoadmapClassModel roadmap)
 	{
 		return _db.SaveData("dbo.spRoadmap_Add", new
 		{
@@ -38,7 +38,7 @@ public class RoadmapRepository : IRoadmapRepository
 		});
 	}
 
-	public Task UpdateRoadmap(RoadmapModel roadmap)
+	public Task UpdateRoadmap(RoadmapClassModel roadmap)
 	{
 		return _db.SaveData("dbo.spRoadmap_Update", roadmap);
 	}

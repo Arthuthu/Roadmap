@@ -4,9 +4,9 @@ using RoadmapRepository.Models;
 
 namespace RoadmapAPIApp.Validators;
 
-public class RoadmapValidator : AbstractValidator<RoadmapRequest>
+public class RoadmapClassValidator : AbstractValidator<RoadmapClassRequest>
 {
-	public RoadmapValidator()
+	public RoadmapClassValidator()
 	{
 		RuleFor(x => x.Name)
 			.MinimumLength(1).WithMessage("O campo nome deve ter mais que 3 caracters")

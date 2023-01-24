@@ -13,7 +13,7 @@ public class ResponseProfile : Profile
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 
-		CreateMap<RoadmapResponse, RoadmapModel>()
+		CreateMap<RoadmapClassResponse, RoadmapClassModel>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 

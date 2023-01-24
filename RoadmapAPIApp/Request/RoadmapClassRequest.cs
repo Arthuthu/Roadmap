@@ -1,6 +1,6 @@
 ﻿namespace RoadmapAPIApp.Request;
 
-public class RoadmapRequest
+public class RoadmapClassRequest
 {
 	public Guid Id { get; set; }
 	public string Name { get; set; }

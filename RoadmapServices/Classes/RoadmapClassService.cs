@@ -4,31 +4,31 @@ using RoadmapServices.Interfaces;
 
 namespace RoadmapServices.Classes;
 
-public class RoadmapService : IRoadmapService
+public class RoadmapClassService : IRoadmapClassService
 {
-	private readonly IRoadmapRepository _roadmapData;
+	private readonly IRoadmapClassRepository _roadmapData;
 
-	public RoadmapService(IRoadmapRepository roadmapData)
+	public RoadmapClassService(IRoadmapClassRepository roadmapData)
 	{
 		_roadmapData = roadmapData;
 	}
 
-	public Task<IEnumerable<RoadmapModel>> GetAllRoadmaps()
+	public Task<IEnumerable<RoadmapClassModel>> GetAllRoadmaps()
 	{
 		return _roadmapData.GetAllRoadmaps();
 	}
 
-	public async Task<RoadmapModel?> GetRoadmapById(Guid id)
+	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
 	{
 		return await _roadmapData.GetRoadmapById(id);
 	}
 
-	public async Task AddRoadmap(RoadmapModel roadmap)
+	public async Task AddRoadmap(RoadmapClassModel roadmap)
 	{
 		await _roadmapData.AddRoadmap(roadmap);
 	}
 
-	public Task UpdateRoadmap(RoadmapModel roadmap)
+	public Task UpdateRoadmap(RoadmapClassModel roadmap)
 	{
 		return _roadmapData.UpdateRoadmap(roadmap);
 	}

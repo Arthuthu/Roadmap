@@ -12,7 +12,7 @@ public class RequestProfile : Profile
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 
-		CreateMap<RoadmapModel, RoadmapRequest>()
+		CreateMap<RoadmapClassModel, RoadmapClassRequest>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 

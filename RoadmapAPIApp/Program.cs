@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
+using NodeServices.Classes;
 using RoadmapAPIApp.Request;
 using RoadmapRepository.Classes;
 using RoadmapRepository.Interfaces;
@@ -15,8 +16,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Dependency Injection
 builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
+
+//Repositories
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<IRoadmapClassRepository, RoadmapClassRepository>();
+builder.Services.AddSingleton<INodeRepository, NodeRepository>();
+
+//Services
 builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IRoadmapClassService, RoadmapClassService>();
+builder.Services.AddSingleton<INodeService, NodeService>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 

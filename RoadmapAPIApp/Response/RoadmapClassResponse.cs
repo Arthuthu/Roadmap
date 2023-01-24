@@ -1,6 +1,6 @@
 ﻿namespace RoadmapAPIApp.Response;
 
-public class RoadmapResponse
+public class RoadmapClassResponse
 {
 	public Guid Id { get; set; }
 	public string Name { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace RoadmapRepository.Models;
 
-public class RoadmapModel
+public class RoadmapClassModel
 {
 	public Guid Id { get; set; }
 	public string Name { get; set; }
