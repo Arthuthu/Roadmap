@@ -71,5 +71,7 @@
     <Build Include="dbo\StoredProcedures\spUser_Add.sql" />
     <Build Include="dbo\StoredProcedures\spUser_Update.sql" />
     <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\Roadmaps.sql" />
+    <Build Include="dbo\Tables\Nodes.sql" />
   </ItemGroup>
 </Project>

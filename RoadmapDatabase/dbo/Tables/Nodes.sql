@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Nodes]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [Name] NVARCHAR(50) NOT NULL, 
+    [Description] NVARCHAR(200) NULL, 
+    [RoadmapId] UNIQUEIDENTIFIER NOT NULL, 
+    CONSTRAINT [FK_Nodes_ToTable] FOREIGN KEY ([RoadmapId]) REFERENCES [Roadmaps]([Id])
+)

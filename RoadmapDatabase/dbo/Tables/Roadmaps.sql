@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[Roadmaps]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [Description] NVARCHAR(200) NULL, 
+    [UserId] UNIQUEIDENTIFIER NOT NULL, 
+    CONSTRAINT [FK_Roadmaps_ToTable] FOREIGN KEY (UserId) REFERENCES [Users]([Id])
+)
