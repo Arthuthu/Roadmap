@@ -6,4 +6,6 @@ public class NodeModel
 	public string Name { get; set; }
 	public string? Description { get; set; }
 
+
+	public Guid RoadmapId { get; set; }
 }

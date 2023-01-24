@@ -1,11 +1,8 @@
-﻿namespace RoadmapRepository.Models;
+﻿namespace RoadmapAPIApp.Response;
 
-public class RoadmapModel
+public class RoadmapResponse
 {
 	public Guid Id { get; set; }
 	public string Name { get; set; }
 	public string? Description { get; set; }
-
-
-	public Guid UserId { get; set; }
 }

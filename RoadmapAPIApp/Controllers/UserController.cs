@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RoadmapAPIApp.Dtos;
+using RoadmapAPIApp.Request;
+using RoadmapAPIApp.Response;
+using RoadmapRepository.Classes;
 using RoadmapRepository.Models;
 using RoadmapServices.User;
 
@@ -20,41 +23,43 @@ public class UserController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<List<UserDto>>> GetAllUsers()
+	public async Task<ActionResult<List<UserResponse>>> GetAllUsers()
 	{
 		var users = await _userService.GetAllUsers();
-		var dtoUsers = users.Select(user => _mapper.Map<UserDto>(user));
+		var responseUsers = users.Select(user => _mapper.Map<UserResponse>(user));
 
-		return Ok(dtoUsers);
+		return Ok(responseUsers);
 	}
 
 	[HttpGet("{id}")]
-	public async Task<ActionResult<UserDto>> GetUserById(Guid id)
+	public async Task<ActionResult<UserResponse>> GetUserById(Guid id)
 	{
 		var user = await _userService.GetUserById(id);
-		var dtoUser = _mapper.Map<UserDto>(user);
+		var responseUsers = _mapper.Map<UserResponse>(user);
 
-		return Ok(dtoUser);
+		return Ok(responseUsers);
 	}
 
 	[HttpPost]
-	public async Task<ActionResult<List<UserModel>>> CreateUser(UserModel user)
+	public async Task<ActionResult<List<UserResponse>>> CreateUser(UserRequest user)
 	{
-		await _userService.AddUser(user);
+		var requestUser = _mapper.Map<UserModel>(user);
+		await _userService.AddUser(requestUser);
 
-		return Ok(user);
+		return Ok(requestUser);
 	}
 
 	[HttpPut]
-	public async Task<ActionResult<List<UserModel>>> UpdateUser(UserModel requestedUser)
+	public async Task<ActionResult<List<UserResponse>>> UpdateUser(UserRequest user)
 	{
-		await _userService.UpdateUser(requestedUser);
+		var requestUser = _mapper.Map<UserModel>(user);
+		await _userService.UpdateUser(requestUser);
 
-		return Ok(requestedUser);
+		return Ok(requestUser);
 	}
 
 	[HttpDelete]
-	public async Task<ActionResult<UserModel>> DeleteUser(Guid id)
+	public async Task<ActionResult<UserResponse>> DeleteUser(Guid id)
 	{
 		await _userService.DeleteUser(id);
 

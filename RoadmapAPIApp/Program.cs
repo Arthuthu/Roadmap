@@ -2,9 +2,11 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
+using RoadmapAPIApp.Request;
+using RoadmapRepository.Classes;
+using RoadmapRepository.Interfaces;
 using RoadmapRepository.Models;
 using RoadmapRepository.SqlDataAccess;
-using RoadmapRepository.User;
 using RoadmapServices;
 using RoadmapServices.User;
 
@@ -40,6 +42,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserModel>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoadmapModel>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NodeModel>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserRequest>());
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(Program).Assembly);

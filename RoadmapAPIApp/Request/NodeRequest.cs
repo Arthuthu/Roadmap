@@ -1,11 +1,11 @@
-﻿namespace RoadmapRepository.Models;
+﻿namespace RoadmapAPIApp.Request;
 
-public class RoadmapModel
+public class NodeRequest
 {
 	public Guid Id { get; set; }
 	public string Name { get; set; }
 	public string? Description { get; set; }
 
 
-	public Guid UserId { get; set; }
+	public Guid RoadmapId { get; set; }
 }
