@@ -61,6 +61,8 @@
     <Folder Include="dbo\Tables" />
     <Folder Include="dbo\StoredProcedures" />
     <Folder Include="dbo\StoredProcedures\User" />
+    <Folder Include="dbo\StoredProcedures\Roadmap" />
+    <Folder Include="dbo\StoredProcedures\Node" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\RoadmapDatabase.publish.xml" />
@@ -71,6 +73,16 @@
     <Build Include="dbo\Tables\Nodes.sql" />
     <Build Include="dbo\StoredProcedures\User\spUser_Add.sql" />
     <Build Include="dbo\StoredProcedures\User\spUser_Delete.sql" />
+    <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_Add.sql" />
+    <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_Delete.sql" />
+    <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_GetAll.sql" />
+    <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_GetById.sql" />
+    <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_Update.sql" />
+    <Build Include="dbo\StoredProcedures\Node\spNode_Add.sql" />
+    <Build Include="dbo\StoredProcedures\Node\spNode_Delete.sql" />
+    <Build Include="dbo\StoredProcedures\Node\spNode_GetAll.sql" />
+    <Build Include="dbo\StoredProcedures\Node\spNode_GetById.sql" />
+    <Build Include="dbo\StoredProcedures\Node\spNode_Update.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />
