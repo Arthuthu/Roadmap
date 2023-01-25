@@ -83,6 +83,7 @@
     <Build Include="dbo\StoredProcedures\Node\spNode_GetAll.sql" />
     <Build Include="dbo\StoredProcedures\Node\spNode_GetById.sql" />
     <Build Include="dbo\StoredProcedures\Node\spNode_Update.sql" />
+    <Build Include="dbo\StoredProcedures\User\spUser_GetByName.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />

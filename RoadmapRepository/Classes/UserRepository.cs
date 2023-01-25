@@ -27,7 +27,16 @@ public class UserRepository : IUserRepository
         return results.FirstOrDefault();
     }
 
-    public Task AddUser(UserModel user)
+	public async Task<UserModel?> GetUserByName(UserModel user)
+	{
+		var results = await _db.LoadData<UserModel, dynamic>(
+			"dbo.spUser_GetByName",
+			new { Username = user.Username });
+
+		return results.FirstOrDefault();
+	}
+
+	public Task AddUser(UserModel user)
     {
         return _db.SaveData("dbo.spUser_Add",
         new { 

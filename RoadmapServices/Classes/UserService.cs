@@ -31,7 +31,12 @@ public class UserService : IUserService
         return await _userRepository.GetUserById(id);
     }
 
-    public async Task AddUser(UserModel user)
+	public async Task<UserModel?> GetUserByName(UserModel user)
+	{
+		return await _userRepository.GetUserByName(user);
+	}
+
+	public async Task AddUser(UserModel user)
     {
         bool verifyUser = VerifyIfUserExists(user);
 
@@ -59,25 +64,31 @@ public class UserService : IUserService
     {
         bool verifyUser = VerifyIfUserExists(user);
 
-        var requestedLogInUser = _userRepository.GetUserById(user.Id);
-
-        bool verifyPassword = VerifyPasswordHash(
-			requestedLogInUser.Result!.Password,
-			requestedLogInUser.Result!.PasswordHash,
-			requestedLogInUser.Result!.PasswordSalt);
-
-
-        if (verifyUser is false) 
-        {
-            throw new Exception("Usuario ou senha incorretos");
-        }
-
-        if (verifyPassword is false)
-        {
+		if (verifyUser is false)
+		{
 			throw new Exception("Usuario ou senha incorretos");
 		}
 
-        string token = CreateToken(requestedLogInUser.Result);
+		bool verifyPassword = VerifyIfPasswordIsCorrect(user);
+
+		if (verifyPassword is false)
+		{
+			throw new Exception("Usuario ou senha incorretos");
+		}
+
+		var requestedLogInUser = _userRepository.GetUserByName(user);
+
+		bool verifyPasswordHash = VerifyPasswordHash(
+			requestedLogInUser.Result?.Password,
+			requestedLogInUser.Result.PasswordHash,
+			requestedLogInUser.Result.PasswordSalt);
+
+		if (verifyPasswordHash is false)
+		{
+			throw new Exception("Ocorreu um erro durante o login");
+		}
+
+		string token = CreateToken(requestedLogInUser.Result);
 
         return token;
 	}
@@ -98,10 +109,34 @@ public class UserService : IUserService
         return false;
 	}
 
+	private bool VerifyIfPasswordIsCorrect(UserModel user)
+	{
+		var requestedUser = _userRepository.GetUserByName(user);
+
+        if (requestedUser.Result.Password == user.Password)
+        {
+            return true;
+        }
+
+		return false;
+	}
+
+	private bool VerifyPasswordHash(
+		string password,
+		byte[] passwordHash,
+		byte[] passwordSalt)
+	{
+		using (var hmac = new HMACSHA512(passwordSalt))
+		{
+			var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+			return computedHash.SequenceEqual(passwordHash);
+		};
+	}
+
 	private void CreatePasswordHash(
-	string password,
-	out byte[] passwordHash,
-	out byte[] passwordSalt)
+		string password,
+		out byte[] passwordHash,
+		out byte[] passwordSalt)
 	{
 		using (var hmac = new HMACSHA512())
 		{
@@ -109,18 +144,6 @@ public class UserService : IUserService
 			passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 		}
 	}
-
-    private bool VerifyPasswordHash(
-        string password,
-        byte[] passwordHash,
-        byte[] passwordSalt)
-    {
-        using (var hmac = new HMACSHA512(passwordSalt))
-        {
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return computedHash.SequenceEqual(passwordHash);
-        }
-    }
 
     private async Task<UserModel> ImplementUser(UserModel user)
     {

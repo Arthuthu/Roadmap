@@ -42,6 +42,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<ActionResult<List<UserResponse>>> CreateUser(UserRequest user)
     {
         var requestUser = _mapper.Map<UserModel>(user);
