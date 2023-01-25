@@ -9,6 +9,8 @@ using RoadmapRepository.Interfaces;
 using RoadmapRepository.SqlDataAccess;
 using RoadmapServices.Classes;
 using RoadmapServices.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,14 @@ builder.Services.AddSingleton<INodeService, NodeService>();
 
 builder.Services.AddEndpointsApiExplorer();
 
+
+//Fluent Validation
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserRequest>());
+
+//AutoMapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+//SwaggerGen
 builder.Services.AddSwaggerGen(x =>
 {
 	x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -47,13 +57,22 @@ builder.Services.AddSwaggerGen(x =>
 	});
 });
 
-//Fluent Validation
-builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserRequest>());
+//Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+	.AddJwtBearer(
+		options =>
+		{
+			options.TokenValidationParameters = new TokenValidationParameters
+			{
+				ValidateIssuerSigningKey = true,
+				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+					.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+				ValidateIssuer = false,
+				ValidateAudience = false
+			};
+		});
 
-//AutoMapper
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+// Authorization
 builder.Services.AddAuthorization(options =>
 {
 	options.FallbackPolicy = new AuthorizationPolicyBuilder()
@@ -64,7 +83,6 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 

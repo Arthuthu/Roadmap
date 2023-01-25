@@ -5,12 +5,13 @@ using RoadmapAPIApp.Request;
 using RoadmapAPIApp.Response;
 using RoadmapRepository.Models;
 using RoadmapServices.Interfaces;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace RoadmapAPIApp.Controllers.V1;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[AllowAnonymous]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -64,5 +65,15 @@ public class UserController : ControllerBase
         await _userService.DeleteUser(id);
 
         return Ok("User has been deleted");
+    }
+
+    [AllowAnonymous]
+    [HttpPost("login")]
+    public async Task<ActionResult<string>> Login(UserRequest user)
+    {
+        var requestUser = _mapper.Map<UserModel>(user);
+		string token = _userService.Login(requestUser);
+
+        return Ok(token);
     }
 }

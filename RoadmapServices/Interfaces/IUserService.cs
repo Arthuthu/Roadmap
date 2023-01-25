@@ -9,5 +9,8 @@ namespace RoadmapServices.Interfaces
         Task AddUser(UserModel user);
         Task UpdateUser(UserModel user);
         Task DeleteUser(Guid id);
-    }
+
+        public string Login(UserModel user);
+
+	}
 }

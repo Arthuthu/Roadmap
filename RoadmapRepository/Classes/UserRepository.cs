@@ -29,7 +29,14 @@ public class UserRepository : IUserRepository
 
     public Task AddUser(UserModel user)
     {
-        return _db.SaveData("dbo.spUser_Add", new { user.Id, user.Username, user.Password });
+        return _db.SaveData("dbo.spUser_Add",
+        new { 
+            user.Id,
+            user.Username,
+            user.Password,
+            user.PasswordHash,
+            user.PasswordSalt 
+        });
     }
 
     public Task UpdateUser(UserModel user)

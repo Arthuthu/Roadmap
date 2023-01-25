@@ -10,7 +10,6 @@ namespace RoadmapAPIApp.Controllers.V1;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[AllowAnonymous]
 public class RoadmapClassController : ControllerBase
 {
     private readonly IRoadmapClassService _roadmapService;
