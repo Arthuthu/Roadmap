@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RoadmapAPIApp.Request;
 using RoadmapAPIApp.Response;
@@ -9,6 +10,7 @@ namespace RoadmapAPIApp.Controllers.V1;
 
 [Route("api/v1/[controller]")]
 [ApiController]
+[AllowAnonymous]
 public class RoadmapClassController : ControllerBase
 {
     private readonly IRoadmapClassService _roadmapService;

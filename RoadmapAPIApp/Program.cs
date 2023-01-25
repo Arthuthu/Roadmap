@@ -6,9 +6,7 @@ using NodeServices.Classes;
 using RoadmapAPIApp.Request;
 using RoadmapRepository.Classes;
 using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
 using RoadmapRepository.SqlDataAccess;
-using RoadmapServices;
 using RoadmapServices.Classes;
 using RoadmapServices.Interfaces;
 
@@ -30,24 +28,24 @@ builder.Services.AddSingleton<INodeService, NodeService>();
 
 builder.Services.AddEndpointsApiExplorer();
 
-//builder.Services.AddSwaggerGen(x =>
-//{
-//	x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-//	{
-//		Description = "JWT Authorization header using the bearer scheme",
-//		Name = "Authorization",
-//		In = ParameterLocation.Header,
-//		Type = SecuritySchemeType.ApiKey
-//	});
-//	x.AddSecurityRequirement(new OpenApiSecurityRequirement
-//	{
-//		{new OpenApiSecurityScheme{Reference = new OpenApiReference
-//		{
-//			Id = "Bearer",
-//			Type = ReferenceType.SecurityScheme
-//		}}, new List<string>()}
-//	});
-//});
+builder.Services.AddSwaggerGen(x =>
+{
+	x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+	{
+		Description = "JWT Authorization header using the bearer scheme",
+		Name = "Authorization",
+		In = ParameterLocation.Header,
+		Type = SecuritySchemeType.ApiKey
+	});
+	x.AddSecurityRequirement(new OpenApiSecurityRequirement
+	{
+		{new OpenApiSecurityScheme{Reference = new OpenApiReference
+		{
+			Id = "Bearer",
+			Type = ReferenceType.SecurityScheme
+		}}, new List<string>()}
+	});
+});
 
 //Fluent Validation
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserRequest>());
@@ -55,14 +53,14 @@ builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyCont
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-//builder.Services.AddAuthorization(options =>
-//{
-//	options.FallbackPolicy = new AuthorizationPolicyBuilder()
-//	.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-//	.RequireAuthenticatedUser()
-//	.Build();
-//});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+builder.Services.AddAuthorization(options =>
+{
+	options.FallbackPolicy = new AuthorizationPolicyBuilder()
+	.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+	.RequireAuthenticatedUser()
+	.Build();
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -74,8 +72,8 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
