@@ -12,6 +12,10 @@ public class RequestProfile : Profile
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 
+		CreateMap<UserModel, LoginRequest>()
+			.IgnoreAllPropertiesWithAnInaccessibleSetter()
+			.ReverseMap();
+
 		CreateMap<RoadmapClassModel, RoadmapClassRequest>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
@@ -19,5 +23,7 @@ public class RequestProfile : Profile
 		CreateMap<NodeModel, NodeRequest>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
+
+
 	}
 }

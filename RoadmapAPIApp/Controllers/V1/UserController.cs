@@ -67,14 +67,4 @@ public class UserController : ControllerBase
 
         return Ok("User has been deleted");
     }
-
-    [AllowAnonymous]
-    [HttpPost("login")]
-    public async Task<ActionResult<string>> Login(UserRequest user)
-    {
-        var requestUser = _mapper.Map<UserModel>(user);
-		string token = _userService.Login(requestUser);
-
-        return Ok(token);
-    }
 }
