@@ -14,6 +14,16 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Cors
+builder.Services.AddCors(policy =>
+{
+	policy.AddPolicy("OpenCorsPolicy", opt =>
+		opt
+		.AllowAnyOrigin()
+		.AllowAnyHeader()
+		.AllowAnyMethod());
+});
+
 //Dependency Injection
 builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
 
@@ -94,6 +104,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseHttpsRedirection();
+app.UseCors("OpenCorsPolicy");
 
 app.MapControllers();
 
