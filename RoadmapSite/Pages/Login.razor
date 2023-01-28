@@ -1,0 +1,44 @@
+﻿@inject IAuthenticationService authService
+@inject NavigationManager navManager
+
+<h3>Entrar</h3>
+
+@if (showAuthenticationError)
+{
+	<div class="alert alert-danger" role="alert">
+		<p>@authenticationErrorText</p>
+	</div>	
+}
+
+<EditForm Model="model" OnValidSubmit="ExecuteLogin" class="card card-body bg-light mt-5">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<div class="form-group row">
+
+	</div>
+</EditForm>
+
+@code {
+	private AuthenticationUserModel model = new();
+
+	private bool showAuthenticationError = false;
+	private string authenticationErrorText = "";
+
+	private async Task ExecuteLogin()
+	{
+		showAuthenticationError = false;
+
+		var result = authService.Login(model);
+
+		if (result is not null)
+		{
+			navManager.NavigateTo("/");
+		}
+		else
+		{
+			authenticationErrorText = "Houve um erro durante a authenticação";
+			showAuthenticationError = true;
+		}
+	}
+}
