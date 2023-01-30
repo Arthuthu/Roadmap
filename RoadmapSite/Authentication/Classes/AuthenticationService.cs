@@ -1,8 +1,10 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using RoadmapSite.Authentication.Interfaces;
 using RoadmapSite.Models;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace RoadmapSite.Authentication.Classes;
 
@@ -25,12 +27,12 @@ public class AuthenticationService : IAuthenticationService
     {
         var data = new FormUrlEncodedContent(new[]
         {
-            new KeyValuePair<string, string>("grant_type", "password"),
             new KeyValuePair<string, string>("username", userForAuthentication.Username),
             new KeyValuePair<string, string>("password", userForAuthentication.Password)
         });
 
-        var authResult = await _client.PostAsync("https://localhost:5001/token", data);
+
+        var authResult = await _client.PostAsync("https://localhost:44339/login", data);
         var authContent = await authResult.Content.ReadAsStringAsync();
 
         if (authResult.IsSuccessStatusCode is false)
@@ -38,15 +40,16 @@ public class AuthenticationService : IAuthenticationService
             return null;
         }
 
-        var result = JsonSerializer.Deserialize<AuthenticatedUserModel>(authContent,
+        var result = JsonSerializer.Deserialize<AuthenticatedUserModel>(
+            authContent,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-        await _localStorage.SetItemAsync("authToken", result.Acess_Token);
+        await _localStorage.SetItemAsync("authToken", result.Access_Token);
 
-        ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.Acess_Token);
+        ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.Access_Token);
 
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer",
-            result.Acess_Token);
+            result.Access_Token);
 
         return result;
     }

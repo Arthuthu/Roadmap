@@ -2,6 +2,6 @@
 
 public class AuthenticatedUserModel
 {
-	public string Acess_Token { get; set; }
+	public string Access_Token { get; set; }
 	public string Username { get; set; }
 }

@@ -97,14 +97,14 @@ builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 
 // Configure
+app.UseHttpsRedirection();
+app.UseCors("OpenCorsPolicy");
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseHttpsRedirection();
-app.UseCors("OpenCorsPolicy");
 
 app.MapControllers();
 

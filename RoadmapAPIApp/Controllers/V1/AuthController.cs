@@ -22,16 +22,24 @@ public class AuthController : ControllerBase
 		_mapper = mapper;
 	}
 
-	[HttpPost("login")]
-	public async Task<ActionResult<string>> Login(LoginRequest user)
+	[Route("/login")]
+	[HttpPost]
+	public async Task<ActionResult> Login([FromForm] LoginRequest loginUser)
 	{
-		var requestUser = _mapper.Map<UserModel>(user);
+		var requestUser = _mapper.Map<UserModel>(loginUser);
 		string token = _userService.Login(requestUser);
 
-		return Ok($"Token: {token}");
+		var output = new
+		{
+			Access_Token = token,
+			Username = loginUser.Username
+		};
+
+		return Ok(output);
 	}
 
-	[HttpPost("register")]
+	[Route("/register")]
+	[HttpPost]
 	public async Task<ActionResult<List<UserResponse>>> Register(UserRequest user)
 	{
 		var requestUser = _mapper.Map<UserModel>(user);
