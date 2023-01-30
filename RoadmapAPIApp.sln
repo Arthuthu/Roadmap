@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoadmapRepository", "Roadma
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RoadmapDatabase", "RoadmapDatabase\RoadmapDatabase.sqlproj", "{BE30F41E-F895-4975-A682-7C895C44BE55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadmapSite", "RoadmapSite\RoadmapSite.csproj", "{5EC9DAD0-531F-4E28-B1EC-B558A5E006D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoadmapSite", "RoadmapSite\RoadmapSite.csproj", "{5EC9DAD0-531F-4E28-B1EC-B558A5E006D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
