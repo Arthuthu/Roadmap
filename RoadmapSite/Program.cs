@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using RoadmapSite;
-using RoadmapSite.Authentication;
+using RoadmapSite.Authentication.Classes;
+using RoadmapSite.Authentication.Interfaces;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
