@@ -45,9 +45,9 @@ public class UserService : IUserService
             throw new Exception("O nome de usuario ja esta cadastrado");
         }
 
-        var implementUser = await CreateUser(user);
+        var createdUser = await CreateUser(user);
 
-        await _userRepository.AddUser(implementUser);
+        await _userRepository.AddUser(createdUser);
     }
 
     public Task UpdateUser(UserModel user)
