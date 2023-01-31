@@ -4,6 +4,6 @@ namespace RoadmapSite.Registration.Interfaces
 {
     public interface IRegistrationService
     {
-        Task<RegistrationModel> RegisterUser(RegistrationModel registrationUser);
+        Task<string> RegisterUser(RegistrationModel registrationUser);
     }
 }

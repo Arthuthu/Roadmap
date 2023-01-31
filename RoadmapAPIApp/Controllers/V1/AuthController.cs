@@ -43,8 +43,9 @@ public class AuthController : ControllerBase
 	public async Task<ActionResult<List<UserResponse>>> Register([FromForm] RegisterRequest registerRequest)
 	{
 		var requestUser = _mapper.Map<UserModel>(registerRequest);
-		await _userService.AddUser(requestUser);
+		var registrationMessages = await _userService.AddUser(requestUser);
+		var cleanResponses = await _userService.ConcatRegistrationMessages(registrationMessages);
 
-		return Ok($"{registerRequest.Username} foi registrado com sucesso");
+		return Ok(cleanResponses);
 	}
 }

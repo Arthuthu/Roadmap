@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using RoadmapAPIApp.Request;
+using RoadmapRepository.Models;
 
-namespace RoadmapAPIApp.Validators;
+namespace RoadmapServices.Validators;
 
-public class UserValidator : AbstractValidator<UserRequest>
+public class UserValidator : AbstractValidator<UserModel>
 {
 	public UserValidator()
 	{

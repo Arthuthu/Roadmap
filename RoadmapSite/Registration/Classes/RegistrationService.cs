@@ -15,7 +15,7 @@ public class RegistrationService : IRegistrationService
 		_config = config;
 	}
 
-	public async Task<RegistrationModel> RegisterUser(RegistrationModel registrationUser)
+	public async Task<string> RegisterUser(RegistrationModel registrationUser)
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
@@ -29,9 +29,9 @@ public class RegistrationService : IRegistrationService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			return null;
+			return await authResult.Content.ReadAsStringAsync();
 		}
 
-		return registrationUser;
+		return await authResult.Content.ReadAsStringAsync();
 	}
 }

@@ -2,12 +2,10 @@
 @inject IRegistrationService registrationService
 @inject NavigationManager navManager
 
-@if (showRegistrationError)
-{
-	<div class="alert alert-danger" role="alert">
-		<p>@registrationErrorText</p>
-	</div>
-}
+
+<div role="alert">
+	<p>@registrationMessage</p>
+</div>
 
 <EditForm Model="model" OnValidSubmit="ExecuteRegister" class="">
 	<DataAnnotationsValidator/>
@@ -40,21 +38,22 @@
 @code {
 	private RegistrationModel model = new();
 
-	private bool showRegistrationError = false;
-	private string registrationErrorText = "";
+	private string registrationMessage = "";
 
 	private async Task ExecuteRegister()
 	{
 		var result = await registrationService.RegisterUser(model);
 
-		if (result is not null)
-		{
-			navManager.NavigateTo("/");
-		}
-		else
-		{
-			registrationErrorText = "Não foi possivel registrar o usuario";
-			showRegistrationError = true;
-		}
+		registrationMessage = result;
+
+		//if (result is not null)
+		//{
+		//	navManager.NavigateTo("/");
+		//}
+		//else
+		//{
+		//	registrationErrorText = "Não foi possivel registrar o usuario";
+		//	showRegistrationError = true;
+		//}
 	}
 }

@@ -1,12 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentValidation.Results;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RoadmapRepository.Interfaces;
 using RoadmapRepository.Models;
 using RoadmapServices.Interfaces;
+using RoadmapServices.Validators;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml.Linq;
 
 namespace RoadmapServices.Classes;
 
@@ -14,11 +17,15 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
 	private readonly IConfiguration _configuration;
+	private readonly UserValidator _validator; 
 
-	public UserService(IUserRepository userRepository, IConfiguration configuration)
+	public UserService(IUserRepository userRepository,
+		IConfiguration configuration,
+		UserValidator validator)
     {
         _userRepository = userRepository;
 		_configuration = configuration;
+		_validator = validator;
 	}
 
     public Task<IEnumerable<UserModel>> GetAllUsers()
@@ -36,18 +43,31 @@ public class UserService : IUserService
 		return await _userRepository.GetUserByName(user);
 	}
 
-	public async Task AddUser(UserModel user)
+	public async Task<IList<string>> AddUser(UserModel user)
     {
-        bool verifyUser = VerifyIfUserExists(user);
+		IList<string> registrationMessages = new List<string>();
 
-        if (verifyUser is true)
+		bool verifyUser = VerifyIfUserExists(user);
+
+		if (verifyUser is true)
         {
-            throw new Exception("O nome de usuario ja esta cadastrado");
+			registrationMessages.Add("Usuario ja esta cadastrado");
+			return registrationMessages;
         }
+
+		registrationMessages = await ValidateRegistration(user);
+
+		if (registrationMessages.Count != 0)
+		{
+			return registrationMessages;
+		}
 
         var createdUser = await CreateUser(user);
 
         await _userRepository.AddUser(createdUser);
+		registrationMessages.Add("Usuario registrado com sucesso");
+
+		return registrationMessages;
     }
 
     public Task UpdateUser(UserModel user)
@@ -131,6 +151,31 @@ public class UserService : IUserService
 			var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 			return computedHash.SequenceEqual(passwordHash);
 		};
+	}
+
+	private async Task<IList<string>> ValidateRegistration(UserModel userData)
+	{
+		var validationResult = _validator.Validate(userData);
+		IList<string> validationMessages = new List<string>();
+
+		if (validationResult.IsValid is false)
+		{
+			foreach (var errors in validationResult.Errors)
+			{
+				validationMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+			}
+
+			return validationMessages;
+		}
+
+		return validationMessages;
+	}
+
+	public async Task<string> ConcatRegistrationMessages(IList<string> responseMessages)
+	{
+		string cleanMessage = string.Join(", ", responseMessages);
+
+		return cleanMessage;
 	}
 
 	private void CreatePasswordHash(

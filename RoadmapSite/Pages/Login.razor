@@ -1,19 +1,36 @@
-﻿@inject IAuthenticationService authService
+﻿@page "/login"
+@inject IAuthenticationService authService
 @inject NavigationManager navManager
 
+@if (showAuthenticationError)
+{
+	<div class="alert alert-danger" role="alert">
+		<p>@authenticationErrorText</p>
+	</div>
+}
+
 <EditForm Model="model" OnValidSubmit="ExecuteLogin" class="">
-	<div class="row">
-		<div class="col-auto">
-			<label for="username" class="visually-hidden">Usuario</label>
-			<InputText id="username" class="form-control" @bind-Value="model.Username" placeholder="Username"/>
-		</div>
+	<DataAnnotationsValidator/>
+	<ValidationSummary/>
 
-		<div class="col-auto">
-			<label for="password" class="visually-hidden">Senha</label>
-			<InputText type="password" id="password" class="form-control" @bind-Value="model.Password" placeholder="Password"/>
+	<div class="form-group row">
+		<label for="username" class="col-md-2" col-form-label">Usuario:</label>
+		<div class="col-md-10">
+			<InputText id="username" class="form-control" @bind-Value="model.Username" />
+			<ValidationMessage For="@(() => model.Username)"/>
 		</div>
+	</div>
 
-		<div class="col-auto">
+	<div class="form-group row">
+		<label for="password" class="col-md-2" col-form-label">Senha:</label>
+		<div class="col-md-10">
+			<InputText id="password" class="form-control" @bind-Value="model.Password" />
+			<ValidationMessage For="@(() => model.Password)" />
+		</div>
+	</div>
+
+	<div>
+		<div class="col-md-12 text-right">
 			<button type="submit" class="btn btn-success">Entrar</button>
 		</div>
 	</div>
@@ -37,7 +54,7 @@
 		}
 		else
 		{
-			authenticationErrorText = "Houve um erro durante a authenticação";
+			authenticationErrorText = "Usuario ou senha incorretos";
 			showAuthenticationError = true;
 		}
 	}
