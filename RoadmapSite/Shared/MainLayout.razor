@@ -7,7 +7,17 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <AuthorizeView>
+                <Authorized>
+                    Bem-vindo (@context.User.FindFirst(ClaimTypes.Name).Value)
+                    <NavLink class="nav-link" href="logout">
+                        <span class="oi oi-account-logout">Sair</span>
+                    </NavLink>
+                </Authorized>
+                <NotAuthorized>
+                    <Login />
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
 
         <article class="content px-4">

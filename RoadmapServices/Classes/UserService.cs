@@ -45,7 +45,7 @@ public class UserService : IUserService
             throw new Exception("O nome de usuario ja esta cadastrado");
         }
 
-        var implementUser = await ImplementUser(user);
+        var implementUser = await CreateUser(user);
 
         await _userRepository.AddUser(implementUser);
     }
@@ -145,19 +145,19 @@ public class UserService : IUserService
 		}
 	}
 
-    private async Task<UserModel> ImplementUser(UserModel user)
+    private async Task<UserModel> CreateUser(UserModel user)
     {
-        UserModel implementUser = new();
+        UserModel createdUser = new();
 
 		CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-        implementUser.Id= user.Id;
-		implementUser.Username = user.Username;
-        implementUser.Password = user.Password;
-        implementUser.PasswordHash = passwordHash;
-        implementUser.PasswordSalt = passwordSalt;
+        createdUser.Id = Guid.NewGuid();
+		createdUser.Username = user.Username;
+        createdUser.Password = user.Password;
+        createdUser.PasswordHash = passwordHash;
+        createdUser.PasswordSalt = passwordSalt;
 
-        return implementUser;
+        return createdUser;
     }
 
     private string CreateToken(UserModel user)

@@ -36,7 +36,7 @@ public class AuthenticationService : IAuthenticationService
             new KeyValuePair<string, string>("password", userForAuthentication.Password)
         });
 
-        string loginEndpoint = _config["apiLocation"] + _config["loginEndpoint"];
+        string loginEndpoint = _config["apiLocation"] + _config["registerEndpoint"];
         var authResult = await _client.PostAsync(loginEndpoint, data);
         var authContent = await authResult.Content.ReadAsStringAsync();
 

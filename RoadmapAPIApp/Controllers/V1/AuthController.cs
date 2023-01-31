@@ -40,11 +40,11 @@ public class AuthController : ControllerBase
 
 	[Route("/register")]
 	[HttpPost]
-	public async Task<ActionResult<List<UserResponse>>> Register(UserRequest user)
+	public async Task<ActionResult<List<UserResponse>>> Register([FromForm] RegisterRequest registerRequest)
 	{
-		var requestUser = _mapper.Map<UserModel>(user);
+		var requestUser = _mapper.Map<UserModel>(registerRequest);
 		await _userService.AddUser(requestUser);
 
-		return Ok(user);
+		return Ok($"{registerRequest.Username} foi registrado com sucesso");
 	}
 }
