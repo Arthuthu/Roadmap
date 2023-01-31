@@ -13,14 +13,19 @@ public class AuthenticationService : IAuthenticationService
     private readonly HttpClient _client;
     private readonly AuthenticationStateProvider _authStateProvider;
     private readonly ILocalStorageService _localStorage;
+    private readonly IConfiguration _config;
+    private string authTokenStorageKey;
 
     public AuthenticationService(HttpClient client,
         AuthenticationStateProvider authStateProvider,
-        ILocalStorageService localStorage)
+        ILocalStorageService localStorage,
+        IConfiguration config)
     {
         _client = client;
         _authStateProvider = authStateProvider;
         _localStorage = localStorage;
+        _config = config;
+        authTokenStorageKey = _config["authTokenStorageKey"];
     }
 
     public async Task<AuthenticatedUserModel> Login(AuthenticationUserModel userForAuthentication)
@@ -31,8 +36,8 @@ public class AuthenticationService : IAuthenticationService
             new KeyValuePair<string, string>("password", userForAuthentication.Password)
         });
 
-
-        var authResult = await _client.PostAsync("https://localhost:44339/login", data);
+        string loginEndpoint = _config["apiLocation"] + _config["loginEndpoint"];
+        var authResult = await _client.PostAsync(loginEndpoint, data);
         var authContent = await authResult.Content.ReadAsStringAsync();
 
         if (authResult.IsSuccessStatusCode is false)
@@ -44,7 +49,7 @@ public class AuthenticationService : IAuthenticationService
             authContent,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-        await _localStorage.SetItemAsync("authToken", result.Access_Token);
+        await _localStorage.SetItemAsync(authTokenStorageKey, result.Access_Token);
 
         ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.Access_Token);
 
@@ -56,7 +61,7 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task Logout()
     {
-        await _localStorage.RemoveItemAsync("authToken");
+        await _localStorage.RemoveItemAsync(authTokenStorageKey);
         ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
         _client.DefaultRequestHeaders.Authorization = null;
     }
