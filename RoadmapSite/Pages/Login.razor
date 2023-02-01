@@ -16,20 +16,16 @@
 		</div>
 
 		<div class="username-form-label">
+			<label for="username" class="visually-hidden">Usuario</label>
 			<div>
-				<span>Usuario</span>
-			</div>
-			<div>
-				<InputText id="username" class="form-input-text" @bind-Value="model.Username" placeholder:="Usuario" />
+				<InputText id="username" class="form-input-text" @bind-Value="model.Username" placeholder="Usuario" />
 			</div>
 		</div>
 
 		<div class="password-form-label">
+			<label for="password" class="visually-hidden">Senha</label>
 			<div>
-				<span>Senha</span>
-			</div>
-			<div>
-				<InputText id="password" class="form-input-text" @bind-Value="model.Password" placeholder:="Senha" />
+				<InputText id="password" class="form-input-text" @bind-Value="model.Password" placeholder="Senha" />
 			</div>
 		</div>
 

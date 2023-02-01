@@ -2,27 +2,23 @@
 @inject IRegistrationService registrationService
 @inject NavigationManager navManager
 
-<EditForm Model="model" OnValidSubmit="ExecuteRegister">
+<EditForm Model="model" OnValidSubmit="ExecuteRegister" class="">
 	<div class="form-div">
 		<div class="iniciar-sessao-paragraph">
-			<p>Crie sua conta</p>
+			<p>Criar conta</p>
 		</div>
 
 		<div class="username-form-label">
+			<label for="username" class="visually-hidden">Usuario</label>
 			<div>
-				<span>Usuario</span>
-			</div>
-			<div>
-				<InputText id="username" class="form-input-text" @bind-Value="model.Username" placeholder:="Usuario" />
+				<InputText id="username" class="form-input-text" @bind-Value="model.Username" placeholder="Usuario"/>
 			</div>
 		</div>
 
 		<div class="password-form-label">
 			<div>
-				<span>Senha</span>
-			</div>
-			<div>
-				<InputText id="password" class="form-input-text" @bind-Value="model.Password" placeholder:="Senha" />
+				<label for="password" class="visually-hidden">Senha</label>
+				<InputText id="password" class="form-input-text" @bind-Value="model.Password" placeholder="Senha"/>
 			</div>
 		</div>
 
