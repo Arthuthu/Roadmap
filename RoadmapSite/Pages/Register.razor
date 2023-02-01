@@ -8,27 +8,33 @@
 </div>
 
 <EditForm Model="model" OnValidSubmit="ExecuteRegister">
+	<div class="form-div">
+		<div class="iniciar-sessao-paragraph">
+			<p>Crie sua conta</p>
+		</div>
 
-	<div class="form-group row">
-		<label for="username" class="col-md-2" col-form-label">Usuario:</label>
-		<div class="col-md-10">
-			<InputText id="username" class="form-control" @bind-Value="model.Username" />
+		<div class="username-form-label">
+			<div>
+				<span>Usuario</span>
+			</div>
+			<div>
+				<InputText id="username" class="form-input-text" @bind-Value="model.Username" placeholder:="Usuario" />
+			</div>
+		</div>
+
+		<div class="password-form-label">
+			<div>
+				<span>Senha</span>
+			</div>
+			<div>
+				<InputText id="password" class="form-input-text" @bind-Value="model.Password" placeholder:="Senha" />
+			</div>
+		</div>
+
+		<div class="form-button-div">
+			<button type="submit" class="form-button">Entrar</button>
 		</div>
 	</div>
-
-	<div class="form-group row">
-		<label for="password" class="col-md-2" col-form-label">Senha:</label>
-		<div class="col-md-10">
-			<InputText id="password" class="form-control" @bind-Value="model.Password" />
-		</div>
-	</div>
-
-	<div>
-		<div class="col-md-12 text-right">
-			<button type="submit" class="btn btn-success">Registrar</button>
-		</div>
-	</div>
-
 </EditForm>
 
 @code {

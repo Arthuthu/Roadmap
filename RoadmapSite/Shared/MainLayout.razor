@@ -1,28 +1,36 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
-        <div class="top-row px-4">
-            <AuthorizeView>
-                <Authorized>
-                    Bem-vindo (@context.User.FindFirst(ClaimTypes.Name).Value)
-                    <NavLink class="nav-link" href="logout">
-                        <span class="oi oi-account-logout">Sair</span>
-                    </NavLink>
-                </Authorized>
-                <NotAuthorized>
-                    <NavLink class="nav-link" href="login">
-                        <span class="oi oi-account-logout">Entrar</span>
-                    </NavLink>
-                </NotAuthorized>
-            </AuthorizeView>
-        </div>
-
-        <article class="content px-4">
+        <nav class="navbar">
+            <div>
+                <NavLink class="logo" href="#">
+                    <span>Roadmaps</span>
+                </NavLink>
+            </div>
+            <div class="nav-links">
+                <AuthorizeView>
+                    <Authorized>
+                        Bem-vindo (@context.User.FindFirst(ClaimTypes.Name).Value)
+                        <NavLink class="nav-link" href="logout">
+                            <span class="oi oi-account-logout">Sair</span>
+                        </NavLink>
+                    </Authorized>
+                    <NotAuthorized>
+                        <NavLink class="nav-link" href="login">
+                            <span class="oi oi-account-logout">Entrar</span>
+                        </NavLink>
+                        <NavLink class="nav-link" href="register">
+                            <span class="oi oi-account-logout">Registrar</span>
+                        </NavLink>
+                        <NavLink class="nav-link" href="verifyauth">
+                            <span class="oi oi-account-logout">Verifica Autenticação</span>
+                        </NavLink>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </div>
+        </nav>
+        <article>
             @Body
         </article>
     </main>
