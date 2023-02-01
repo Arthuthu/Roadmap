@@ -2,11 +2,6 @@
 @inject IRegistrationService registrationService
 @inject NavigationManager navManager
 
-
-<div role="alert">
-	<p>@registrationMessage</p>
-</div>
-
 <EditForm Model="model" OnValidSubmit="ExecuteRegister">
 	<div class="form-div">
 		<div class="iniciar-sessao-paragraph">
@@ -36,6 +31,10 @@
 		</div>
 	</div>
 </EditForm>
+
+<div role="alert">
+	<p>@registrationMessage</p>
+</div>
 
 @code {
 

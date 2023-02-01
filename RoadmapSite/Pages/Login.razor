@@ -37,6 +37,13 @@
 			<button type="submit" class="form-button">Entrar</button>
 		</div>
 	</div>
+
+	@if (showAuthenticationError)
+	{
+		<div class="alert alert-danger" role="alert">
+			<p>@authenticationErrorText</p>
+		</div>
+	}
 </EditForm>
 
 @code {
