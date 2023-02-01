@@ -1,4 +1,6 @@
-﻿namespace RoadmapSite.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RoadmapSite.Models;
 
 public class RegistrationModel
 {

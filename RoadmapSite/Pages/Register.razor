@@ -7,15 +7,12 @@
 	<p>@registrationMessage</p>
 </div>
 
-<EditForm Model="model" OnValidSubmit="ExecuteRegister" class="">
-	<DataAnnotationsValidator/>
-	<ValidationSummary/>
+<EditForm Model="model" OnValidSubmit="ExecuteRegister">
 
 	<div class="form-group row">
 		<label for="username" class="col-md-2" col-form-label">Usuario:</label>
 		<div class="col-md-10">
 			<InputText id="username" class="form-control" @bind-Value="model.Username" />
-			<ValidationMessage For="@(() => model.Username)"/>
 		</div>
 	</div>
 
@@ -23,7 +20,6 @@
 		<label for="password" class="col-md-2" col-form-label">Senha:</label>
 		<div class="col-md-10">
 			<InputText id="password" class="form-control" @bind-Value="model.Password" />
-			<ValidationMessage For="@(() => model.Password)" />
 		</div>
 	</div>
 
@@ -36,6 +32,7 @@
 </EditForm>
 
 @code {
+
 	private RegistrationModel model = new();
 
 	private string registrationMessage = "";
@@ -45,15 +42,5 @@
 		var result = await registrationService.RegisterUser(model);
 
 		registrationMessage = result;
-
-		//if (result is not null)
-		//{
-		//	navManager.NavigateTo("/");
-		//}
-		//else
-		//{
-		//	registrationErrorText = "Não foi possivel registrar o usuario";
-		//	showRegistrationError = true;
-		//}
 	}
 }

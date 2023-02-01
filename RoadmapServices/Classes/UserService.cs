@@ -1,4 +1,5 @@
-﻿using FluentValidation.Results;
+﻿using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RoadmapRepository.Interfaces;
@@ -17,11 +18,11 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
 	private readonly IConfiguration _configuration;
-	private readonly UserValidator _validator; 
+	private readonly IValidator<UserModel> _validator; 
 
 	public UserService(IUserRepository userRepository,
 		IConfiguration configuration,
-		UserValidator validator)
+		IValidator<UserModel> validator)
     {
         _userRepository = userRepository;
 		_configuration = configuration;
@@ -64,8 +65,15 @@ public class UserService : IUserService
 
         var createdUser = await CreateUser(user);
 
-        await _userRepository.AddUser(createdUser);
-		registrationMessages.Add("Usuario registrado com sucesso");
+		try
+		{
+			await _userRepository.AddUser(createdUser);
+			registrationMessages.Add("Usuario registrado com sucesso");
+		}
+		catch (Exception ex)
+		{
+			registrationMessages.Add($"Ocorreu um erro durante o registro de usuario {ex.Message}");
+		}
 
 		return registrationMessages;
     }
@@ -153,7 +161,7 @@ public class UserService : IUserService
 		};
 	}
 
-	private async Task<IList<string>> ValidateRegistration(UserModel userData)
+	public async Task<IList<string>> ValidateRegistration(UserModel userData)
 	{
 		var validationResult = _validator.Validate(userData);
 		IList<string> validationMessages = new List<string>();

@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RoadmapAPIApp.Request;
 using RoadmapAPIApp.Response;
 using RoadmapRepository.Models;
 using RoadmapServices.Interfaces;
+using System;
 
 namespace RoadmapAPIApp.Controllers.V1;
 
@@ -16,7 +19,8 @@ public class AuthController : ControllerBase
 	private readonly IMapper _mapper;
 	private readonly IUserService _userService;
 
-	public AuthController(IMapper mapper, IUserService userService)
+	public AuthController(IMapper mapper,
+		IUserService userService)
 	{
 		_userService = userService;
 		_mapper = mapper;
@@ -37,6 +41,7 @@ public class AuthController : ControllerBase
 
 		return Ok(output);
 	}
+
 
 	[Route("/register")]
 	[HttpPost]

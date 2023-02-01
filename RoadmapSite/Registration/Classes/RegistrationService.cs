@@ -8,11 +8,15 @@ public class RegistrationService : IRegistrationService
 {
 	private readonly HttpClient _client;
 	private readonly IConfiguration _config;
+	private readonly ILogger<RegistrationService> _logger;
 
-	public RegistrationService(HttpClient client, IConfiguration config)
+	public RegistrationService(HttpClient client,
+		IConfiguration config,
+		ILogger<RegistrationService> logger)
 	{
 		_client = client;
 		_config = config;
+		_logger = logger;
 	}
 
 	public async Task<string> RegisterUser(RegistrationModel registrationUser)
@@ -29,7 +33,8 @@ public class RegistrationService : IRegistrationService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			return await authResult.Content.ReadAsStringAsync();
+			_logger.LogInformation($"Ocorreu um eror durante o registro de conta de usuario {authContent}");
+			return "Ocorreu um erro durante o registro de usuario, preencha os campos corretamente";
 		}
 
 		return await authResult.Content.ReadAsStringAsync();

@@ -14,17 +14,20 @@ public class AuthenticationService : IAuthenticationService
     private readonly AuthenticationStateProvider _authStateProvider;
     private readonly ILocalStorageService _localStorage;
     private readonly IConfiguration _config;
+    private readonly ILogger<AuthenticationService> _logger;
     private string authTokenStorageKey;
 
     public AuthenticationService(HttpClient client,
         AuthenticationStateProvider authStateProvider,
         ILocalStorageService localStorage,
-        IConfiguration config)
+        IConfiguration config,
+        ILogger<AuthenticationService> logger)
     {
         _client = client;
         _authStateProvider = authStateProvider;
         _localStorage = localStorage;
         _config = config;
+        _logger = logger;
         authTokenStorageKey = _config["authTokenStorageKey"];
     }
 
@@ -42,7 +45,8 @@ public class AuthenticationService : IAuthenticationService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            return null;
+			_logger.LogInformation($"Ocorreu um eror durante o login {authContent}");
+			return null;
         }
 
         var result = JsonSerializer.Deserialize<AuthenticatedUserModel>(

@@ -1,17 +1,17 @@
-using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NodeServices.Classes;
-using RoadmapAPIApp.Request;
 using RoadmapRepository.Classes;
 using RoadmapRepository.Interfaces;
+using RoadmapRepository.Models;
 using RoadmapRepository.SqlDataAccess;
 using RoadmapServices.Classes;
 using RoadmapServices.Interfaces;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using RoadmapServices.Validators;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,16 +37,10 @@ builder.Services.AddSingleton<INodeRepository, NodeRepository>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IRoadmapClassService, RoadmapClassService>();
 builder.Services.AddSingleton<INodeService, NodeService>();
-builder.Services.AddSingleton<UserValidator>();
+builder.Services.AddSingleton<IValidator<UserModel>, UserValidator>();
 
 
 builder.Services.AddEndpointsApiExplorer();
-
-
-//Fluent Validation
-builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterRequest>());
-builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NodeRequest>());
-builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoadmapClassRequest>());
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
