@@ -2,7 +2,8 @@
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
     [Name] NVARCHAR(50) NOT NULL, 
-    [Description] NVARCHAR(200) NULL, 
+    [Description] NVARCHAR(200) NULL,
+    [Category] NVARCHAR(50) NULL, 
     [UserId] UNIQUEIDENTIFIER NOT NULL, 
     CONSTRAINT [FK_Roadmaps_ToTable] FOREIGN KEY (UserId) REFERENCES [Users]([Id]) ON DELETE CASCADE
 )
