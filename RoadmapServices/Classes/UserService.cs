@@ -1,16 +1,13 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RoadmapRepository.Interfaces;
 using RoadmapRepository.Models;
 using RoadmapServices.Interfaces;
-using RoadmapServices.Validators;
+using RoadmapServices.Validators.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Xml.Linq;
 
 namespace RoadmapServices.Classes;
 
@@ -18,15 +15,15 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
 	private readonly IConfiguration _configuration;
-	private readonly IValidator<UserModel> _validator; 
+	private readonly IMessageHandler _messageHandler;
 
 	public UserService(IUserRepository userRepository,
 		IConfiguration configuration,
-		IValidator<UserModel> validator)
+		IMessageHandler messageHandler)
     {
         _userRepository = userRepository;
 		_configuration = configuration;
-		_validator = validator;
+		_messageHandler = messageHandler;
 	}
 
     public Task<IEnumerable<UserModel>> GetAllUsers()
@@ -48,7 +45,7 @@ public class UserService : IUserService
     {
 		IList<string> registrationMessages = new List<string>();
 
-		bool verifyUser = VerifyIfUserExists(user);
+		bool verifyUser = await VerifyIfUserAlreadyExists(user);
 
 		if (verifyUser is true)
         {
@@ -56,14 +53,14 @@ public class UserService : IUserService
 			return registrationMessages;
         }
 
-		registrationMessages = await ValidateRegistration(user);
+		registrationMessages = await _messageHandler.ValidateUserRegistration(user);
 
 		if (registrationMessages.Count != 0)
 		{
 			return registrationMessages;
 		}
 
-        var createdUser = await CreateUser(user);
+        var createdUser = await InsertUserIdPasswordHashAndSalt(user);
 
 		try
 		{
@@ -88,45 +85,45 @@ public class UserService : IUserService
         return _userRepository.DeleteUser(id);
     }
 
-    public string Login(UserModel user)
+    public async Task<string> Login(UserModel user)
     {
-        bool verifyUser = VerifyIfUserExists(user);
+        bool verifyUser = await VerifyIfUserAlreadyExists(user);
 
 		if (verifyUser is false)
 		{
 			throw new Exception("Usuario ou senha incorretos");
 		}
 
-		bool verifyPassword = VerifyIfPasswordIsCorrect(user);
+		bool verifyPassword = await VerifyIfPasswordIsCorrect(user);
 
 		if (verifyPassword is false)
 		{
 			throw new Exception("Usuario ou senha incorretos");
 		}
 
-		var requestedLogInUser = _userRepository.GetUserByName(user);
+		var requestedLogInUser = await _userRepository.GetUserByName(user);
 
-		bool verifyPasswordHash = VerifyPasswordHash(
-			requestedLogInUser.Result?.Password,
-			requestedLogInUser.Result.PasswordHash,
-			requestedLogInUser.Result.PasswordSalt);
+		bool verifyPasswordHash = await VerifyPasswordHash(
+			requestedLogInUser.Password,
+			requestedLogInUser.PasswordHash,
+			requestedLogInUser.PasswordSalt);
 
 		if (verifyPasswordHash is false)
 		{
 			throw new Exception("Ocorreu um erro durante o login");
 		}
 
-		string token = CreateToken(requestedLogInUser.Result);
+		string token = await CreateToken(requestedLogInUser);
 
         return token;
 	}
 
 
-    private bool VerifyIfUserExists(UserModel user)
+    private async Task<bool> VerifyIfUserAlreadyExists(UserModel user)
     {
-		var users = _userRepository.GetAllUsers();
+		var users = await _userRepository.GetAllUsers();
 
-		foreach (var u in users.Result)
+		foreach (var u in users)
 		{
 			if (u.Username == user.Username)
 			{
@@ -137,11 +134,11 @@ public class UserService : IUserService
         return false;
 	}
 
-	private bool VerifyIfPasswordIsCorrect(UserModel user)
+	private async Task<bool> VerifyIfPasswordIsCorrect(UserModel user)
 	{
-		var requestedUser = _userRepository.GetUserByName(user);
+		var requestedUser = await _userRepository.GetUserByName(user);
 
-        if (requestedUser.Result.Password == user.Password)
+        if (requestedUser.Password == user.Password)
         {
             return true;
         }
@@ -149,7 +146,7 @@ public class UserService : IUserService
 		return false;
 	}
 
-	private bool VerifyPasswordHash(
+	private async Task<bool> VerifyPasswordHash(
 		string password,
 		byte[] passwordHash,
 		byte[] passwordSalt)
@@ -159,31 +156,6 @@ public class UserService : IUserService
 			var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 			return computedHash.SequenceEqual(passwordHash);
 		};
-	}
-
-	public async Task<IList<string>> ValidateRegistration(UserModel userData)
-	{
-		var validationResult = _validator.Validate(userData);
-		IList<string> validationMessages = new List<string>();
-
-		if (validationResult.IsValid is false)
-		{
-			foreach (var errors in validationResult.Errors)
-			{
-				validationMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-			}
-
-			return validationMessages;
-		}
-
-		return validationMessages;
-	}
-
-	public async Task<string> ConcatRegistrationMessages(IList<string> responseMessages)
-	{
-		string cleanMessage = string.Join(", ", responseMessages);
-
-		return cleanMessage;
 	}
 
 	private void CreatePasswordHash(
@@ -198,22 +170,18 @@ public class UserService : IUserService
 		}
 	}
 
-    private async Task<UserModel> CreateUser(UserModel user)
+    private async Task<UserModel> InsertUserIdPasswordHashAndSalt(UserModel user)
     {
-        UserModel createdUser = new();
-
 		CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-        createdUser.Id = Guid.NewGuid();
-		createdUser.Username = user.Username;
-        createdUser.Password = user.Password;
-        createdUser.PasswordHash = passwordHash;
-        createdUser.PasswordSalt = passwordSalt;
+		user.Id = Guid.NewGuid();
+		user.PasswordHash = passwordHash;
+		user.PasswordSalt = passwordSalt;
 
-        return createdUser;
+        return user;
     }
 
-    private string CreateToken(UserModel user)
+    private async Task<string> CreateToken(UserModel user)
     {
 		List<Claim> claims = new List<Claim>
 		{

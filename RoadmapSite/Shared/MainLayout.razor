@@ -11,7 +11,7 @@
             <div class="nav-links">
                 <AuthorizeView>
                     <Authorized>
-                        Bem-vindo (@context.User.FindFirst(ClaimTypes.Name).Value)
+                        <span class="nav-link">@context.User.FindFirst(ClaimTypes.Name).Value</span>
                         <NavLink class="nav-link" href="logout">
                             <span class="oi oi-account-logout">Sair</span>
                         </NavLink>
@@ -23,11 +23,12 @@
                         <NavLink class="nav-link" href="register">
                             <span class="oi oi-account-logout">Registrar</span>
                         </NavLink>
-                        <NavLink class="nav-link" href="verifyauth">
-                            <span class="oi oi-account-logout">Verifica Autenticação</span>
-                        </NavLink>
                     </NotAuthorized>
                 </AuthorizeView>
+
+                <NavLink class="nav-link" href="verifyauth">
+                    <span class="oi oi-account-logout">Verifica Autenticação</span>
+                </NavLink>
             </div>
         </nav>
         <article>

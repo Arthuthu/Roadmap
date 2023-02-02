@@ -1,79 +1,65 @@
 ﻿using RoadmapRepository.Interfaces;
 using RoadmapRepository.Models;
 using RoadmapServices.Interfaces;
-using System.Security;
+using RoadmapServices.Validators.Interfaces;
 
 namespace RoadmapServices.Classes;
 
 public class RoadmapClassService : IRoadmapClassService
 {
-	private readonly IRoadmapClassRepository _roadmapData;
-	private readonly IUserRepository _userRepository;
+	private readonly IRoadmapClassRepository _roadmapRepository;
+	private readonly IMessageHandler _messageHandler;
 
-	public RoadmapClassService(IRoadmapClassRepository roadmapData, IUserRepository userRepository)
+	public RoadmapClassService(IRoadmapClassRepository roadmapRepository,
+		IMessageHandler messageHandler)
 	{
-		_roadmapData = roadmapData;
-		_userRepository = userRepository;
+		_roadmapRepository = roadmapRepository;
+		_messageHandler = messageHandler;
 	}
 
 	public Task<IEnumerable<RoadmapClassModel>> GetAllRoadmaps()
 	{
-		return _roadmapData.GetAllRoadmaps();
+		return _roadmapRepository.GetAllRoadmaps();
 	}
 
 	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
 	{
-		return await _roadmapData.GetRoadmapById(id);
+		return await _roadmapRepository.GetRoadmapById(id);
 	}
 
-	public async Task AddRoadmap(RoadmapClassModel roadmap)
+	public async Task<IList<string>> AddRoadmap(RoadmapClassModel roadmap)
 	{
-		var userExists = await VerifyIfUserExists(roadmap);
+		IList<string> registrationMessages = new List<string>();
 
-		if (userExists is false)
+		registrationMessages = await _messageHandler.ValidateRoadmapCreation(roadmap);
+
+		if (registrationMessages.Count != 0)
 		{
-			throw new Exception("User required for creating roadmap not found");
+			return registrationMessages;
 		}
 
-		var createdRoadmap = await CreateRoadmap(roadmap);
+		roadmap.Id = Guid.NewGuid();
 
-		await _roadmapData.AddRoadmap(createdRoadmap);
+		try
+		{
+			await _roadmapRepository.AddRoadmap(roadmap);
+			registrationMessages.Add("Roadmap criado com sucesso");
+		}
+		catch (Exception ex)
+		{
+			registrationMessages.Add($"Ocorreu um erro durante a criação do roadmap: {ex.Message}");
+		}
+
+		return registrationMessages;
 	}
 
 	public Task UpdateRoadmap(RoadmapClassModel roadmap)
 	{
-		return _roadmapData.UpdateRoadmap(roadmap);
+		return _roadmapRepository.UpdateRoadmap(roadmap);
 	}
 
 	public Task DeleteRoadmap(Guid id)
 	{
-		return _roadmapData.DeleteRoadmap(id);
-	}
-
-	private async Task<bool> VerifyIfUserExists(RoadmapClassModel roadmapModel)
-	{
-		var users = await _userRepository.GetAllUsers();
-
-		foreach (var user in users)
-		{
-			if (roadmapModel.UserId == user.Id)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private async Task<RoadmapClassModel> CreateRoadmap(RoadmapClassModel roadmapModel)
-	{
-		RoadmapClassModel roadmap = new();
-
-		roadmap.Id = Guid.NewGuid();
-		roadmap.Name = roadmapModel.Name;
-		roadmap.Description = roadmapModel.Description;
-		roadmap.Category = roadmapModel.Category;
-		roadmap.UserId = roadmapModel.UserId;
-
-		return roadmap;
+		return _roadmapRepository.DeleteRoadmap(id);
 	}
 }

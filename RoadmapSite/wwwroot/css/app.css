@@ -4,6 +4,7 @@ html {
 
 body {
     background-color: #171717;
+    color: #FFF;
     background-repeat: no-repeat;
 }
 
@@ -50,11 +51,31 @@ body {
         color: #DCDCDC;
     }
 
+/*Not Authorized*/
+.not-authorized-message-div {
+    text-align: center;
+}
+
+.not-authorized-message{
+    font-weight: bold;
+    font-size: 24px;
+}
+
 /*Index page*/
 
 .create-roadmap-div{
     text-align: center;
     margin: 20px 0 0 0;
+}
+
+.alert-message-div{
+    margin: 20px 0 0 0;
+    text-align: center;
+}
+
+.alert-message {
+    font-weight: bold;
+    font-size: 24px;
 }
 
 /*Login and Registration page*/
@@ -84,7 +105,7 @@ body {
     background-color: #F6F6F6;
 }
 
-.username-form-label {
+.first-form-label {
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
@@ -92,18 +113,18 @@ body {
     margin: 20px 0 0 0;
 }
 
-.password-form-label {
+.other-form-label {
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
     padding: 0 0 10px 0;
 }
 
-.form-button-div{
+.button-div{
     text-align: center;
 }
 
-.form-button {
+.first-style-button {
     background-color: #EF9F00;
     margin: 20px 0 0 0;
     padding: 15px 20px;

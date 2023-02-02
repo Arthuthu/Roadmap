@@ -11,7 +11,6 @@ namespace RoadmapServices.Interfaces
         Task UpdateUser(UserModel user);
         Task DeleteUser(Guid id);
 
-        string Login(UserModel user);
-        Task<string> ConcatRegistrationMessages(IList<string> responseMessages);
+        Task<string> Login(UserModel user);
 	}
 }

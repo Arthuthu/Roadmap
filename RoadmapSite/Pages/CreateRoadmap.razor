@@ -2,41 +2,57 @@
 @inject IRoadmapService roadmapServiceService
 @inject AuthenticationStateProvider _authenticationStateProvider
 
-<EditForm Model="model" OnValidSubmit="ExecuteRoadmapCreation" class="">
-	<div class="form-div">
-		<div class="iniciar-sessao-paragraph">
-			<p>Criar roadmap</p>
-		</div>
+<AuthorizeView>
+	<Authorized>
+		<EditForm Model="model" OnValidSubmit="ExecuteRoadmapCreation" Context="Form">
+			<div class="form-div">
+				<div class="iniciar-sessao-paragraph">
+					<p>Criar roadmap</p>
+				</div>
 
-		<div class="username-form-label">
-			<label for="name" class="visually-hidden">Nome</label>
+				<div class="first-form-label">
+					<label for="name" class="visually-hidden">Nome</label>
+					<div>
+						<InputText id="name" class="form-input-text" @bind-Value="model.Name" placeholder="Nome do Roadmap" />
+					</div>
+				</div>
+
+				<div class="other-form-label">
+					<label for="description" class="visually-hidden">Descrição</label>
+					<div>
+						<InputText id="description" class="form-input-text" @bind-Value="model.Description" placeholder="Descrição" />
+					</div>
+				</div>
+
+				<div class="other-form-label">
+					<label for="category" class="visually-hidden">Categoria</label>
+					<div>
+						<InputText id="category" class="form-input-text" @bind-Value="model.Category" placeholder="Categoria" />
+					</div>
+				</div>
+
+				<div class="button-div">
+					<button type="submit" class="first-style-button">Criar Roadmap</button>
+				</div>
+			</div>
+		</EditForm>
+	</Authorized>
+
+	<NotAuthorized>
+		<div>
+			<div class="not-authorized-message-div">
+				<p class="not-authorized-message">Você não esta autorizado para ver esta pagina, entre em uma conta primeiro</p>
+			</div>
 			<div>
-				<InputText id="name" class="form-input-text" @bind-Value="model.Name" placeholder="Nome do Roadmap" />
+				<a class="form-button" href="login">
+					Entrar
+				</a>
 			</div>
 		</div>
-
-		<div class="password-form-label">
-			<label for="description" class="visually-hidden">Descrição</label>
-			<div>
-				<InputText id="description" class="form-input-text" @bind-Value="model.Description" placeholder="Descrição" />
-			</div>
-		</div>
-
-		<div class="password-form-label">
-			<label for="category" class="visually-hidden">Categoria</label>
-			<div>
-				<InputText id="category" class="form-input-text" @bind-Value="model.Category" placeholder="Categoria" />
-			</div>
-		</div>
-
-		<div class="form-button-div">
-			<button type="submit" class="form-button">Criar Roadmap</button>
-		</div>
-	</div>
-</EditForm>
-
-<div role="alert">
-	<p>@roadmapCreationMessage</p>
+	</NotAuthorized>
+</AuthorizeView>
+<div role="alert" class="alert-message-div">
+	<p class="alert-message">@roadmapCreationMessage</p>
 </div>
 
 @code {

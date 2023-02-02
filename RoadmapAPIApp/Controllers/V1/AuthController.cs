@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RoadmapAPIApp.Request;
 using RoadmapAPIApp.Response;
 using RoadmapRepository.Models;
 using RoadmapServices.Interfaces;
-using System;
+using RoadmapServices.Validators.Interfaces;
 
 namespace RoadmapAPIApp.Controllers.V1;
 
@@ -18,12 +16,15 @@ public class AuthController : ControllerBase
 {
 	private readonly IMapper _mapper;
 	private readonly IUserService _userService;
+	private readonly IMessageHandler _messageHandler;
 
 	public AuthController(IMapper mapper,
-		IUserService userService)
+		IUserService userService,
+		IMessageHandler messageHandler)
 	{
 		_userService = userService;
 		_mapper = mapper;
+		_messageHandler = messageHandler;
 	}
 
 	[Route("/login")]
@@ -31,7 +32,7 @@ public class AuthController : ControllerBase
 	public async Task<ActionResult> Login([FromForm] LoginRequest loginUser)
 	{
 		var requestUser = _mapper.Map<UserModel>(loginUser);
-		string token = _userService.Login(requestUser);
+		string token = await _userService.Login(requestUser);
 
 		var output = new
 		{
@@ -49,7 +50,7 @@ public class AuthController : ControllerBase
 	{
 		var requestUser = _mapper.Map<UserModel>(registerRequest);
 		var registrationMessages = await _userService.AddUser(requestUser);
-		var cleanResponses = await _userService.ConcatRegistrationMessages(registrationMessages);
+		var cleanResponses = await _messageHandler.ConcatRegistrationMessages(registrationMessages);
 
 		return Ok(cleanResponses);
 	}

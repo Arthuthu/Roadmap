@@ -11,6 +11,7 @@ using RoadmapRepository.SqlDataAccess;
 using RoadmapServices.Classes;
 using RoadmapServices.Interfaces;
 using RoadmapServices.Validators;
+using RoadmapServices.Validators.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,9 @@ builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IRoadmapClassService, RoadmapClassService>();
 builder.Services.AddSingleton<INodeService, NodeService>();
 builder.Services.AddSingleton<IValidator<UserModel>, UserValidator>();
+builder.Services.AddSingleton<IValidator<RoadmapClassModel>, RoadmapValidator>();
+builder.Services.AddSingleton<IMessageHandler, MessageHandler>();
+
 
 
 builder.Services.AddEndpointsApiExplorer();
