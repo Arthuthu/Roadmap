@@ -50,7 +50,14 @@ body {
         color: #DCDCDC;
     }
 
-/*Login Page*/
+/*Index page*/
+
+.create-roadmap-div{
+    text-align: center;
+    margin: 20px 0 0 0;
+}
+
+/*Login and Registration page*/
 
 .iniciar-sessao-paragraph {
     text-align: center;
@@ -106,8 +113,10 @@ body {
     border-radius: 15px;
     border-color: transparent;
     transition: .4s;
+    text-decoration: none;
 }
 
     .form-button:hover {
         background-color: #D78F00;
+        color: #FFF;
     }

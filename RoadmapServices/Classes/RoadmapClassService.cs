@@ -35,7 +35,9 @@ public class RoadmapClassService : IRoadmapClassService
 			throw new Exception("User required for creating roadmap not found");
 		}
 
-		await _roadmapData.AddRoadmap(roadmap);
+		var createdRoadmap = await CreateRoadmap(roadmap);
+
+		await _roadmapData.AddRoadmap(createdRoadmap);
 	}
 
 	public Task UpdateRoadmap(RoadmapClassModel roadmap)
@@ -60,5 +62,18 @@ public class RoadmapClassService : IRoadmapClassService
 			}
 		}
 		return false;
+	}
+
+	private async Task<RoadmapClassModel> CreateRoadmap(RoadmapClassModel roadmapModel)
+	{
+		RoadmapClassModel roadmap = new();
+
+		roadmap.Id = Guid.NewGuid();
+		roadmap.Name = roadmapModel.Name;
+		roadmap.Description = roadmapModel.Description;
+		roadmap.Category = roadmapModel.Category;
+		roadmap.UserId = roadmapModel.UserId;
+
+		return roadmap;
 	}
 }

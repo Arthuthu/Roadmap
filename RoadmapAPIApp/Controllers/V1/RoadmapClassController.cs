@@ -45,7 +45,7 @@ public class RoadmapClassController : ControllerBase
         var requestRoadmap = _mapper.Map<RoadmapClassModel>(roadmap);
         await _roadmapService.AddRoadmap(requestRoadmap);
 
-        return Ok(requestRoadmap);
+        return Ok(roadmap);
     }
 
     [HttpPut]
