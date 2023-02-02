@@ -1,6 +1,6 @@
 ﻿using RoadmapSite.Models;
 
-namespace RoadmapSite.Authentication.Interfaces
+namespace RoadmapSite.Services.Authentication.Interfaces
 {
     public interface IAuthenticationService
     {

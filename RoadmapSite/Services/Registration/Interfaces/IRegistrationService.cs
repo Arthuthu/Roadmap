@@ -1,6 +1,6 @@
 ﻿using RoadmapSite.Models;
 
-namespace RoadmapSite.Registration.Interfaces
+namespace RoadmapSite.Services.Registration.Interfaces
 {
     public interface IRegistrationService
     {

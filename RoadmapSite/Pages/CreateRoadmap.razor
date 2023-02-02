@@ -1,9 +1,69 @@
 ﻿@page "/createroadmap"
+@inject IRoadmapService roadmapServiceService
+@inject AuthenticationStateProvider _authenticationStateProvider
 
-<div>
-	<p>This is a roadmap page</p>
+<EditForm Model="model" OnValidSubmit="ExecuteRoadmapCreation" class="">
+	<div class="form-div">
+		<div class="iniciar-sessao-paragraph">
+			<p>Criar roadmap</p>
+		</div>
+
+		<div class="username-form-label">
+			<label for="name" class="visually-hidden">Nome</label>
+			<div>
+				<InputText id="name" class="form-input-text" @bind-Value="model.Name" placeholder="Nome do Roadmap" />
+			</div>
+		</div>
+
+		<div class="password-form-label">
+			<label for="description" class="visually-hidden">Descrição</label>
+			<div>
+				<InputText id="description" class="form-input-text" @bind-Value="model.Description" placeholder="Descrição" />
+			</div>
+		</div>
+
+		<div class="password-form-label">
+			<label for="category" class="visually-hidden">Categoria</label>
+			<div>
+				<InputText id="category" class="form-input-text" @bind-Value="model.Category" placeholder="Categoria" />
+			</div>
+		</div>
+
+		<div class="form-button-div">
+			<button type="submit" class="form-button">Criar Roadmap</button>
+		</div>
+	</div>
+</EditForm>
+
+<div role="alert">
+	<p>@roadmapCreationMessage</p>
 </div>
 
 @code {
+	private RoadmapClassModel model = new();
+	private string roadmapCreationMessage = "";
 
+	private async Task ExecuteRoadmapCreation()
+	{
+		var createdRoadmap = await TransferUserId(model);
+
+		var result = await roadmapServiceService.CreateRoadmap(createdRoadmap);
+
+		roadmapCreationMessage = result;
+	}
+
+	private async Task<string> GetUserId()
+	{
+		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authenticationState.User;
+		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		return userId;
+	}
+
+	private async Task<RoadmapClassModel> TransferUserId(RoadmapClassModel roadmap)
+	{
+		roadmap.UserId = new Guid(await GetUserId());
+
+		return roadmap;
+	}
 }

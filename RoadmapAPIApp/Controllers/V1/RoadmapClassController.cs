@@ -39,13 +39,14 @@ public class RoadmapClassController : ControllerBase
         return Ok(responseRoadmaps);
     }
 
+    [Route("/createroadmap")]
     [HttpPost]
-    public async Task<ActionResult<List<RoadmapClassResponse>>> CreateRoadmap(RoadmapClassRequest roadmap)
+    public async Task<ActionResult<List<RoadmapClassResponse>>> CreateRoadmap([FromForm] RoadmapClassRequest roadmap)
     {
         var requestRoadmap = _mapper.Map<RoadmapClassModel>(roadmap);
         await _roadmapService.AddRoadmap(requestRoadmap);
 
-        return Ok(roadmap);
+        return Ok("Roadmap criado com sucesso");
     }
 
     [HttpPut]

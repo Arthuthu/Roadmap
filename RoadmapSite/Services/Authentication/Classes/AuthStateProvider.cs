@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 
-namespace RoadmapSite.Authentication.Classes;
+namespace RoadmapSite.Services.Authentication.Classes;
 
 public class AuthStateProvider : AuthenticationStateProvider
 {

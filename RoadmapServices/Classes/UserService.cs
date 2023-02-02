@@ -215,11 +215,13 @@ public class UserService : IUserService
 
     private string CreateToken(UserModel user)
     {
-        List<Claim> claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.Username),
+		List<Claim> claims = new List<Claim>
+		{
+			new Claim(ClaimTypes.Name, user.Username),
+			new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
 			new Claim(ClaimTypes.Role, "User")
         };
+
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
             _configuration.GetSection("AppSettings:Token").Value));

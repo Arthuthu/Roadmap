@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace RoadmapSite.Authentication.Classes;
+namespace RoadmapSite.Services.Authentication.Classes;
 
 public class JwtParser
 {

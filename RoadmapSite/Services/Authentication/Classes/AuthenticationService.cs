@@ -1,12 +1,12 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using RoadmapSite.Authentication.Interfaces;
 using RoadmapSite.Models;
+using RoadmapSite.Services.Authentication.Interfaces;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace RoadmapSite.Authentication.Classes;
+namespace RoadmapSite.Services.Authentication.Classes;
 
 public class AuthenticationService : IAuthenticationService
 {
@@ -45,8 +45,8 @@ public class AuthenticationService : IAuthenticationService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-			_logger.LogInformation($"Ocorreu um eror durante o login {authContent}");
-			return null;
+            _logger.LogInformation($"Ocorreu um erro durante o login {authContent}");
+            return null;
         }
 
         var result = JsonSerializer.Deserialize<AuthenticatedUserModel>(
