@@ -56,7 +56,11 @@ body {
     text-align: center;
 }
 
-.not-authorized-message{
+.not-authorized-message-p-div {
+    padding: 0 0 40px 0;
+}
+
+.not-authorized-message {
     font-weight: bold;
     font-size: 24px;
 }
@@ -137,7 +141,24 @@ body {
     text-decoration: none;
 }
 
-    .form-button:hover {
+    .first-style-button:hover {
         background-color: #D78F00;
         color: #FFF;
     }
+
+.registre-se-aqui-div {
+    text-align: center;
+    background-color: #FFF;
+    width: 25%;
+    margin: 10px auto;
+    padding: 20px 0 40px 0;
+}
+
+.registre-se-aqui-div-p{
+    display: flex;
+    justify-content: center;
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+}
