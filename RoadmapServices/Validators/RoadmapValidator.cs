@@ -9,7 +9,7 @@ public class RoadmapValidator : AbstractValidator<RoadmapClassModel>
 	{
 		RuleFor(x => x.Name)
 			.NotEmpty().WithMessage("O campo nome precisa ser preenchido")
-			.MinimumLength(1).WithMessage("O campo nome precisa ter pelo menos 1 caracter")
+			.MinimumLength(3).WithMessage("O campo nome precisa ter pelo menos 1 caracter")
 			.MaximumLength(50).WithMessage("O campo nome pode ter no maximo 50 caracteres");
 
 		RuleFor(x => x.Description)
