@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject IRoadmapService roadmapService
 @inject IUserService userService
+@inject ILocalStorageService localStorage
 
 <div class="index-main-div">
 	<div class="roadmap-main-div">
@@ -48,16 +49,37 @@
 	</div>
 </div>
 
-
-
-
 @code {
-	private IList<RoadmapClassModel> roadmaps;
 
+	private IList<RoadmapClassModel> roadmaps;
+	private const string roadmapList = "roadmapList";
+	private const string roadmapCacheDate = "roadmapCacheDate";
 
 	protected override async Task OnInitializedAsync()
 	{
-		roadmaps = await GetAllRoadmaps();
+		roadmaps = await localStorage.GetItemAsync<IList<RoadmapClassModel>>(roadmapList);
+		DateTime? cacheDate = await localStorage.GetItemAsync<DateTime>(roadmapCacheDate);
+		double totalHours = 0;
+
+		if (cacheDate is not null)
+		{
+			totalHours = DateTime.UtcNow.Subtract((DateTime)cacheDate).TotalHours;
+		}
+
+		if (roadmaps is null || cacheDate is null || totalHours > 6)
+		{
+			try
+			{
+				roadmaps = await GetAllRoadmaps();
+				await localStorage.SetItemAsync(roadmapList, roadmaps);
+				await localStorage.SetItemAsync(roadmapCacheDate, DateTime.UtcNow);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Ocorreu um erro para carregar a pagina: {ex.Message}");
+			}
+
+		}
 	}
 
 	private async Task<IList<RoadmapClassModel>> GetAllRoadmaps()
