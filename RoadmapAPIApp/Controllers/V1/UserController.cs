@@ -24,6 +24,8 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
+    [Route("/getallusers")]
     public async Task<ActionResult<List<UserResponse>>> GetAllUsers()
     {
         var users = await _userService.GetAllUsers();

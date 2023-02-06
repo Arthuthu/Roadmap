@@ -1,9 +1,53 @@
 ﻿@page "/"
+@inject IRoadmapService roadmapService
+@inject IUserService userService
 
 <div class="create-roadmap-div">
 	<a class="first-style-button" href="createroadmap">
 		Create Roadmap
 	</a>
 </div>
+
+@if (roadmaps != null)
+{
+	foreach (var roadmap in roadmaps)
+	{
+		<div>
+			<p>@roadmap.Name</p>
+			<p>@roadmap.Description</p>
+			<p>@roadmap.Category</p>
+			<p>@roadmap.Author</p>
+		</div>
+	}
+}
+
+@code {
+	private IList<RoadmapClassModel> roadmaps;
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		roadmaps = await GetAllRoadmaps();
+	}
+
+	private async Task<IList<RoadmapClassModel>> GetAllRoadmaps()
+	{
+		var roadmaps = await roadmapService.GetAllRoadmaps();
+		var users = await userService.GetAllUsers();
+
+		foreach (var roadmap in roadmaps)
+		{
+			foreach (var user in users)
+			{
+				if (roadmap.UserId == user.Id)
+				{
+					roadmap.Author = user.Username;
+				}
+			}
+		}
+
+		return roadmaps;
+	}
+}
 
 

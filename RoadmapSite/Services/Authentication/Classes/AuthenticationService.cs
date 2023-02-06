@@ -4,7 +4,6 @@ using RoadmapSite.Models;
 using RoadmapSite.Services.Authentication.Interfaces;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace RoadmapSite.Services.Authentication.Classes;
 

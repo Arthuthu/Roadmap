@@ -27,6 +27,8 @@ public class RoadmapClassController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
+    [Route("/getallroadmaps")]
     public async Task<ActionResult<List<RoadmapClassResponse>>> GetAllRoadmaps()
     {
         var roadmaps = await _roadmapService.GetAllRoadmaps();
