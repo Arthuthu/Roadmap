@@ -18,7 +18,14 @@
 		<div class="other-form-label">
 			<div>
 				<label for="password" class="visually-hidden">Senha</label>
-				<InputText id="password" class="form-input-text" @bind-Value="model.Password" placeholder="Senha"/>
+				<InputText type="password" id="password" class="form-input-text" @bind-Value="model.Password" placeholder="Senha"/>
+			</div>
+		</div>
+
+		<div class="other-form-label">
+			<div>
+				<label for="confirmPassword" class="visually-hidden">Confirmar Senha</label>
+				<InputText type="password" id="confirmpassword" class="form-input-text" @bind-Value="model.ConfirmPassword" placeholder="Confirmar Senha" />
 			</div>
 		</div>
 
@@ -40,8 +47,18 @@
 
 	private async Task ExecuteRegister()
 	{
+		if (model.Password != model.ConfirmPassword)
+		{
+			registrationMessage = "As senhas não coincidem.";
+			return;
+		}
+
 		var result = await registrationService.RegisterUser(model);
 
 		registrationMessage = result;
+		StateHasChanged();
+
+		await Task.Delay(2000);
+		navManager.NavigateTo("/login");
 	}
 }
