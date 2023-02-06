@@ -65,14 +65,9 @@ body {
     font-size: 24px;
 }
 
-/*Index page*/
+/*Alerts*/
 
-.create-roadmap-div{
-    text-align: center;
-    margin: 20px 0 0 0;
-}
-
-.alert-message-div{
+.alert-message-div {
     margin: 20px 0 0 0;
     text-align: center;
 }
@@ -82,8 +77,82 @@ body {
     font-size: 24px;
 }
 
-/*Login and Registration page*/
+/*Index page*/
 
+.index-main-div{
+    display: flex;
+}
+
+.roadmap-main-div {
+    width: 100%;
+    margin: 10px 20px 0 10px;
+}
+
+.roadmap-box-div {
+    border-style: groove;
+    border-color: #FFF;
+    margin: 0 0 10px 0;
+}
+
+.roadmap-name-div {
+    background-image: linear-gradient(#02164F, #1A2D64);
+    padding: 5px 0 2px 0;
+}
+
+.roadmap-name {
+    font-weight: bold;
+    font-size: 1.4rem;
+    padding: 10px 0 0 10px;
+}
+
+.roadmap-description-div {
+    font-size: 18px;
+    padding: 10px 0 0 10px;
+}
+
+.roadmap-category-author-main-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.roadmap-category-div {
+    display: flex;
+}
+
+.roadmap-category-label {
+    padding: 0 10px 0 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.roadmap-category-value {
+    font-size: 18px;
+}
+
+.roadmap-author-div{
+    display: flex;
+    margin: 0 20px 0 0;
+}
+
+.roadmap-author-label {
+    padding: 0 10px 0 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.roadmap-author-value {
+    font-size: 18px;
+}
+
+.create-roadmap-button-div {
+    text-align: center;
+    width: 50%;
+    margin: 20px 0 0 0;
+}
+
+
+
+/*Login and Registration page*/
 .iniciar-sessao-paragraph {
     text-align: center;
     font-size: 2rem;

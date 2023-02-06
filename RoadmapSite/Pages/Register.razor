@@ -44,6 +44,7 @@
 	private RegistrationModel model = new();
 
 	private string registrationMessage = "";
+	private string messageWhenRegistrationIsSuccessfull = "Usuario registrado com sucesso";
 
 	private async Task ExecuteRegister()
 	{
@@ -58,7 +59,10 @@
 		registrationMessage = result;
 		StateHasChanged();
 
-		await Task.Delay(2000);
-		navManager.NavigateTo("/login");
+		if (registrationMessage == messageWhenRegistrationIsSuccessfull)
+		{
+			await Task.Delay(2000);
+			navManager.NavigateTo("/login");
+		}
 	}
 }

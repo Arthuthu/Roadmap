@@ -2,24 +2,54 @@
 @inject IRoadmapService roadmapService
 @inject IUserService userService
 
-<div class="create-roadmap-div">
-	<a class="first-style-button" href="createroadmap">
-		Create Roadmap
-	</a>
+<div class="index-main-div">
+	<div class="roadmap-main-div">
+		@if (roadmaps != null)
+		{
+			foreach (var roadmap in roadmaps)
+			{
+				<div class="roadmap-box-div">
+					<div class="roadmap-name-div">
+						<p class="roadmap-name">@roadmap.Name</p>
+					</div>
+
+					<div class="roadmap-description-div">
+						<p>@roadmap.Description</p>
+					</div>
+
+					<div class="roadmap-category-author-main-div">
+						<div class="roadmap-category-div">
+							<div class="roadmap-category-label">
+								<p>Categoria:</p>
+							</div>
+							<div class="roadmap-category-value">
+								@roadmap.Category
+							</div>
+						</div>
+
+						<div class="roadmap-author-div">
+							<div class="roadmap-author-label">
+								<p>Autor: </p>
+							</div>
+							<div class="roadmap-author-value">
+								@roadmap.Author
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		}
+	</div>
+
+	<div class="create-roadmap-button-div">
+		<a class="first-style-button" href="createroadmap">
+			Create Roadmap
+		</a>
+	</div>
 </div>
 
-@if (roadmaps != null)
-{
-	foreach (var roadmap in roadmaps)
-	{
-		<div>
-			<p>@roadmap.Name</p>
-			<p>@roadmap.Description</p>
-			<p>@roadmap.Category</p>
-			<p>@roadmap.Author</p>
-		</div>
-	}
-}
+
+
 
 @code {
 	private IList<RoadmapClassModel> roadmaps;
