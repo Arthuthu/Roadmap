@@ -84,6 +84,7 @@
     <Build Include="dbo\StoredProcedures\Node\spNode_GetById.sql" />
     <Build Include="dbo\StoredProcedures\Node\spNode_Update.sql" />
     <Build Include="dbo\StoredProcedures\User\spUser_GetByName.sql" />
+    <Build Include="dbo\Tables\RoadmapVotes.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />

@@ -13,7 +13,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RoadmapDatabase", "RoadmapD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoadmapSite", "RoadmapSite\RoadmapSite.csproj", "{5EC9DAD0-531F-4E28-B1EC-B558A5E006D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadmapAPITests", "RoadmapAPITests\RoadmapAPITests.csproj", "{F87B6A11-F4E1-47B4-A5F3-772BA69BACC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoadmapAPITests", "RoadmapAPITests\RoadmapAPITests.csproj", "{F87B6A11-F4E1-47B4-A5F3-772BA69BACC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
