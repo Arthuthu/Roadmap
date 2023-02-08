@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\RoadmapVotes\Classes\" />
     <Folder Include="Services\RoadmapVotes\Interfaces\" />
   </ItemGroup>
 

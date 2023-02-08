@@ -25,6 +25,7 @@ public class RoadmapVotesController : ControllerBase
 		_messageHandler = messaHandler;
 	}
 
+	[Route("getallroadmapvotes")]
 	[HttpGet]
 	public async Task<ActionResult<List<RoadmapVotesResponse>>> GetAllRoadmapVotes()
 	{
@@ -34,6 +35,7 @@ public class RoadmapVotesController : ControllerBase
 		return Ok(responseRoadmapVotes);
 	}
 
+	[Route("addroadmapvote")]
 	[HttpPost]
 	public async Task<ActionResult<string>> CreateRoadmapVote(RoadmapVotesRequest roadmapVote)
 	{
@@ -43,6 +45,7 @@ public class RoadmapVotesController : ControllerBase
 		return Ok(roadmapVotingResponseMessage);
 	}
 
+	[Route("/removeroadmapvote")]
 	[HttpDelete("{id}")]
 	public async Task<ActionResult<RoadmapClassResponse>> DeleteRoadmap(Guid id)
 	{

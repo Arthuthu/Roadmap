@@ -25,6 +25,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 
 	public async Task<string> AddRoadmapVote(RoadmapVotesModel roadmapVote)
 	{
+		roadmapVote.Id = Guid.NewGuid();
 
 		try
 		{
