@@ -1,7 +1,11 @@
 ﻿@page "/"
 @inject IRoadmapService roadmapService
+@inject IRoadmapVotesService roadmapVotesService
 @inject IUserService userService
 @inject ILocalStorageService localStorage
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager navManager
+
 
 <div class="index-main-div">
 	<div class="roadmap-main-div">
@@ -9,31 +13,38 @@
 		{
 			foreach (var roadmap in roadmaps)
 			{
-				<div class="roadmap-box-div">
-					<div class="roadmap-name-div">
-						<p class="roadmap-name">@roadmap.Name</p>
+				<div class="roadmap-second-div">
+					<div class="vote-button-div">
+						<button class="vote-button" @onclick="() => AddUserVote(roadmap.Id)">
+							Vote
+						</button>
 					</div>
-
-					<div class="roadmap-description-div">
-						<p>@roadmap.Description</p>
-					</div>
-
-					<div class="roadmap-category-author-main-div">
-						<div class="roadmap-category-div">
-							<div class="roadmap-category-label">
-								<p>Categoria:</p>
-							</div>
-							<div class="roadmap-category-value">
-								@roadmap.Category
-							</div>
+					<div class="roadmap-box-div">
+						<div class="roadmap-name-div">
+							<p class="roadmap-name">@roadmap.Name</p>
 						</div>
 
-						<div class="roadmap-author-div">
-							<div class="roadmap-author-label">
-								<p>Autor: </p>
+						<div class="roadmap-description-div">
+							<p>@roadmap.Description</p>
+						</div>
+
+						<div class="roadmap-category-author-main-div">
+							<div class="roadmap-category-div">
+								<div class="roadmap-category-label">
+									<p>Categoria:</p>
+								</div>
+								<div class="roadmap-category-value">
+									@roadmap.Category
+								</div>
 							</div>
-							<div class="roadmap-author-value">
-								@roadmap.Author
+
+							<div class="roadmap-author-div">
+								<div class="roadmap-author-label">
+									<p>Autor: </p>
+								</div>
+								<div class="roadmap-author-value">
+									@roadmap.Author
+								</div>
 							</div>
 						</div>
 					</div>
@@ -59,14 +70,14 @@
 	{
 		roadmaps = await localStorage.GetItemAsync<IList<RoadmapClassModel>>(roadmapList);
 		DateTime? cacheDate = await localStorage.GetItemAsync<DateTime>(roadmapCacheDate);
-		double totalHours = 0;
+		double totalSeconds = 0;
 
 		if (cacheDate is not null)
 		{
-			totalHours = DateTime.UtcNow.Subtract((DateTime)cacheDate).TotalHours;
+			totalSeconds = DateTime.UtcNow.Subtract((DateTime)cacheDate).Days;
 		}
 
-		if (roadmaps is null || cacheDate is null || totalHours > 6)
+		if (roadmaps is null || cacheDate is null || totalSeconds > 1)
 		{
 			try
 			{
@@ -99,6 +110,71 @@
 		}
 
 		return roadmaps;
+	}
+
+	private async Task<string> GetUserId()
+	{
+		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authenticationState.User;
+		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		return userId;
+	}
+
+	private async Task AddUserVote(Guid roadmapId)
+	{
+		RoadmapVotesModel roadmapVote = new();
+		roadmapVote.UserId = new Guid(await GetUserId());
+		roadmapVote.RoadmapId = new Guid(roadmapId.ToString());
+
+		if (roadmapVote.UserId is null)
+		{
+			throw new Exception("Você precisa entrar em uma conta para votar");
+			navManager.NavigateTo("/login");
+		}
+
+		var didUserVotedOnRoadmap = await CheckIfUserVotedOnRoadmap(roadmapId);
+
+		if (didUserVotedOnRoadmap is true)
+		{
+			var votedRoadmapId = await GetRoadmapVotedIdByUserAndRoadmapId(roadmapVote.RoadmapId);
+			await roadmapVotesService.RemoveRoadmapVote(votedRoadmapId);
+		}
+		else
+		{
+			await roadmapVotesService.AddRoadmapVote(roadmapVote);
+		}
+	}
+
+	private async Task<IList<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid id)
+	{
+		var roadmaps = await roadmapVotesService.GetAllRoadmapsUserVoted(id);
+
+		return roadmaps;
+	}
+
+	private async Task<bool> CheckIfUserVotedOnRoadmap(Guid roadmapId)
+	{
+		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(await GetUserId()));
+
+		foreach (var roadmap in roadmaps)
+		{
+			if (roadmap.RoadmapId == roadmapId)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private async Task<Guid> GetRoadmapVotedIdByUserAndRoadmapId(Guid roadmapId)
+	{
+		var userId = new Guid(await GetUserId());
+
+		var roadmapVote = await roadmapVotesService.GetRoadmapVotedIdByUserAndRoadmapId(userId, roadmapId);
+		var voteId = roadmapVote.Id;
+
+		return voteId;
 	}
 }
 

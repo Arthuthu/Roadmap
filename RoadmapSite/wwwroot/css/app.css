@@ -84,14 +84,19 @@ body {
 }
 
 .roadmap-main-div {
-    width: 100%;
     margin: 10px 20px 0 10px;
+    width: 100%;
 }
+
+.roadmap-second-div{
+    display: flex;
+} 
 
 .roadmap-box-div {
     border-style: groove;
     border-color: #FFF;
     margin: 0 0 10px 0;
+    width: 100%;
 }
 
 .roadmap-name-div {
@@ -150,7 +155,25 @@ body {
     margin: 20px 0 0 0;
 }
 
+.vote-button-div{
 
+}
+
+.vote-button{
+    height: 94.5%;
+    background: transparent;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    border-color: #FFF;
+    border-radius: 10px 0 0 10px;
+    padding: 0 30px;
+}
+
+    .vote-button:hover {
+        transition: 500ms;
+        background: #FC9A55;
+    }
 
 /*Login and Registration page*/
 .iniciar-sessao-paragraph {

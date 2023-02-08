@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using RoadmapSite.Models;
 using RoadmapSite.Services.Roadmap.Classes;
+using RoadmapSite.Services.RoadmapVotes.Interfaces;
 
 namespace RoadmapSite.Services.RoadmapVotes.Classes;
 
@@ -27,7 +28,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
-			new KeyValuePair<string, string>("userId", roadmapVote.UserId.ToString()),
+			new KeyValuePair<string, string>("userId", roadmapVote.UserId.ToString()!),
 			new KeyValuePair<string, string>("roadmapId", roadmapVote.RoadmapId.ToString())
 		});
 
@@ -61,9 +62,49 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return roadmapVotesModel;
 	}
 
-	public async Task<string> RemoveRoadmapVote()
+	public async Task<IList<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid userId)
 	{
-		string removeRoadmapVoteEndpoint = _config["apiLocation"] + _config["removeRoadmapVote"];
+		string getAllRoadmapsUserVotedEndpoint = _config["apiLocation"] + _config["getAllRoadmapsUserVoted"] + $"/{userId}";
+		var authResult = await _client.GetAsync(getAllRoadmapsUserVotedEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro para pegar a lista de roadmaps votados: {authContent}");
+			return null;
+		}
+
+		var roadmapVotesModel = JsonConvert.DeserializeObject<IList<RoadmapVotesModel>>(authContent);
+
+		return roadmapVotesModel;
+	}
+
+	public async Task<RoadmapVotesModel> GetRoadmapVotedIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
+	{
+		var data = new FormUrlEncodedContent(new[]
+		{
+			new KeyValuePair<string, string>("userId", userId.ToString()),
+			new KeyValuePair<string, string>("roadmapId", roadmapId.ToString()),
+		});
+
+		string getRoadmapVotedIdByUserAndRoadmapId = _config["apiLocation"] + _config["getRoadmapVotedIdByUserAndRoadmapId"] + $"/{userId}" + $"/{roadmapId}";
+		var authResult = await _client.GetAsync(getRoadmapVotedIdByUserAndRoadmapId);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro para pegar o Id do roadmap em especifico: {authContent}");
+			return null;
+		}
+
+		var roadmapVotesModel = JsonConvert.DeserializeObject<RoadmapVotesModel>(authContent);
+
+		return roadmapVotesModel;
+	}
+
+	public async Task<string> RemoveRoadmapVote(Guid roadmapVoteId)
+	{
+		string removeRoadmapVoteEndpoint = _config["apiLocation"] + _config["removeRoadmapVote"] + $"/{roadmapVoteId}";
 		var authResult = await _client.DeleteAsync(removeRoadmapVoteEndpoint);
 		var authContent = await authResult.Content.ReadAsStringAsync();
 

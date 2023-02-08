@@ -86,9 +86,11 @@
     <Build Include="dbo\StoredProcedures\Node\spNode_Update.sql" />
     <Build Include="dbo\StoredProcedures\User\spUser_GetByName.sql" />
     <Build Include="dbo\Tables\RoadmapVotes.sql" />
-    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmap_Add.sql" />
-    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmap_Delete.sql" />
-    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmap_GetAll.sql" />
+    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_Add.sql" />
+    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_Delete.sql" />
+    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_GetAll.sql" />
+    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_GetAllRoadmapsUserVoted.sql" />
+    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_GetRoadmapVoteIdByUserAndRoadmapId.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />

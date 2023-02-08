@@ -9,6 +9,8 @@ using RoadmapSite.Services.Registration.Classes;
 using RoadmapSite.Services.Registration.Interfaces;
 using RoadmapSite.Services.Roadmap.Classes;
 using RoadmapSite.Services.Roadmap.Interfaces;
+using RoadmapSite.Services.RoadmapVotes.Classes;
+using RoadmapSite.Services.RoadmapVotes.Interfaces;
 using RoadmapSite.Services.User.Classes;
 using RoadmapSite.Services.User.Interfaces;
 
@@ -20,6 +22,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<IRoadmapService, RoadmapService>();
+builder.Services.AddScoped<IRoadmapVotesService, RoadmapVotesService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 

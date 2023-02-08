@@ -25,7 +25,7 @@ public class RoadmapVotesController : ControllerBase
 		_messageHandler = messaHandler;
 	}
 
-	[Route("getallroadmapvotes")]
+	[Route("/getallroadmapvotes")]
 	[HttpGet]
 	public async Task<ActionResult<List<RoadmapVotesResponse>>> GetAllRoadmapVotes()
 	{
@@ -35,9 +35,29 @@ public class RoadmapVotesController : ControllerBase
 		return Ok(responseRoadmapVotes);
 	}
 
-	[Route("addroadmapvote")]
+	[Route("/getallroadmapsuservoted/{userId}")]
+	[HttpGet]
+	public async Task<ActionResult<List<RoadmapVotesResponse>>> GetAllRoadmapsUserVoted(Guid userId)
+	{
+		var roadmapVotes = await _roadmapVotesService.GetAllRoadmapsUserVoted(userId);
+		var responseRoadmapVotes = roadmapVotes.Select(roadmapVotes => _mapper.Map<RoadmapVotesResponse>(roadmapVotes));
+
+		return Ok(responseRoadmapVotes);
+	}
+
+	[Route("/getroadmapvotedidbyuserandroadmapid/{userId}/{roadmapId}")]
+	[HttpGet]
+	public async Task<ActionResult<RoadmapVotesResponse>> GetRoadmapVotedIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
+	{
+		var votedRoadmap = await _roadmapVotesService.GetRoadmapVotedIdByUserAndRoadmapId(userId, roadmapId);
+		var responseRoadmapVotes = _mapper.Map<RoadmapVotesResponse>(votedRoadmap);
+
+		return Ok(responseRoadmapVotes);
+	}
+
+	[Route("/addroadmapvote")]
 	[HttpPost]
-	public async Task<ActionResult<string>> CreateRoadmapVote(RoadmapVotesRequest roadmapVote)
+	public async Task<ActionResult<string>> CreateRoadmapVote([FromForm] RoadmapVotesRequest roadmapVote)
 	{
 		var requestRoadmapVote = _mapper.Map<RoadmapVotesModel>(roadmapVote);
 		var roadmapVotingResponseMessage = await _roadmapVotesService.AddRoadmapVote(requestRoadmapVote);
@@ -45,11 +65,11 @@ public class RoadmapVotesController : ControllerBase
 		return Ok(roadmapVotingResponseMessage);
 	}
 
-	[Route("/removeroadmapvote")]
-	[HttpDelete("{id}")]
-	public async Task<ActionResult<RoadmapClassResponse>> DeleteRoadmap(Guid id)
+	[Route("/removeroadmapvote/{roadmapVoteId}")]
+	[HttpDelete]
+	public async Task<ActionResult<RoadmapClassResponse>> DeleteRoadmap(Guid roadmapVoteId)
 	{
-		await _roadmapVotesService.DeleteRoadmapVote(id);
+		await _roadmapVotesService.DeleteRoadmapVote(roadmapVoteId);
 
 		return Ok("Vote has been removed");
 	}
