@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using RoadmapAPIApp.Request;
 using RoadmapAPIApp.Response;
 using RoadmapRepository.Models;
 
@@ -14,6 +13,10 @@ public class ResponseProfile : Profile
 			.ReverseMap();
 
 		CreateMap<RoadmapClassResponse, RoadmapClassModel>()
+			.IgnoreAllPropertiesWithAnInaccessibleSetter()
+			.ReverseMap();
+
+		CreateMap<RoadmapVotesResponse, RoadmapVotesModel>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 

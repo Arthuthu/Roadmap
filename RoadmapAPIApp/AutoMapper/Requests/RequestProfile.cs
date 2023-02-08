@@ -24,6 +24,10 @@ public class RequestProfile : Profile
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 
+		CreateMap<RoadmapVotesModel, RoadmapVotesRequest>()
+			.IgnoreAllPropertiesWithAnInaccessibleSetter()
+			.ReverseMap();
+
 		CreateMap<NodeModel, NodeRequest>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();

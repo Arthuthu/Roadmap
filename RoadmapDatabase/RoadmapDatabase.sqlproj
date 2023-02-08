@@ -63,6 +63,7 @@
     <Folder Include="dbo\StoredProcedures\User" />
     <Folder Include="dbo\StoredProcedures\Roadmap" />
     <Folder Include="dbo\StoredProcedures\Node" />
+    <Folder Include="dbo\StoredProcedures\RoadmapVotes" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\RoadmapDatabase.publish.xml" />
@@ -85,6 +86,9 @@
     <Build Include="dbo\StoredProcedures\Node\spNode_Update.sql" />
     <Build Include="dbo\StoredProcedures\User\spUser_GetByName.sql" />
     <Build Include="dbo\Tables\RoadmapVotes.sql" />
+    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmap_Add.sql" />
+    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmap_Delete.sql" />
+    <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmap_GetAll.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />
