@@ -69,7 +69,7 @@
 	private IList<RoadmapClassModel> roadmaps;
 	private const string roadmapList = "roadmapList";
 	private const string roadmapCacheDate = "roadmapCacheDate";
-	private string loggedInUserId = "";
+	private string? loggedInUserId = "";
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -129,6 +129,10 @@
 		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authenticationState.User;
 		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (userId is null)
+		{
+			throw new Exception("Usuario nao esta logado");
+		}
 		loggedInUserId = userId;
 		return userId;
 	}
@@ -136,7 +140,7 @@
 	private async Task AddUserVote(Guid roadmapId)
 	{
 		RoadmapVotesModel roadmapVote = new();
-		roadmapVote.UserId = new Guid(await GetUserId());
+		roadmapVote.UserId = new Guid(loggedInUserId);
 		roadmapVote.RoadmapId = new Guid(roadmapId.ToString());
 
 		if (roadmapVote.UserId is null)
@@ -169,7 +173,7 @@
 
 	private async Task<bool> CheckIfUserVotedOnRoadmap(Guid roadmapId)
 	{
-		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(await GetUserId()));
+		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(loggedInUserId));
 
 		foreach (var roadmap in roadmaps)
 		{
@@ -184,7 +188,7 @@
 
 	private async Task<Guid> GetRoadmapVotedIdByUserAndRoadmapId(Guid roadmapId)
 	{
-		var userId = new Guid(await GetUserId());
+		var userId = new Guid(loggedInUserId);
 
 		var roadmapVote = await roadmapVotesService.GetRoadmapVotedIdByUserAndRoadmapId(userId, roadmapId);
 		var voteId = roadmapVote.Id;
