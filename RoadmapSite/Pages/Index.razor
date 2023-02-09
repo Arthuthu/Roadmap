@@ -9,45 +9,53 @@
 
 <div class="index-main-div">
 	<div class="roadmap-main-div">
-		<Virtualize Items="roadmaps" Context="roadmap" OverscanCount="10">
-			<div class="roadmap-second-div">
-				<div>
-					<button class="vote-button"
-						@onclick="async () => await AddUserVote(roadmap.Id)">
-						Vote
-					</button>
-				</div>
-				<div class="roadmap-box-div">
-					<div class="roadmap-name-div">
-						<p class="roadmap-name">@roadmap.Name</p>
+		@if (roadmaps is null)
+		{
+			<p>No roadmaps found.</p>
+		}
+		else
+		{
+			@foreach (var roadmap in roadmaps)
+			{
+				<div class="roadmap-second-div">
+					<div class="vote-button-container">
+						<button class="vote-button"
+							@onclick="async () => await AddUserVote(roadmap.Id)">
+							Vote
+						</button>
 					</div>
-
-					<div class="roadmap-description-div">
-						<p>@roadmap.Description</p>
-					</div>
-
-					<div class="roadmap-category-author-main-div">
-						<div class="roadmap-category-div">
-							<div class="roadmap-category-label">
-								<p>Categoria:</p>
-							</div>
-							<div class="roadmap-category-value">
-								@roadmap.Category
-							</div>
+					<div class="roadmap-box-div">
+						<div class="roadmap-name-div">
+							<p class="roadmap-name">@roadmap.Name</p>
 						</div>
 
-						<div class="roadmap-author-div">
-							<div class="roadmap-author-label">
-								<p>Autor: </p>
+						<div class="roadmap-description-div">
+							<p>@roadmap.Description</p>
+						</div>
+
+						<div class="roadmap-category-author-main-div">
+							<div class="roadmap-category-div">
+								<div class="roadmap-category-label">
+									<p>Categoria:</p>
+								</div>
+								<div class="roadmap-category-value">
+									@roadmap.Category
+								</div>
 							</div>
-							<div class="roadmap-author-value">
-								@roadmap.Author
+
+							<div class="roadmap-author-div">
+								<div class="roadmap-author-label">
+									<p>Autor: </p>
+								</div>
+								<div class="roadmap-author-value">
+									@roadmap.Author
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</Virtualize>
+			}
+		}
 	</div>
 
 	<div class="create-roadmap-button-div">
