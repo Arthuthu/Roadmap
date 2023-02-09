@@ -7,6 +7,8 @@ public class RoadmapClassModel
 	public string Description { get; set; }
 	public string Category { get; set; }
 	public string Author { get; set; }
+	public string RoadmapClass { get; set; }
+
 
 	public Guid UserId { get; set; }
 }

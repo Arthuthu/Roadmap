@@ -159,7 +159,7 @@ body {
 
 }
 
-.vote-button{
+.vote-button {
     height: 94.5%;
     color: white;
     background-color: transparent;
@@ -170,8 +170,15 @@ body {
     padding: 0 30px;
 }
 
-.vote-button.voted {
+.vote-button-voted {
+    height: 94.5%;
+    color: white;
     background-color: #EE690B;
+    font-weight: bold;
+    font-size: 20px;
+    border-color: #FFF;
+    border-radius: 10px 0 0 10px;
+    padding: 0 30px;
 }
 
     .vote-button:hover {

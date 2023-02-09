@@ -45,6 +45,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 	{
 		return _roadmapVotesRepository.GetAllRoadmapsUserVoted(userId);
 	}
+
 	public Task<RoadmapVotesModel> GetRoadmapVotedIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
 	{
 		return _roadmapVotesRepository.GetRoadmapVotedIdByUserAndRoadmapId(userId, roadmapId);

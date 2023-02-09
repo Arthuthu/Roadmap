@@ -79,6 +79,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return roadmapVotesModel;
 	}
 
+
 	public async Task<RoadmapVotesModel> GetRoadmapVotedIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
 	{
 		var data = new FormUrlEncodedContent(new[]

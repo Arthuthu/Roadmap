@@ -8,6 +8,6 @@ namespace RoadmapSite.Services.RoadmapVotes.Interfaces
         Task<IList<RoadmapVotesModel>> GetAllRoadmaps();
         Task<string> RemoveRoadmapVote(Guid roadmapVoteId);
         Task<IList<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid id);
-        Task<RoadmapVotesModel> GetRoadmapVotedIdByUserAndRoadmapId(Guid userId, Guid roadmapId);
+		Task<RoadmapVotesModel> GetRoadmapVotedIdByUserAndRoadmapId(Guid userId, Guid roadmapId);
 	}
 }

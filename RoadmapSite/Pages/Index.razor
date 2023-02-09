@@ -18,8 +18,8 @@
 			@foreach (var roadmap in roadmaps)
 			{
 				<div class="roadmap-second-div">
-					<div class="vote-button-container">
-						<button class="vote-button"
+					<div onclick ="toggleVoteButtonClass(this.querySelector('button'))">
+						<button class="@roadmap.RoadmapClass" id="roadmap-vote-button"
 							@onclick="async () => await AddUserVote(roadmap.Id)">
 							Vote
 						</button>
@@ -69,11 +69,12 @@
 	private IList<RoadmapClassModel> roadmaps;
 	private const string roadmapList = "roadmapList";
 	private const string roadmapCacheDate = "roadmapCacheDate";
-
-	public string buttonClass = "";
+	private string loggedInUserId = "";
 
 	protected override async Task OnInitializedAsync()
 	{
+		await GetUserId();
+
 		roadmaps = await localStorage.GetItemAsync<IList<RoadmapClassModel>>(roadmapList);
 		DateTime? cacheDate = await localStorage.GetItemAsync<DateTime>(roadmapCacheDate);
 		double totalDays = 0;
@@ -95,6 +96,12 @@
 			{
 				Console.WriteLine($"Ocorreu um erro para carregar a pagina: {ex.Message}");
 			}
+		}
+
+		foreach (var roadmap in roadmaps)
+		{
+			string roadmapClass = await GetButtonColor(roadmap.Id);
+			roadmap.RoadmapClass = roadmapClass;
 		}
 	}
 
@@ -122,6 +129,7 @@
 		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authenticationState.User;
 		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		loggedInUserId = userId;
 		return userId;
 	}
 
@@ -157,6 +165,8 @@
 		return roadmaps;
 	}
 
+
+
 	private async Task<bool> CheckIfUserVotedOnRoadmap(Guid roadmapId)
 	{
 		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(await GetUserId()));
@@ -180,6 +190,18 @@
 		var voteId = roadmapVote.Id;
 
 		return voteId;
+	}
+
+	private async Task<string> GetButtonColor(Guid roadmapId)
+	{
+		var result = await CheckIfUserVotedOnRoadmap(roadmapId);
+
+		if (result is true)
+		{
+			return "vote-button-voted";
+		}
+
+		return "vote-button";
 	}
 
 }

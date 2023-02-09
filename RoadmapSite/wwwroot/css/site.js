@@ -1,20 +1,9 @@
-﻿function addClickListener() {
-    var voteButton = document.querySelector(".vote-button");
-    if (!voteButton) {
-        return setTimeout(addClickListener, 100);
+﻿function toggleVoteButtonClass(button) {
+    if (button.classList.contains("vote-button-voted")) {
+        button.classList.remove("vote-button-voted");
+        button.classList.add("vote-button");
+    } else {
+        button.classList.remove("vote-button");
+        button.classList.add("vote-button-voted");
     }
-
-    var voted = localStorage.getItem("voted") === "true";
-
-    if (voted) {
-        voteButton.classList.add("voted");
-    }
-
-    voteButton.addEventListener("click", function () {
-        voted = !voted;
-        localStorage.setItem("voted", voted);
-        voteButton.classList.toggle("voted");
-    });
 }
-
-document.addEventListener("DOMContentLoaded", addClickListener);
