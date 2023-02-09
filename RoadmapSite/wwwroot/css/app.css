@@ -161,13 +161,17 @@ body {
 
 .vote-button{
     height: 94.5%;
-    background: transparent;
     color: white;
+    background-color: transparent;
     font-weight: bold;
     font-size: 20px;
     border-color: #FFF;
     border-radius: 10px 0 0 10px;
     padding: 0 30px;
+}
+
+.vote-button.voted {
+    background-color: #EE690B;
 }
 
     .vote-button:hover {

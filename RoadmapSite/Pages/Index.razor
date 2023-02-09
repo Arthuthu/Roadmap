@@ -9,48 +9,45 @@
 
 <div class="index-main-div">
 	<div class="roadmap-main-div">
-		@if (roadmaps != null)
-		{
-			foreach (var roadmap in roadmaps)
-			{
-				<div class="roadmap-second-div">
-					<div class="vote-button-div">
-						<button class="vote-button" @onclick="() => AddUserVote(roadmap.Id)">
-							Vote
-						</button>
+		<Virtualize Items="roadmaps" Context="roadmap" OverscanCount="10">
+			<div class="roadmap-second-div">
+				<div>
+					<button class="vote-button"
+						@onclick="async () => await AddUserVote(roadmap.Id)">
+						Vote
+					</button>
+				</div>
+				<div class="roadmap-box-div">
+					<div class="roadmap-name-div">
+						<p class="roadmap-name">@roadmap.Name</p>
 					</div>
-					<div class="roadmap-box-div">
-						<div class="roadmap-name-div">
-							<p class="roadmap-name">@roadmap.Name</p>
-						</div>
 
-						<div class="roadmap-description-div">
-							<p>@roadmap.Description</p>
-						</div>
+					<div class="roadmap-description-div">
+						<p>@roadmap.Description</p>
+					</div>
 
-						<div class="roadmap-category-author-main-div">
-							<div class="roadmap-category-div">
-								<div class="roadmap-category-label">
-									<p>Categoria:</p>
-								</div>
-								<div class="roadmap-category-value">
-									@roadmap.Category
-								</div>
+					<div class="roadmap-category-author-main-div">
+						<div class="roadmap-category-div">
+							<div class="roadmap-category-label">
+								<p>Categoria:</p>
 							</div>
+							<div class="roadmap-category-value">
+								@roadmap.Category
+							</div>
+						</div>
 
-							<div class="roadmap-author-div">
-								<div class="roadmap-author-label">
-									<p>Autor: </p>
-								</div>
-								<div class="roadmap-author-value">
-									@roadmap.Author
-								</div>
+						<div class="roadmap-author-div">
+							<div class="roadmap-author-label">
+								<p>Autor: </p>
+							</div>
+							<div class="roadmap-author-value">
+								@roadmap.Author
 							</div>
 						</div>
 					</div>
 				</div>
-			}
-		}
+			</div>
+		</Virtualize>
 	</div>
 
 	<div class="create-roadmap-button-div">
@@ -59,25 +56,26 @@
 		</a>
 	</div>
 </div>
-
 @code {
 
 	private IList<RoadmapClassModel> roadmaps;
 	private const string roadmapList = "roadmapList";
 	private const string roadmapCacheDate = "roadmapCacheDate";
 
+	public string buttonClass = "";
+
 	protected override async Task OnInitializedAsync()
 	{
 		roadmaps = await localStorage.GetItemAsync<IList<RoadmapClassModel>>(roadmapList);
 		DateTime? cacheDate = await localStorage.GetItemAsync<DateTime>(roadmapCacheDate);
-		double totalSeconds = 0;
+		double totalDays = 0;
 
 		if (cacheDate is not null)
 		{
-			totalSeconds = DateTime.UtcNow.Subtract((DateTime)cacheDate).Days;
+			totalDays = DateTime.UtcNow.Subtract((DateTime)cacheDate).Days;
 		}
 
-		if (roadmaps is null || cacheDate is null || totalSeconds > 1)
+		if (roadmaps is null || cacheDate is null || totalDays > 1)
 		{
 			try
 			{
@@ -89,7 +87,6 @@
 			{
 				Console.WriteLine($"Ocorreu um erro para carregar a pagina: {ex.Message}");
 			}
-
 		}
 	}
 
@@ -176,6 +173,5 @@
 
 		return voteId;
 	}
+
 }
-
-
