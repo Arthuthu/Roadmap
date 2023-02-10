@@ -48,4 +48,13 @@ public class RoadmapVotesRepository : IRoadmapVotesRepository
 		return results.FirstOrDefault();
 	}
 
+	public async Task<IList<RoadmapVotesModel>> GetRoadmapVotesByRoadmapId(Guid roadmapId)
+	{
+		var results = await _db.LoadData<RoadmapVotesModel, dynamic>(
+		"dbo.spRoadmapVotes_GetRoadmapVotesByRoadmapId",
+		new { RoadmapId = roadmapId });
+
+		return results.ToList();
+	}
+
 }

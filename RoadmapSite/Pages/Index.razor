@@ -20,7 +20,9 @@
 				<div class="roadmap-second-div">
 					<div onclick ="toggleVoteButtonClass(this.querySelector('button'))">
 						<button class="@roadmap.RoadmapClass" id="roadmap-vote-button"
-							@onclick="async () => await AddUserVote(roadmap.Id)">
+						@onclick="async () => await AddUserVote(roadmap.Id)">
+							@roadmap.RoadmapVotes
+							<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
 							Vote
 						</button>
 					</div>
@@ -81,7 +83,7 @@
 
 		if (cacheDate is not null)
 		{
-			totalDays = DateTime.UtcNow.Subtract((DateTime)cacheDate).Days;
+			totalDays = DateTime.UtcNow.Subtract((DateTime)cacheDate).Seconds;
 		}
 
 		if (roadmaps is null || cacheDate is null || totalDays > 1)
@@ -102,6 +104,9 @@
 		{
 			string roadmapClass = await GetButtonColor(roadmap.Id);
 			roadmap.RoadmapClass = roadmapClass;
+
+			int roadmapVotes = await GetRoadmapVotes(roadmap.Id);
+			roadmap.RoadmapVotes = roadmapVotes;
 		}
 	}
 
@@ -206,6 +211,13 @@
 		}
 
 		return "vote-button";
+	}
+
+	private async Task<int> GetRoadmapVotes(Guid roadmapId)
+	{
+		var roadmapVotes = await roadmapVotesService.GetRoadmapVotesByRoadmapId(roadmapId);
+
+		return roadmapVotes.Count();
 	}
 
 }

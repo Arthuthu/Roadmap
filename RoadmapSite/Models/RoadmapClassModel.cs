@@ -8,6 +8,7 @@ public class RoadmapClassModel
 	public string Category { get; set; }
 	public string Author { get; set; }
 	public string RoadmapClass { get; set; }
+	public int RoadmapVotes { get; set; }
 
 
 	public Guid UserId { get; set; }

@@ -82,12 +82,6 @@ public class RoadmapVotesService : IRoadmapVotesService
 
 	public async Task<RoadmapVotesModel> GetRoadmapVotedIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
 	{
-		var data = new FormUrlEncodedContent(new[]
-		{
-			new KeyValuePair<string, string>("userId", userId.ToString()),
-			new KeyValuePair<string, string>("roadmapId", roadmapId.ToString()),
-		});
-
 		string getRoadmapVotedIdByUserAndRoadmapId = _config["apiLocation"] + _config["getRoadmapVotedIdByUserAndRoadmapId"] + $"/{userId}" + $"/{roadmapId}";
 		var authResult = await _client.GetAsync(getRoadmapVotedIdByUserAndRoadmapId);
 		var authContent = await authResult.Content.ReadAsStringAsync();
@@ -99,6 +93,23 @@ public class RoadmapVotesService : IRoadmapVotesService
 		}
 
 		var roadmapVotesModel = JsonConvert.DeserializeObject<RoadmapVotesModel>(authContent);
+
+		return roadmapVotesModel;
+	}
+
+	public async Task<IList<RoadmapVotesModel>> GetRoadmapVotesByRoadmapId(Guid roadmapId)
+	{
+		string getRoadmapVotesByRoadmapId = _config["apiLocation"] + _config["getRoadmapVotesByRoadmapId"] + $"/{roadmapId}";
+		var authResult = await _client.GetAsync(getRoadmapVotesByRoadmapId);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro ao carregar os votos do roadmap: {authContent}");
+			return null;
+		}
+
+		var roadmapVotesModel = JsonConvert.DeserializeObject<IList<RoadmapVotesModel>>(authContent);
 
 		return roadmapVotesModel;
 	}

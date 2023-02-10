@@ -55,4 +55,9 @@ public class RoadmapVotesService : IRoadmapVotesService
 	{
 		return _roadmapVotesRepository.DeleteRoadmapVote(id);
 	}
+
+	public Task<IList<RoadmapVotesModel>> GetRoadmapVotesByRoadmapId(Guid roadmapId)
+	{
+		return _roadmapVotesRepository.GetRoadmapVotesByRoadmapId(roadmapId);
+	}
 }

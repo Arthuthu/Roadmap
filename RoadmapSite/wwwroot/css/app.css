@@ -186,6 +186,9 @@ body {
         background: #FC9A55;
     }
 
+.vote-icon {
+    font-size: 40px;
+}
 /*Login and Registration page*/
 .iniciar-sessao-paragraph {
     text-align: center;
