@@ -1,7 +1,12 @@
-﻿@page "/profile"
+﻿@page "/profile/{userid}"
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager navManager
 
-@code {
+<h1>User Profile</h1>
 
+<p>User ID: @UserId</p>
+
+@code {
+	[Parameter]
+	public string? UserId { get; set; }
 }

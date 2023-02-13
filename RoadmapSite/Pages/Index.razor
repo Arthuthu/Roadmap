@@ -19,9 +19,9 @@
 			{
 				<div class="roadmap-second-div">
 					<div onclick ="toggleVoteButtonClass(this.querySelector('button'))">
-						<button class="@roadmap.RoadmapClass" id="roadmap-vote-button"
+						<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
 						@onclick="async () => await AddUserVote(roadmap.Id)">
-							@roadmap.RoadmapVotes
+							@roadmap.RoadmapTotalVotes
 							<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
 							Vote
 						</button>
@@ -49,9 +49,9 @@
 								<div class="roadmap-author-label">
 									<p>Autor: </p>
 								</div>
-								<div class="roadmap-author-value">
+								<a class="roadmap-author-value" href="profile/@roadmap.AuthorId">
 									@roadmap.Author
-								</div>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -103,10 +103,10 @@
 		foreach (var roadmap in roadmaps)
 		{
 			string roadmapClass = await GetButtonColor(roadmap.Id);
-			roadmap.RoadmapClass = roadmapClass;
+			roadmap.RoadmapHtmlClass = roadmapClass;
 
-			int roadmapVotes = await GetRoadmapVotes(roadmap.Id);
-			roadmap.RoadmapVotes = roadmapVotes;
+			int roadmapTotalVotes = await GetRoadmapVotes(roadmap.Id);
+			roadmap.RoadmapTotalVotes = roadmapTotalVotes;
 		}
 	}
 
@@ -122,6 +122,7 @@
 				if (roadmap.UserId == user.Id)
 				{
 					roadmap.Author = user.Username;
+					roadmap.AuthorId = user.Id.ToString();
 				}
 			}
 		}
