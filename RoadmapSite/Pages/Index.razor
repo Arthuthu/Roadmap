@@ -9,13 +9,13 @@
 
 <div class="index-main-div">
 	<div class="roadmap-main-div">
-		@if (roadmaps is null)
+		@if (Roadmaps is null)
 		{
 			<p>No roadmaps found.</p>
 		}
 		else
 		{
-			@foreach (var roadmap in roadmaps)
+			@foreach (var roadmap in Roadmaps)
 			{
 				<div class="roadmap-second-div">
 					<div onclick ="toggleVoteButtonClass(this.querySelector('button'))">
@@ -68,17 +68,17 @@
 </div>
 @code {
 
-	private IList<RoadmapClassModel> roadmaps;
-	private const string roadmapList = "roadmapList";
-	private const string roadmapCacheDate = "roadmapCacheDate";
-	private string? loggedInUserId = "";
+	private IList<RoadmapClassModel> Roadmaps;
+	private const string RoadmapList = "RoadmapList";
+	private const string RoadmapCacheDate = "RoadmapCacheDate";
+	private string? LoggedInUserId = "";
 
 	protected override async Task OnInitializedAsync()
 	{
 		await GetUserId();
 
-		roadmaps = await localStorage.GetItemAsync<IList<RoadmapClassModel>>(roadmapList);
-		DateTime? cacheDate = await localStorage.GetItemAsync<DateTime>(roadmapCacheDate);
+		Roadmaps = await localStorage.GetItemAsync<IList<RoadmapClassModel>>(RoadmapList);
+		DateTime? cacheDate = await localStorage.GetItemAsync<DateTime>(RoadmapCacheDate);
 		double totalDays = 0;
 
 		if (cacheDate is not null)
@@ -86,13 +86,13 @@
 			totalDays = DateTime.UtcNow.Subtract((DateTime)cacheDate).Seconds;
 		}
 
-		if (roadmaps is null || cacheDate is null || totalDays > 1)
+		if (Roadmaps is null || cacheDate is null || totalDays > 1)
 		{
 			try
 			{
-				roadmaps = await GetAllRoadmaps();
-				await localStorage.SetItemAsync(roadmapList, roadmaps);
-				await localStorage.SetItemAsync(roadmapCacheDate, DateTime.UtcNow);
+				Roadmaps = await GetAllRoadmaps();
+				await localStorage.SetItemAsync(RoadmapList, Roadmaps);
+				await localStorage.SetItemAsync(RoadmapCacheDate, DateTime.UtcNow);
 			}
 			catch (Exception ex)
 			{
@@ -100,7 +100,7 @@
 			}
 		}
 
-		foreach (var roadmap in roadmaps)
+		foreach (var roadmap in Roadmaps)
 		{
 			string roadmapClass = await GetButtonColor(roadmap.Id);
 			roadmap.RoadmapHtmlClass = roadmapClass;
@@ -130,7 +130,7 @@
 		return roadmaps;
 	}
 
-	private async Task<string> GetUserId()
+	private async Task GetUserId()
 	{
 		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authenticationState.User;
@@ -138,18 +138,17 @@
 
 		if (userId is null)
 		{
-			loggedInUserId = "";
+			LoggedInUserId = "";
 			throw new Exception("Usuario nao esta logado");
 		}
 
-		loggedInUserId = userId;
-		return userId;
+		LoggedInUserId = userId;
 	}
 
 	private async Task AddUserVote(Guid roadmapId)
 	{
 		RoadmapVotesModel roadmapVote = new();
-		roadmapVote.UserId = new Guid(loggedInUserId);
+		roadmapVote.UserId = new Guid(LoggedInUserId);
 		roadmapVote.RoadmapId = new Guid(roadmapId.ToString());
 
 		if (roadmapVote.UserId is null)
@@ -182,7 +181,7 @@
 
 	private async Task<bool> VerifiyIfUserVotedOnRoadmap(Guid roadmapId)
 	{
-		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(loggedInUserId));
+		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(LoggedInUserId));
 
 		foreach (var roadmap in roadmaps)
 		{
@@ -197,7 +196,7 @@
 
 	private async Task<Guid> GetRoadmapVotedIdByUserAndRoadmapId(Guid roadmapId)
 	{
-		var userId = new Guid(loggedInUserId);
+		var userId = new Guid(LoggedInUserId);
 
 		var roadmapVote = await roadmapVotesService.GetRoadmapVotedIdByUserAndRoadmapId(userId, roadmapId);
 		var voteId = roadmapVote.Id;

@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
+
 <div class="page">
     <main>
         <nav class="navbar">
@@ -11,7 +12,10 @@
             <div class="nav-links">
                 <AuthorizeView>
                     <Authorized>
-                        <span class="nav-link">@context.User.FindFirst(ClaimTypes.Name).Value</span>
+                        <a class="nav-link"
+                           href="profile/@context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
+                            @context.User.FindFirst(ClaimTypes.Name)?.Value
+                        </a>
                         <NavLink class="nav-link" href="logout">
                             <span class="oi oi-account-logout">Sair</span>
                         </NavLink>
