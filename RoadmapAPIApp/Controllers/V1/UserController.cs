@@ -34,7 +34,8 @@ public class UserController : ControllerBase
         return Ok(responseUsers);
     }
 
-    [HttpGet("{id}")]
+    [Route("/getuserbyid/{id}")]
+    [HttpGet]
     public async Task<ActionResult<UserResponse>> GetUserById(Guid id)
     {
         var user = await _userService.GetUserById(id);

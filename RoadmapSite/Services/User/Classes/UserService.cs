@@ -39,4 +39,21 @@ public class UserService : IUserService
 
 		return roadmapClassModel;
 	}
+
+	public async Task<UserModel> GetUserById(Guid userId)
+	{
+        string getUserByIdEndpoint = _config["apiLocation"] + _config["getAllUsersEndpoint"] + $"/{userId}";
+        var authResult = await _client.GetAsync(getUserByIdEndpoint);
+        var authContent = await authResult.Content.ReadAsStringAsync();
+
+        if (authResult.IsSuccessStatusCode is false)
+        {
+            _logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario: {authContent}");
+            return null;
+        }
+
+        var roadmapClassModel = JsonConvert.DeserializeObject<UserModel>(authContent);
+
+        return roadmapClassModel;
+    }
 }
