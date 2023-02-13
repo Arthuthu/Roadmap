@@ -1,12 +1,14 @@
 ﻿@page "/profile/{userid}"
-@inject AuthenticationStateProvider _authenticationStateProvider
+@inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navManager
+@inject IUserService userService
 
 <AuthorizeView>
 	<Authorized>
 		<h1>User Profile</h1>
 
 		<p>User ID: @UserId</p>
+		<p>Username: @User.Username</p>
 
 		@if (UserId == LoggedInUserId)
 		{
@@ -32,15 +34,17 @@
 	[Parameter]
 	public string? UserId { get; set; }
 	public string? LoggedInUserId { get; set; }
+	public UserModel User { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		await GetUserId();
+		await GetLoggedInUserId();
+		await GetUserByPageId(UserId);
 	}
 
-	private async Task GetUserId()
+	private async Task GetLoggedInUserId()
 	{
-		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+		var authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authenticationState.User;
 		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -51,5 +55,10 @@
 		}
 
 		LoggedInUserId = userId;
+	}
+
+	private async Task GetUserByPageId(string userId)
+	{
+		User = await userService.GetUserById(new Guid(userId));
 	}
 }

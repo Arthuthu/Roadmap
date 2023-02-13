@@ -42,7 +42,7 @@ public class UserService : IUserService
 
 	public async Task<UserModel> GetUserById(Guid userId)
 	{
-        string getUserByIdEndpoint = _config["apiLocation"] + _config["getAllUsersEndpoint"] + $"/{userId}";
+        string getUserByIdEndpoint = _config["apiLocation"] + _config["getUserByIdEndpoint"] + $"/{userId}";
         var authResult = await _client.GetAsync(getUserByIdEndpoint);
         var authContent = await authResult.Content.ReadAsStringAsync();
 
