@@ -2,17 +2,48 @@
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navManager
 @inject IUserService userService
+@inject IRoadmapService roadmapService
 
 <AuthorizeView>
 	<Authorized>
-		<h1>User Profile</h1>
 
-		<p>User ID: @UserId</p>
-		<p>Username: @User.Username</p>
+		<div>
+			<p>Username: @User.Username</p>
+		</div>
+
+		<div>
+			@foreach (var roadmap in Roadmaps)
+			{
+				<div class="roadmap-box-div">
+					<div class="roadmap-name-div">
+						<p class="roadmap-name">@roadmap.Name</p>
+					</div>
+
+					<div class="roadmap-description-div">
+						<p>@roadmap.Description</p>
+					</div>
+
+					<div class="roadmap-category-author-main-div">
+						<div class="roadmap-category-div">
+							<div class="roadmap-category-label">
+								<p>Categoria:</p>
+							</div>
+							<div class="roadmap-category-value">
+								@roadmap.Category
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
 
 		@if (UserId == LoggedInUserId)
 		{
-			<p>You can only see this if this is your profile</p>
+			<div class="edit-profile-button">
+				<a class="first-style-button">
+					Edit Profile
+				</a>
+			</div>
 		}
 	</Authorized>
 	<NotAuthorized>
@@ -35,11 +66,13 @@
 	public string? UserId { get; set; }
 	public string? LoggedInUserId { get; set; }
 	public UserModel User { get; set; }
+	public IList<RoadmapClassModel> Roadmaps { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
 		await GetLoggedInUserId();
 		await GetUserByPageId(UserId);
+		await GetRoadmapsByUserId(new Guid(UserId));
 	}
 
 	private async Task GetLoggedInUserId()
@@ -60,5 +93,12 @@
 	private async Task GetUserByPageId(string userId)
 	{
 		User = await userService.GetUserById(new Guid(userId));
+	}
+
+	private async Task GetRoadmapsByUserId(Guid userId)
+	{
+		var roadmaps = await roadmapService.GetRoadmapByUserId(userId);
+
+		Roadmaps = roadmaps;
 	}
 }

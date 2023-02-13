@@ -1,4 +1,5 @@
-﻿using RoadmapRepository.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using RoadmapRepository.Interfaces;
 using RoadmapRepository.Models;
 using RoadmapServices.Interfaces;
 using RoadmapServices.Validators.Interfaces;
@@ -25,6 +26,18 @@ public class RoadmapClassService : IRoadmapClassService
 	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
 	{
 		return await _roadmapRepository.GetRoadmapById(id);
+	}
+
+	public async Task<IList<RoadmapClassModel?>> GetRoadmapByUserId(Guid userId)
+	{
+		var results = await _roadmapRepository.GetRoadmapByUserId(userId);
+
+		if (results is null)
+		{
+			throw new Exception("Usuario não tem roadmaps criados");
+		}
+
+		return results;
 	}
 
 	public async Task<IList<string>> AddRoadmap(RoadmapClassModel roadmap)

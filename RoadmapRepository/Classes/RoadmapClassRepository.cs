@@ -27,6 +27,15 @@ public class RoadmapClassRepository : IRoadmapClassRepository
 		return results.FirstOrDefault();
 	}
 
+	public async Task<IList<RoadmapClassModel?>> GetRoadmapByUserId(Guid userId)
+	{
+		var results = await _db.LoadData<RoadmapClassModel, dynamic>(
+			"dbo.spRoadmap_GetRoadmapsByUserId",
+			new { UserId = userId });
+
+		return results.ToList();
+	}
+
 	public Task AddRoadmap(RoadmapClassModel roadmap)
 	{
 		return _db.SaveData("dbo.spRoadmap_Add", new
