@@ -80,7 +80,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 	}
 
 
-	public async Task<RoadmapVotesModel> GetRoadmapVotedIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
+	public async Task<RoadmapVotesModel> GetRoadmapVoteIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
 	{
 		string getRoadmapVotedIdByUserAndRoadmapId = _config["apiLocation"] + _config["getRoadmapVotedIdByUserAndRoadmapId"] + $"/{userId}" + $"/{roadmapId}";
 		var authResult = await _client.GetAsync(getRoadmapVotedIdByUserAndRoadmapId);

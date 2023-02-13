@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spRoadmapVotes_GetRoadmapVotedIdByUserAndRoadmapId]
+﻿CREATE PROCEDURE [dbo].[spRoadmapVotes_GetRoadmapVoteIdByUserAndRoadmapId]
 	@UserId uniqueidentifier,
 	@RoadmapId uniqueidentifier
 AS

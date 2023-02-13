@@ -47,9 +47,9 @@ public class RoadmapVotesController : ControllerBase
 
 	[Route("/getroadmapvotedidbyuserandroadmapid/{userId}/{roadmapId}")]
 	[HttpGet]
-	public async Task<ActionResult<RoadmapVotesResponse>> GetRoadmapVotedIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
+	public async Task<ActionResult<RoadmapVotesResponse>> GetRoadmapVoteIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
 	{
-		var votedRoadmap = await _roadmapVotesService.GetRoadmapVotedIdByUserAndRoadmapId(userId, roadmapId);
+		var votedRoadmap = await _roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
 		var responseRoadmapVotes = _mapper.Map<RoadmapVotesResponse>(votedRoadmap);
 
 		return Ok(responseRoadmapVotes);

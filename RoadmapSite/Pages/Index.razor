@@ -6,7 +6,6 @@
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager navManager
 
-
 <div class="index-main-div">
 	<div class="roadmap-main-div">
 		@if (Roadmaps is null)
@@ -161,7 +160,7 @@
 
 		if (didUserVotedOnRoadmap is true)
 		{
-			var votedRoadmapId = await GetRoadmapVotedIdByUserAndRoadmapId(roadmapVote.RoadmapId);
+			var votedRoadmapId = await GetRoadmapVoteIdByUserAndRoadmapId(roadmapVote.RoadmapId);
 			await roadmapVotesService.RemoveRoadmapVote(votedRoadmapId);
 		}
 		else
@@ -194,11 +193,11 @@
 		return false;
 	}
 
-	private async Task<Guid> GetRoadmapVotedIdByUserAndRoadmapId(Guid roadmapId)
+	private async Task<Guid> GetRoadmapVoteIdByUserAndRoadmapId(Guid roadmapId)
 	{
 		var userId = new Guid(LoggedInUserId);
 
-		var roadmapVote = await roadmapVotesService.GetRoadmapVotedIdByUserAndRoadmapId(userId, roadmapId);
+		var roadmapVote = await roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
 		var voteId = roadmapVote.Id;
 
 		return voteId;

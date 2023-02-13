@@ -39,10 +39,10 @@ public class RoadmapVotesRepository : IRoadmapVotesRepository
 		new { UserId = userId });
 	}
 
-	public async Task<RoadmapVotesModel> GetRoadmapVotedIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
+	public async Task<RoadmapVotesModel> GetRoadmapVoteIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
 	{
 		var results =  await _db.LoadData<RoadmapVotesModel, dynamic>(
-		"dbo.spRoadmapVotes_GetRoadmapVotedIdByUserAndRoadmapId",
+		"dbo.spRoadmapVotes_GetRoadmapVoteIdByUserAndRoadmapId",
 		new { UserId = userId, RoadmapId = roadmapId });
 		
 		return results.FirstOrDefault();
