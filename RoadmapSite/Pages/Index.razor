@@ -135,10 +135,13 @@
 		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authenticationState.User;
 		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
 		if (userId is null)
 		{
+			loggedInUserId = "";
 			throw new Exception("Usuario nao esta logado");
 		}
+
 		loggedInUserId = userId;
 		return userId;
 	}
@@ -155,7 +158,7 @@
 			navManager.NavigateTo("/login");
 		}
 
-		var didUserVotedOnRoadmap = await CheckIfUserVotedOnRoadmap(roadmapId);
+		var didUserVotedOnRoadmap = await VerifiyIfUserVotedOnRoadmap(roadmapId);
 
 		if (didUserVotedOnRoadmap is true)
 		{
@@ -177,7 +180,7 @@
 
 
 
-	private async Task<bool> CheckIfUserVotedOnRoadmap(Guid roadmapId)
+	private async Task<bool> VerifiyIfUserVotedOnRoadmap(Guid roadmapId)
 	{
 		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(loggedInUserId));
 
@@ -204,7 +207,7 @@
 
 	private async Task<string> GetButtonColor(Guid roadmapId)
 	{
-		var result = await CheckIfUserVotedOnRoadmap(roadmapId);
+		var result = await VerifiyIfUserVotedOnRoadmap(roadmapId);
 
 		if (result is true)
 		{

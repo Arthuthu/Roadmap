@@ -147,7 +147,14 @@ body {
 
 .roadmap-author-value {
     font-size: 18px;
+    text-decoration: none;
+    color: #FFF;
 }
+
+    .roadmap-author-value:hover {
+        color: #CAC9C8;
+        transition: 500ms;
+    }
 
 .create-roadmap-button-div {
     text-align: center;
