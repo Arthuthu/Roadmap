@@ -60,7 +60,7 @@ public class UserService : IUserService
 			return registrationMessages;
 		}
 
-        var createdUser = await InsertUserIdPasswordHashAndSalt(user);
+        var createdUser = await InsertUserIdPasswordHashSaltAndCreatedTime(user);
 
 		try
 		{
@@ -170,13 +170,14 @@ public class UserService : IUserService
 		}
 	}
 
-    private async Task<UserModel> InsertUserIdPasswordHashAndSalt(UserModel user)
+    private async Task<UserModel> InsertUserIdPasswordHashSaltAndCreatedTime(UserModel user)
     {
 		CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
 		user.Id = Guid.NewGuid();
 		user.PasswordHash = passwordHash;
 		user.PasswordSalt = passwordSalt;
+		user.CreatedDate = DateTime.UtcNow.AddHours(-3);
 
         return user;
     }

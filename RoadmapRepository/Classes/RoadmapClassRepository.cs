@@ -44,7 +44,8 @@ public class RoadmapClassRepository : IRoadmapClassRepository
 			roadmap.Name,
 			roadmap.Description,
 			roadmap.Category,
-			roadmap.UserId
+			roadmap.UserId,
+			roadmap.CreatedDate
 		});
 	}
 

@@ -78,14 +78,14 @@
 
 		Roadmaps = await localStorage.GetItemAsync<IList<RoadmapClassModel>>(RoadmapList);
 		DateTime? cacheDate = await localStorage.GetItemAsync<DateTime>(RoadmapCacheDate);
-		double totalDays = 0;
+		double totalSeconds = 0;
 
 		if (cacheDate is not null)
 		{
-			totalDays = DateTime.UtcNow.Subtract((DateTime)cacheDate).Seconds;
+			totalSeconds = DateTime.UtcNow.Subtract((DateTime)cacheDate).Seconds;
 		}
 
-		if (Roadmaps is null || cacheDate is null || totalDays > 1)
+		if (Roadmaps is null || cacheDate is null || totalSeconds > 1)
 		{
 			try
 			{

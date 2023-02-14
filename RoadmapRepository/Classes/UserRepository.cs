@@ -44,7 +44,8 @@ public class UserRepository : IUserRepository
             user.Username,
             user.Password,
             user.PasswordHash,
-            user.PasswordSalt 
+            user.PasswordSalt,
+            user.CreatedDate
         });
     }
 

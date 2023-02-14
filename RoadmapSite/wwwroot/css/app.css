@@ -52,6 +52,7 @@ body {
     }
 
 /*Not Authorized*/
+
 .not-authorized-message-div {
     text-align: center;
 }
@@ -100,7 +101,7 @@ body {
 }
 
 .roadmap-name-div {
-    background-image: linear-gradient(#02164F, #1A2D64);
+    background-image: linear-gradient(#F1AF2A, #D78F00);
     padding: 5px 0 2px 0;
 }
 
@@ -197,6 +198,7 @@ body {
     font-size: 40px;
 }
 /*Login and Registration page*/
+
 .iniciar-sessao-paragraph {
     text-align: center;
     font-size: 2rem;
@@ -277,6 +279,7 @@ body {
 }
 
 /*Profile*/
+
 .edit-profile-button {
     text-align: center;
 }

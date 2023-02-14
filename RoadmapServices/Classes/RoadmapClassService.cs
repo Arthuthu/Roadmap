@@ -52,6 +52,7 @@ public class RoadmapClassService : IRoadmapClassService
 		}
 
 		roadmap.Id = Guid.NewGuid();
+		roadmap.CreatedDate = DateTime.UtcNow.AddHours(-3);
 
 		try
 		{

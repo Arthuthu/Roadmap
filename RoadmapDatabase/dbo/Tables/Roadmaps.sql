@@ -5,5 +5,6 @@
     [Description] NVARCHAR(200) NULL,
     [Category] NVARCHAR(50) NULL, 
     [UserId] UNIQUEIDENTIFIER NOT NULL, 
+    [CreatedDate] DATETIME2 NULL, 
     CONSTRAINT [FK_Roadmaps_ToTable] FOREIGN KEY (UserId) REFERENCES [Users]([Id]) ON DELETE CASCADE
 )
