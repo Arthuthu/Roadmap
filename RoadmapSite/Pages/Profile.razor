@@ -7,8 +7,8 @@
 <AuthorizeView>
 	<Authorized>
 
-		<div>
-			<p>Username: @User.Username</p>
+		<div class="profile-user-roadmaps-label-div">
+			<p>@User.Username Roadmaps</p>
 		</div>
 
 		<div>
@@ -69,6 +69,13 @@
 	public IList<RoadmapClassModel> Roadmaps { get; set; }
 
 	protected override async Task OnInitializedAsync()
+	{
+		await GetLoggedInUserId();
+		await GetUserByPageId(UserId);
+		await GetRoadmapsByUserId(new Guid(UserId));
+	}
+
+	protected override async Task OnParametersSetAsync()
 	{
 		await GetLoggedInUserId();
 		await GetUserByPageId(UserId);

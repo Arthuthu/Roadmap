@@ -283,3 +283,14 @@ body {
 .edit-profile-button {
     text-align: center;
 }
+
+.profile-user-roadmaps-label-div {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.profile-user-roadmaps-label-div p {
+    font-size: 35px;
+    font-weight: bold;
+}
