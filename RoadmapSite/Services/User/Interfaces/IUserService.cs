@@ -6,5 +6,7 @@ namespace RoadmapSite.Services.User.Interfaces
     {
         Task<IList<UserModel>> GetAllUsers();
         Task<UserModel> GetUserById(Guid userId);
-    }
+        Task<string> UpdateUser(UserModel user);
+
+	}
 }

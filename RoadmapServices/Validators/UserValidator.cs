@@ -16,5 +16,8 @@ public class UserValidator : AbstractValidator<UserModel>
 			.NotEmpty().WithMessage("O campo senha precisa ser preenchido")
 			.MinimumLength(8).WithMessage("A senha precisa ter no minimo 8 caracters")
 			.MaximumLength(20).WithMessage("A senha nao pode ultrapassar 20 caracteres");
+
+		RuleFor(x => x.Bio)
+	.		MaximumLength(1000).WithMessage("A bio nao pode ultrapassar 1000 caracteres");
 	}
 }

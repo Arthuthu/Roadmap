@@ -56,12 +56,12 @@ public class UserController : ControllerBase
 
     [Route("/updateuser")]
     [HttpPut]
-    public async Task<ActionResult<List<UserResponse>>> UpdateUser(UserRequest user)
+    public async Task<ActionResult<List<UserResponse>>> UpdateUser([FromForm] UserRequest user)
     {
         var requestUser = _mapper.Map<UserModel>(user);
         await _userService.UpdateUser(requestUser);
 
-        return Ok(requestUser);
+        return Ok("Perfil atualizado com sucesso");
     }
 
     [HttpDelete("{id}")]

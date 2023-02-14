@@ -7,7 +7,25 @@
 {
 	<AuthorizeView>
 		<Authorized>
-			Você pode editar seu perfil
+			<EditForm Model="User" OnValidSubmit="UpdateProfile" class="" Context="ProfileForm">
+				<div class="first-form-label">
+					<label for="bio" class="visually-hidden">Usuario</label>
+					<div>
+						<InputTextArea id="bio" class="form-input-text-description" @bind-Value="User.Bio" placeholder="Bio (Maximo 1000 caracteres)" />
+					</div>
+				</div>
+
+				<div class="button-div">
+					<button type="submit" class="first-style-button">Salvar</button>
+				</div>
+			</EditForm>
+
+			@if (showAuthenticationError)
+			{
+				<div role="alert" class="alert-message-div">
+					<p class="alert-message">@authenticationErrorText</p>
+				</div>
+			}
 		</Authorized>
 		<NotAuthorized>
 			<div class="not-authorized-message-div">
@@ -32,6 +50,8 @@
 	public string? LoggedInUserId { get; set; }
 	public UserModel User { get; set; }
 	private bool IsInitialized { get; set; }
+	private bool showAuthenticationError = false;
+	private string authenticationErrorText = "";
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -73,4 +93,29 @@
 	{
 		User = await userService.GetUserById(new Guid(userId));
 	}
+
+	private async Task UpdateProfile()
+	{
+		var result = await userService.UpdateUser(User);
+
+		if (result is not null)
+		{
+			authenticationErrorText = "Perfil atualizado com sucesso";
+			showAuthenticationError = true;
+			navManager.NavigateTo($"/profile/{UserId}");
+		}
+		else
+		{
+			authenticationErrorText = "Não foi possivel atualizar o perfil";
+			showAuthenticationError = true;
+		}
+	}
+
+	//private async Task<UserModel> UpdateModel(UserModel user)
+	//{
+	//	user.Id = User.Id;
+	//	user.Username = User.Username;
+
+	//	return user;
+	//}
 }

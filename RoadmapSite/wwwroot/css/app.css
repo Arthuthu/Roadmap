@@ -222,13 +222,18 @@ body {
     padding: 0 0 30px 0;
 }
 
-.form-input-text {
+.form-input-text,
+.form-input-text-description {
     border-color: transparent;
     font-size: 20px;
     width: 90%;
     margin: 0 0 15px 0;
     padding: 10px 0 10px 5px;
     background-color: #F6F6F6;
+}
+
+.form-input-text-description {
+    height: 100px;
 }
 
 .first-form-label {
@@ -310,8 +315,9 @@ body {
     font-size: 30px;
 }
 
-.edit-profile-button {
+.edit-profile-button-div {
     text-align: center;
+    margin: 40px 0;
 }
 
 .profile-user-roadmaps-label-div {

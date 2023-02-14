@@ -51,7 +51,14 @@ public class UserRepository : IUserRepository
 
     public Task UpdateUser(UserModel user)
     {
-        return _db.SaveData("dbo.spUser_Update", user);
+        return _db.SaveData("dbo.spUser_Update", new 
+        {
+            user.Id,
+            user.Username,
+            user.Password,
+            user.Bio
+        });
+
     }
 
     public Task DeleteUser(Guid id)

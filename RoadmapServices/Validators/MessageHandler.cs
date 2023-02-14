@@ -49,6 +49,7 @@ public class MessageHandler : IMessageHandler
 
 		return validationMessages;
 	}
+
 	public async Task<string> ConcatRegistrationMessages(IList<string> responseMessages)
 	{
 		string cleanMessage = string.Join(", ", responseMessages);

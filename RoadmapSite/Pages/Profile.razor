@@ -16,23 +16,23 @@
 					@User.Username
 				</div>
 				<div>
-					Bio
+					@User.Bio
 				</div>
 			</div>
 		</div>
 
-		<div class="profile-user-roadmaps-label-div">
-			<p>@User.Username Roadmaps</p>
-		</div>
-
 		@if (UserId == LoggedInUserId)
 		{
-			<div class="edit-profile-button">
+			<div class="edit-profile-button-div">
 				<a class="first-style-button" href="/editprofile/@User.Id">
 					Editar Perfil
 				</a>
 			</div>
 		}
+
+		<div class="profile-user-roadmaps-label-div">
+			<p>@User.Username Roadmaps</p>
+		</div>
 
 		<div>
 			@foreach (var roadmap in Roadmaps)
