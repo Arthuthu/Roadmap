@@ -66,8 +66,19 @@ body {
     font-size: 24px;
 }
 
-/*Alerts*/
+/*Not Found*/
+.not-found-label{
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+}
 
+.not-found-description{
+    text-align: center;
+    font-size: 20px;
+}
+
+/*Alerts*/
 .alert-message-div {
     margin: 20px 0 0 0;
     text-align: center;
@@ -161,10 +172,6 @@ body {
     text-align: center;
     width: 50%;
     margin: 20px 0 0 0;
-}
-
-.vote-button-div{
-
 }
 
 .vote-button {
@@ -279,6 +286,29 @@ body {
 }
 
 /*Profile*/
+
+.user-profile-div{
+    display: flex;
+    border: solid #FFF;
+    width: 100%;
+}
+
+.user-profile-photo-div {
+    border-right: solid #FFF;
+    box-sizing: border-box;
+}
+
+.user-profile-username-bio-div {
+    width: 100%;
+}
+
+.user-profile-username {
+    margin: 0 0 10px 0;
+    border-bottom: solid #FFF;
+    padding: 10px 0 10px 10px;
+    font-weight: bold;
+    font-size: 30px;
+}
 
 .edit-profile-button {
     text-align: center;

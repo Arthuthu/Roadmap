@@ -56,4 +56,29 @@ public class UserService : IUserService
 
         return roadmapClassModel;
     }
+
+	public async Task<UserModel> UpdateUser(UserModel user)
+	{
+		var data = new FormUrlEncodedContent(new[]
+{
+			new KeyValuePair<string, string>("username", user.Id.ToString()),
+			new KeyValuePair<string, string>("password", user.Username!),
+			new KeyValuePair<string, string>("password", user.Password),
+			new KeyValuePair<string, string>("password", user.Bio)
+		});
+
+		string updateUserEndpoint = _config["apiLocation"] + _config["updateUserEndpoint"];
+		var authResult = await _client.PutAsync(updateUserEndpoint, data);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario: {authContent}");
+			return null;
+		}
+
+		var roadmapClassModel = JsonConvert.DeserializeObject<UserModel>(authContent);
+
+		return roadmapClassModel;
+	}
 }

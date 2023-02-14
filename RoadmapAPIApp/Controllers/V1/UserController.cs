@@ -54,6 +54,7 @@ public class UserController : ControllerBase
         return Ok(requestUser);
     }
 
+    [Route("/updateuser")]
     [HttpPut]
     public async Task<ActionResult<List<UserResponse>>> UpdateUser(UserRequest user)
     {

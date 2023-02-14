@@ -6,10 +6,33 @@
 
 <AuthorizeView>
 	<Authorized>
+		<div class="user-profile-div">
+			<div class="user-profile-photo-div">
+				Photo
+			</div>
+
+			<div class="user-profile-username-bio-div">
+				<div class="user-profile-username">
+					@User.Username
+				</div>
+				<div>
+					Bio
+				</div>
+			</div>
+		</div>
 
 		<div class="profile-user-roadmaps-label-div">
 			<p>@User.Username Roadmaps</p>
 		</div>
+
+		@if (UserId == LoggedInUserId)
+		{
+			<div class="edit-profile-button">
+				<a class="first-style-button" href="/editprofile/@User.Id">
+					Editar Perfil
+				</a>
+			</div>
+		}
 
 		<div>
 			@foreach (var roadmap in Roadmaps)
@@ -37,14 +60,6 @@
 			}
 		</div>
 
-		@if (UserId == LoggedInUserId)
-		{
-			<div class="edit-profile-button">
-				<a class="first-style-button">
-					Edit Profile
-				</a>
-			</div>
-		}
 	</Authorized>
 	<NotAuthorized>
 		<div class="not-authorized-message-div">
