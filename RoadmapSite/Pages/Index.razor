@@ -20,7 +20,7 @@
 					<div onclick ="toggleVoteButtonClass(this.querySelector('button'))">
 						<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
 						@onclick="async () => await AddUserVote(roadmap.Id)">
-							@roadmap.RoadmapTotalVotes
+							<span id="vote-count">@roadmap.RoadmapTotalVotes</span>
 							<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
 							Vote
 						</button>
@@ -221,5 +221,4 @@
 
 		return roadmapVotes.Count();
 	}
-
 }

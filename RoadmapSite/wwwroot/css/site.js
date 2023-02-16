@@ -7,3 +7,15 @@
         button.classList.add("vote-button-voted");
     }
 }
+
+var isVoted = false;
+var voteCountEl = document.getElementById("vote-count");
+
+function toggleVote() {
+    if (isVoted) {
+        voteCountEl.textContent = parseInt(voteCountEl.textContent) - 1;
+    } else {
+        voteCountEl.textContent = parseInt(voteCountEl.textContent) + 1;
+    }
+    isVoted = !isVoted;
+}

@@ -37,7 +37,8 @@ public class RoadmapClassController : ControllerBase
         return Ok(responseRoadmaps);
     }
 
-    [HttpGet("{id}")]
+    [Route("/getroadmapbyid/{id}")]
+    [HttpGet]
     public async Task<ActionResult<RoadmapClassResponse>> GetRoadmapById(Guid id)
     {
         var roadmap = await _roadmapService.GetRoadmapById(id);
