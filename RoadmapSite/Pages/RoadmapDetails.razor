@@ -1,0 +1,30 @@
+﻿@page "/roadmapdetails/{roadmapid}"
+@inject IRoadmapService roadmapService
+@inject AuthenticationStateProvider _authenticationStateProvider
+
+<div>
+	@Roadmap.Name
+	@Roadmap.Category
+	@Roadmap.Description
+</div>
+
+@code {
+	[Parameter]
+	public string? RoadmapId { get; set; }
+	public RoadmapClassModel? Roadmap { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (RoadmapId is null)
+		{
+			throw new Exception($"Não foi possivel encontrar o roadmap");
+		}
+
+		await GetRoadmapById(new Guid(RoadmapId!));
+	}
+
+	private async Task GetRoadmapById(Guid roadmapId)
+	{
+		Roadmap = await roadmapService.GetRoadmapById(roadmapId);
+	}
+}

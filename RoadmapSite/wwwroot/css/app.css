@@ -123,16 +123,27 @@ body {
     padding-left: 5%;
 }
 
-.roadmap-name-div {
-    background-image: linear-gradient(#F1AF2A, #D78F00);
+.roadmap-name-a {
+    color: white;
     padding: 5px 0 2px 0;
+    text-decoration: none;
+}
+
+.roadmap-name-a:hover {
+    color: white;
 }
 
 .roadmap-name {
+    background-color: #F1AF2A;
     font-weight: bold;
     font-size: 1.4rem;
-    padding: 10px 0 0 10px;
+    padding: 15px 0 15px 10px;
 }
+
+    .roadmap-name:hover {
+        transition: 0.5s;
+        background-color: #D78F00;
+    }
 
 .roadmap-description-div {
     font-size: 18px;

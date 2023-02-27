@@ -26,9 +26,9 @@
 						</button>
 					</div>
 					<div class="roadmap-box-div">
-						<div class="roadmap-name-div">
+						<a class="roadmap-name-a" href="roadmapdetails/@roadmap.Id">
 							<p class="roadmap-name">@roadmap.Name</p>
-						</div>
+						</a>
 
 						<div class="roadmap-description-div">
 							<p>@roadmap.Description</p>
@@ -67,7 +67,7 @@
 </div>
 @code {
 
-	private IList<RoadmapClassModel> Roadmaps;
+	private IList<RoadmapClassModel>? Roadmaps;
 	private const string RoadmapList = "RoadmapList";
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
 	private string? LoggedInUserId = "";
