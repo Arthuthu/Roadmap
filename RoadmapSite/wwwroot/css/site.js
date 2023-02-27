@@ -8,14 +8,14 @@
     }
 }
 
-var isVoted = false;
-var voteCountEl = document.getElementById("vote-count");
+//var isVoted = false;
+//var voteCountEl = document.getElementById("vote-count");
 
-function toggleVote() {
-    if (isVoted) {
-        voteCountEl.textContent = parseInt(voteCountEl.textContent) - 1;
-    } else {
-        voteCountEl.textContent = parseInt(voteCountEl.textContent) + 1;
-    }
-    isVoted = !isVoted;
-}
+//function toggleVote() {
+//    if (isVoted) {
+//        voteCountEl.textContent = parseInt(voteCountEl.textContent) - 1;
+//    } else {
+//        voteCountEl.textContent = parseInt(voteCountEl.textContent) + 1;
+//    }
+//    isVoted = !isVoted;
+//}

@@ -8,14 +8,21 @@
 	<Authorized>
 		<div class="user-profile-div">
 			<div class="user-profile-photo-div">
-				Photo
+				<img src="@DefaultProfilePicture" />
 			</div>
 
 			<div class="user-profile-username-bio-div">
 				<div class="user-profile-username">
 					@User.Username
 				</div>
-				<div>
+				<div class="user-profile-bio">
+					@if(User.Bio is null)
+					{
+						<p>
+							Não conhecemos @User.Username muito bem, mas temos certeza que é gente boa.
+						</p>
+					}
+
 					@User.Bio
 				</div>
 			</div>
@@ -34,10 +41,10 @@
 			<p>@User.Username Roadmaps</p>
 		</div>
 
-		<div>
+		<div class="roadmap-box-div-profile-parent-div">
 			@foreach (var roadmap in Roadmaps)
 			{
-				<div class="roadmap-box-div">
+				<div class="roadmap-box-div-profile">
 					<div class="roadmap-name-div">
 						<p class="roadmap-name">@roadmap.Name</p>
 					</div>
@@ -82,6 +89,7 @@
 	public string? LoggedInUserId { get; set; }
 	public UserModel User { get; set; }
 	public IList<RoadmapClassModel> Roadmaps { get; set; }
+	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"; 
 
 	protected override async Task OnInitializedAsync()
 	{
