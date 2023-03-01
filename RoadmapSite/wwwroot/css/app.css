@@ -219,10 +219,48 @@ body {
     padding: 0 30px;
 }
 
+.vote-button {
+    height: 94.5%;
+    color: white;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 20px;
+    border-color: #FFF;
+    border-radius: 10px 0 0 10px;
+    padding: 0 30px;
+}
+
     .vote-button:hover {
         transition: 500ms;
         background: #FC9A55;
     }
+
+.vote-button-details-voted {
+    height: 94.5%;
+    color: white;
+    background-color: #EE690B;
+    font-weight: bold;
+    font-size: 20px;
+    border-color: #FFF;
+    border-radius: 20px;
+    padding: 0 30px;
+}
+
+.vote-button-details {
+    height: 94.5%;
+    color: white;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 20px;
+    border-color: #FFF;
+    border-radius: 20px;
+    padding: 0 30px;
+}
+
+.vote-button-details:hover {
+    transition: 500ms;
+    background: #FC9A55;
+}
 
 .vote-icon {
     font-size: 40px;
@@ -376,4 +414,31 @@ body {
     text-align: center;
     font-weight: bold;
     font-size: 30px;
+}
+
+.profile-no-roadmap-label {
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+}
+/*Roadmap Details*/
+
+.roadmap-details-name-category-div {
+    display: flex;
+    justify-content: space-between;
+    background-image: linear-gradient(#F1AF2A, #D78F00);
+    padding: 30px;
+    font-weight: bold;
+    font-size: 30px;
+    border-radius: 10px 10px 0 0;
+}
+
+.roadmap-details-description-div {
+    font-size: 20px;
+    border: #FFF solid;
+    padding: 10px;
+}
+
+.roadmap-details-vote-button {
+    text-align: center;
 }

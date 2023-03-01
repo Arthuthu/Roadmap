@@ -42,42 +42,50 @@
 			<p>@User.Username Roadmaps</p>
 		</div>
 
-		<div class="roadmap-box-div-profile-parent-div">
-			@foreach (var roadmap in Roadmaps)
-			{
-				<div class="roadmap-second-div">
-					<div onclick="toggleVoteButtonClass(this.querySelector('button'))">
-						<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
-							@onclick="async () => await AddUserVote(roadmap.Id)">
-							<span id="vote-count">@roadmap.RoadmapTotalVotes</span>
-							<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
-							Vote
-						</button>
-					</div>
-					<div class="roadmap-box-div">
-						<a class="roadmap-name-a" href="roadmapdetails/@roadmap.Id">
-							<p class="roadmap-name">@roadmap.Name</p>
-						</a>
-
-						<div class="roadmap-description-div">
-							<p>@roadmap.Description</p>
+		@if (Roadmaps is null)
+		{
+			<div class="profile-no-roadmap-label">
+				@User.Username não criou nenhum roadmap ainda.
+			</div>
+		}
+		else
+		{
+			<div class="roadmap-box-div-profile-parent-div">
+				@foreach (var roadmap in Roadmaps)
+				{
+					<div class="roadmap-second-div">
+						<div onclick="toggleVoteButtonClass(this.querySelector('button'))">
+							<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
+								@onclick="async () => await AddUserVote(roadmap.Id)">
+								<span id="vote-count">@roadmap.RoadmapTotalVotes</span>
+								<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
+								Vote
+							</button>
 						</div>
+						<div class="roadmap-box-div">
+							<a class="roadmap-name-a" href="roadmapdetails/@roadmap.Id">
+								<p class="roadmap-name">@roadmap.Name</p>
+							</a>
 
-						<div class="roadmap-category-author-main-div">
-							<div class="roadmap-category-div">
-								<div class="roadmap-category-label">
-									<p>Categoria:</p>
-								</div>
-								<div class="roadmap-category-value">
-									@roadmap.Category
+							<div class="roadmap-description-div">
+								<p>@roadmap.Description</p>
+							</div>
+
+							<div class="roadmap-category-author-main-div">
+								<div class="roadmap-category-div">
+									<div class="roadmap-category-label">
+										<p>Categoria:</p>
+									</div>
+									<div class="roadmap-category-value">
+										@roadmap.Category
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			}
-		</div>
-
+				}
+			</div>
+		}
 	</Authorized>
 	<NotAuthorized>
 		<div class="not-authorized-message-div">
