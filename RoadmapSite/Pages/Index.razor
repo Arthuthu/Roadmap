@@ -178,7 +178,7 @@
 	{
 		var roadmaps = await roadmapVotesService.GetAllRoadmapsUserVoted(id);
 
-		return roadmaps;
+		return roadmaps!;
 	}
 
 
@@ -209,7 +209,7 @@
 			var userId = new Guid(LoggedInUserId);
 
 			var roadmapVote = await roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
-			var voteId = roadmapVote.Id;
+			var voteId = roadmapVote!.Id;
 
 			return voteId;
 		}
@@ -232,6 +232,11 @@
 	private async Task<int> GetRoadmapVotes(Guid roadmapId)
 	{
 		var roadmapVotes = await roadmapVotesService.GetRoadmapVotesByRoadmapId(roadmapId);
+
+		if (roadmapVotes is null)
+		{
+			return 0;
+		}
 
 		return roadmapVotes.Count();
 	}
