@@ -24,7 +24,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 		_logger = logger;
 	}
 
-	public async Task<string> AddRoadmapVote(RoadmapVotesModel roadmapVote)
+	public async Task<string?> AddRoadmapVote(RoadmapVotesModel roadmapVote)
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
@@ -45,7 +45,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
-	public async Task<IList<RoadmapVotesModel>> GetAllRoadmaps()
+	public async Task<IList<RoadmapVotesModel>?> GetAllRoadmaps()
 	{
 		string getAllRoadmapsVotesEndpoint = _config["apiLocation"] + _config["getAllRoadmapVotesEndpoint"];
 		var authResult = await _client.GetAsync(getAllRoadmapsVotesEndpoint);
@@ -62,7 +62,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return roadmapVotesModel;
 	}
 
-	public async Task<IList<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid userId)
+	public async Task<IList<RoadmapVotesModel>?> GetAllRoadmapsUserVoted(Guid userId)
 	{
 		string getAllRoadmapsUserVotedEndpoint = _config["apiLocation"] + _config["getAllRoadmapsUserVotedEndpoint"] + $"/{userId}";
 		var authResult = await _client.GetAsync(getAllRoadmapsUserVotedEndpoint);
@@ -80,7 +80,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 	}
 
 
-	public async Task<RoadmapVotesModel> GetRoadmapVoteIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
+	public async Task<RoadmapVotesModel?> GetRoadmapVoteIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
 	{
 		string getRoadmapVotedIdByUserAndRoadmapIdEndpoint = _config["apiLocation"] + _config["getRoadmapVotedIdByUserAndRoadmapIdEndpoint"] + $"/{userId}" + $"/{roadmapId}";
 		var authResult = await _client.GetAsync(getRoadmapVotedIdByUserAndRoadmapIdEndpoint);
@@ -97,7 +97,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return roadmapVotesModel;
 	}
 
-	public async Task<IList<RoadmapVotesModel>> GetRoadmapVotesByRoadmapId(Guid roadmapId)
+	public async Task<IList<RoadmapVotesModel>?> GetRoadmapVotesByRoadmapId(Guid roadmapId)
 	{
 		string getRoadmapVotesByRoadmapIdEndpoint = _config["apiLocation"] + _config["getRoadmapVotesByRoadmapIdEndpoint"] + $"/{roadmapId}";
 		var authResult = await _client.GetAsync(getRoadmapVotesByRoadmapIdEndpoint);
@@ -114,7 +114,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return roadmapVotesModel;
 	}
 
-	public async Task<string> RemoveRoadmapVote(Guid roadmapVoteId)
+	public async Task<string?> RemoveRoadmapVote(Guid roadmapVoteId)
 	{
 		string removeRoadmapVoteEndpoint = _config["apiLocation"] + _config["removeRoadmapVoteEndpoint"] + $"/{roadmapVoteId}";
 		var authResult = await _client.DeleteAsync(removeRoadmapVoteEndpoint);

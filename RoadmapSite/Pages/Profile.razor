@@ -7,84 +7,91 @@
 
 <AuthorizeView>
 	<Authorized>
-		<div class="user-profile-photo-div">
-			<img src="@DefaultProfilePicture" />
-		</div>
+		@if (User is not null)
+		{
+			<div class="user-profile-photo-div">
+				<img src="@DefaultProfilePicture" />
+			</div>
 
-		<div class="user-profile-div">
-			<div class="user-profile-username-bio-div">
-				<div class="user-profile-username">
-					@User.Username
+			<div class="user-profile-div">
+				<div class="user-profile-username-bio-div">
+					<div class="user-profile-username">
+						@User.Username
+					</div>
+					<div class="user-profile-bio">
+						@if (User.Bio is null)
+						{
+							<p>
+								Não conhecemos @User.Username muito bem, mas temos certeza que é gente boa.
+							</p>
+						}
+
+						@User.Bio
+					</div>
 				</div>
-				<div class="user-profile-bio">
-					@if(User.Bio is null)
+			</div>
+
+			@if (UserId == LoggedInUserId)
+			{
+				<div class="edit-profile-button-div">
+					<a class="first-style-button" href="/editprofile/@User.Id">
+						Editar Perfil
+					</a>
+				</div>
+			}
+
+			<div class="profile-user-roadmaps-label-div">
+				<p>@User.Username Roadmaps</p>
+			</div>
+
+			@if (Roadmaps is null)
+			{
+				<div class="profile-no-roadmap-label">
+					@User.Username não criou nenhum roadmap ainda.
+				</div>
+			}
+			else
+			{
+				<div class="roadmap-box-div-profile-parent-div">
+					@foreach (var roadmap in Roadmaps)
 					{
-						<p>
-							Não conhecemos @User.Username muito bem, mas temos certeza que é gente boa.
-						</p>
-					}
-
-					@User.Bio
-				</div>
-			</div>
-		</div>
-
-		@if (UserId == LoggedInUserId)
-		{
-			<div class="edit-profile-button-div">
-				<a class="first-style-button" href="/editprofile/@User.Id">
-					Editar Perfil
-				</a>
-			</div>
-		}
-
-		<div class="profile-user-roadmaps-label-div">
-			<p>@User.Username Roadmaps</p>
-		</div>
-
-		@if (Roadmaps is null)
-		{
-			<div class="profile-no-roadmap-label">
-				@User.Username não criou nenhum roadmap ainda.
-			</div>
-		}
-		else
-		{
-			<div class="roadmap-box-div-profile-parent-div">
-				@foreach (var roadmap in Roadmaps)
-				{
-					<div class="roadmap-second-div">
-						<div onclick="toggleVoteButtonClass(this.querySelector('button'))">
-							<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
+						<div class="roadmap-second-div">
+							<div onclick="toggleVoteButtonClass(this.querySelector('button'))">
+								<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
 								@onclick="async () => await AddUserVote(roadmap.Id)">
-								<span id="vote-count">@roadmap.RoadmapTotalVotes</span>
-								<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
-								Vote
-							</button>
-						</div>
-						<div class="roadmap-box-div">
-							<a class="roadmap-name-a" href="roadmapdetails/@roadmap.Id">
-								<p class="roadmap-name">@roadmap.Name</p>
-							</a>
-
-							<div class="roadmap-description-div">
-								<p>@roadmap.Description</p>
+									<span id="vote-count">@roadmap.RoadmapTotalVotes</span>
+									<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
+									Vote
+								</button>
 							</div>
+							<div class="roadmap-box-div">
+								<a class="roadmap-name-a" href="roadmapdetails/@roadmap.Id">
+									<p class="roadmap-name">@roadmap.Name</p>
+								</a>
 
-							<div class="roadmap-category-author-main-div">
-								<div class="roadmap-category-div">
-									<div class="roadmap-category-label">
-										<p>Categoria:</p>
-									</div>
-									<div class="roadmap-category-value">
-										@roadmap.Category
+								<div class="roadmap-description-div">
+									<p>@roadmap.Description</p>
+								</div>
+
+								<div class="roadmap-category-author-main-div">
+									<div class="roadmap-category-div">
+										<div class="roadmap-category-label">
+											<p>Categoria:</p>
+										</div>
+										<div class="roadmap-category-value">
+											@roadmap.Category
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				}
-			</div>
+					}
+				</div>
+			}
+		}
+		else
+		{
+			navManager.NavigateTo("/notfound");
 		}
 	</Authorized>
 	<NotAuthorized>
@@ -105,20 +112,32 @@
 	[Parameter]
 	public string? UserId { get; set; }
 	public string? LoggedInUserId { get; set; }
-	public UserModel User { get; set; }
+	public UserModel? User { get; set; }
 	public IList<RoadmapClassModel>? Roadmaps { get; set; }
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"; 
 
 	protected override async Task OnInitializedAsync()
 	{
 		await GetLoggedInUserId();
-		await GetUserByPageId(UserId);
-		await GetRoadmapsByUserId(new Guid(UserId));
+
+		if (LoggedInUserId is null)
+		{
+			navManager.NavigateTo("/login");
+		}
+
+		await GetUserByPageId(UserId!);
+		await GetRoadmapsByUserId(new Guid(UserId!));
 	}
 
 	protected override async Task OnParametersSetAsync()
 	{
 		await GetLoggedInUserId();
+
+		if (LoggedInUserId is null)
+		{
+			navManager.NavigateTo("/login");
+		}
+
 		await GetUserByPageId(UserId!);
 		await GetRoadmapsByUserId(new Guid(UserId!));
 
@@ -162,14 +181,8 @@
 	private async Task AddUserVote(Guid roadmapId)
 	{
 		RoadmapVotesModel roadmapVote = new();
-		roadmapVote.UserId = new Guid(LoggedInUserId);
+		roadmapVote.UserId = new Guid(LoggedInUserId!);
 		roadmapVote.RoadmapId = new Guid(roadmapId.ToString());
-
-		if (roadmapVote.UserId is null)
-		{
-			throw new Exception("Você precisa entrar em uma conta para votar");
-			navManager.NavigateTo("/login");
-		}
 
 		var didUserVotedOnRoadmap = await VerifiyIfUserVotedOnRoadmap(roadmapId);
 
@@ -195,7 +208,7 @@
 
 	private async Task<bool> VerifiyIfUserVotedOnRoadmap(Guid roadmapId)
 	{
-		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(LoggedInUserId));
+		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(LoggedInUserId!));
 
 		foreach (var roadmap in roadmaps)
 		{
@@ -210,7 +223,7 @@
 
 	private async Task<Guid> GetRoadmapVoteIdByUserAndRoadmapId(Guid roadmapId)
 	{
-		var userId = new Guid(LoggedInUserId);
+		var userId = new Guid(LoggedInUserId!);
 
 		var roadmapVote = await roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
 		var voteId = roadmapVote.Id;

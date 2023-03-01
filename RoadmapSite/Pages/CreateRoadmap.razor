@@ -57,32 +57,38 @@
 </div>
 
 @code {
+	public string? LoggedInUserId { get; set; }
+
 	private RoadmapClassModel model = new();
 	private string roadmapCreationMessage = "";
 
-	private async Task ExecuteRoadmapCreation()
+	protected override async Task OnInitializedAsync()
 	{
-		var createdRoadmap = await TransferUserId(model);
+		await GetLoggedInUserId();
 
-		var result = await roadmapServiceService.CreateRoadmap(createdRoadmap);
-
-		roadmapCreationMessage = result;
-		
-		navManager.NavigateTo("/");
+		if (LoggedInUserId is null)
+		{
+			navManager.NavigateTo("/login");
+		}
 	}
 
-	private async Task<string> GetUserId()
+	private async Task GetLoggedInUserId()
 	{
 		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authenticationState.User;
 		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-		return userId;
+
+		LoggedInUserId = userId;
 	}
 
-	private async Task<RoadmapClassModel> TransferUserId(RoadmapClassModel roadmap)
+	private async Task ExecuteRoadmapCreation()
 	{
-		roadmap.UserId = new Guid(await GetUserId());
+		model.UserId = new Guid(LoggedInUserId!);
 
-		return roadmap;
+		var result = await roadmapServiceService.CreateRoadmap(model);
+
+		roadmapCreationMessage = result;
+		
+		navManager.NavigateTo("/");
 	}
 }
