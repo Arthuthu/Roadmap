@@ -323,8 +323,10 @@ body {
 }
 
 .user-profile-photo-div {
+    text-align: center;
     border-right: solid #FFF;
     box-sizing: border-box;
+    margin: 0 0 30px 0;
 }
 
 .user-profile-photo-div img {
@@ -368,4 +370,10 @@ body {
 
 .user-profile-bio p {
     margin: 0;
+}
+
+.edit-profile-bio-label {
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
 }

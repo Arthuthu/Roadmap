@@ -99,7 +99,7 @@
 			}
 		}
 
-		foreach (var roadmap in Roadmaps)
+		foreach (var roadmap in Roadmaps!)
 		{
 			string roadmapClass = await GetButtonColor(roadmap.Id);
 			roadmap.RoadmapHtmlClass = roadmapClass;
@@ -146,7 +146,7 @@
 	private async Task AddUserVote(Guid roadmapId)
 	{
 		RoadmapVotesModel roadmapVote = new();
-		roadmapVote.UserId = new Guid(LoggedInUserId);
+		roadmapVote.UserId = new Guid(LoggedInUserId!);
 		roadmapVote.RoadmapId = new Guid(roadmapId.ToString());
 
 		if (roadmapVote.UserId is null)

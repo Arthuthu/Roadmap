@@ -7,11 +7,11 @@
 
 <AuthorizeView>
 	<Authorized>
-		<div class="user-profile-div">
-			<div class="user-profile-photo-div">
-				<img src="@DefaultProfilePicture" />
-			</div>
+		<div class="user-profile-photo-div">
+			<img src="@DefaultProfilePicture" />
+		</div>
 
+		<div class="user-profile-div">
 			<div class="user-profile-username-bio-div">
 				<div class="user-profile-username">
 					@User.Username
@@ -111,8 +111,8 @@
 	protected override async Task OnParametersSetAsync()
 	{
 		await GetLoggedInUserId();
-		await GetUserByPageId(UserId);
-		await GetRoadmapsByUserId(new Guid(UserId));
+		await GetUserByPageId(UserId!);
+		await GetRoadmapsByUserId(new Guid(UserId!));
 
 		foreach (var roadmap in Roadmaps!)
 		{
