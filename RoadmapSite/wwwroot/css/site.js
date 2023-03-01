@@ -9,12 +9,12 @@
 }
 
 function toggleVoteButtonDetailsClass(button) {
-    if (button.classList.contains("vote-button-details-voted")) {
-        button.classList.remove("vote-button-details-voted");
+    if (button.classList.contains("vote-button-voted-details")) {
+        button.classList.remove("vote-button-voted-details");
         button.classList.add("vote-button-details");
     } else {
         button.classList.remove("vote-button-details");
-        button.classList.add("vote-button-details-voted");
+        button.classList.add("vote-button-voted-details");
     }
 }
 
