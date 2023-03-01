@@ -51,7 +51,7 @@
 	[Parameter]
 	public string? UserId { get; set; }
 	public string? LoggedInUserId { get; set; }
-	public UserModel User { get; set; }
+	public UserModel? User { get; set; }
 	private bool IsInitialized { get; set; }
 	private bool showAuthenticationError = false;
 	private string authenticationErrorText = "";
@@ -67,7 +67,7 @@
 			navManager.NavigateTo("/notfound");
 		}
 
-		await GetUserByPageId(UserId);
+		await GetUserByPageId(UserId!);
 
 		if (UserId != LoggedInUserId)
 		{
@@ -99,7 +99,7 @@
 
 	private async Task UpdateProfile()
 	{
-		var result = await userService.UpdateUser(User);
+		var result = await userService.UpdateUser(User!);
 
 		if (result is not null)
 		{

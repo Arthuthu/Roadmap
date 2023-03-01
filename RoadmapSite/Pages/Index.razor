@@ -99,13 +99,26 @@
 			}
 		}
 
-		foreach (var roadmap in Roadmaps!)
+		if (LoggedInUserId is not null)
 		{
-			string roadmapClass = await GetButtonColor(roadmap.Id);
-			roadmap.RoadmapHtmlClass = roadmapClass;
+			foreach (var roadmap in Roadmaps!)
+			{
+				string roadmapClass = await GetButtonColor(roadmap.Id);
+				roadmap.RoadmapHtmlClass = roadmapClass;
 
-			int roadmapTotalVotes = await GetRoadmapVotes(roadmap.Id);
-			roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+				int roadmapTotalVotes = await GetRoadmapVotes(roadmap.Id);
+				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+			}
+		}
+		else
+		{
+			foreach (var roadmap in Roadmaps!)
+			{
+				int roadmapTotalVotes = await GetRoadmapVotes(roadmap.Id);
+
+				roadmap.RoadmapHtmlClass = "vote-button";
+				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+			}
 		}
 	}
 
@@ -134,26 +147,19 @@
 		var user = authenticationState.User;
 		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-		if (userId is null)
-		{
-			LoggedInUserId = "";
-			throw new Exception("Usuario nao esta logado");
-		}
-
 		LoggedInUserId = userId;
 	}
 
 	private async Task AddUserVote(Guid roadmapId)
 	{
+		if (LoggedInUserId is null)
+		{
+			navManager.NavigateTo("/login");
+		}
+
 		RoadmapVotesModel roadmapVote = new();
 		roadmapVote.UserId = new Guid(LoggedInUserId!);
 		roadmapVote.RoadmapId = new Guid(roadmapId.ToString());
-
-		if (roadmapVote.UserId is null)
-		{
-			throw new Exception("Você precisa entrar em uma conta para votar");
-			navManager.NavigateTo("/login");
-		}
 
 		var didUserVotedOnRoadmap = await VerifiyIfUserVotedOnRoadmap(roadmapId);
 
@@ -179,14 +185,18 @@
 
 	private async Task<bool> VerifiyIfUserVotedOnRoadmap(Guid roadmapId)
 	{
-		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(LoggedInUserId));
-
-		foreach (var roadmap in roadmaps)
+		if (LoggedInUserId is not null)
 		{
-			if (roadmap.RoadmapId == roadmapId)
+			var roadmaps = await GetAllRoadmapsUserVoted(new Guid(LoggedInUserId));
+
+			foreach (var roadmap in roadmaps)
 			{
-				return true;
+				if (roadmap.RoadmapId == roadmapId)
+				{
+					return true;
+				}
 			}
+			return false;
 		}
 
 		return false;
@@ -194,12 +204,17 @@
 
 	private async Task<Guid> GetRoadmapVoteIdByUserAndRoadmapId(Guid roadmapId)
 	{
-		var userId = new Guid(LoggedInUserId);
+		if (LoggedInUserId is not null)
+		{
+			var userId = new Guid(LoggedInUserId);
 
-		var roadmapVote = await roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
-		var voteId = roadmapVote.Id;
+			var roadmapVote = await roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
+			var voteId = roadmapVote.Id;
 
-		return voteId;
+			return voteId;
+		}
+
+		return Guid.Empty;
 	}
 
 	private async Task<string> GetButtonColor(Guid roadmapId)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RoadmapAPIApp.Request;
 using RoadmapAPIApp.Response;
@@ -55,6 +56,7 @@ public class RoadmapVotesController : ControllerBase
 		return Ok(responseRoadmapVotes);
 	}
 
+	[AllowAnonymous]
 	[Route("/getroadmapvotesbyroadmapid/{roadmapId}")]
 	[HttpGet]
 	public async Task<ActionResult<RoadmapVotesResponse>> GetRoadmapVotesByRoadmapId(Guid roadmapId)
