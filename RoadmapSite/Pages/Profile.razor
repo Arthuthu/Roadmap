@@ -2,6 +2,7 @@
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navManager
 @inject IUserService userService
+@inject IRoadmapVotesService roadmapVotesService
 @inject IRoadmapService roadmapService
 
 <AuthorizeView>
@@ -44,22 +45,32 @@
 		<div class="roadmap-box-div-profile-parent-div">
 			@foreach (var roadmap in Roadmaps)
 			{
-				<div class="roadmap-box-div-profile">
-					<div class="roadmap-name-div">
-						<p class="roadmap-name">@roadmap.Name</p>
+				<div class="roadmap-second-div">
+					<div onclick="toggleVoteButtonClass(this.querySelector('button'))">
+						<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
+							@onclick="async () => await AddUserVote(roadmap.Id)">
+							<span id="vote-count">@roadmap.RoadmapTotalVotes</span>
+							<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
+							Vote
+						</button>
 					</div>
+					<div class="roadmap-box-div">
+						<a class="roadmap-name-a" href="roadmapdetails/@roadmap.Id">
+							<p class="roadmap-name">@roadmap.Name</p>
+						</a>
 
-					<div class="roadmap-description-div">
-						<p>@roadmap.Description</p>
-					</div>
+						<div class="roadmap-description-div">
+							<p>@roadmap.Description</p>
+						</div>
 
-					<div class="roadmap-category-author-main-div">
-						<div class="roadmap-category-div">
-							<div class="roadmap-category-label">
-								<p>Categoria:</p>
-							</div>
-							<div class="roadmap-category-value">
-								@roadmap.Category
+						<div class="roadmap-category-author-main-div">
+							<div class="roadmap-category-div">
+								<div class="roadmap-category-label">
+									<p>Categoria:</p>
+								</div>
+								<div class="roadmap-category-value">
+									@roadmap.Category
+								</div>
 							</div>
 						</div>
 					</div>
@@ -82,13 +93,12 @@
 	</NotAuthorized>
 </AuthorizeView>
 
-
 @code {
 	[Parameter]
 	public string? UserId { get; set; }
 	public string? LoggedInUserId { get; set; }
 	public UserModel User { get; set; }
-	public IList<RoadmapClassModel> Roadmaps { get; set; }
+	public IList<RoadmapClassModel>? Roadmaps { get; set; }
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"; 
 
 	protected override async Task OnInitializedAsync()
@@ -103,6 +113,15 @@
 		await GetLoggedInUserId();
 		await GetUserByPageId(UserId);
 		await GetRoadmapsByUserId(new Guid(UserId));
+
+		foreach (var roadmap in Roadmaps!)
+		{
+			string roadmapClass = await GetButtonColor(roadmap.Id);
+			roadmap.RoadmapHtmlClass = roadmapClass;
+
+			int roadmapTotalVotes = await GetRoadmapVotes(roadmap.Id);
+			roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+		}
 	}
 
 	private async Task GetLoggedInUserId()
@@ -130,5 +149,83 @@
 		var roadmaps = await roadmapService.GetRoadmapByUserId(userId);
 
 		Roadmaps = roadmaps;
+	}
+
+	private async Task AddUserVote(Guid roadmapId)
+	{
+		RoadmapVotesModel roadmapVote = new();
+		roadmapVote.UserId = new Guid(LoggedInUserId);
+		roadmapVote.RoadmapId = new Guid(roadmapId.ToString());
+
+		if (roadmapVote.UserId is null)
+		{
+			throw new Exception("Você precisa entrar em uma conta para votar");
+			navManager.NavigateTo("/login");
+		}
+
+		var didUserVotedOnRoadmap = await VerifiyIfUserVotedOnRoadmap(roadmapId);
+
+		if (didUserVotedOnRoadmap is true)
+		{
+			var votedRoadmapId = await GetRoadmapVoteIdByUserAndRoadmapId(roadmapVote.RoadmapId);
+			await roadmapVotesService.RemoveRoadmapVote(votedRoadmapId);
+		}
+		else
+		{
+			await roadmapVotesService.AddRoadmapVote(roadmapVote);
+		}
+	}
+
+	private async Task<IList<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid id)
+	{
+		var roadmaps = await roadmapVotesService.GetAllRoadmapsUserVoted(id);
+
+		return roadmaps;
+	}
+
+
+
+	private async Task<bool> VerifiyIfUserVotedOnRoadmap(Guid roadmapId)
+	{
+		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(LoggedInUserId));
+
+		foreach (var roadmap in roadmaps)
+		{
+			if (roadmap.RoadmapId == roadmapId)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private async Task<Guid> GetRoadmapVoteIdByUserAndRoadmapId(Guid roadmapId)
+	{
+		var userId = new Guid(LoggedInUserId);
+
+		var roadmapVote = await roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
+		var voteId = roadmapVote.Id;
+
+		return voteId;
+	}
+
+	private async Task<string> GetButtonColor(Guid roadmapId)
+	{
+		var result = await VerifiyIfUserVotedOnRoadmap(roadmapId);
+
+		if (result is true)
+		{
+			return "vote-button-voted";
+		}
+
+		return "vote-button";
+	}
+
+	private async Task<int> GetRoadmapVotes(Guid roadmapId)
+	{
+		var roadmapVotes = await roadmapVotesService.GetRoadmapVotesByRoadmapId(roadmapId);
+
+		return roadmapVotes.Count();
 	}
 }

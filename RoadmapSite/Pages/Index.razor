@@ -74,7 +74,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		await GetUserId();
+		await GetLoggedInUserId();
 
 		Roadmaps = await localStorage.GetItemAsync<IList<RoadmapClassModel>>(RoadmapList);
 		DateTime? cacheDate = await localStorage.GetItemAsync<DateTime>(RoadmapCacheDate);
@@ -125,11 +125,10 @@
 				}
 			}
 		}
-
 		return roadmaps;
 	}
 
-	private async Task GetUserId()
+	private async Task GetLoggedInUserId()
 	{
 		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authenticationState.User;
