@@ -1,11 +1,9 @@
 ﻿@page "/"
 @inject IRoadmapService roadmapService
-@inject IRoadmapVotesService roadmapVotesService
 @inject IUserService userService
 @inject ILocalStorageService localStorage
 @inject IVotingService votingService
-@inject AuthenticationStateProvider _authenticationStateProvider
-@inject NavigationManager navManager
+@inject AuthenticationStateProvider authenticationStateProvider
 
 <div class="create-roadmap-button-div">
 	<a class="first-style-button" href="createroadmap">
@@ -90,7 +88,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		await GetLoggedInUserId();
+		LoggedInUserId = await votingService.GetLoggedInUserId();
 
 		Roadmaps = await localStorage.GetItemAsync<IList<RoadmapClassModel>>(RoadmapList);
 		DateTime? cacheDate = await localStorage.GetItemAsync<DateTime>(RoadmapCacheDate);
@@ -159,7 +157,7 @@
 
 	private async Task<string> GetLoggedInUserId()
 	{
-		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+		var authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authenticationState.User;
 		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
