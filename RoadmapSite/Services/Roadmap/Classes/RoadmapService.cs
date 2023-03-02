@@ -99,7 +99,7 @@ public class RoadmapService : IRoadmapService
 
 	public async Task<IList<RoadmapClassModel>?> GetRoadmapsByCategory(string category)
 	{
-		string getRoadmapsByCategory = _config["apiLocation"] + _config["getroadmapsbycategory"] + $"{category}";
+		string getRoadmapsByCategory = _config["apiLocation"] + _config["getroadmapsbycategory"] + $"/{category}";
 		var authResult = await _client.GetAsync(getRoadmapsByCategory);
 		var authContent = await authResult.Content.ReadAsStringAsync();
 

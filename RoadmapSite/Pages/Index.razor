@@ -69,7 +69,8 @@
 		<div class="index-categorias-label">
 			Categorias
 		</div>
-		<div class="index-categorias-element">
+		<div class="index-categorias-element"
+				@onclick="async () => await GetRoadmapsByCategory(CSharp)">
 			C#
 		</div>
 		<div class="index-categorias-element">
@@ -84,6 +85,7 @@
 	private const string RoadmapList = "RoadmapList";
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
 	private string? LoggedInUserId = "";
+	const string CSharp = "CSharp";
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -254,10 +256,30 @@
 		return roadmapVotes.Count();
 	}
 
-	private async Task<IList<RoadmapClassModel>?> GetRoadmapsByCategory(string category)
+	private async Task? GetRoadmapsByCategory(string category)
 	{
-		var roadmaps = await roadmapService.GetRoadmapsByCategory(category);
+		Roadmaps = await roadmapService.GetRoadmapsByCategory(category);
 
-		return roadmaps;
+		if (LoggedInUserId is not null)
+		{
+			foreach (var roadmap in Roadmaps!)
+			{
+				string roadmapClass = await GetButtonColor(roadmap.Id);
+				roadmap.RoadmapHtmlClass = roadmapClass;
+
+				int roadmapTotalVotes = await GetRoadmapVotes(roadmap.Id);
+				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+			}
+		}
+		else
+		{
+			foreach (var roadmap in Roadmaps!)
+			{
+				int roadmapTotalVotes = await GetRoadmapVotes(roadmap.Id);
+
+				roadmap.RoadmapHtmlClass = "vote-button";
+				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+			}
+		}
 	}
 }
