@@ -69,10 +69,11 @@
 			Categorias
 		</div>
 		<div class="index-categorias-element"
-				@onclick="async () => await GetRoadmapsByCategory(CSharp)">
+			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.CSharp)">
 			C#
 		</div>
-		<div class="index-categorias-element">
+		<div class="index-categorias-element"
+			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.JavaScript)">
 			Javascript
 		</div>
 	</div>
@@ -84,7 +85,6 @@
 	private const string RoadmapList = "RoadmapList";
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
 	private Guid? LoggedInUserId;
-	const string CSharp = "CSharp";
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -173,9 +173,23 @@
 		return "";
 	}
 
-	private async Task? GetRoadmapsByCategory(string category)
+	private async Task? GetRoadmapsByCategory(CategoryModel category)
 	{
-		Roadmaps = await roadmapService.GetRoadmapsByCategory(category);
+		Roadmaps = await roadmapService.GetRoadmapsByCategory(category.ToString());
+
+		var users = await userService.GetAllUsers();
+
+		foreach (var roadmap in Roadmaps)
+		{
+			foreach (var user in users)
+			{
+				if (roadmap.UserId == user.Id)
+				{
+					roadmap.Author = user.Username;
+					roadmap.AuthorId = user.Id.ToString();
+				}
+			}
+		}
 
 		if (LoggedInUserId != Guid.Empty)
 		{
