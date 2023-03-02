@@ -34,7 +34,7 @@ public class RegistrationService : IRegistrationService
         if (authResult.IsSuccessStatusCode is false)
         {
             _logger.LogInformation($"Ocorreu um eror durante o registro de conta de usuario {authContent}");
-            return "Ocorreu um erro durante o registro de usuario, preencha os campos corretamente";
+            return authContent;
         }
 
         return await authResult.Content.ReadAsStringAsync();

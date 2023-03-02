@@ -81,14 +81,21 @@
 		LoggedInUserId = userId;
 	}
 
-	private async Task ExecuteRoadmapCreation()
+	private async Task<string> ExecuteRoadmapCreation()
 	{
 		model.UserId = new Guid(LoggedInUserId!);
 
 		var result = await roadmapServiceService.CreateRoadmap(model);
 
 		roadmapCreationMessage = result;
-		
-		navManager.NavigateTo("/");
+
+		if (roadmapCreationMessage != "Roadmap criado com sucesso")
+		{
+			return "";
+		}
+
+		navManager.NavigateTo($"/profile/{LoggedInUserId}");
+
+		return "";
 	}
 }

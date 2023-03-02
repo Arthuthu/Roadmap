@@ -58,15 +58,11 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		try
-		{
-			await GetLoggedInUserId();
-		}
-		catch
+		if (LoggedInUserId is null)
 		{
 			navManager.NavigateTo("/notfound");
 		}
-
+		
 		await GetUserByPageId(UserId!);
 
 		if (UserId != LoggedInUserId)
@@ -82,12 +78,6 @@
 		var authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authenticationState.User;
 		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-		if (userId is null)
-		{
-			LoggedInUserId = "";
-			throw new Exception("Usuario nao esta logado");
-		}
 
 		LoggedInUserId = userId;
 	}
