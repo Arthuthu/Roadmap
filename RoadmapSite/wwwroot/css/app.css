@@ -96,6 +96,12 @@ body {
     display: flex;
 }
 
+.index-create-inicio-button-div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
 .roadmap-main-div {
     margin: 10px 20px 0 20px;
     width: 80%;
@@ -324,7 +330,8 @@ body {
     text-align: center;
 }
 
-.first-style-button {
+.first-style-button,
+.second-style-button {
     background-color: #EF9F00;
     margin: 20px 0 0 0;
     padding: 15px 20px;
@@ -341,6 +348,10 @@ body {
         background-color: #D78F00;
         color: #FFF;
     }
+
+.second-style-button{
+    margin: 0;
+}
 
 .registre-se-aqui-div {
     text-align: center;

@@ -5,12 +5,20 @@
 @inject IVotingService votingService
 @inject AuthenticationStateProvider authenticationStateProvider
 
-<div class="create-roadmap-button-div">
-	<a class="first-style-button" href="createroadmap">
-		Criar Roadmap
-	</a>
-</div>
+<div class="index-create-inicio-button-div">
+	<div class="create-roadmap-button-div">
+		<button class="second-style-button"
+				@onclick="OnInitializedAsync">
+			Inicio
+		</button>
+	</div>
 
+	<div class="create-roadmap-button-div">
+		<a class="first-style-button" href="createroadmap">
+			Criar Roadmap
+		</a>
+	</div>
+</div>
 <div class="index-main-div">
 	<div class="roadmap-main-div">
 		@if (Roadmaps is null)
