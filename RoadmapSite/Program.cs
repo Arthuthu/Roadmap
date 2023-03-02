@@ -13,6 +13,8 @@ using RoadmapSite.Services.RoadmapVotes.Classes;
 using RoadmapSite.Services.RoadmapVotes.Interfaces;
 using RoadmapSite.Services.User.Classes;
 using RoadmapSite.Services.User.Interfaces;
+using RoadmapSite.Services.Voting.Classes;
+using RoadmapSite.Services.Voting.Interfaces;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -24,6 +26,7 @@ builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<IRoadmapService, RoadmapService>();
 builder.Services.AddScoped<IRoadmapVotesService, RoadmapVotesService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IVotingService, VotingService>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
 builder.Services.AddBlazoredLocalStorage();

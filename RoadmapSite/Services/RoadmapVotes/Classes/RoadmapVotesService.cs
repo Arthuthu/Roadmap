@@ -62,7 +62,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return roadmapVotesModel;
 	}
 
-	public async Task<IList<RoadmapVotesModel>?> GetAllRoadmapsUserVoted(Guid userId)
+	public async Task<IList<RoadmapVotesModel>?> GetAllRoadmapsUserVoted(Guid? userId)
 	{
 		string getAllRoadmapsUserVotedEndpoint = _config["apiLocation"] + _config["getAllRoadmapsUserVotedEndpoint"] + $"/{userId}";
 		var authResult = await _client.GetAsync(getAllRoadmapsUserVotedEndpoint);
@@ -80,7 +80,7 @@ public class RoadmapVotesService : IRoadmapVotesService
 	}
 
 
-	public async Task<RoadmapVotesModel?> GetRoadmapVoteIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
+	public async Task<RoadmapVotesModel?> GetRoadmapVoteIdByUserAndRoadmapId(Guid? userId, Guid roadmapId)
 	{
 		string getRoadmapVotedIdByUserAndRoadmapIdEndpoint = _config["apiLocation"] + _config["getRoadmapVotedIdByUserAndRoadmapIdEndpoint"] + $"/{userId}" + $"/{roadmapId}";
 		var authResult = await _client.GetAsync(getRoadmapVotedIdByUserAndRoadmapIdEndpoint);
