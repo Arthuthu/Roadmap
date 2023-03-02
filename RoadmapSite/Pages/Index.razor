@@ -6,6 +6,12 @@
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager navManager
 
+<div class="create-roadmap-button-div">
+	<a class="first-style-button" href="createroadmap">
+		Criar Roadmap
+	</a>
+</div>
+
 <div class="index-main-div">
 	<div class="roadmap-main-div">
 		@if (Roadmaps is null)
@@ -14,11 +20,6 @@
 		}
 		else
 		{
-			<div class="create-roadmap-button-div">
-				<a class="first-style-button" href="createroadmap">
-					Criar Roadmap
-				</a>
-			</div>
 			@foreach (var roadmap in Roadmaps)
 			{
 				<div class="roadmap-second-div">
@@ -65,13 +66,13 @@
 	</div>
 
 	<div class="index-categorias-div">
-		<div>
+		<div class="index-categorias-label">
 			Categorias
 		</div>
-		<div>
+		<div class="index-categorias-element">
 			C#
 		</div>
-		<div>
+		<div class="index-categorias-element">
 			Javascript
 		</div>
 	</div>

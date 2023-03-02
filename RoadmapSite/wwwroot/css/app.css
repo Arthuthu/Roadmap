@@ -97,8 +97,8 @@ body {
 }
 
 .roadmap-main-div {
-    margin: 10px 20px 0 10px;
-    width: 100%;
+    margin: 10px 20px 0 20px;
+    width: 80%;
 }
 
 .roadmap-second-div{
@@ -239,10 +239,42 @@ body {
 }
 
 .vote-icon {
-    font-size: 40px;
+    font-size: 30px;
 }
-/* Login and Registration page */
 
+.index-categorias-div {
+    text-align: center;
+    margin: 10px 0 0 40px;
+    border: solid #fff;
+    border-radius: 20px 20px 0 0;
+    height: 100%;
+}
+
+.index-categorias-label {
+    font-size: 40px;
+    font-weight: bold;
+    color: #FFF;
+    padding: 10px 20px 20px 20px;
+    background-image: linear-gradient(#F1AF2A, #D78F00);
+    border-radius: 15px 15px 0 0;
+}
+
+.index-categorias-element {
+    font-weight: bold;
+    font-size: 25px;
+    background-color: #E89008;
+    color: #FFF;
+    padding: 20px 0;
+    border-top: #FFF solid;
+}
+
+    .index-categorias-element:hover {
+        transition: 500ms;
+        cursor: pointer;
+        background-color: #E87108;
+    }
+
+/* Login and Registration page */
 .iniciar-sessao-paragraph {
     text-align: center;
     font-size: 2rem;
