@@ -38,6 +38,14 @@
 				</button>
 			</div>
 		</div>
+
+		@if (Roadmap.UserId.ToString() == LoggedInUserId)
+		{
+			<div>
+				<button>Excluir Roadmap</button>
+			</div>
+		}
+
 	}
 }
 
@@ -45,10 +53,11 @@
 @code {
 	[Parameter]
 	public string? RoadmapId { get; set; }
-	public RoadmapClassModel? Roadmap { get; set; }
-	bool isInitialized = false;
 	public string? LoggedInUserId { get; set; }
+	public RoadmapClassModel? Roadmap { get; set; }
 	public UserModel? User { get; set; }
+	bool isInitialized = false;
+
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
 
 	protected override async Task OnInitializedAsync()
@@ -123,7 +132,7 @@
 		}
 	}
 
-	private async Task<IList<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid id)
+	private async Task<IList<RoadmapVotesModel>?> GetAllRoadmapsUserVoted(Guid id)
 	{
 		var roadmaps = await roadmapVotesService.GetAllRoadmapsUserVoted(id);
 
@@ -138,12 +147,17 @@
 		{
 			var roadmaps = await GetAllRoadmapsUserVoted(new Guid(LoggedInUserId));
 
-			foreach (var roadmap in roadmaps)
+			if (roadmaps is not null)
 			{
-				if (roadmap.RoadmapId == roadmapId)
+				foreach (var roadmap in roadmaps)
 				{
-					return true;
+					if (roadmap.RoadmapId == roadmapId)
+					{
+						return true;
+					}
 				}
+
+				return false;
 			}
 
 			return false;
@@ -161,9 +175,15 @@
 			var userId = new Guid(LoggedInUserId);
 
 			var roadmapVote = await roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
-			var voteId = roadmapVote.Id;
 
-			return voteId;
+			if (roadmapVote is not null)
+			{
+				var voteId = roadmapVote.Id;
+
+				return voteId;
+			}
+
+			return Guid.Empty;
 		}
 		else
 		{
@@ -187,6 +207,11 @@
 	{
 		var roadmapVotes = await roadmapVotesService.GetRoadmapVotesByRoadmapId(roadmapId);
 
-		return roadmapVotes.Count();
+		if (roadmapVotes is not null)
+		{
+			return roadmapVotes.Count();
+		}
+
+		return 0;
 	}
 }

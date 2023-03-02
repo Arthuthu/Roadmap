@@ -190,7 +190,7 @@
 		}
 	}
 
-	private async Task<IList<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid id)
+	private async Task<IList<RoadmapVotesModel>?> GetAllRoadmapsUserVoted(Guid id)
 	{
 		var roadmaps = await roadmapVotesService.GetAllRoadmapsUserVoted(id);
 
@@ -203,12 +203,17 @@
 	{
 		var roadmaps = await GetAllRoadmapsUserVoted(new Guid(LoggedInUserId!));
 
-		foreach (var roadmap in roadmaps)
+		if (roadmaps is not null)
 		{
-			if (roadmap.RoadmapId == roadmapId)
+			foreach (var roadmap in roadmaps)
 			{
-				return true;
+				if (roadmap.RoadmapId == roadmapId)
+				{
+					return true;
+				}
 			}
+
+			return false;
 		}
 
 		return false;
@@ -219,7 +224,7 @@
 		var userId = new Guid(LoggedInUserId!);
 
 		var roadmapVote = await roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
-		var voteId = roadmapVote.Id;
+		var voteId = roadmapVote!.Id;
 
 		return voteId;
 	}
@@ -239,6 +244,11 @@
 	private async Task<int> GetRoadmapVotes(Guid roadmapId)
 	{
 		var roadmapVotes = await roadmapVotesService.GetRoadmapVotesByRoadmapId(roadmapId);
+
+		if (roadmapVotes is null)
+		{
+			return 0;
+		}
 
 		return roadmapVotes.Count();
 	}
