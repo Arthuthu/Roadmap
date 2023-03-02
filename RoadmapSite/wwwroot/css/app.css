@@ -8,7 +8,7 @@ body {
     background-repeat: no-repeat;
 }
 
-/*Navbar*/
+/* Navbar */
 
 .navbar {
     display: flex;
@@ -51,7 +51,7 @@ body {
         color: #DCDCDC;
     }
 
-/*Not Authorized*/
+/* Not Authorized */
 
 .not-authorized-message-div {
     text-align: center;
@@ -66,7 +66,7 @@ body {
     font-size: 24px;
 }
 
-/*Not Found*/
+/* Not Found */
 
 .not-found-label{
     text-align: center;
@@ -79,7 +79,7 @@ body {
     font-size: 20px;
 }
 
-/*Alerts*/
+/* Alerts */
 .alert-message-div {
     margin: 20px 0 0 0;
     text-align: center;
@@ -241,7 +241,7 @@ body {
 .vote-icon {
     font-size: 40px;
 }
-/*Login and Registration page*/
+/* Login and Registration page */
 
 .iniciar-sessao-paragraph {
     text-align: center;
@@ -327,7 +327,7 @@ body {
     color: #000;
 }
 
-/*Profile*/
+/* Profile */
 
 .user-profile-div{
     display: flex;
@@ -397,7 +397,7 @@ body {
     font-weight: bold;
     font-size: 30px;
 }
-/*Roadmap Details*/
+/* Roadmap Details */
 
 .roadmap-details-name-category-div {
     display: flex;

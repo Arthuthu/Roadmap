@@ -1,9 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Newtonsoft.Json;
 using RoadmapSite.Models;
-using RoadmapSite.Services.Authentication.Classes;
 using RoadmapSite.Services.Roadmap.Interfaces;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoadmapSite.Services.Roadmap.Classes;
 
@@ -48,7 +46,7 @@ public class RoadmapService : IRoadmapService
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
-	public async Task<IList<RoadmapClassModel>> GetAllRoadmaps()
+	public async Task<IList<RoadmapClassModel>?> GetAllRoadmaps()
 	{
 		string getAllRoadmapsEndpoint = _config["apiLocation"] + _config["getAllRoadmapsEndpoint"];
 		var authResult = await _client.GetAsync(getAllRoadmapsEndpoint);
@@ -65,7 +63,7 @@ public class RoadmapService : IRoadmapService
 		return roadmapClassModel;
 	}
 
-	public async Task<IList<RoadmapClassModel>> GetRoadmapByUserId(Guid userId)
+	public async Task<IList<RoadmapClassModel>?> GetRoadmapByUserId(Guid userId)
 	{
 		string getRoadmapByUserIdEndpoint = _config["apiLocation"] + _config["getRoadmapByUserIdEndpoint"] + $"/{userId}";
 		var authResult = await _client.GetAsync(getRoadmapByUserIdEndpoint);
@@ -82,7 +80,7 @@ public class RoadmapService : IRoadmapService
 		return roadmapClassModel;
 	}
 
-	public async Task<RoadmapClassModel> GetRoadmapById(Guid id)
+	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
 	{
 		string getRoadmapByIdEndpoint = _config["apiLocation"] + _config["getRoadmapByIdEndpoint"] + $"/{id}";
 		var authResult = await _client.GetAsync(getRoadmapByIdEndpoint);
@@ -95,6 +93,23 @@ public class RoadmapService : IRoadmapService
 		}
 
 		var roadmapClassModel = JsonConvert.DeserializeObject<RoadmapClassModel>(authContent);
+
+		return roadmapClassModel;
+	}
+
+	public async Task<IList<RoadmapClassModel>?> GetRoadmapsByCategory(string category)
+	{
+		string getRoadmapsByCategory = _config["apiLocation"] + _config["getroadmapsbycategory"] + $"{category}";
+		var authResult = await _client.GetAsync(getRoadmapsByCategory);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro durante o carregamento dos roadmaps: {authContent}");
+			return null;
+		}
+
+		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
 
 		return roadmapClassModel;
 	}

@@ -93,6 +93,7 @@
     <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_GetRoadmapVoteIddByUserAndRoadmapId.sql" />
     <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_GetRoadmapVotesByRoadmapId.sql" />
     <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_GetRoadmapByUserId.sql" />
+    <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_GetRoadmapsByCategory.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />

@@ -28,13 +28,25 @@ public class RoadmapClassService : IRoadmapClassService
 		return await _roadmapRepository.GetRoadmapById(id);
 	}
 
-	public async Task<IList<RoadmapClassModel?>> GetRoadmapByUserId(Guid userId)
+	public async Task<IList<RoadmapClassModel>> GetRoadmapByUserId(Guid userId)
 	{
 		var results = await _roadmapRepository.GetRoadmapByUserId(userId);
 
 		if (results is null)
 		{
 			throw new Exception("Usuario não tem roadmaps criados");
+		}
+
+		return results;
+	}
+
+	public async Task<IList<RoadmapClassModel>> GetRoadmapsByCategory(string category)
+	{
+		var results = await _roadmapRepository.GetRoadmapsByCategory(category);
+
+		if (results is null)
+		{
+			throw new Exception("Não existem roadmaps com esta categoria");
 		}
 
 		return results;

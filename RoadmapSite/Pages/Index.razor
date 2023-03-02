@@ -64,7 +64,7 @@
 		}
 	</div>
 
-	<div>
+	<div class="index-categorias-div">
 		<div>
 			Categorias
 		</div>
@@ -251,5 +251,12 @@
 		}
 
 		return roadmapVotes.Count();
+	}
+
+	private async Task<IList<RoadmapClassModel>?> GetRoadmapsByCategory(string category)
+	{
+		var roadmaps = await roadmapService.GetRoadmapsByCategory(category);
+
+		return roadmaps;
 	}
 }

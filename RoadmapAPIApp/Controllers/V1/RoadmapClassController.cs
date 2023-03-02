@@ -47,7 +47,18 @@ public class RoadmapClassController : ControllerBase
         return Ok(responseRoadmaps);
     }
 
-    [Route("/getroadmapbyuserid/{userId}")]
+    [AllowAnonymous]
+	[Route("/getroadmapsbycategory/{category}")]
+	[HttpGet]
+	public async Task<ActionResult<RoadmapClassResponse>> GetRoadmapsByCategory(string category)
+	{
+		var roadmaps = await _roadmapService.GetRoadmapsByCategory(category);
+		var responseRoadmaps = roadmaps.Select(roadmap => _mapper.Map<RoadmapClassResponse>(roadmap));
+
+		return Ok(responseRoadmaps);
+	}
+
+	[Route("/getroadmapbyuserid/{userId}")]
 	[HttpGet]
 	public async Task<ActionResult<RoadmapClassResponse>> GetRoadmapByUserId(Guid userId)
 	{
