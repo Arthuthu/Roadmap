@@ -97,20 +97,18 @@ public class RoadmapService : IRoadmapService
 		return roadmapClassModel;
 	}
 
-	public async Task<IList<RoadmapClassModel>?> GetRoadmapsByCategory(string category)
+	public async Task<string> DeleteRoadmap(Guid id)
 	{
-		string getRoadmapsByCategory = _config["apiLocation"] + _config["getroadmapsbycategory"] + $"/{category}";
-		var authResult = await _client.GetAsync(getRoadmapsByCategory);
+		string deleteRoadmapEndpoint = _config["apiLocation"] + _config["deleteRoadmapEndpoint"] + $"/{id}";
+		var authResult = await _client.GetAsync(deleteRoadmapEndpoint);
 		var authContent = await authResult.Content.ReadAsStringAsync();
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento dos roadmaps: {authContent}");
-			return null;
+			_logger.LogInformation($"Ocorreu um erro durante o carregamento do roadmap: {authContent}");
+			return authContent;
 		}
 
-		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
-
-		return roadmapClassModel;
+		return authContent;
 	}
 }

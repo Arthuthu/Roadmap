@@ -23,13 +23,13 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return _roadmapVotesRepository.GetAllRoadmapVotes();
 	}
 
-	public async Task<string> AddRoadmapVote(RoadmapVotesModel roadmapVote)
+	public async Task<string> AddRoadmapVote(Guid userId, Guid roadmapId)
 	{
-		roadmapVote.Id = Guid.NewGuid();
+		Guid roadmapVoteId = Guid.NewGuid();
 
 		try
 		{
-			await _roadmapVotesRepository.AddRoadmapVote(roadmapVote);
+			await _roadmapVotesRepository.AddRoadmapVote(roadmapVoteId, userId, roadmapId);
 		}
 		catch
 		{
@@ -41,23 +41,8 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return roadmapVotingResponseMessage;
 	}
 
-	public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid userId)
-	{
-		return _roadmapVotesRepository.GetAllRoadmapsUserVoted(userId);
-	}
-
-	public Task<RoadmapVotesModel> GetRoadmapVoteIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
-	{
-		return _roadmapVotesRepository.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
-	}
-
 	public Task DeleteRoadmapVote(Guid id)
 	{
 		return _roadmapVotesRepository.DeleteRoadmapVote(id);
-	}
-
-	public Task<IList<RoadmapVotesModel>> GetRoadmapVotesByRoadmapId(Guid roadmapId)
-	{
-		return _roadmapVotesRepository.GetRoadmapVotesByRoadmapId(roadmapId);
 	}
 }

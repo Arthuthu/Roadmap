@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using RoadmapSite.Models;
 using RoadmapSite.Services.RoadmapVotes.Interfaces;
+using RoadmapSite.Services.User.Interfaces;
 using RoadmapSite.Services.Voting.Interfaces;
 using System.Security.Claims;
 
@@ -43,84 +44,52 @@ public class VotingService : IVotingService
 			_navigationManager.NavigateTo("/login");
 		}
 
-		RoadmapVotesModel roadmapVote = new();
-		roadmapVote.UserId = loggedInUserId!;
-		roadmapVote.RoadmapId = roadmapId;
+		var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes();
 
-		var didUserVotedOnRoadmap = await VerifiyIfUserVotedOnRoadmap(roadmapId, loggedInUserId);
+		var votedRoadmapId = roadmapVotes!
+			.Where(x => x.UserId == loggedInUserId && x.RoadmapId == roadmapId)
+			.Select(x => x.Id).FirstOrDefault();
 
-		if (didUserVotedOnRoadmap is true)
+		if (votedRoadmapId != Guid.Empty)
 		{
-			var votedRoadmapId = await GetRoadmapVoteIdByUserAndRoadmapId(roadmapVote.RoadmapId, loggedInUserId);
 			await _roadmapVotesService.RemoveRoadmapVote(votedRoadmapId);
 		}
 		else
 		{
-			await _roadmapVotesService.AddRoadmapVote(roadmapVote);
+			await _roadmapVotesService.AddRoadmapVote(loggedInUserId, roadmapId);
 		}
 	}
-
-	private async Task<bool> VerifiyIfUserVotedOnRoadmap(Guid roadmapId, Guid? loggedInUserId)
-	{
-		if (loggedInUserId.ToString() is not null)
-		{
-			var roadmaps = await GetAllRoadmapsUserVoted(loggedInUserId);
-
-			foreach (var roadmap in roadmaps)
-			{
-				if (roadmap.RoadmapId == roadmapId)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		return false;
-	}
-
-	private async Task<IList<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid? loggedInUserId)
-	{
-		var roadmaps = await _roadmapVotesService.GetAllRoadmapsUserVoted(loggedInUserId);
-
-		return roadmaps!;
-	}
-
-	private async Task<Guid> GetRoadmapVoteIdByUserAndRoadmapId(Guid roadmapId, Guid? loggedInUserId)
-	{
-		if (loggedInUserId == Guid.Empty)
-		{
-			return Guid.Empty;
-		}
-
-		var roadmapVote = await _roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(loggedInUserId, roadmapId);
-		var voteId = roadmapVote!.Id;
-
-		return voteId;
-	}
-
 
 	public async Task<string> GetButtonColor(Guid roadmapId, Guid? loggedInUserId)
 	{
-		var result = await VerifiyIfUserVotedOnRoadmap(roadmapId, loggedInUserId);
+		var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes();
 
-		if (result is true)
+		var votedRoadmapId = roadmapVotes!
+			.Where(x => x.UserId == loggedInUserId && x.RoadmapId == roadmapId)
+			.Select(x => x.Id).FirstOrDefault();
+
+		if (votedRoadmapId == Guid.Empty)
+		{
+			return "vote-button";
+
+		}
+		else
 		{
 			return "vote-button-voted";
 		}
-
-		return "vote-button";
 	}
 
 	public async Task<int> GetRoadmapVotes(Guid roadmapId)
 	{
-		var roadmapVotes = await _roadmapVotesService.GetRoadmapVotesByRoadmapId(roadmapId);
+		var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes();
+
+		var roadmapVoteCount = roadmapVotes.Where(x => x.RoadmapId == roadmapId).Count();
 
 		if (roadmapVotes is null)
 		{
 			return 0;
 		}
 
-		return roadmapVotes.Count();
+		return roadmapVoteCount;
 	}
 }

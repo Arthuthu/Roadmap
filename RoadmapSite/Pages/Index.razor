@@ -81,7 +81,7 @@
 			C#
 		</div>
 		<div class="index-categorias-element"
-			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.JavaScript)">
+			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.Javascript)">
 			Javascript
 		</div>
 	</div>
@@ -97,29 +97,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		LoggedInUserId = await votingService.GetLoggedInUserId();
-
-		Roadmaps = await localStorage.GetItemAsync<IList<RoadmapClassModel>>(RoadmapList);
-		DateTime? cacheDate = await localStorage.GetItemAsync<DateTime>(RoadmapCacheDate);
-		double totalSeconds = 0;
-
-		if (cacheDate is not null)
-		{
-			totalSeconds = DateTime.UtcNow.Subtract((DateTime)cacheDate).Seconds;
-		}
-
-		if (Roadmaps is null || cacheDate is null || totalSeconds > 1)
-		{
-			try
-			{
-				Roadmaps = await GetAllRoadmaps();
-				await localStorage.SetItemAsync(RoadmapList, Roadmaps);
-				await localStorage.SetItemAsync(RoadmapCacheDate, DateTime.UtcNow);
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Ocorreu um erro para carregar a pagina: {ex.Message}");
-			}
-		}
+		Roadmaps = await GetAllRoadmaps();
 
 		if (LoggedInUserId != Guid.Empty)
 		{
@@ -163,27 +141,11 @@
 		return roadmaps;
 	}
 
-	private async Task<string> GetLoggedInUserId()
-	{
-		var authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
-		var user = authenticationState.User;
-		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-		if (userId is null)
-		{
-			LoggedInUserId = Guid.Empty;
-
-			return "";
-		}
-
-		LoggedInUserId = new Guid(userId!);
-
-		return "";
-	}
-
 	private async Task? GetRoadmapsByCategory(CategoryModel category)
 	{
-		Roadmaps = await roadmapService.GetRoadmapsByCategory(category.ToString());
+		var roadmaps = await GetAllRoadmaps();
+
+		Roadmaps = roadmaps.Where(x => x.Category == category.ToString()).ToList();
 
 		var users = await userService.GetAllUsers();
 

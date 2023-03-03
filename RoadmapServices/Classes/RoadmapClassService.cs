@@ -39,18 +39,6 @@ public class RoadmapClassService : IRoadmapClassService
 		return results;
 	}
 
-	public async Task<IList<RoadmapClassModel>> GetRoadmapsByCategory(string category)
-	{
-		var results = await _roadmapRepository.GetRoadmapsByCategory(category);
-
-		if (results is null)
-		{
-			throw new Exception("Não existem roadmaps com esta categoria");
-		}
-
-		return results;
-	}
-
 	public async Task<IList<string>> AddRoadmap(RoadmapClassModel roadmap)
 	{
 		IList<string> registrationMessages = new List<string>();

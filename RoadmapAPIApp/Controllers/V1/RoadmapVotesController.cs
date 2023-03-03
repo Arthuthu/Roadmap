@@ -36,44 +36,11 @@ public class RoadmapVotesController : ControllerBase
 		return Ok(responseRoadmapVotes);
 	}
 
-	[Route("/getallroadmapsuservoted/{userId}")]
-	[HttpGet]
-	public async Task<ActionResult<List<RoadmapVotesResponse>>> GetAllRoadmapsUserVoted(Guid userId)
-	{
-		var roadmapVotes = await _roadmapVotesService.GetAllRoadmapsUserVoted(userId);
-		var responseRoadmapVotes = roadmapVotes.Select(roadmapVotes => _mapper.Map<RoadmapVotesResponse>(roadmapVotes));
-
-		return Ok(responseRoadmapVotes);
-	}
-
-	[Route("/getroadmapvotedidbyuserandroadmapid/{userId}/{roadmapId}")]
-	[HttpGet]
-	public async Task<ActionResult<RoadmapVotesResponse>> GetRoadmapVoteIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
-	{
-		var votedRoadmap = await _roadmapVotesService.GetRoadmapVoteIdByUserAndRoadmapId(userId, roadmapId);
-		var responseRoadmapVotes = _mapper.Map<RoadmapVotesResponse>(votedRoadmap);
-
-		return Ok(responseRoadmapVotes);
-	}
-
-	[AllowAnonymous]
-	[Route("/getroadmapvotesbyroadmapid/{roadmapId}")]
-	[HttpGet]
-	public async Task<ActionResult<RoadmapVotesResponse>> GetRoadmapVotesByRoadmapId(Guid roadmapId)
-	{
-		var roadmapVotes = await _roadmapVotesService.GetRoadmapVotesByRoadmapId(roadmapId);
-		var responseRoadmapVotes = roadmapVotes.Select(roadmapVotes => _mapper.Map<RoadmapVotesResponse>(roadmapVotes));
-
-
-		return Ok(responseRoadmapVotes);
-	}
-
-	[Route("/addroadmapvote")]
+	[Route("/addroadmapvote/{userId}/{roadmapId}")]
 	[HttpPost]
-	public async Task<ActionResult<string>> CreateRoadmapVote([FromForm] RoadmapVotesRequest roadmapVote)
+	public async Task<ActionResult<string>> CreateRoadmapVote(Guid userId, Guid roadmapId)
 	{
-		var requestRoadmapVote = _mapper.Map<RoadmapVotesModel>(roadmapVote);
-		var roadmapVotingResponseMessage = await _roadmapVotesService.AddRoadmapVote(requestRoadmapVote);
+		var roadmapVotingResponseMessage = await _roadmapVotesService.AddRoadmapVote(userId, roadmapId);
 
 		return Ok(roadmapVotingResponseMessage);
 	}

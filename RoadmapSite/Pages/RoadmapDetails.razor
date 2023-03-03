@@ -43,10 +43,11 @@
 		@if (Roadmap.UserId == LoggedInUserId)
 		{
 			<div>
-				<button>Excluir Roadmap</button>
+				<a href="deleteroadmapconfirmation/@Roadmap.Id" class="first-style-button">
+					Excluir Roadmap
+				</a>
 			</div>
 		}
-
 	}
 }
 
@@ -99,39 +100,20 @@
 
 	public async Task<string> GetButtonColorDetails(Guid roadmapId, Guid? loggedInUserId)
 	{
-		var result = await VerifiyIfUserVotedOnRoadmap(roadmapId, loggedInUserId);
+		var roadmapVotes = await roadmapVotesService.GetAllRoadmapVotes();
 
-		if (result is true)
+		var votedRoadmapId = roadmapVotes!
+			.Where(x => x.UserId == loggedInUserId && x.RoadmapId == roadmapId)
+			.Select(x => x.Id).FirstOrDefault();
+
+		if (votedRoadmapId == Guid.Empty)
+		{
+			return "vote-button-details";
+
+		}
+		else
 		{
 			return "vote-button-voted-details";
 		}
-
-		return "vote-button-details";
-	}
-
-	private async Task<bool> VerifiyIfUserVotedOnRoadmap(Guid roadmapId, Guid? loggedInUserId)
-	{
-		if (loggedInUserId.ToString() is not null)
-		{
-			var roadmaps = await GetAllRoadmapsUserVoted(loggedInUserId);
-
-			foreach (var roadmap in roadmaps)
-			{
-				if (roadmap.RoadmapId == roadmapId)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		return false;
-	}
-
-	private async Task<IList<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid? loggedInUserId)
-	{
-		var roadmaps = await roadmapVotesService.GetAllRoadmapsUserVoted(loggedInUserId);
-
-		return roadmaps!;
 	}
 }

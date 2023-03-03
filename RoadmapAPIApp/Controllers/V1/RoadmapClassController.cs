@@ -47,17 +47,6 @@ public class RoadmapClassController : ControllerBase
         return Ok(responseRoadmaps);
     }
 
-    [AllowAnonymous]
-	[Route("/getroadmapsbycategory/{category}")]
-	[HttpGet]
-	public async Task<ActionResult<RoadmapClassResponse>> GetRoadmapsByCategory(string category)
-	{
-		var roadmaps = await _roadmapService.GetRoadmapsByCategory(category);
-		var responseRoadmaps = roadmaps.Select(roadmap => _mapper.Map<RoadmapClassResponse>(roadmap));
-
-		return Ok(responseRoadmaps);
-	}
-
 	[Route("/getroadmapbyuserid/{userId}")]
 	[HttpGet]
 	public async Task<ActionResult<RoadmapClassResponse>> GetRoadmapByUserId(Guid userId)
@@ -93,6 +82,6 @@ public class RoadmapClassController : ControllerBase
     {
         await _roadmapService.DeleteRoadmap(id);
 
-        return Ok("Roadmap has been deleted");
+        return Ok("Roadmap foi deletado com sucesso");
     }
 }

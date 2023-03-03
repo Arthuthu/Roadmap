@@ -18,43 +18,17 @@ public class RoadmapVotesRepository : IRoadmapVotesRepository
 		return _db.LoadData<RoadmapVotesModel, dynamic>("dbo.spRoadmapVotes_GetAll", new { });
 	}
 
-	public Task AddRoadmapVote(RoadmapVotesModel roadmapVotes)
+	public Task AddRoadmapVote(Guid Id, Guid userId, Guid roadmapId)
 	{
 		return _db.SaveData("dbo.spRoadmapVotes_Add", new
 		{
-			roadmapVotes.Id,
-			roadmapVotes.UserId,
-			roadmapVotes.RoadmapId
+			Id,
+			userId,
+			roadmapId
 		});
 	}
 	public Task DeleteRoadmapVote(Guid id)
 	{
 		return _db.SaveData("dbo.spRoadmapVotes_Delete", new { Id = id });
 	}
-
-	public async Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapsUserVoted(Guid userId)
-	{
-		return await _db.LoadData<RoadmapVotesModel, dynamic>(
-		"dbo.spRoadmapVotes_GetAllRoadmapsUserVoted",
-		new { UserId = userId });
-	}
-
-	public async Task<RoadmapVotesModel> GetRoadmapVoteIdByUserAndRoadmapId(Guid userId, Guid roadmapId)
-	{
-		var results =  await _db.LoadData<RoadmapVotesModel, dynamic>(
-		"dbo.spRoadmapVotes_GetRoadmapVoteIdByUserAndRoadmapId",
-		new { UserId = userId, RoadmapId = roadmapId });
-		
-		return results.FirstOrDefault();
-	}
-
-	public async Task<IList<RoadmapVotesModel>> GetRoadmapVotesByRoadmapId(Guid roadmapId)
-	{
-		var results = await _db.LoadData<RoadmapVotesModel, dynamic>(
-		"dbo.spRoadmapVotes_GetRoadmapVotesByRoadmapId",
-		new { RoadmapId = roadmapId });
-
-		return results.ToList();
-	}
-
 }

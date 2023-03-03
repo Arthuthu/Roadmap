@@ -461,3 +461,16 @@ body {
 .roadmap-details-vote-button {
     text-align: center;
 }
+
+/* Delete Roadmap Confirmation */
+
+.delete-roadmap-confirmation-label {
+    text-align: center;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.delete-roadmap-confirmation-buttons-div {
+    display: flex;
+    justify-content: space-evenly;
+}

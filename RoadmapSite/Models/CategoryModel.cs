@@ -3,5 +3,5 @@
 enum CategoryModel
 {
 	CSharp,
-	JavaScript
+	Javascript
 }

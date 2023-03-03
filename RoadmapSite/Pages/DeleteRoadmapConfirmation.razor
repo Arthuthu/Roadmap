@@ -1,0 +1,74 @@
+﻿@page "/deleteroadmapconfirmation/{roadmapid}"
+@inject IRoadmapService roadmapService
+@inject IUserService userService
+@inject IVotingService votingService
+@inject NavigationManager navManager
+
+@if (isInitialized)
+{
+    <div>
+        @Roadmap.Name
+    </div>
+    <div>
+        @Roadmap.Description
+    </div>
+    <div>
+        @Roadmap.Category
+    </div>
+
+    <div class="text-center">
+        <div class="delete-roadmap-confirmation-label">
+            <p>Tem certeza que deseja deletar esse roadmap?</p>
+        </div>
+        <div class="delete-roadmap-confirmation-buttons-div">
+            <button class="first-style-button"
+                @onclick="async () => await DeleteRoadmap(new Guid(RoadmapId))">
+                Sim
+            </button>
+
+            <a class="first-style-button" href="roadmapdetails/@RoadmapId">
+                Não
+            </a>
+        </div>
+    </div>
+
+}
+
+@code {
+    [Parameter]
+    public string RoadmapId { get; set; }
+    public Guid LoggedInUser { get; set; }
+    public RoadmapClassModel? Roadmap { get; set; }
+    private bool isInitialized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LoggedInUser = await votingService.GetLoggedInUserId();
+
+        if (LoggedInUser == Guid.Empty)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId));
+
+        if (new Guid(RoadmapId) == Guid.Empty)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        if (LoggedInUser != Roadmap.UserId)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        isInitialized = true;
+    }
+
+    private async Task DeleteRoadmap(Guid roadmapId)
+    {
+        var deleteResponse = await roadmapService.DeleteRoadmap(roadmapId);
+
+        navManager.NavigateTo($"/profile/{LoggedInUser}");
+    }
+}
