@@ -26,6 +26,7 @@ public class RoadmapVotesController : ControllerBase
 		_messageHandler = messaHandler;
 	}
 
+	[AllowAnonymous]
 	[Route("/getallroadmapvotes")]
 	[HttpGet]
 	public async Task<ActionResult<List<RoadmapVotesResponse>>> GetAllRoadmapVotes()
