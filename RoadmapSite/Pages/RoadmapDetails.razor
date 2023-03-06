@@ -42,7 +42,7 @@
 
 		@if (Roadmap.UserId == LoggedInUserId)
 		{
-			<div>
+			<div class="roadmap-details-excluir-button-div">
 				<a href="deleteroadmapconfirmation/@Roadmap.Id" class="first-style-button">
 					Excluir Roadmap
 				</a>
@@ -72,7 +72,7 @@
 
 		await GetRoadmapById(new Guid(RoadmapId!));
 
-		string roadmapClass = await votingService.GetButtonColor(Roadmap!.Id, LoggedInUserId);
+		string roadmapClass = await votingService.GetButtonColor(Roadmap.Id, LoggedInUserId);
 		Roadmap!.RoadmapHtmlClass = roadmapClass;
 
 		int roadmapTotalVotes = await votingService.GetRoadmapVotes(Roadmap.Id);

@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RoadmapAPIApp.Request;
 using RoadmapAPIApp.Response;
-using RoadmapRepository.Models;
 using RoadmapServices.Interfaces;
 using RoadmapServices.Validators.Interfaces;
 

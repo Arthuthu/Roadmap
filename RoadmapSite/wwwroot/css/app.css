@@ -462,8 +462,12 @@ body {
     text-align: center;
 }
 
-/* Delete Roadmap Confirmation */
+.roadmap-details-excluir-button-div {
+    text-align: center;
+    margin-top: 50px;
+}
 
+/* Delete Roadmap Confirmation */
 .delete-roadmap-confirmation-label {
     text-align: center;
     font-weight: bold;

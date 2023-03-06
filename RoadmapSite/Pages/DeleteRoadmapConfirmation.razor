@@ -37,15 +37,15 @@
 @code {
     [Parameter]
     public string RoadmapId { get; set; }
-    public Guid LoggedInUser { get; set; }
+    public Guid LoggedInUserId { get; set; }
     public RoadmapClassModel? Roadmap { get; set; }
     private bool isInitialized = false;
 
     protected override async Task OnInitializedAsync()
     {
-        LoggedInUser = await votingService.GetLoggedInUserId();
+        LoggedInUserId = await votingService.GetLoggedInUserId();
 
-        if (LoggedInUser == Guid.Empty)
+        if (LoggedInUserId == Guid.Empty)
         {
             navManager.NavigateTo("/notfound");
         }
@@ -57,7 +57,7 @@
             navManager.NavigateTo("/notfound");
         }
 
-        if (LoggedInUser != Roadmap.UserId)
+        if (LoggedInUserId != Roadmap.UserId)
         {
             navManager.NavigateTo("/notfound");
         }
@@ -69,6 +69,6 @@
     {
         var deleteResponse = await roadmapService.DeleteRoadmap(roadmapId);
 
-        navManager.NavigateTo($"/profile/{LoggedInUser}");
+        navManager.NavigateTo($"/profile/{LoggedInUserId}");
     }
 }

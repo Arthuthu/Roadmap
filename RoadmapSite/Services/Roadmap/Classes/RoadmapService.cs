@@ -100,7 +100,7 @@ public class RoadmapService : IRoadmapService
 	public async Task<string> DeleteRoadmap(Guid id)
 	{
 		string deleteRoadmapEndpoint = _config["apiLocation"] + _config["deleteRoadmapEndpoint"] + $"/{id}";
-		var authResult = await _client.GetAsync(deleteRoadmapEndpoint);
+		var authResult = await _client.DeleteAsync(deleteRoadmapEndpoint);
 		var authContent = await authResult.Content.ReadAsStringAsync();
 
 		if (authResult.IsSuccessStatusCode is false)
