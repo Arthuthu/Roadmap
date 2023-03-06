@@ -160,17 +160,22 @@ body {
     padding: 10px 0 0 10px;
 }
 
-.roadmap-category-author-created-main-div {
+.roadmap-category-main-div {
     display: flex;
-    justify-content: space-between;
 }
 
 .roadmap-category-div {
     display: flex;
 }
 
-.roadmap-created-div {
+.roadmad-created-div {
     display: flex;
+}
+
+.roadmap-created-author-div {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
 }
 
 .roadmap-category-label {
@@ -385,6 +390,14 @@ body {
     .third-style-button:focus {
         background-color: #E8790F;
     }
+
+#inicio-button {
+    border-radius: 10px 0 0 10px;
+}
+
+#popularity-button {
+    border-radius: 0 10px 10px 0;
+}
 
 .registre-se-aqui-div {
     text-align: center;

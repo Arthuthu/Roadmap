@@ -15,18 +15,18 @@
 	</div>
 </div>
 
-<div class="index-inicio-novo-popular-div">
-	<button class="third-style-button"
+<div class="index-inicio-novo-popular-div" >
+	<button class="third-style-button" id="inicio-button"
 			@onclick="OnInitializedAsync">
 		Inicio
 	</button>
 
-	<button class="third-style-button" href="createroadmap"
+	<button class="third-style-button"
 			@onclick="SortRoadmapsByDate">
 		Novo
 	</button>
 
-	<button class="third-style-button" href="createroadmap"
+	<button class="third-style-button" id="popularity-button"
 			@onclick="SortRoadmapsByPopularity">
 		Popular
 	</button>
@@ -60,7 +60,7 @@
 							<p>@roadmap.Description</p>
 						</div>
 
-						<div class="roadmap-category-author-created-main-div">
+						<div class="roadmap-category-main-div">
 							<div class="roadmap-category-div">
 								<div class="roadmap-category-label">
 									<p>Categoria:</p>
@@ -69,8 +69,10 @@
 									@roadmap.Category
 								</div>
 							</div>
+						</div>
 
-							<div class="roadmap-created-div">
+						<div class="roadmap-created-author-div">
+							<div class="roadmad-created-div">
 								<div class="roadmap-created-label">
 									<p>Criado:</p>
 								</div>
