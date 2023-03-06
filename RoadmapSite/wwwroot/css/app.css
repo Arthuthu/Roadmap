@@ -102,6 +102,10 @@ body {
     align-items: center;
 }
 
+.index-inicio-novo-popular-div {
+    margin-left: 20px;
+}
+
 .roadmap-main-div {
     margin: 10px 20px 0 20px;
     width: 80%;
@@ -156,7 +160,7 @@ body {
     padding: 10px 0 0 10px;
 }
 
-.roadmap-category-author-main-div {
+.roadmap-category-author-created-main-div {
     display: flex;
     justify-content: space-between;
 }
@@ -165,8 +169,18 @@ body {
     display: flex;
 }
 
+.roadmap-created-div {
+    display: flex;
+}
+
 .roadmap-category-label {
     padding: 0 10px 0 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.roadmap-created-label {
+    margin: 0 10px 0 0;
     font-weight: bold;
     font-size: 18px;
 }
@@ -177,7 +191,7 @@ body {
 
 .roadmap-author-div{
     display: flex;
-    margin: 0 20px 0 0;
+    margin: 0 20px 0 40px;
 }
 
 .roadmap-author-label {
@@ -352,6 +366,25 @@ body {
 .second-style-button{
     margin: 0;
 }
+
+.third-style-button {
+    background-color: #E89D0F;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border-color: transparent;
+    padding: 20px 30px;
+    margin: 0 -4px 0 0;
+}
+
+    .third-style-button:hover {
+        transition: 500ms;
+        background-color: #E8790F;
+    }
+
+    .third-style-button:focus {
+        background-color: #E8790F;
+    }
 
 .registre-se-aqui-div {
     text-align: center;

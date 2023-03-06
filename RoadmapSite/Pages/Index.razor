@@ -6,12 +6,7 @@
 @inject AuthenticationStateProvider authenticationStateProvider
 
 <div class="index-create-inicio-button-div">
-	<div class="create-roadmap-button-div">
-		<button class="second-style-button"
-				@onclick="OnInitializedAsync">
-			Inicio
-		</button>
-	</div>
+
 
 	<div class="create-roadmap-button-div">
 		<a class="first-style-button" href="createroadmap">
@@ -19,6 +14,24 @@
 		</a>
 	</div>
 </div>
+
+<div class="index-inicio-novo-popular-div">
+	<button class="third-style-button"
+			@onclick="OnInitializedAsync">
+		Inicio
+	</button>
+
+	<button class="third-style-button" href="createroadmap"
+			@onclick="SortRoadmapsByDate">
+		Novo
+	</button>
+
+	<button class="third-style-button" href="createroadmap"
+			@onclick="SortRoadmapsByPopularity">
+		Popular
+	</button>
+</div>
+
 <div class="index-main-div">
 	<div class="roadmap-main-div">
 		@if (Roadmaps is null)
@@ -47,13 +60,22 @@
 							<p>@roadmap.Description</p>
 						</div>
 
-						<div class="roadmap-category-author-main-div">
+						<div class="roadmap-category-author-created-main-div">
 							<div class="roadmap-category-div">
 								<div class="roadmap-category-label">
 									<p>Categoria:</p>
 								</div>
 								<div class="roadmap-category-value">
 									@roadmap.Category
+								</div>
+							</div>
+
+							<div class="roadmap-created-div">
+								<div class="roadmap-created-label">
+									<p>Criado:</p>
+								</div>
+								<div class="roadmap-category-value">
+									@roadmap.CreatedDate
 								</div>
 							</div>
 
@@ -182,5 +204,16 @@
 				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
 			}
 		}
+	}
+
+	private void SortRoadmapsByDate()
+	{
+		Roadmaps = Roadmaps!.OrderByDescending(x => x.CreatedDate).ToList();
+	}
+
+
+	private void SortRoadmapsByPopularity()
+	{
+		Roadmaps = Roadmaps!.OrderByDescending(x => x.RoadmapTotalVotes).ToList();
 	}
 }
