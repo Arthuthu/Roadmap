@@ -5,6 +5,7 @@
 @inject IVotingService votingService
 @inject AuthenticationStateProvider authenticationStateProvider
 
+
 <div class="index-create-inicio-button-div">
 
 
@@ -40,12 +41,11 @@
 		}
 		else
 		{
-			@foreach (var roadmap in Roadmaps)
-			{
+			<Virtualize Items="@Roadmaps" Context="roadmap" OverscanCount="50">
 				<div class="roadmap-second-div">
-					<div onclick ="toggleVoteButtonClass(this.querySelector('button'))">
+					<div onclick="toggleVoteButtonClass(this.querySelector('button'))">
 						<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
-						@onclick="async () => await votingService.AddUserVote(roadmap.Id, LoggedInUserId)">
+							@onclick="async () => await votingService.AddUserVote(roadmap.Id, LoggedInUserId)">
 							<span id="vote-count">@roadmap.RoadmapTotalVotes</span>
 							<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
 							Vote
@@ -92,7 +92,7 @@
 						</div>
 					</div>
 				</div>
-			}
+			</Virtualize>
 		}
 	</div>
 
@@ -117,11 +117,15 @@
 	private const string RoadmapList = "RoadmapList";
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
 	private Guid? LoggedInUserId;
+	private int totalRoadmaps;
+	private int pageNumber = 1;
+	private int pageSize = 10;
+
 
 	protected override async Task OnInitializedAsync()
 	{
 		LoggedInUserId = await votingService.GetLoggedInUserId();
-		Roadmaps = await GetAllRoadmaps();
+		Roadmaps = await GetAllRoadmaps(pageNumber, pageSize);
 
 		if (LoggedInUserId != Guid.Empty)
 		{
@@ -146,9 +150,10 @@
 		}
 	}
 
-	private async Task<IList<RoadmapClassModel>> GetAllRoadmaps()
+	private async Task<IList<RoadmapClassModel>> GetAllRoadmaps(int pageNumber, int pageSize)
 	{
 		var roadmaps = await roadmapService.GetAllRoadmaps();
+		totalRoadmaps = roadmaps.Count();
 		var users = await userService.GetAllUsers();
 
 		foreach (var roadmap in roadmaps)
@@ -162,14 +167,13 @@
 				}
 			}
 		}
-		return roadmaps;
+
+		return roadmaps.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 	}
 
 	private async Task? GetRoadmapsByCategory(CategoryModel category)
 	{
-		var roadmaps = await GetAllRoadmaps();
-
-		Roadmaps = roadmaps.Where(x => x.Category == category.ToString()).ToList();
+		Roadmaps = Roadmaps!.Where(x => x.Category == category.ToString()).ToList();
 
 		var users = await userService.GetAllUsers();
 
@@ -206,6 +210,12 @@
 				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
 			}
 		}
+	}
+
+	private async Task OnPageChanged(int pageNumber)
+	{
+		this.pageNumber = pageNumber;
+		await GetAllRoadmaps(pageNumber, pageSize);
 	}
 
 	private void SortRoadmapsByDate()
