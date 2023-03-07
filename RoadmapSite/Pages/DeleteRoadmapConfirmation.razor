@@ -6,15 +6,23 @@
 
 @if (isInitialized)
 {
-    <div>
+    <div class="roadmap-delet-confirmation-name-div">
         @Roadmap.Name
     </div>
-    <div>
-        @Roadmap.Description
+    <div class="roadmap-delet-confirmation-description-parent-div">
+        <div class="roadmap-delet-confirmation-descriptions">
+            @Roadmap.Description
+        </div>
+        <div class="roamap-delet-category-created-parent-div">
+            <div class="roadmap-delet-confirmation-descriptions">
+                Categoria: @Roadmap.Category
+            </div>
+            <div class="roadmap-delet-confirmation-descriptions">
+                Criado: @Roadmap.CreatedDate
+            </div>
+        </div>
     </div>
-    <div>
-        @Roadmap.Category
-    </div>
+    
 
     <div class="text-center">
         <div class="delete-roadmap-confirmation-label">
