@@ -143,6 +143,23 @@ body {
     color: white;
 }
 
+.index-buttons-searchbar-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    width: 80%;
+}
+
+.index-search-input-button-div {
+    display: flex;
+    align-items: end;
+}
+
+#index-buscar-button-nome {
+    margin: 0;
+    padding: 17px 20px;
+}
+
 .roadmap-name {
     background-color: #F1AF2A;
     font-weight: bold;

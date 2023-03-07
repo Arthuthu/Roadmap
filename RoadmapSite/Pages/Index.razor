@@ -7,8 +7,6 @@
 
 
 <div class="index-create-inicio-button-div">
-
-
 	<div class="create-roadmap-button-div">
 		<a class="first-style-button" href="createroadmap">
 			Criar Roadmap
@@ -16,22 +14,38 @@
 	</div>
 </div>
 
-<div class="index-inicio-novo-popular-div" >
-	<button class="third-style-button" id="inicio-button"
-			@onclick="OnInitializedAsync">
-		Inicio
-	</button>
+<div class="index-buttons-searchbar-div">
+	<div class="index-inicio-novo-popular-div">
+		<button class="third-style-button" id="inicio-button"
+				@onclick="OnInitializedAsync">
+			Inicio
+		</button>
 
-	<button class="third-style-button"
-			@onclick="SortRoadmapsByDate">
-		Novo
-	</button>
+		<button class="third-style-button"
+				@onclick="SortRoadmapsByDate">
+			Novo
+		</button>
 
-	<button class="third-style-button" id="popularity-button"
-			@onclick="SortRoadmapsByPopularity">
-		Popular
-	</button>
+		<button class="third-style-button" id="popularity-button"
+				@onclick="SortRoadmapsByPopularity">
+			Popular
+		</button>
+	</div>
+
+	<div class="index-search-input-button-div">
+		<div>
+			<InputText class="index-search-input" @bind-Value="@roadmapName" placeholder="Procurar por nome" />
+		</div>
+
+		<div class="button-div">
+			<button @onclick="async () => await GetRoadmapsByName(roadmapName)"
+					class="first-style-button" id="index-buscar-button-nome">
+				Buscar
+			</button>
+		</div>
+	</div>
 </div>
+
 
 <div class="index-main-div">
 	<div class="roadmap-main-div">
@@ -128,6 +142,7 @@
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
 	private Guid? LoggedInUserId;
 	private string? category;
+	private string? roadmapName;
 
 
 	protected override async Task OnInitializedAsync()
@@ -191,7 +206,16 @@
 	{
 		var roadmaps = await GetAllRoadmaps();
 
-		Roadmaps = roadmaps?.Where(x => x.Category == category.ToString()).ToList();
+		Roadmaps = roadmaps?.Where(x => x.Category == category).ToList();
+
+		await FillRoadmapsButtons();
+	}
+
+	private async Task? GetRoadmapsByName(string name)
+	{
+		var roadmaps = await GetAllRoadmaps();
+
+		Roadmaps = roadmaps?.Where(x => x.Name == name).ToList();
 
 		await FillRoadmapsButtons();
 	}

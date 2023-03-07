@@ -83,12 +83,12 @@ public class VotingService : IVotingService
 	{
 		var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes();
 
-		var roadmapVoteCount = roadmapVotes.Where(x => x.RoadmapId == roadmapId).Count();
-
 		if (roadmapVotes is null)
 		{
 			return 0;
 		}
+
+		var roadmapVoteCount = roadmapVotes.Where(x => x.RoadmapId == roadmapId).Count();
 
 		return roadmapVoteCount;
 	}
