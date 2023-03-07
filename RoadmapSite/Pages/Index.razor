@@ -117,15 +117,12 @@
 	private const string RoadmapList = "RoadmapList";
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
 	private Guid? LoggedInUserId;
-	private int totalRoadmaps;
-	private int pageNumber = 1;
-	private int pageSize = 10;
 
 
 	protected override async Task OnInitializedAsync()
 	{
 		LoggedInUserId = await votingService.GetLoggedInUserId();
-		Roadmaps = await GetAllRoadmaps(pageNumber, pageSize);
+		Roadmaps = await GetAllRoadmaps();
 
 		if (LoggedInUserId != Guid.Empty)
 		{
@@ -150,10 +147,9 @@
 		}
 	}
 
-	private async Task<IList<RoadmapClassModel>> GetAllRoadmaps(int pageNumber, int pageSize)
+	private async Task<IList<RoadmapClassModel>> GetAllRoadmaps()
 	{
 		var roadmaps = await roadmapService.GetAllRoadmaps();
-		totalRoadmaps = roadmaps.Count();
 		var users = await userService.GetAllUsers();
 
 		foreach (var roadmap in roadmaps)
@@ -168,7 +164,7 @@
 			}
 		}
 
-		return roadmaps.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+		return roadmaps;
 	}
 
 	private async Task? GetRoadmapsByCategory(CategoryModel category)
@@ -210,12 +206,6 @@
 				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
 			}
 		}
-	}
-
-	private async Task OnPageChanged(int pageNumber)
-	{
-		this.pageNumber = pageNumber;
-		await GetAllRoadmaps(pageNumber, pageSize);
 	}
 
 	private void SortRoadmapsByDate()
