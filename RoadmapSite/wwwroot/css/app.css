@@ -223,7 +223,7 @@ body {
 
 .vote-button,
 .vote-button-details{
-    height: 94.5%;
+    height: 96.2%;
     color: white;
     background-color: transparent;
     font-weight: bold;
@@ -235,7 +235,7 @@ body {
 
 .vote-button-voted,
 .vote-button-voted-details{
-    height: 94.5%;
+    height: 96.2%;
     color: white;
     background-color: #EE690B;
     font-weight: bold;
@@ -298,6 +298,19 @@ body {
         cursor: pointer;
         background-color: #E87108;
     }
+
+.index-search-input{
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    width: 95%;
+}
+
+#index-buscar-button {
+    margin: 20px 0;
+}
 
 /* Login and Registration page */
 .iniciar-sessao-paragraph {

@@ -108,8 +108,18 @@
 			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.Javascript)">
 			Javascript
 		</div>
-	</div>
 
+		<div>
+			<InputText class="index-search-input" @bind-Value="@category" placeholder="Digite aqui uma categoria" />
+		</div>
+
+		<div class="button-div">
+			<button @onclick="async () => await GetRoadmapsByCustomCategory(category)"
+					class="first-style-button" id="index-buscar-button">
+				Buscar
+			</button>
+		</div>
+	</div>
 </div>
 @code {
 
@@ -117,6 +127,7 @@
 	private const string RoadmapList = "RoadmapList";
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
 	private Guid? LoggedInUserId;
+	private string? category;
 
 
 	protected override async Task OnInitializedAsync()
@@ -152,7 +163,7 @@
 		var roadmaps = await roadmapService.GetAllRoadmaps();
 		var users = await userService.GetAllUsers();
 
-		foreach (var roadmap in roadmaps)
+		foreach (var roadmap in roadmaps!)
 		{
 			foreach (var user in users)
 			{
@@ -169,11 +180,27 @@
 
 	private async Task? GetRoadmapsByCategory(CategoryModel category)
 	{
-		Roadmaps = Roadmaps!.Where(x => x.Category == category.ToString()).ToList();
+		var roadmaps = await GetAllRoadmaps();
 
+		Roadmaps = roadmaps?.Where(x => x.Category == category.ToString()).ToList();
+
+		await FillRoadmapsButtons();
+	}
+
+	private async Task? GetRoadmapsByCustomCategory(string category)
+	{
+		var roadmaps = await GetAllRoadmaps();
+
+		Roadmaps = roadmaps?.Where(x => x.Category == category.ToString()).ToList();
+
+		await FillRoadmapsButtons();
+	}
+
+	private async Task FillRoadmapsButtons()
+	{
 		var users = await userService.GetAllUsers();
 
-		foreach (var roadmap in Roadmaps)
+		foreach (var roadmap in Roadmaps!)
 		{
 			foreach (var user in users)
 			{
