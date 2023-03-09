@@ -5,8 +5,8 @@
     [Description] NVARCHAR(200) NULL,
     [Category] NVARCHAR(50) NULL, 
     [UserId] UNIQUEIDENTIFIER NOT NULL, 
-    [IsApproved] INT NULL, 
-    [IsHidden] INT NULL, 
+    [IsApproved] NVARCHAR NULL, 
+    [IsHidden] NVARCHAR NULL, 
     [CreatedDate] DATETIME2 NULL,
     
     [UpdatedDate] DATETIME2 NULL, 

@@ -3,8 +3,8 @@
 	@Name nvarchar(50),
 	@Description nvarchar(200),
 	@Category nvarchar(50),
-	@IsApproved int,
-	@IsHidden int,
+	@IsApproved nvarchar(1),
+	@IsHidden nvarchar(1),
 	@UpdatedDate datetime2(7),
 	@UserId uniqueidentifier
 AS

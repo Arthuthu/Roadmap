@@ -38,9 +38,6 @@ public class RoadmapClassRepository : IRoadmapClassRepository
 
 	public Task AddRoadmap(RoadmapClassModel roadmap)
 	{
-		Convert.ToInt32(roadmap.IsApproved);
-		Convert.ToInt32(roadmap.IsHidden);
-
 		return _db.SaveData("dbo.spRoadmap_Add", new
 		{
 			roadmap.Id,
@@ -56,9 +53,6 @@ public class RoadmapClassRepository : IRoadmapClassRepository
 
 	public Task UpdateRoadmap(RoadmapClassModel roadmap)
 	{
-		Convert.ToInt32(roadmap.IsApproved);
-		Convert.ToInt32(roadmap.IsHidden);
-
 		return _db.SaveData("dbo.spRoadmap_Update", new
 		{
 			roadmap.Id,

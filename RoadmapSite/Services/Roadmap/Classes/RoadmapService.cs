@@ -99,18 +99,19 @@ public class RoadmapService : IRoadmapService
 
     public async Task<string> UpdateRoadmap(RoadmapClassModel roadmap)
 	{
-        var data = new FormUrlEncodedContent(new[]
-		{
-            new KeyValuePair<string, string>("name", roadmap.Name),
-            new KeyValuePair<string, string>("description", roadmap.Description),
-            new KeyValuePair<string, string>("category", roadmap.Category),
-            new KeyValuePair<string, string>("isapproved", roadmap.IsApproved.ToString()),
-            new KeyValuePair<string, string>("ishidden", roadmap.IsHidden.ToString()),
-            new KeyValuePair<string, string>("userId", roadmap.UserId.ToString())
-        });
+			var data = new FormUrlEncodedContent(new[]
+			{
+				new KeyValuePair<string, string>("id", roadmap.Id.ToString()),
+				new KeyValuePair<string, string>("name", roadmap.Name),
+				new KeyValuePair<string, string>("description", roadmap.Description),
+				new KeyValuePair<string, string>("category", roadmap.Category),
+				new KeyValuePair<string, string>("isapproved", roadmap.IsApproved),
+				new KeyValuePair<string, string>("ishidden", roadmap.IsHidden),
+				new KeyValuePair<string, string>("userId", roadmap.UserId.ToString())
+			});
 
         string updateRoadmapEndpoint = _config["apiLocation"] + _config["updateRoadmapEndpoint"];
-        var authResult = await _client.DeleteAsync(updateRoadmapEndpoint);
+        var authResult = await _client.PutAsync(updateRoadmapEndpoint, data);
         var authContent = await authResult.Content.ReadAsStringAsync();
 
         if (authResult.IsSuccessStatusCode is false)

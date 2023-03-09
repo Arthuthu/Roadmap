@@ -86,7 +86,7 @@
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
-		if (LoggedInUserModel.IsAdmin == 0)
+		if (LoggedInUserModel.IsAdmin == "0")
 		{
 			navManager.NavigateTo("/notfound");
 		}
@@ -102,7 +102,7 @@
 
 		if (roadmaps is not null)
 		{
-			Roadmaps = roadmaps.Where(x => x.IsApproved == 0).ToList();
+			Roadmaps = roadmaps.Where(x => x.IsApproved == "0").ToList();
 
 			var users = await userService.GetAllUsers();
 
@@ -122,7 +122,7 @@
 
 	private async Task<string> ApproveRoadmap(RoadmapClassModel roadmap)
 	{
-		roadmap.IsApproved = 1;
+		roadmap.IsApproved = "1";
 
 		var response = await roadmapService.UpdateRoadmap(roadmap);
 

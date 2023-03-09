@@ -62,7 +62,7 @@
 
         LoggedInUserModel = await GetLoggedInUserModel();
 
-        if (LoggedInUserModel.IsAdmin == 0)
+        if (LoggedInUserModel.IsAdmin == "0")
         {
             navManager.NavigateTo("/notfound");
         }

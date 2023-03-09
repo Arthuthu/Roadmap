@@ -6,7 +6,7 @@
     [Password] NVARCHAR(50) NULL, 
     [PasswordHash] VARBINARY(MAX) NULL, 
     [PasswordSalt] VARBINARY(MAX) NULL, 
-    [IsAdmin] INT NULL ,
+    [IsAdmin] NVARCHAR NULL ,
     [CreatedDate] DATETIME2 NULL, 
     [UpdatedDate] DATETIME2 NULL,
 
