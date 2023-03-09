@@ -1,14 +1,76 @@
 ﻿@page "/adminroadmapapproval"
 @inject IVotingService votingService;
 @inject IUserService userService;
+@inject IRoadmapService roadmapService;
 @inject NavigationManager navManager;
 
 @if (IsInitialized)
 {
-	<div>You can only see this if you're admin</div>
+	@if (Roadmaps is not null)
+	{
+		foreach (var roadmap in Roadmaps)
+		{
+			<div class="roadmap-box-div">
+				<a class="roadmap-name-a" href="roadmapdetails/@roadmap.Id">
+					<p class="roadmap-name">@roadmap.Name</p>
+				</a>
+
+				<div class="roadmap-description-div">
+					<p>@roadmap.Description</p>
+				</div>
+
+				<div class="roadmap-category-main-div">
+					<div class="roadmap-category-div">
+						<div class="roadmap-category-label">
+							<p>Categoria:</p>
+						</div>
+						<div class="roadmap-category-value">
+							@roadmap.Category
+						</div>
+					</div>
+				</div>
+
+				<div class="roadmap-created-author-div">
+					<div class="roadmad-created-div">
+						<div class="roadmap-created-label">
+							<p>Criado:</p>
+						</div>
+						<div class="roadmap-category-value">
+							@roadmap.CreatedDate
+						</div>
+					</div>
+
+					<div class="roadmap-author-div">
+						<div class="roadmap-author-label">
+							<p>Autor: </p>
+						</div>
+						<a class="roadmap-author-value" href="profile/@roadmap.AuthorId">
+							@roadmap.Author
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="text-center">
+				<button class="first-style-button" 
+				@onclick="async () => await ApproveRoadmap(roadmap)">
+					Aprovar
+				</button>
+				<a href="admindeleteroadmapconfirmation/@roadmap.Id" class="first-style-button">
+					Deletar
+				</a>
+			</div>
+		}
+	}
+	else
+	{
+		<div class="text-center">
+			Não existem roadmaps a serem aprovados
+		</div>
+	}
 }
 
 @code {
+	private IList<RoadmapClassModel>? Roadmaps;
 	private Guid? LoggedInUserId;
 	private UserModel? LoggedInUserModel;
 	private bool IsInitialized = false;
@@ -29,7 +91,41 @@
 			navManager.NavigateTo("/notfound");
 		}
 
+		await GetAllRoadmaps();
 
 		IsInitialized = true;
+	}
+
+	private async Task GetAllRoadmaps()
+	{
+		var roadmaps = await roadmapService.GetAllRoadmaps();
+
+		if (roadmaps is not null)
+		{
+			Roadmaps = roadmaps.Where(x => x.IsApproved == 0).ToList();
+
+			var users = await userService.GetAllUsers();
+
+			foreach (var roadmap in Roadmaps!)
+			{
+				foreach (var user in users)
+				{
+					if (roadmap.UserId == user.Id)
+					{
+						roadmap.Author = user.Username;
+						roadmap.AuthorId = user.Id.ToString();
+					}
+				}
+			}
+		}
+	}
+
+	private async Task<string> ApproveRoadmap(RoadmapClassModel roadmap)
+	{
+		roadmap.IsApproved = 1;
+
+		var response = await roadmapService.UpdateRoadmap(roadmap);
+
+		return response;
 	}
 }

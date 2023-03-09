@@ -1,10 +1,10 @@
-﻿@page "/deleteroadmapconfirmation/{roadmapid}"
+﻿@page "/admindeleteroadmapconfirmation/{roadmapid}"
 @inject IRoadmapService roadmapService
 @inject IUserService userService
 @inject IVotingService votingService
 @inject NavigationManager navManager
 
-@if (isInitialized)
+@if (IsInitialized)
 {
     <div class="roadmap-delet-confirmation-name-div">
         @Roadmap.Name
@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <div class="text-center">
         <div class="delete-roadmap-confirmation-label">
@@ -34,20 +34,22 @@
                 Sim
             </button>
 
-            <a class="first-style-button" href="roadmapdetails/@RoadmapId">
+            <a class="first-style-button" href="/adminroadmapapproval">
                 Não
             </a>
         </div>
     </div>
-
 }
+
 
 @code {
     [Parameter]
     public string RoadmapId { get; set; }
     private Guid LoggedInUserId { get; set; }
     private RoadmapClassModel? Roadmap { get; set; }
-    private bool isInitialized = false;
+    private UserModel LoggedInUserModel;
+    private bool IsInitialized = false;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -58,25 +60,36 @@
             navManager.NavigateTo("/notfound");
         }
 
-        Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId));
+        LoggedInUserModel = await GetLoggedInUserModel();
 
-        if (new Guid(RoadmapId) == Guid.Empty)
+        if (LoggedInUserModel.IsAdmin == 0)
         {
             navManager.NavigateTo("/notfound");
         }
 
-        if (LoggedInUserId != Roadmap!.UserId)
-        {
-            navManager.NavigateTo("/notfound");
-        }
+        Roadmap = await GetRoadmapById();
 
-        isInitialized = true;
+        IsInitialized = true;
+    }
+
+    private async Task<UserModel> GetLoggedInUserModel()
+    {
+        var loggedInUserModel = await userService.GetUserById(LoggedInUserId);
+
+        return loggedInUserModel;
+    }
+
+    private async Task<RoadmapClassModel> GetRoadmapById()
+    {
+        var roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId));
+
+        return roadmap;
     }
 
     private async Task DeleteRoadmap(Guid roadmapId)
     {
-        var deleteResponse = await roadmapService.DeleteRoadmap(roadmapId);
+        await roadmapService.DeleteRoadmap(roadmapId);
 
-        navManager.NavigateTo($"/profile/{LoggedInUserId}");
+        navManager.NavigateTo("/adminroadmapapproval");
     }
 }

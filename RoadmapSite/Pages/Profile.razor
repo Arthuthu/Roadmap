@@ -39,6 +39,13 @@
 			</div>
 		}
 
+		@if (User.IsAdmin == 1)
+		{
+			<div class="text-center">
+				<a class="first-style-button" href="/adminroadmapapproval">Aprovar Roadmaps</a>
+			</div>
+		}
+
 		<div class="profile-user-roadmaps-label-div">
 			<p>@User.Username Roadmaps</p>
 		</div>

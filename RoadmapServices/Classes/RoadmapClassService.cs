@@ -51,8 +51,8 @@ public class RoadmapClassService : IRoadmapClassService
 		}
 
 		roadmap.Id = Guid.NewGuid();
-		roadmap.IsApproved = 0;
-		roadmap.IsHidden = 0;
+		roadmap.IsApproved = "0";
+		roadmap.IsHidden = "0";
 		roadmap.CreatedDate = DateTime.UtcNow.AddHours(-3);
 
 		try
@@ -71,6 +71,8 @@ public class RoadmapClassService : IRoadmapClassService
 	public Task UpdateRoadmap(RoadmapClassModel roadmap)
 	{
 		roadmap.UpdatedDate = DateTime.UtcNow.AddHours(-3);
+		Convert.ToInt32(roadmap.IsApproved);
+		Convert.ToInt32(roadmap.IsHidden);
 		return _roadmapRepository.UpdateRoadmap(roadmap);
 	}
 

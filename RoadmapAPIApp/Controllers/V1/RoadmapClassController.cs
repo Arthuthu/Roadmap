@@ -68,8 +68,9 @@ public class RoadmapClassController : ControllerBase
         return Ok(cleanResponses);
     }
 
+    [Route("/updateroadmap")]
     [HttpPut]
-    public async Task<ActionResult<List<RoadmapClassResponse>>> UpdateRoadmap(RoadmapClassRequest roadmap)
+    public async Task<ActionResult<List<RoadmapClassResponse>>> UpdateRoadmap([FromForm] RoadmapClassRequest roadmap)
     {
         var requestRoadmap = _mapper.Map<RoadmapClassModel>(roadmap);
         await _roadmapService.UpdateRoadmap(requestRoadmap);

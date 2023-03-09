@@ -97,7 +97,33 @@ public class RoadmapService : IRoadmapService
 		return roadmapClassModel;
 	}
 
-	public async Task<string> DeleteRoadmap(Guid id)
+    public async Task<string> UpdateRoadmap(RoadmapClassModel roadmap)
+	{
+        var data = new FormUrlEncodedContent(new[]
+		{
+            new KeyValuePair<string, string>("name", roadmap.Name),
+            new KeyValuePair<string, string>("description", roadmap.Description),
+            new KeyValuePair<string, string>("category", roadmap.Category),
+            new KeyValuePair<string, string>("isapproved", roadmap.IsApproved.ToString()),
+            new KeyValuePair<string, string>("ishidden", roadmap.IsHidden.ToString()),
+            new KeyValuePair<string, string>("userId", roadmap.UserId.ToString())
+        });
+
+        string updateRoadmapEndpoint = _config["apiLocation"] + _config["updateRoadmapEndpoint"];
+        var authResult = await _client.DeleteAsync(updateRoadmapEndpoint);
+        var authContent = await authResult.Content.ReadAsStringAsync();
+
+        if (authResult.IsSuccessStatusCode is false)
+        {
+            _logger.LogInformation($"Ocorreu um erro ao atualizar o roadmap: {authContent}");
+            return null;
+        }
+
+        return await authResult.Content.ReadAsStringAsync();
+    }
+
+
+    public async Task<string> DeleteRoadmap(Guid id)
 	{
 		string deleteRoadmapEndpoint = _config["apiLocation"] + _config["deleteRoadmapEndpoint"] + $"/{id}";
 		var authResult = await _client.DeleteAsync(deleteRoadmapEndpoint);
@@ -111,4 +137,5 @@ public class RoadmapService : IRoadmapService
 
 		return authContent;
 	}
+
 }
