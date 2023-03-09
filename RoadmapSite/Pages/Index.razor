@@ -214,7 +214,7 @@
 	{
 		var roadmaps = await GetAllRoadmaps();
 
-		Roadmaps = roadmaps?.Where(x => x.Name == name).ToList();
+		Roadmaps = roadmaps?.Where(x => x.Name!.Contains(name)).ToList();
 
 		await FillRoadmapsButtons();
 	}
