@@ -1,0 +1,35 @@
+﻿@page "/adminroadmapapproval"
+@inject IVotingService votingService;
+@inject IUserService userService;
+@inject NavigationManager navManager;
+
+@if (IsInitialized)
+{
+	<div>You can only see this if you're admin</div>
+}
+
+@code {
+	private Guid? LoggedInUserId;
+	private UserModel? LoggedInUserModel;
+	private bool IsInitialized = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		LoggedInUserId = await votingService.GetLoggedInUserId();
+
+		if (LoggedInUserId == Guid.Empty)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
+
+		if (LoggedInUserModel.IsAdmin == 0)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
+
+		IsInitialized = true;
+	}
+}
