@@ -149,7 +149,6 @@
 	{
 		LoggedInUserId = await votingService.GetLoggedInUserId();
 		Roadmaps = await GetAllRoadmaps();
-
 		if (LoggedInUserId != Guid.Empty)
 		{
 			foreach (var roadmap in Roadmaps!)

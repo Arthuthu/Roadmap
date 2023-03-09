@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using RoadmapSite.Models;
 using RoadmapSite.Services.RoadmapVotes.Interfaces;
-using RoadmapSite.Services.User.Interfaces;
 using RoadmapSite.Services.Voting.Interfaces;
 using System.Security.Claims;
 

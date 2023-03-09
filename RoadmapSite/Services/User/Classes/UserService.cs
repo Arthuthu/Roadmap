@@ -40,7 +40,7 @@ public class UserService : IUserService
 		return roadmapClassModel;
 	}
 
-	public async Task<UserModel> GetUserById(Guid userId)
+	public async Task<UserModel> GetUserById(Guid? userId)
 	{
         string getUserByIdEndpoint = _config["apiLocation"] + _config["getUserByIdEndpoint"] + $"/{userId}";
         var authResult = await _client.GetAsync(getUserByIdEndpoint);

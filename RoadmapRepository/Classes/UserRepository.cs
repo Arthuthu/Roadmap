@@ -56,7 +56,8 @@ public class UserRepository : IUserRepository
             user.Id,
             user.Username,
             user.Password,
-            user.Bio
+            user.Bio,
+            user.UpdatedDate
         });
 
     }

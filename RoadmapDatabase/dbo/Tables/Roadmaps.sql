@@ -5,7 +5,11 @@
     [Description] NVARCHAR(200) NULL,
     [Category] NVARCHAR(50) NULL, 
     [UserId] UNIQUEIDENTIFIER NOT NULL, 
-    [CreatedDate] DATETIME2 NULL, 
+    [IsApproved] INT NULL, 
+    [IsHidden] INT NULL, 
+    [CreatedDate] DATETIME2 NULL,
+    
+    [UpdatedDate] DATETIME2 NULL, 
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
 
 )

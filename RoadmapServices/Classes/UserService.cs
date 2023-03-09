@@ -77,6 +77,8 @@ public class UserService : IUserService
 
     public Task UpdateUser(UserModel user)
     {
+		user.UpdatedDate = DateTime.UtcNow.AddHours(-3);
+
         return _userRepository.UpdateUser(user);
     }
 

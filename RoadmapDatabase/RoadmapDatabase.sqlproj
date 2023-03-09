@@ -96,4 +96,7 @@
     <Build Include="dbo\StoredProcedures\User\spUser_GetById.sql" />
     <Build Include="dbo\StoredProcedures\User\spUser_Update.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="RoadmapDatabase.refactorlog" />
+  </ItemGroup>
 </Project>

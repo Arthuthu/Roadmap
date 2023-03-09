@@ -68,6 +68,7 @@ public class RoadmapClassService : IRoadmapClassService
 
 	public Task UpdateRoadmap(RoadmapClassModel roadmap)
 	{
+		roadmap.UpdatedDate = DateTime.UtcNow.AddHours(-3);
 		return _roadmapRepository.UpdateRoadmap(roadmap);
 	}
 
