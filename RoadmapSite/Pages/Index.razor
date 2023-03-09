@@ -174,7 +174,8 @@
 
 	private async Task<IList<RoadmapClassModel>> GetAllRoadmaps()
 	{
-		var roadmaps = await roadmapService.GetAllRoadmaps();
+		var allRoadmaps = await roadmapService.GetAllRoadmaps();
+		var roadmaps = allRoadmaps!.Where(x => x.IsApproved == 1 && x.IsHidden == 0).ToList();
 		var users = await userService.GetAllUsers();
 
 		foreach (var roadmap in roadmaps!)

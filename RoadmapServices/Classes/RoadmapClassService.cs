@@ -51,6 +51,8 @@ public class RoadmapClassService : IRoadmapClassService
 		}
 
 		roadmap.Id = Guid.NewGuid();
+		roadmap.IsApproved = 0;
+		roadmap.IsHidden = 0;
 		roadmap.CreatedDate = DateTime.UtcNow.AddHours(-3);
 
 		try
