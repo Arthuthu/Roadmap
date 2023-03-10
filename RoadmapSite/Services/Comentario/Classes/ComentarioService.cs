@@ -24,8 +24,9 @@ public class ComentarioService : IComentarioService
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
-			new KeyValuePair<string, string>("comentario", comentario.Comentario),
+			new KeyValuePair<string, string>("descricao", comentario.Descricao),
 			new KeyValuePair<string, string>("userId", comentario.UserId.ToString()),
+			new KeyValuePair<string, string>("roadmapId", comentario.RoadmapId.ToString()),
 		});
 
 		string createComentarioEndpoint = _config["apiLocation"] + _config["createComentarioEndpoint"];
@@ -63,7 +64,7 @@ public class ComentarioService : IComentarioService
 		var data = new FormUrlEncodedContent(new[]
 		{
 				new KeyValuePair<string, string>("id", comentario.Id.ToString()),
-				new KeyValuePair<string, string>("comentario", comentario.Comentario),
+				new KeyValuePair<string, string>("comentario", comentario.Descricao),
 				new KeyValuePair<string, string>("userid", comentario.UserId.ToString())
 			});
 

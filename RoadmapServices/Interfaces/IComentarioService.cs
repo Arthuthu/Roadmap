@@ -4,7 +4,7 @@ namespace RoadmapServices.Interfaces
 {
     public interface IComentarioService
     {
-        Task AddComentario(ComentarioModel comentario);
+        Task CreateComentario(ComentarioModel comentario);
         Task DeleteComentario(Guid id);
         Task<IEnumerable<ComentarioModel>> GetAllComentarios();
         Task<ComentarioModel?> GetComentarioById(Guid id);

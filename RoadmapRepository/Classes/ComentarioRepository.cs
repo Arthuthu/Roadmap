@@ -27,19 +27,21 @@ public class ComentarioRepository : IComentarioRepository
 		return results.FirstOrDefault();
 	}
 
-	public Task AddComentario(ComentarioModel Comentario)
+	public Task CreateComentario(ComentarioModel comentario)
 	{
 		return _db.SaveData("dbo.spComentario_Add", new
 		{
-			Comentario.Id,
-			Comentario.Comentario,
-			Comentario.UserId
+			comentario.Id,
+			comentario.Descricao,
+			comentario.CreatedDate,
+			comentario.UserId,
+			comentario.RoadmapId
 		});
 	}
 
-	public Task UpdateComentario(ComentarioModel Comentario)
+	public Task UpdateComentario(ComentarioModel comentario)
 	{
-		return _db.SaveData("dbo.spComentario_Update", Comentario);
+		return _db.SaveData("dbo.spComentario_Update", comentario);
 	}
 
 	public Task DeleteComentario(Guid id)

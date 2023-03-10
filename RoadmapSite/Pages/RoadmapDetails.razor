@@ -59,10 +59,10 @@
 			</div>
 		}
 
-		<EditForm OnValidSubmit="CommentOnRoadmap" class="" Context="ComentForm">
+		<EditForm Model="Comentario" OnValidSubmit="CommentOnRoadmap">
 			<div>
-				<InputTextArea id="comment" class="form-input-text-description" @bind-Value="Comentario.Comentario"
-				placeholder="Digite aqui para comentar no roadmap (Maximo 1000 caracteres)" />
+				<InputTextArea id="comment" class="roadmap-details-comentario-text-area" @bind-Value="Comentario.Descricao"
+				placeholder="Adicione um comentario (Maximo 1000 caracteres)" />
 			</div>
 			<div class="button-div">
 				<button type="submit" class="first-style-button">Comentar</button>
@@ -71,14 +71,14 @@
 
 
 		<Virtualize Items="@Comentarios" Context="comentario" OverscanCount="50">
-			<div>
-				<div>
+			<div class="roadmap-details-comentario-box">
+				<a class="roadmap-details-author" href="/profile/@comentario.AuthorId">
 					@comentario.Author
+				</a>
+				<div class="roadmap-details-comentario">
+					@comentario.Descricao
 				</div>
-				<div>
-					@comentario.Comentario
-				</div>
-				<div>
+				<div class="roadmap-details-createddate">
 					@comentario.CreatedDate
 				</div>
 			</div>
@@ -93,7 +93,7 @@
 	private RoadmapClassModel? Roadmap { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
 	private IList<ComentarioModel>? Comentarios { get; set; }
-	private ComentarioModel? Comentario { get; set; }
+	private ComentarioModel? Comentario = new();
 	bool isInitialized = false;
 
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
@@ -176,6 +176,7 @@
 				if (user.Id == comentario.UserId)
 				{
 					comentario.Author = user.Username;
+					comentario.AuthorId = user.Id;
 				}
 			}
 		}
@@ -183,7 +184,10 @@
 
 	private async Task CommentOnRoadmap()
 	{
+		Comentario.RoadmapId = new Guid(RoadmapId!);
 		Comentario.UserId = LoggedInUserId;
 		await comentarioService.CreateComentario(Comentario);
+
+		await OnInitializedAsync();
 	}
 }

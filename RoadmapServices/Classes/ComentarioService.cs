@@ -23,10 +23,11 @@ public class ComentarioService : IComentarioService
 		return await _comentarioRepository.GetComentarioById(id);
 	}
 
-	public async Task AddComentario(ComentarioModel comentario)
+	public async Task CreateComentario(ComentarioModel comentario)
 	{
+		comentario.Id = Guid.NewGuid();
 		comentario.CreatedDate = DateTime.UtcNow.AddHours(-3);
-		await _comentarioRepository.AddComentario(comentario);
+		await _comentarioRepository.CreateComentario(comentario);
 	}
 
 	public Task UpdateComentario(ComentarioModel comentario)
