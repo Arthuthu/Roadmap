@@ -81,6 +81,10 @@
 				<div class="roadmap-details-createddate">
 					@comentario.CreatedDate
 				</div>
+				@if (comentario.AuthorId == LoggedInUserId)
+				{
+					<div>Excluir</div>
+				}
 			</div>
 		</Virtualize>
 	}
@@ -188,6 +192,6 @@
 		Comentario.UserId = LoggedInUserId;
 		await comentarioService.CreateComentario(Comentario);
 
-		await OnInitializedAsync();
+		await GetAllComentarios();
 	}
 }
