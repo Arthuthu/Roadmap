@@ -2,9 +2,10 @@
 	@Id uniqueidentifier,
 	@Comentario nvarchar(1000),
 	@CreatedDate datetime2,
-	@UserId uniqueidentifier
+	@UserId uniqueidentifier,
+	@RoadmapId uniqueidentifier
 AS
 BEGIN
-	INSERT INTO dbo.[Comentarios] (Id, Comentario, CreatedDate, UserId)
-	VALUES (@Id, @Comentario, @CreatedDate, @UserId);
+	INSERT INTO dbo.[Comentarios] (Id, Comentario, CreatedDate, UserId, RoadmapId)
+	VALUES (@Id, @Comentario, @CreatedDate, @UserId, @RoadmapId);
 END

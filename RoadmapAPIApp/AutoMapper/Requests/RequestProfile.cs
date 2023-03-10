@@ -12,6 +12,10 @@ public class RequestProfile : Profile
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 
+		CreateMap<ComentarioModel, ComentarioRequest>()
+			.IgnoreAllPropertiesWithAnInaccessibleSetter()
+			.ReverseMap();
+
 		CreateMap<UserModel, LoginRequest>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();

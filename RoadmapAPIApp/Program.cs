@@ -34,12 +34,15 @@ builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IRoadmapClassRepository, RoadmapClassRepository>();
 builder.Services.AddSingleton<INodeRepository, NodeRepository>();
 builder.Services.AddSingleton<IRoadmapVotesRepository, RoadmapVotesRepository>();
+builder.Services.AddSingleton<IComentarioRepository, ComentarioRepository>();
 
 //Services
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IRoadmapClassService, RoadmapClassService>();
 builder.Services.AddSingleton<IRoadmapVotesService, RoadmapVotesService>();
 builder.Services.AddSingleton<INodeService, NodeService>();
+builder.Services.AddSingleton<IComentarioService, ComentarioService>();
+
 
 //Validators / MessageHandler
 builder.Services.AddSingleton<IMessageHandler, MessageHandler>();

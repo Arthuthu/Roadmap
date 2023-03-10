@@ -12,6 +12,10 @@ public class ResponseProfile : Profile
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 
+		CreateMap<ComentarioResponse, ComentarioModel>()
+			.IgnoreAllPropertiesWithAnInaccessibleSetter()
+			.ReverseMap();
+
 		CreateMap<RoadmapClassResponse, RoadmapClassModel>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();

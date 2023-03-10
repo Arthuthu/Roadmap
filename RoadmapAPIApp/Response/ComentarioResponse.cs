@@ -8,4 +8,6 @@ public class ComentarioResponse
 	public DateTime UpdatedDate { get; set; }
 	
 	public Guid UserId { get; set; }
+	public Guid RoadmapId { get; set; }
+
 }

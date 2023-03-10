@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using RoadmapSite;
 using RoadmapSite.Services.Authentication.Classes;
 using RoadmapSite.Services.Authentication.Interfaces;
+using RoadmapSite.Services.Comentario.Classes;
+using RoadmapSite.Services.Comentario.Interfaces;
 using RoadmapSite.Services.Registration.Classes;
 using RoadmapSite.Services.Registration.Interfaces;
 using RoadmapSite.Services.Roadmap.Classes;
@@ -27,6 +29,7 @@ builder.Services.AddScoped<IRoadmapService, RoadmapService>();
 builder.Services.AddScoped<IRoadmapVotesService, RoadmapVotesService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVotingService, VotingService>();
+builder.Services.AddScoped<IComentarioService, ComentarioService>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
 builder.Services.AddBlazoredLocalStorage();

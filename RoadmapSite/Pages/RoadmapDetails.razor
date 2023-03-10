@@ -1,8 +1,9 @@
 ﻿@page "/roadmapdetails/{roadmapid}"
-@inject IRoadmapService roadmapService
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navManager
 @inject IUserService userService
+@inject IRoadmapService roadmapService
+@inject IComentarioService comentarioService
 @inject IVotingService votingService
 @inject IRoadmapVotesService roadmapVotesService
 
@@ -57,15 +58,42 @@
 				</a>
 			</div>
 		}
+
+		<EditForm OnValidSubmit="CommentOnRoadmap" class="" Context="ComentForm">
+			<div>
+				<InputTextArea id="comment" class="form-input-text-description" @bind-Value="Comentario.Comentario"
+				placeholder="Digite aqui para comentar no roadmap (Maximo 1000 caracteres)" />
+			</div>
+			<div class="button-div">
+				<button type="submit" class="first-style-button">Comentar</button>
+			</div>
+		</EditForm>
+
+
+		<Virtualize Items="@Comentarios" Context="comentario" OverscanCount="50">
+			<div>
+				<div>
+					@comentario.Author
+				</div>
+				<div>
+					@comentario.Comentario
+				</div>
+				<div>
+					@comentario.CreatedDate
+				</div>
+			</div>
+		</Virtualize>
 	}
 }
 
 @code {
 	[Parameter]
 	public string? RoadmapId { get; set; }
-	public Guid? LoggedInUserId { get; set; }
-	public RoadmapClassModel? Roadmap { get; set; }
-	public UserModel? LoggedInUserModel { get; set; }
+	private Guid? LoggedInUserId { get; set; }
+	private RoadmapClassModel? Roadmap { get; set; }
+	private UserModel? LoggedInUserModel { get; set; }
+	private IList<ComentarioModel>? Comentarios { get; set; }
+	private ComentarioModel? Comentario { get; set; }
 	bool isInitialized = false;
 
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
@@ -81,6 +109,7 @@
 
 		await GetRoadmapById(new Guid(RoadmapId!));
 		await GetLoggedInUserModel();
+		await GetAllComentarios();
 
 		string roadmapClass = await votingService.GetButtonColor(Roadmap.Id, LoggedInUserId);
 		Roadmap!.RoadmapHtmlClass = roadmapClass;
@@ -130,5 +159,31 @@
 	private async Task GetLoggedInUserModel()
 	{
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
+	}
+
+	private async Task GetAllComentarios()
+	{
+		var comentarios = await comentarioService.GetAllComentarios();
+
+		Comentarios = comentarios.Where(x => x.RoadmapId.ToString() == RoadmapId).ToList();
+
+		var users = await userService.GetAllUsers();
+
+		foreach (var comentario in Comentarios)
+		{
+			foreach (var user in users)
+			{
+				if (user.Id == comentario.UserId)
+				{
+					comentario.Author = user.Username;
+				}
+			}
+		}
+	}
+
+	private async Task CommentOnRoadmap()
+	{
+		Comentario.UserId = LoggedInUserId;
+		await comentarioService.CreateComentario(Comentario);
 	}
 }
