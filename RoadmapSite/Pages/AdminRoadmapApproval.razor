@@ -50,12 +50,13 @@
 					</div>
 				</div>
 			</div>
-			<div class="text-center">
+			<div class="roadmap-approval-yes-delete-div">
 				<button class="first-style-button" 
 				@onclick="async () => await ApproveRoadmap(roadmap)">
 					Aprovar
 				</button>
-				<a href="admindeleteroadmapconfirmation/@roadmap.Id" class="first-style-button">
+				<a href="admindeleteroadmapconfirmation/@roadmap.Id" class="first-style-button"
+				id="roadmap-approval-delete-button">
 					Deletar
 				</a>
 			</div>
@@ -120,12 +121,11 @@
 		}
 	}
 
-	private async Task<string> ApproveRoadmap(RoadmapClassModel roadmap)
+	private async Task ApproveRoadmap(RoadmapClassModel roadmap)
 	{
 		roadmap.IsApproved = "1";
 
-		var response = await roadmapService.UpdateRoadmap(roadmap);
-
-		return response;
+		await roadmapService.UpdateRoadmap(roadmap);
+		await GetAllRoadmaps();
 	}
 }

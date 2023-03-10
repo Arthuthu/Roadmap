@@ -41,7 +41,7 @@
 
 		@if (User.IsAdmin == "1")
 		{
-			<div class="text-center">
+			<div class="profile-approve-roadmaps-div">
 				<a class="first-style-button" href="/adminroadmapapproval">Aprovar Roadmaps</a>
 			</div>
 		}
@@ -87,6 +87,25 @@
 									<div class="roadmap-category-value">
 										@roadmap.Category
 									</div>
+								</div>
+							</div>
+							<div class="roadmap-created-author-div">
+								<div class="roadmad-created-div">
+									<div class="roadmap-created-label">
+										<p>Criado:</p>
+									</div>
+									<div class="roadmap-category-value">
+										@roadmap.CreatedDate
+									</div>
+								</div>
+
+								<div class="roadmap-author-div">
+									<div class="roadmap-author-label">
+										<p> </p>
+									</div>
+									<a class="roadmap-author-value" href="profile/@roadmap.AuthorId">
+										@roadmap.Author
+									</a>
 								</div>
 							</div>
 						</div>

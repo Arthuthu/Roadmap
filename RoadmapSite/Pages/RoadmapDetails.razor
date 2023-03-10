@@ -48,6 +48,15 @@
 				</a>
 			</div>
 		}
+
+		@if (LoggedInUserModel.IsAdmin == "1")
+		{
+			<div class="roadmap-details-excluir-button-div">
+				<a href="admindeleteroadmapconfirmation/@Roadmap.Id" class="first-style-button">
+					Excluir Roadmap Como Admin
+				</a>
+			</div>
+		}
 	}
 }
 
@@ -56,7 +65,7 @@
 	public string? RoadmapId { get; set; }
 	public Guid? LoggedInUserId { get; set; }
 	public RoadmapClassModel? Roadmap { get; set; }
-	public UserModel? User { get; set; }
+	public UserModel? LoggedInUserModel { get; set; }
 	bool isInitialized = false;
 
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
@@ -71,6 +80,7 @@
 		}
 
 		await GetRoadmapById(new Guid(RoadmapId!));
+		await GetLoggedInUserModel();
 
 		string roadmapClass = await votingService.GetButtonColor(Roadmap.Id, LoggedInUserId);
 		Roadmap!.RoadmapHtmlClass = roadmapClass;
@@ -115,5 +125,10 @@
 		{
 			return "vote-button-voted-details";
 		}
+	}
+
+	private async Task GetLoggedInUserModel()
+	{
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 	}
 }

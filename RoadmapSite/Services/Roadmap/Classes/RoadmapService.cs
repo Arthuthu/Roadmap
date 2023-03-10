@@ -132,7 +132,7 @@ public class RoadmapService : IRoadmapService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento do roadmap: {authContent}");
+			_logger.LogInformation($"Ocorreu um erro para deletar o roadmap: {authContent}");
 			return authContent;
 		}
 

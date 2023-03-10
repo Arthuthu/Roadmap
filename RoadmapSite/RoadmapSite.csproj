@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Services\Comentario\Interfaces\" />
     <Folder Include="wwwroot\icons\" />
   </ItemGroup>
 

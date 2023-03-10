@@ -64,6 +64,7 @@
     <Folder Include="dbo\StoredProcedures\Roadmap" />
     <Folder Include="dbo\StoredProcedures\Node" />
     <Folder Include="dbo\StoredProcedures\RoadmapVotes" />
+    <Folder Include="dbo\StoredProcedures\Comentario" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\RoadmapDatabase.publish.xml" />
@@ -90,6 +91,12 @@
     <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_Delete.sql" />
     <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_GetAll.sql" />
     <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_GetRoadmapByUserId.sql" />
+    <Build Include="dbo\Tables\Comentarios.sql" />
+    <Build Include="dbo\StoredProcedures\Comentario\spComentario_GetAll.sql" />
+    <Build Include="dbo\StoredProcedures\Comentario\spComentario_GetById.sql" />
+    <Build Include="dbo\StoredProcedures\Comentario\spComentario_Add.sql" />
+    <Build Include="dbo\StoredProcedures\Comentario\spComentario_Delete.sql" />
+    <Build Include="dbo\StoredProcedures\Comentario\spComentario_Update.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />

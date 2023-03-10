@@ -8,7 +8,6 @@
     [IsApproved] NVARCHAR NULL, 
     [IsHidden] NVARCHAR NULL, 
     [CreatedDate] DATETIME2 NULL,
-    
     [UpdatedDate] DATETIME2 NULL, 
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
 

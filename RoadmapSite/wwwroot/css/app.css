@@ -516,8 +516,13 @@ body {
     font-weight: bold;
     font-size: 30px;
 }
-/* Roadmap Details */
 
+.profile-approve-roadmaps-div {
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Roadmap Details */
 .roadmap-details-name-category-div {
     display: flex;
     justify-content: space-between;
@@ -579,4 +584,15 @@ body {
 .delete-roadmap-confirmation-buttons-div {
     display: flex;
     justify-content: space-evenly;
+}
+
+/* Roadmap Approval */
+
+.roadmap-approval-yes-delete-div {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.roadmap-approval-delete-button{
+    padding: auto;
 }
