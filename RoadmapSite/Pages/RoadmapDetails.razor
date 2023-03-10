@@ -75,16 +75,25 @@
 				<a class="roadmap-details-author" href="/profile/@comentario.AuthorId">
 					@comentario.Author
 				</a>
-				<div class="roadmap-details-comentario">
-					@comentario.Descricao
+				<div class="roadmap-details-comentario-descricao-button-div">
+					<div>
+						<div class="roadmap-details-comentario">
+							@comentario.Descricao
+						</div>
+						<div class="roadmap-details-createddate">
+							@comentario.CreatedDate
+						</div>
+					</div>
+					<div>
+						@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel.IsAdmin == "1")
+						{
+							<button @onclick="async () => await DeleteComment(comentario.Id)"
+								class="delete-comment-button">
+								Excluir
+							</button>
+						}
+					</div>
 				</div>
-				<div class="roadmap-details-createddate">
-					@comentario.CreatedDate
-				</div>
-				@if (comentario.AuthorId == LoggedInUserId)
-				{
-					<div>Excluir</div>
-				}
 			</div>
 		</Virtualize>
 	}
@@ -191,6 +200,13 @@
 		Comentario.RoadmapId = new Guid(RoadmapId!);
 		Comentario.UserId = LoggedInUserId;
 		await comentarioService.CreateComentario(Comentario);
+
+		await GetAllComentarios();
+	}
+
+	private async Task DeleteComment(Guid comentarioId)
+	{
+		await comentarioService.DeleteComentario(comentarioId);
 
 		await GetAllComentarios();
 	}

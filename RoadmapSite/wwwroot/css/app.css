@@ -596,8 +596,26 @@ body {
     padding: 0 0 10px 0;
 }
 
-/* Delete Roadmap Confirmation */
+.roadmap-details-comentario-descricao-button-div {
+    display: flex;
+    justify-content: space-between;
+}
 
+.delete-comment-button {
+    color: #FFF;
+    background-color: #ED1B1B;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+    .delete-comment-button:hover {
+        transition: 500ms;
+        background-color: #B90000;
+    }
+
+/* Delete Roadmap Confirmation */
 .roadmap-delet-confirmation-name-div {
     text-align: center;
     font-size: 30px;
@@ -641,6 +659,3 @@ body {
     justify-content: space-evenly;
 }
 
-.roadmap-approval-delete-button{
-    padding: auto;
-}
