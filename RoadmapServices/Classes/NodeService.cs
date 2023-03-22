@@ -13,9 +13,9 @@ public class NodeService : INodeService
 		_nodeData = nodeData;
 	}
 
-	public Task<IEnumerable<NodeModel>> GetAllNodes()
+	public Task<IEnumerable<NodeModel>> GetAllNodes(Guid roadmapId)
 	{
-		return _nodeData.GetAllNodes();
+		return _nodeData.GetAllNodes(roadmapId);
 	}
 
 	public async Task<NodeModel?> GetNodeById(Guid id)
@@ -25,11 +25,22 @@ public class NodeService : INodeService
 
 	public async Task AddNode(NodeModel node)
 	{
-		await _nodeData.AddNode(node);
+		node.Id = Guid.NewGuid();
+		node.CreatedDate = DateTime.UtcNow.AddHours(-3);
+
+		try
+		{
+			await _nodeData.AddNode(node);
+		}
+		catch (Exception ex)
+		{
+			throw new Exception($"Ocorreu um erro ao adicionado o node {ex.Message}");
+		}
 	}
 
 	public Task UpdateNode(NodeModel node)
 	{
+		node.UpdatedDate = DateTime.UtcNow.AddHours(-3);
 		return _nodeData.UpdateNode(node);
 	}
 

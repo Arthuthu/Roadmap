@@ -21,10 +21,11 @@ public class NodeController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<List<NodeResponse>>> GetAllNodes()
+	[Route("/getallnodes")]
+	[HttpGet]
+    public async Task<ActionResult<List<NodeResponse>>> GetAllNodes(Guid roadmapId)
     {
-        var nodes = await _nodeService.GetAllNodes();
+        var nodes = await _nodeService.GetAllNodes(roadmapId);
         var responseNodes = nodes.Select(node => _mapper.Map<NodeResponse>(node));
 
         return Ok(responseNodes);
@@ -39,8 +40,9 @@ public class NodeController : ControllerBase
         return Ok(responseNodes);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<List<NodeResponse>>> CreateNode(NodeRequest node)
+	[Route("/createnode")]
+	[HttpPost]
+    public async Task<ActionResult<List<NodeResponse>>> CreateNode([FromForm] NodeRequest node)
     {
         var requestNode = _mapper.Map<NodeModel>(node);
         await _nodeService.AddNode(requestNode);

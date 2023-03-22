@@ -13,7 +13,7 @@ public class NodeRepository : INodeRepository
 		_db = db;
 	}
 
-	public Task<IEnumerable<NodeModel>> GetAllNodes()
+	public Task<IEnumerable<NodeModel>> GetAllNodes(Guid roadmapId)
 	{
 		return _db.LoadData<NodeModel, dynamic>("dbo.spNode_GetAll", new { });
 	}
@@ -34,6 +34,7 @@ public class NodeRepository : INodeRepository
 			node.Id,
 			node.Name,
 			node.Description,
+			node.CreatedDate,
 			node.RoadmapId
 		});
 	}

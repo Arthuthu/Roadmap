@@ -2,6 +2,7 @@
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navManager
 @inject IUserService userService
+@inject INodeService nodeService
 @inject IRoadmapService roadmapService
 @inject IComentarioService comentarioService
 @inject IVotingService votingService
@@ -26,9 +27,28 @@
 			</div>
 		</div>
 
-		<div>
-			Parte onde vai ficar o roadmap nodes
-		</div>
+		<Virtualize Items="@Nodes" Context="node" OverscanCount="50">
+			<div>
+				@node.Name
+			</div>
+		</Virtualize>
+
+		@if (Roadmap.UserId == LoggedInUserId)
+		{
+			<EditForm Model="@Node" OnValidSubmit="CreateNode" class="" Context="NodeForm">
+				<div>
+					<label for="titulo" class="visually-hidden">Titulo</label>
+					<div>
+						<InputText id="bio" class="form-input-text-description" @bind-Value="Node.Name" placeholder="Titulo" />
+					</div>
+				</div>
+
+				<div class="button-div">
+					<button type="submit" class="first-style-button">Salvar</button>
+				</div>
+			</EditForm>
+		}
+
 
 		<div class="roadmap-details-vote-button">
 			<div onclick="toggleVoteButtonDetailsClass(this.querySelector('button'))">
@@ -59,7 +79,7 @@
 			</div>
 		}
 
-		<EditForm Model="Comentario" OnValidSubmit="CommentOnRoadmap">
+		<EditForm Model="@Comentario" OnValidSubmit="CommentOnRoadmap" Context="ComentarioForm">
 			<div>
 				<InputTextArea id="comment" class="roadmap-details-comentario-text-area" @bind-Value="Comentario.Descricao"
 				placeholder="Adicione um comentario (Maximo 1000 caracteres)" />
@@ -107,9 +127,9 @@
 	private UserModel? LoggedInUserModel { get; set; }
 	private IList<ComentarioModel>? Comentarios { get; set; }
 	private ComentarioModel? Comentario = new();
+	private IList<NodeModel>? Nodes { get; set; }
+	private NodeModel? Node = new();
 	bool isInitialized = false;
-
-	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -123,6 +143,7 @@
 		await GetRoadmapById(new Guid(RoadmapId!));
 		await GetLoggedInUserModel();
 		await GetAllComentarios();
+		await GetAllNodes();
 
 		string roadmapClass = await votingService.GetButtonColor(Roadmap.Id, LoggedInUserId);
 		Roadmap!.RoadmapHtmlClass = roadmapClass;
@@ -209,5 +230,16 @@
 		await comentarioService.DeleteComentario(comentarioId);
 
 		await GetAllComentarios();
+	}
+
+	private async Task CreateNode()
+	{
+		Node.RoadmapId = new Guid(RoadmapId);
+		await nodeService.CreateNode(Node);
+	}
+
+	private async Task GetAllNodes()
+	{
+		Nodes = await nodeService.GetAllNodes(new Guid(RoadmapId));
 	}
 }
