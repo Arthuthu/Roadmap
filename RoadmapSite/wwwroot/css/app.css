@@ -548,11 +548,6 @@ body {
     text-align: center;
 }
 
-.roadmap-details-excluir-button-div {
-    text-align: center;
-    margin-top: 50px;
-}
-
 .roadmap-details-comentario-text-area{
     width: 100%;
     background: transparent;
@@ -676,6 +671,17 @@ body {
 .delete-roadmap-button:hover {
     transition: 500ms;
     background-color: #DF0000;
+}
+
+.roadmap-manage-buttons-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0;
+}
+
+#roadmap-details-management-button{
+    margin: 0;
 }
 
 /* Delete Roadmap Confirmation */

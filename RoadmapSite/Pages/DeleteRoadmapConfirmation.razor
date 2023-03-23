@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <div class="text-center">
         <div class="delete-roadmap-confirmation-label">
@@ -39,13 +39,13 @@
             </a>
         </div>
     </div>
-
 }
 
 @code {
     [Parameter]
     public string RoadmapId { get; set; }
     private Guid LoggedInUserId { get; set; }
+    private UserModel LoggedInUserModel { get; set; }
     private RoadmapClassModel? Roadmap { get; set; }
     private bool isInitialized = false;
 
@@ -65,7 +65,9 @@
             navManager.NavigateTo("/notfound");
         }
 
-        if (LoggedInUserId != Roadmap!.UserId)
+        await GetUserModel();
+
+        if (LoggedInUserId != Roadmap!.UserId || LoggedInUserModel.IsAdmin != "1")
         {
             navManager.NavigateTo("/notfound");
         }
@@ -78,5 +80,10 @@
         var deleteResponse = await roadmapService.DeleteRoadmap(roadmapId);
 
         navManager.NavigateTo($"/profile/{LoggedInUserId}");
+    }
+
+    private async Task GetUserModel()
+    {
+        LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
     }
 }

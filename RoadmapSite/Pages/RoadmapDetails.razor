@@ -36,7 +36,7 @@
 						<button class="node-button">
 							@node.Name
 						</button>
-						@if (Roadmap.UserId == LoggedInUserId)
+						@if (editMode)
 						{
 							<button class="delete-roadmap-button"
 							@onclick="async () => await DeleteNode(node.Id)">
@@ -89,23 +89,24 @@
 			</div>
 		</div>
 
-		@if (Roadmap.UserId == LoggedInUserId)
-		{
-			<div class="roadmap-details-excluir-button-div">
-				<a href="deleteroadmapconfirmation/@Roadmap.Id" class="first-style-button">
-					Excluir Roadmap
-				</a>
-			</div>
-		}
+		<div class="roadmap-manage-buttons-div">
+			@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel.IsAdmin == "1")
+			{
+				<div>
+					<a href="deleteroadmapconfirmation/@Roadmap.Id" class="first-style-button"
+					id="roadmap-details-management-button">
+						Excluir Roadmap
+					</a>
+				</div>
 
-		@if (LoggedInUserModel.IsAdmin == "1")
-		{
-			<div class="roadmap-details-excluir-button-div">
-				<a href="admindeleteroadmapconfirmation/@Roadmap.Id" class="first-style-button">
-					Excluir Roadmap Como Admin
-				</a>
-			</div>
-		}
+				<div>
+					<button @onclick="async () => await ToggleEditMode()" id="roadmap-details-management-button"
+					class="first-style-button">
+						Editar
+					</button>
+				</div>
+			}
+		</div>
 
 		<EditForm Model="@Comentario" OnValidSubmit="CommentOnRoadmap" Context="ComentarioForm">
 			<div>
@@ -157,7 +158,8 @@
 	private ComentarioModel? Comentario = new();
 	private IList<NodeModel>? Nodes { get; set; }
 	private NodeModel? Node = new();
-	bool isInitialized = false;
+	private bool editMode = false;
+	private bool isInitialized = false;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -287,5 +289,19 @@
 	{
 		await nodeService.DeleteNode(nodeId);
 		await GetAllNodes();
+	}
+
+	private async Task<bool> ToggleEditMode()
+	{
+		if (editMode is true)
+		{
+			editMode = false;
+
+			return editMode;
+		}
+
+		editMode = true;
+
+		return editMode;
 	}
 }
