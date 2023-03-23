@@ -30,7 +30,6 @@
 		<div class="nodes-box">
 			@if(Nodes is not null)
 			{
-
 				@foreach (var node in Nodes)
 				{
 					<div class="node-button-div">
@@ -44,12 +43,15 @@
 								X
 							</button>
 						}
-
 					</div>
+
 					<div class="node-arrow-icon-div">
-						<i class="fa-light fa-arrow-down"></i>
+						<i class="fa-solid fa-arrow-down" id="arrow-icon"></i>
 					</div>
 				}
+				<button class="node-button">
+					Fim
+				</button>
 			}
 			else
 			{

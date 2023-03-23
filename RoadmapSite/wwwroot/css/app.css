@@ -658,6 +658,10 @@ body {
     margin: 7px 0 20px 0;
 }
 
+#arrow-icon {
+    font-size: 40px;
+}
+
 .delete-roadmap-button {
     color: #FFF;
     background-color: #BA0000;
