@@ -21,7 +21,7 @@ public class NodeController : ControllerBase
         _mapper = mapper;
     }
 
-	[Route("/getallnodes")]
+	[Route("/getallnodes/{roadmapid}")]
 	[HttpGet]
     public async Task<ActionResult<List<NodeResponse>>> GetAllNodes(Guid roadmapId)
     {

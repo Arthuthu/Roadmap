@@ -1,3 +1,7 @@
+:root {
+    --button-background-color: #EF9F00;
+}
+
 html {
     height: 100%;
 }
@@ -381,7 +385,7 @@ body {
 
 .first-style-button,
 .second-style-button {
-    background-color: #EF9F00;
+    background-color: var(--button-background-color);
     margin: 20px 0 0 0;
     padding: 15px 20px;
     color: #FFF;
@@ -614,6 +618,39 @@ body {
         transition: 500ms;
         background-color: #B90000;
     }
+
+.nodes-box {
+    border: solid #FFF;
+    margin: 0 0 20px 0;
+}
+
+.node-button-div {
+    text-align: center;
+}
+
+.node-button {
+    background-color: var(--button-background-color);
+    color: #FFF;
+    padding: 20px 40px;
+    font-weight: bold;
+    font-size: 25px;
+    margin: 20px 0;
+}
+
+.node-input-text-div {
+    text-align: center;
+}
+
+.node-name-input-text {
+    border-radius: 7px;
+    padding: 20px;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+#adicionar-node-button {
+    margin: 7px 0 20px 0;
+}
 
 /* Delete Roadmap Confirmation */
 .roadmap-delet-confirmation-name-div {

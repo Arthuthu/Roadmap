@@ -27,28 +27,43 @@
 			</div>
 		</div>
 
-		<Virtualize Items="@Nodes" Context="node" OverscanCount="50">
-			<div>
-				@node.Name
-			</div>
-		</Virtualize>
+		<div class="nodes-box">
+			@if(Nodes is not null)
+			{
 
-		@if (Roadmap.UserId == LoggedInUserId)
-		{
-			<EditForm Model="@Node" OnValidSubmit="CreateNode" class="" Context="NodeForm">
+					@foreach (var node in Nodes)
+					{
+						<div class="node-button-div">
+							<button class="node-button">
+								@node.Name
+							</button>
+						</div>
+					}
+			}
+			else
+			{
 				<div>
-					<label for="titulo" class="visually-hidden">Titulo</label>
-					<div>
-						<InputText id="bio" class="form-input-text-description" @bind-Value="Node.Name" placeholder="Titulo" />
+					Não existe nenhum conteudo nesse roadmap ainda.
+				</div>
+			}
+
+			@if (Roadmap.UserId == LoggedInUserId)
+			{
+				<EditForm Model="@Node" OnValidSubmit="CreateNode" class="" Context="NodeForm">
+					<div class="node-input-text-div">
+						<label for="titulo" class="visually-hidden">Titulo</label>
+						<div>
+							<InputText id="text-input" class="node-name-input-text" @bind-Value="Node.Name" placeholder="Nome" />
+						</div>
 					</div>
-				</div>
 
-				<div class="button-div">
-					<button type="submit" class="first-style-button">Salvar</button>
-				</div>
-			</EditForm>
-		}
-
+					<div class="button-div">
+						<button type="submit" class="first-style-button" id="adicionar-node-button"
+						onclick="clearInput()">Adicionar</button>
+					</div>
+				</EditForm>
+			}
+		</div>
 
 		<div class="roadmap-details-vote-button">
 			<div onclick="toggleVoteButtonDetailsClass(this.querySelector('button'))">
@@ -236,10 +251,17 @@
 	{
 		Node.RoadmapId = new Guid(RoadmapId);
 		await nodeService.CreateNode(Node);
+
+		await GetAllNodes();
 	}
 
 	private async Task GetAllNodes()
 	{
-		Nodes = await nodeService.GetAllNodes(new Guid(RoadmapId));
+		var nodes = await nodeService.GetAllNodes(new Guid(RoadmapId));
+
+		if (nodes is not null)
+		{
+			Nodes = nodes.OrderBy(x => x.CreatedDate).ToList();
+		}
 	}
 }

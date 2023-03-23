@@ -18,14 +18,19 @@ function toggleVoteButtonDetailsClass(button) {
     }
 }
 
-var isVoted = false;
-var voteCountEl = document.getElementById("vote-count");
-
-function toggleVote() {
-    if (isVoted) {
-        voteCountEl.textContent = parseInt(voteCountEl.textContent) - 1;
-    } else {
-        voteCountEl.textContent = parseInt(voteCountEl.textContent) + 1;
-    }
-    isVoted = !isVoted;
+function clearInput() {
+    document.getElementById("text-input").value = "";
 }
+
+
+//var isVoted = false;
+//var voteCountEl = document.getElementById("vote-count");
+
+//function toggleVote() {
+//    if (isVoted) {
+//        voteCountEl.textContent = parseInt(voteCountEl.textContent) - 1;
+//    } else {
+//        voteCountEl.textContent = parseInt(voteCountEl.textContent) + 1;
+//    }
+//    isVoted = !isVoted;
+//}

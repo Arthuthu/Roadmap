@@ -15,7 +15,7 @@ public class NodeRepository : INodeRepository
 
 	public Task<IEnumerable<NodeModel>> GetAllNodes(Guid roadmapId)
 	{
-		return _db.LoadData<NodeModel, dynamic>("dbo.spNode_GetAll", new { });
+		return _db.LoadData<NodeModel, dynamic>("dbo.spNode_GetAll", new { RoadmapId = roadmapId });
 	}
 
 	public async Task<NodeModel?> GetNodeById(Guid id)

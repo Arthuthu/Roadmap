@@ -46,9 +46,9 @@ public class NodeService : INodeService
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
-	public async Task<IList<NodeModel>?> GetAllNodes(Guid id)
+	public async Task<IList<NodeModel>?> GetAllNodes(Guid roadmapId)
 	{
-		string getAllNodesEndpoint = _config["apiLocation"] + _config["getAllNodesEndpoint"];
+		string getAllNodesEndpoint = _config["apiLocation"] + _config["getAllNodesEndpoint"] + $"/{roadmapId}";
 		var authResult = await _client.GetAsync(getAllNodesEndpoint);
 		var authContent = await authResult.Content.ReadAsStringAsync();
 
