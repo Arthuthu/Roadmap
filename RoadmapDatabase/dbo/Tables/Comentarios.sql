@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Comentarios]
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
-    [Descricao] NVARCHAR(1000) NOT NULL, 
+    [Description] NVARCHAR(1000) NOT NULL, 
     [UserId] UNIQUEIDENTIFIER NOT NULL,
     [RoadmapId] UNIQUEIDENTIFIER NULL,
     [CreatedDate] DATETIME2 NULL, 
