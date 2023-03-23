@@ -622,6 +622,8 @@ body {
 .nodes-box {
     border: solid #FFF;
     margin: 0 0 20px 0;
+    text-align: center;
+    align-items: center;
 }
 
 .node-button-div {
@@ -648,8 +650,28 @@ body {
     margin-top: 10px;
 }
 
+.node-arrow-icon-div {
+    text-align: center;
+}
+
 #adicionar-node-button {
     margin: 7px 0 20px 0;
+}
+
+.delete-roadmap-button {
+    color: #FFF;
+    background-color: #BA0000;
+    border-radius: 50%;
+    border-color: transparent;
+    padding: 0 8px;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0 0 0 5px;
+}
+
+.delete-roadmap-button:hover {
+    transition: 500ms;
+    background-color: #DF0000;
 }
 
 /* Delete Roadmap Confirmation */

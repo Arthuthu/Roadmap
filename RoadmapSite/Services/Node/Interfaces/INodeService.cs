@@ -6,6 +6,6 @@ namespace RoadmapSite.Services.Node.Interfaces
     {
         Task<string> CreateNode(NodeModel node);
         Task<IList<NodeModel>?> GetAllNodes(Guid id);
-
+        Task<string> DeleteNode(Guid nodeId);
 	}
 }

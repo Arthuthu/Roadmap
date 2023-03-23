@@ -62,4 +62,19 @@ public class NodeService : INodeService
 
 		return nodeModel;
 	}
+
+	public async Task<string> DeleteNode(Guid nodeId)
+	{
+		string deleteNodeEndpoint = _config["apiLocation"] + _config["deleteNodeEndpoint"] + $"/{nodeId}";
+		var authResult = await _client.DeleteAsync(deleteNodeEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro para deletar o node: {authContent}");
+			return authContent;
+		}
+
+		return authContent;
+	}
 }

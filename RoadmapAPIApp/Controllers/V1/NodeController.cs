@@ -59,10 +59,11 @@ public class NodeController : ControllerBase
         return Ok(requestNode);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<NodeResponse>> DeleteNode(Guid id)
+	[Route("/deletenode/{nodeid}")]
+	[HttpDelete]
+    public async Task<ActionResult<NodeResponse>> DeleteNode(Guid nodeid)
     {
-        await _nodeService.DeleteNode(id);
+        await _nodeService.DeleteNode(nodeid);
 
         return Ok("Node has been deleted");
     }
