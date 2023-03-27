@@ -58,11 +58,13 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		await GetLoggedInUserId();
+
 		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
 		}
-		
+
 		await GetUserByPageId(UserId!);
 
 		if (UserId != LoggedInUserId.ToString())
