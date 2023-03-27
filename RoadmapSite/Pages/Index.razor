@@ -147,7 +147,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		LoggedInUserId = await votingService.GetLoggedInUserId();
+		LoggedInUserId = await userService.GetLoggedInUserId();
 		Roadmaps = await GetAllRoadmaps();
 		if (LoggedInUserId != Guid.Empty)
 		{

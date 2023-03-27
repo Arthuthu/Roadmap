@@ -1,11 +1,12 @@
 ﻿@page "/createroadmap"
 @inject IRoadmapService roadmapServiceService
+@inject IUserService userService
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager navManager
 
 <AuthorizeView>
 	<Authorized>
-		<EditForm Model="model" OnValidSubmit="ExecuteRoadmapCreation" Context="Form">
+		<EditForm Model="roadmap" OnValidSubmit="ExecuteRoadmapCreation" Context="Form">
 			<div class="form-div">
 				<div class="iniciar-sessao-paragraph">
 					<p>Criar roadmap</p>
@@ -14,21 +15,21 @@
 				<div class="first-form-label">
 					<label for="name" class="visually-hidden">Nome</label>
 					<div>
-						<InputText id="name" class="form-input-text" @bind-Value="model.Name" placeholder="Nome do Roadmap" />
+						<InputText id="name" class="form-input-text" @bind-Value="roadmap.Name" placeholder="Nome do Roadmap" />
 					</div>
 				</div>
 
 				<div class="other-form-label">
 					<label for="description" class="visually-hidden">Descrição</label>
 					<div>
-						<InputTextArea id="description" class="form-input-text-description" @bind-Value="model.Description" placeholder="Descrição (Maximo 500 caracteres)" />
+						<InputTextArea id="description" class="form-input-text-description" @bind-Value="roadmap.Description" placeholder="Descrição (Maximo 500 caracteres)" />
 					</div>
 				</div>
 
 				<div class="other-form-label">
 					<label for="category" class="visually-hidden">Categoria</label>
 					<div>
-						<InputText id="category" class="form-input-text" @bind-Value="model.Category" placeholder="Categoria" />
+						<InputText id="category" class="form-input-text" @bind-Value="roadmap.Category" placeholder="Categoria" />
 					</div>
 				</div>
 
@@ -57,16 +58,15 @@
 </div>
 
 @code {
-	public string? LoggedInUserId { get; set; }
-
-	private RoadmapClassModel model = new();
+	private Guid LoggedInUserId { get; set; }
+	private RoadmapClassModel roadmap = new();
 	private string roadmapCreationMessage = "";
 
 	protected override async Task OnInitializedAsync()
 	{
 		await GetLoggedInUserId();
 
-		if (LoggedInUserId is null)
+		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
 		}
@@ -74,18 +74,14 @@
 
 	private async Task GetLoggedInUserId()
 	{
-		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-		var user = authenticationState.User;
-		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-		LoggedInUserId = userId;
+		LoggedInUserId = await userService.GetLoggedInUserId();
 	}
 
 	private async Task<string> ExecuteRoadmapCreation()
 	{
-		model.UserId = new Guid(LoggedInUserId!);
+		roadmap.UserId = LoggedInUserId;
 
-		var result = await roadmapServiceService.CreateRoadmap(model);
+		var result = await roadmapServiceService.CreateRoadmap(roadmap);
 
 		roadmapCreationMessage = result;
 

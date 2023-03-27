@@ -21,20 +21,6 @@ public class VotingService : IVotingService
 		_roadmapVotesService = roadmapVotesService;
 	}
 
-	public async Task<Guid> GetLoggedInUserId()
-	{
-		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-		var user = authenticationState.User;
-		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-		if (userId is null)
-		{
-			return Guid.Empty;
-		}
-
-		return new Guid(userId);
-	}
-
 	public async Task AddUserVote(Guid roadmapId, Guid? loggedInUserId)
 	{
 		if (loggedInUserId == Guid.Empty)

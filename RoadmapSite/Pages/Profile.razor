@@ -138,7 +138,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		LoggedInUserId = await votingService.GetLoggedInUserId();
+		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
 		{
@@ -160,7 +160,7 @@
 
 	protected override async Task OnParametersSetAsync()
 	{
-		LoggedInUserId = await votingService.GetLoggedInUserId();
+		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
 		{

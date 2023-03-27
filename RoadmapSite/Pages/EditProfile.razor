@@ -50,7 +50,7 @@
 @code {
 	[Parameter]
 	public string? UserId { get; set; }
-	public string? LoggedInUserId { get; set; }
+	public Guid LoggedInUserId { get; set; }
 	public UserModel? User { get; set; }
 	private bool IsInitialized { get; set; }
 	private bool showAuthenticationError = false;
@@ -58,14 +58,14 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		if (LoggedInUserId is null)
+		if (LoggedInUserId == Guid.Empty)
 		{
-			navManager.NavigateTo("/notfound");
+			navManager.NavigateTo("/login");
 		}
 		
 		await GetUserByPageId(UserId!);
 
-		if (UserId != LoggedInUserId)
+		if (UserId != LoggedInUserId.ToString())
 		{
 			navManager.NavigateTo("/notfound");
 		}
@@ -75,11 +75,7 @@
 
 	private async Task GetLoggedInUserId()
 	{
-		var authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
-		var user = authenticationState.User;
-		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-		LoggedInUserId = userId;
+		LoggedInUserId = await userService.GetLoggedInUserId();
 	}
 
 	private async Task GetUserByPageId(string userId)

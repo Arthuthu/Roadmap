@@ -51,7 +51,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        LoggedInUserId = await votingService.GetLoggedInUserId();
+        LoggedInUserId = await userService.GetLoggedInUserId();
 
         if (LoggedInUserId == Guid.Empty)
         {
@@ -67,7 +67,7 @@
 
         await GetUserModel();
 
-        if (LoggedInUserId != Roadmap!.UserId || LoggedInUserModel.IsAdmin != "1")
+        if (LoggedInUserId != Roadmap!.UserId)
         {
             navManager.NavigateTo("/notfound");
         }

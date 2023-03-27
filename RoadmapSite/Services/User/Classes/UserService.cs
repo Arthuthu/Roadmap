@@ -1,8 +1,10 @@
 ﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
 using RoadmapSite.Models;
 using RoadmapSite.Services.Roadmap.Classes;
 using RoadmapSite.Services.User.Interfaces;
+using System.Security.Claims;
 
 namespace RoadmapSite.Services.User.Classes;
 
@@ -10,18 +12,35 @@ public class UserService : IUserService
 {
 	private readonly HttpClient _client;
 	private readonly ILocalStorageService _localStorage;
+	private readonly AuthenticationStateProvider _authenticationStateProvider;
 	private readonly IConfiguration _config;
 	private readonly ILogger<UserService> _logger;
 
 	public UserService(HttpClient client,
 	ILocalStorageService localStorage,
+	AuthenticationStateProvider authenticationStateProvider,
 	IConfiguration config,
 	ILogger<UserService> logger)
 	{
 		_client = client;
 		_localStorage = localStorage;
+		_authenticationStateProvider = authenticationStateProvider;
 		_config = config;
 		_logger = logger;
+	}
+
+	public async Task<Guid> GetLoggedInUserId()
+	{
+		var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authenticationState.User;
+		var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+		if (userId is null)
+		{
+			return Guid.Empty;
+		}
+
+		return new Guid(userId);
 	}
 	public async Task<IList<UserModel>> GetAllUsers()
 	{
