@@ -81,7 +81,7 @@
 		<div class="roadmap-details-vote-button">
 			<div onclick="toggleVoteButtonDetailsClass(this.querySelector('button'))">
 				<button class="@Roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
-			@onclick="async () => await votingService.AddUserVote(Roadmap.Id, LoggedInUserId)">
+				@onclick="async () => await AddUserVote(Roadmap.Id)">
 					<span id="vote-count">@Roadmap.RoadmapTotalVotes</span>
 					<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
 					Vote
@@ -303,5 +303,12 @@
 		editMode = true;
 
 		return editMode;
+	}
+
+	private async Task AddUserVote(Guid roadmapId)
+	{
+		await votingService.AddUserVote(roadmapId, LoggedInUserId);
+
+		await OnInitializedAsync();
 	}
 }

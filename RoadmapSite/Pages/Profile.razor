@@ -64,7 +64,7 @@
 					<div class="roadmap-second-div">
 						<div onclick="toggleVoteButtonClass(this.querySelector('button'))">
 							<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
-							@onclick="async () => await votingService.AddUserVote(roadmap.Id, LoggedInUserId)">
+							@onclick="async () => await AddUserVote(roadmap.Id)">
 								<span id="vote-count">@roadmap.RoadmapTotalVotes</span>
 								<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
 								Vote
@@ -140,20 +140,29 @@
 	{
 		LoggedInUserId = await votingService.GetLoggedInUserId();
 
-		if (LoggedInUserId is null)
+		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
 		}
 
 		await GetUserByPageId(UserId!);
 		await GetRoadmapsByUserId(new Guid(UserId!));
+
+		foreach (var roadmap in Roadmaps!)
+		{
+			string roadmapClass = await votingService.GetButtonColor(roadmap.Id, LoggedInUserId);
+			roadmap.RoadmapHtmlClass = roadmapClass;
+
+			int roadmapTotalVotes = await votingService.GetRoadmapVotes(roadmap.Id);
+			roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+		}
 	}
 
 	protected override async Task OnParametersSetAsync()
 	{
 		LoggedInUserId = await votingService.GetLoggedInUserId();
 
-		if (LoggedInUserId is null)
+		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
 		}
@@ -183,5 +192,10 @@
 		Roadmaps = roadmaps;
 	}
 
+	private async Task AddUserVote(Guid roadmapId)
+	{
+		await votingService.AddUserVote(roadmapId, LoggedInUserId);
 
+		await OnInitializedAsync();
+	}
 }
