@@ -90,14 +90,26 @@
 		</div>
 
 		<div class="roadmap-manage-buttons-div">
-			@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel.IsAdmin == "1")
+			@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
 			{
-				<div>
-					<a href="deleteroadmapconfirmation/@Roadmap.Id" class="first-style-button"
-					id="roadmap-details-management-button">
-						Excluir Roadmap
-					</a>
-				</div>
+				@if (LoggedInUserModel!.IsAdmin is null)
+				{
+					<div>
+						<a href="deleteroadmapconfirmation/@Roadmap.Id" class="first-style-button"
+						   id="roadmap-details-management-button">
+							Excluir Roadmap
+						</a>
+					</div>
+				}
+				else if (LoggedInUserModel.IsAdmin == "1")
+				{
+					<div>
+						<a href="admindeleteroadmapconfirmation/@Roadmap.Id" class="first-style-button"
+						   id="roadmap-details-management-button">
+							Excluir Roadmap
+						</a>
+					</div>
+				}
 
 				<div>
 					<button @onclick="async () => await ToggleEditMode()" id="roadmap-details-management-button"
