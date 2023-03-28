@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[ComentarioVotes]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+	[ComentarioId] UNIQUEIDENTIFIER NOT NULL, 
+	[UserId] UNIQUEIDENTIFIER NOT NULL,
+	FOREIGN KEY ([ComentarioId]) REFERENCES [dbo].[Comentarios] ([Id]) ON DELETE CASCADE,
+	UNIQUE ([ComentarioId], [UserId])
+)
