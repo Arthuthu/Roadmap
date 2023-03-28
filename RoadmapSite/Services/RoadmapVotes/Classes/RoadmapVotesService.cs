@@ -11,12 +11,12 @@ public class RoadmapVotesService : IRoadmapVotesService
 	private readonly HttpClient _client;
 	private readonly ILocalStorageService _localStorage;
 	private readonly IConfiguration _config;
-	private readonly ILogger<RoadmapService> _logger;
+	private readonly ILogger<RoadmapVotesService> _logger;
 
 	public RoadmapVotesService(HttpClient client,
 		ILocalStorageService localStorage,
 		IConfiguration config,
-		ILogger<RoadmapService> logger)
+		ILogger<RoadmapVotesService> logger)
 	{
 		_client = client;
 		_localStorage = localStorage;

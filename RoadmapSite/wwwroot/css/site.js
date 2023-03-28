@@ -8,6 +8,16 @@
     }
 }
 
+function toggleComentarioVoteButtonClass(button) {
+    if (button.classList.contains("comentario-vote-button-voted")) {
+        button.classList.remove("comentario-vote-button-voted");
+        button.classList.add("comentario-vote-button");
+    } else {
+        button.classList.remove("comentario-vote-button");
+        button.classList.add("comentario-vote-button-voted");
+    }
+}
+
 function toggleVoteButtonDetailsClass(button) {
     if (button.classList.contains("vote-button-voted-details")) {
         button.classList.remove("vote-button-voted-details");

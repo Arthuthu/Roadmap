@@ -1,10 +1,10 @@
-﻿namespace RoadmapSite.Services.Voting.Interfaces
+﻿namespace RoadmapSite.Services.Voting.Interfaces.RoadmapVotingService
 {
-    public interface IVotingService
+    public interface IRoadmapVotingService
     {
         Task AddUserVote(Guid roadmapId, Guid? loggedInUserId);
         Task<string> GetButtonColor(Guid roadmapId, Guid? loggedInUserId);
         Task<int> GetRoadmapVotes(Guid roadmapId);
 
-	}
+    }
 }

@@ -1,7 +1,7 @@
 ﻿@page "/deleteroadmapconfirmation/{roadmapid}"
 @inject IRoadmapService roadmapService
 @inject IUserService userService
-@inject IVotingService votingService
+@inject IRoadmapVotingService votingService
 @inject NavigationManager navManager
 
 @if (isInitialized)
