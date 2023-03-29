@@ -131,6 +131,17 @@
 			</div>
 		</EditForm>
 
+		<div>
+			<button @onclick="SortComentariosByNew" id="roadmap-details-management-button"
+				class="first-style-button">
+				Novo
+			</button>
+
+			<button @onclick="SortComentariosByPopularity" id="roadmap-details-management-button"
+			class="first-style-button">
+				Popular
+			</button>
+		</div>
 
 		<Virtualize Items="@Comentarios" Context="comentario" OverscanCount="50">
 			<div class="roadmap-details-comentario-box">
@@ -391,5 +402,21 @@
 
 		int roadmapTotalVotes = await roadmapVotingService.GetRoadmapVotes(Roadmap.Id);
 		Roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+	}
+
+	private void SortComentariosByNew()
+	{
+		if (Comentarios is not null)
+		{
+			Comentarios = Comentarios.OrderByDescending(x => x.CreatedDate).ToList();
+		}
+	}
+
+	private void SortComentariosByPopularity()
+	{
+		if (Comentarios is not null)
+		{
+			Comentarios = Comentarios.OrderByDescending(x => x.ComentarioTotalVotes).ToList();
+		}
 	}
 }
