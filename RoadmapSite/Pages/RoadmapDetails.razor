@@ -123,7 +123,7 @@
 
 		<EditForm Model="@Comentario" OnValidSubmit="CommentOnRoadmap" Context="ComentarioForm">
 			<div>
-				<InputTextArea id="comment" class="roadmap-details-comentario-text-area" @bind-Value="Comentario.Descricao"
+				<InputTextArea id="comment" class="roadmap-details-comentario-text-area" @bind-Value="Comentario.Description"
 				placeholder="Adicione um comentario (Maximo 1000 caracteres)" />
 			</div>
 			<div class="button-div">
@@ -134,26 +134,33 @@
 
 		<Virtualize Items="@Comentarios" Context="comentario" OverscanCount="50">
 			<div class="roadmap-details-comentario-box">
-				<a class="roadmap-details-author" href="/profile/@comentario.AuthorId">
-					@comentario.Author
-				</a>
+				<div class="rodmap-details-comentario-author-createddate">
+					<a class="roadmap-details-author" href="/profile/@comentario.AuthorId">
+						@comentario.Author
+					</a>
+
+					<div class="roadmap-details-createddate">
+						@comentario.CreatedDate
+					</div>
+				</div>
+
 				<div class="roadmap-details-comentario-descricao-button-div">
 					<div>
 						<div class="roadmap-details-comentario">
-							@comentario.Descricao
+							@comentario.Description
 						</div>
-						<div class="roadmap-details-createddate">
-							@comentario.CreatedDate
+
+						<div onclick="toggleComentarioVoteButtonClass(this.querySelector('button'))">
+							<button class="@comentario.ComentarioHtmlClass" id="roadmap-vote-button"
+							@onclick="async () => await AddUserVoteOnComentario(comentario.Id)">
+								<span id="vote-count">@comentario.ComentarioTotalVotes</span>
+								<div class="vote-icon">
+									<i class="fas fa-caret-up"></i>
+								</div>
+							</button>
 						</div>
 					</div>
-					<div onclick="toggleComentarioVoteButtonClass(this.querySelector('button'))">
-						<button class="@comentario.ComentarioHtmlClass" id="roadmap-vote-button"
-						@onclick="async () => await AddUserVoteOnComentario(comentario.Id)">
-							<span id="vote-count">@comentario.ComentarioTotalVotes</span>
-							<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
-							Vote
-						</button>
-					</div>
+
 					<div>
 						@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel.IsAdmin == "1")
 						{

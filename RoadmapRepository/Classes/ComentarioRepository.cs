@@ -32,7 +32,7 @@ public class ComentarioRepository : IComentarioRepository
 		return _db.SaveData("dbo.spComentario_Add", new
 		{
 			comentario.Id,
-			comentario.Descricao,
+			comentario.Description,
 			comentario.CreatedDate,
 			comentario.UserId,
 			comentario.RoadmapId

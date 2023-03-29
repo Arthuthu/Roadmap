@@ -570,7 +570,6 @@ body {
 .roadmap-details-comentario-box {
     margin: 30px 0;
     border-bottom: solid #FFF;
-    padding: 0 0 0 10px;
 }
 
 .roadmap-details-author {
@@ -590,9 +589,14 @@ body {
     font-size: 20px;
 }
 
+.rodmap-details-comentario-author-createddate {
+    display: flex;
+    align-items: center;
+}
+
 .roadmap-details-createddate {
     font-size: 20px;
-    padding: 0 0 10px 0;
+    margin: 0 0 0 20px;
 }
 
 .roadmap-details-comentario-descricao-button-div {
@@ -607,6 +611,7 @@ body {
     font-size: 15px;
     padding: 10px 15px;
     border-radius: 5px;
+    border-color: transparent;
 }
 
     .delete-comment-button:hover {
@@ -682,6 +687,25 @@ body {
 
 #roadmap-details-management-button{
     margin: 0;
+}
+
+.comentario-vote-button-voted {
+    color: #FFF;
+    font-weight: bold;
+    background-color: #EE690B;
+    border-color: transparent;
+}
+
+.comentario-vote-button {
+    background-color: transparent;
+    font-weight: bold;
+    color: #FFF;
+    border-color: transparent;
+}
+
+.comentario-vote-button:hover {
+    transition: 500ms;
+    background: #FC9A55;
 }
 
 /* Delete Roadmap Confirmation */
