@@ -1,4 +1,6 @@
-﻿function toggleVoteButtonClass(button) {
+﻿/* Change Button Class */
+
+function toggleVoteButtonClass(button) {
     if (button.classList.contains("vote-button-voted")) {
         button.classList.remove("vote-button-voted");
         button.classList.add("vote-button");
@@ -28,19 +30,13 @@ function toggleVoteButtonDetailsClass(button) {
     }
 }
 
-function clearInput() {
-    document.getElementById("text-input").value = "";
+
+/* Clear Text Input */
+
+function clearNodeInput() {
+    document.getElementById("node-input").value = "";
 }
 
-
-//var isVoted = false;
-//var voteCountEl = document.getElementById("vote-count");
-
-//function toggleVote() {
-//    if (isVoted) {
-//        voteCountEl.textContent = parseInt(voteCountEl.textContent) - 1;
-//    } else {
-//        voteCountEl.textContent = parseInt(voteCountEl.textContent) + 1;
-//    }
-//    isVoted = !isVoted;
-//}
+function clearComentarioInput() {
+    document.getElementById("comment-input").value = "";
+}

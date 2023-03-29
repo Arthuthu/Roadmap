@@ -24,7 +24,7 @@ public class ComentarioService : IComentarioService
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
-			new KeyValuePair<string, string>("descricao", comentario.Description),
+			new KeyValuePair<string, string>("description", comentario.Description),
 			new KeyValuePair<string, string>("userId", comentario.UserId.ToString()),
 			new KeyValuePair<string, string>("roadmapId", comentario.RoadmapId.ToString()),
 		});

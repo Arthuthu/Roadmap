@@ -67,13 +67,13 @@
 					<div class="node-input-text-div">
 						<label for="titulo" class="visually-hidden">Titulo</label>
 						<div>
-							<InputText id="text-input" class="node-name-input-text" @bind-Value="Node.Name" placeholder="Nome" />
+							<InputText id="node-input" class="node-name-input-text" @bind-Value="Node.Name" placeholder="Nome" />
 						</div>
 					</div>
 
 					<div class="button-div">
 						<button type="submit" class="first-style-button" id="adicionar-node-button"
-						onclick="clearInput()">Adicionar</button>
+						onclick="clearNodeInput()">Adicionar</button>
 					</div>
 				</EditForm>
 			}
@@ -123,11 +123,11 @@
 
 		<EditForm Model="@Comentario" OnValidSubmit="CommentOnRoadmap" Context="ComentarioForm">
 			<div>
-				<InputTextArea id="comment" class="roadmap-details-comentario-text-area" @bind-Value="Comentario.Description"
+				<InputTextArea id="comment-input" class="roadmap-details-comentario-text-area" @bind-Value="Comentario.Description"
 				placeholder="Adicione um comentario (Maximo 1000 caracteres)" />
 			</div>
 			<div class="button-div">
-				<button type="submit" class="first-style-button">Comentar</button>
+				<button type="submit" class="first-style-button" onclick="clearComentarioInput()">Comentar</button>
 			</div>
 		</EditForm>
 
@@ -150,15 +150,20 @@
 							@comentario.Description
 						</div>
 
-						<div onclick="toggleComentarioVoteButtonClass(this.querySelector('button'))">
-							<button class="@comentario.ComentarioHtmlClass" id="roadmap-vote-button"
-							@onclick="async () => await AddUserVoteOnComentario(comentario.Id)">
+						<div class="comentario-vote-button-div">
+							<div onclick="toggleComentarioVoteButtonClass(this.querySelector('button'))">
+								<button class="@comentario.ComentarioHtmlClass" id="roadmap-vote-button"
+								@onclick="async () => await AddUserVoteOnComentario(comentario.Id)">
+									<div class="vote-icon">
+										<i class="fas fa-caret-up"></i>
+									</div>
+								</button>
+							</div>
+							<div class="vote-count-div">
 								<span id="vote-count">@comentario.ComentarioTotalVotes</span>
-								<div class="vote-icon">
-									<i class="fas fa-caret-up"></i>
-								</div>
-							</button>
+							</div>
 						</div>
+
 					</div>
 
 					<div>
@@ -204,24 +209,8 @@
 		{
 			navManager.NavigateTo("/");
 		}
-		await GetLoggedInUserModel();
-		await GetAllComentarios();
-		await GetAllNodes();
 
-		string roadmapClass = await roadmapVotingService.GetButtonColor(Roadmap!.Id, LoggedInUserId);
-		Roadmap!.RoadmapHtmlClass = roadmapClass;
-
-		int roadmapTotalVotes = await roadmapVotingService.GetRoadmapVotes(Roadmap.Id);
-		Roadmap.RoadmapTotalVotes = roadmapTotalVotes;
-
-		foreach (var comentario in Comentarios!)
-		{
-			string comentarioClass = await comentarioVotingService.GetButtonColor(comentario.Id, LoggedInUserId);
-			comentario.ComentarioHtmlClass = comentarioClass;
-
-			int comentarioTotalVotes = await comentarioVotingService.GetComentarioVotes(comentario.Id);
-			comentario.ComentarioTotalVotes = comentarioTotalVotes;
-		}
+		await LoadPageData();
 
 		isInitialized = true;
 	}
@@ -230,11 +219,19 @@
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
-		string roadmapClass = await GetButtonColorDetails(Roadmap!.Id, LoggedInUserId);
-		Roadmap!.RoadmapHtmlClass = roadmapClass;
+		if (LoggedInUserId == Guid.Empty)
+		{
+			navManager.NavigateTo("/login");
+		}
 
-		int roadmapTotalVotes = await roadmapVotingService.GetRoadmapVotes(Roadmap.Id);
-		Roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+		await GetRoadmapById(new Guid(RoadmapId!));
+
+		if (RoadmapId == Guid.Empty.ToString())
+		{
+			navManager.NavigateTo("/");
+		}
+
+		await LoadPageData();
 	}
 
 	private async Task GetRoadmapById(Guid roadmapId)
@@ -242,7 +239,21 @@
 		Roadmap = await roadmapService.GetRoadmapById(roadmapId);
 	}
 
-	public async Task<string> GetButtonColorDetails(Guid roadmapId, Guid? loggedInUserId)
+	private async Task GetLoggedInUserModel()
+	{
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
+	}
+
+	private async Task LoadPageData()
+	{
+		await GetLoggedInUserModel();
+		await GetAllComentarios();
+		await GetAllNodes();
+		await UpdateRoadmapVoteButton();
+		await UpdateComentarioVoteButton();
+	}
+
+	private async Task<string> GetButtonColorDetails(Guid roadmapId, Guid? loggedInUserId)
 	{
 		var roadmapVotes = await roadmapVotesService.GetAllRoadmapVotes();
 
@@ -261,16 +272,12 @@
 		}
 	}
 
-	private async Task GetLoggedInUserModel()
-	{
-		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
-	}
-
 	private async Task GetAllComentarios()
 	{
 		var comentarios = await comentarioService.GetAllComentarios();
+		var roadmapComentarios = comentarios.Where(x => x.RoadmapId.ToString() == RoadmapId).ToList();
 
-		Comentarios = comentarios.Where(x => x.RoadmapId.ToString() == RoadmapId).ToList();
+		Comentarios = roadmapComentarios.OrderByDescending(x => x.CreatedDate).ToList();
 
 		var users = await userService.GetAllUsers();
 
@@ -289,18 +296,24 @@
 
 	private async Task CommentOnRoadmap()
 	{
-		Comentario.RoadmapId = new Guid(RoadmapId!);
+		Comentario!.RoadmapId = new Guid(RoadmapId!);
 		Comentario.UserId = LoggedInUserId;
 		await comentarioService.CreateComentario(Comentario);
 
 		await GetAllComentarios();
+		await UpdateComentarioVoteButton();
 	}
 
 	private async Task DeleteComment(Guid comentarioId)
 	{
 		await comentarioService.DeleteComentario(comentarioId);
 
-		await GetAllComentarios();
+		var comentario = Comentarios!.FirstOrDefault(x => x.Id == comentarioId);
+
+		if (comentario is not null)
+		{
+			Comentarios!.Remove(comentario);
+		}
 	}
 
 	private async Task CreateNode()
@@ -345,13 +358,38 @@
 	{
 		await roadmapVotingService.AddUserVote(roadmapId, LoggedInUserId);
 
-		await OnInitializedAsync();
+		await UpdateComentarioVoteButton();
 	}
 
 	private async Task AddUserVoteOnComentario(Guid comentarioId)
 	{
 		await comentarioVotingService.AddUserVote(comentarioId, LoggedInUserId);
 
-		await OnInitializedAsync();
+		await GetAllComentarios();
+		await UpdateComentarioVoteButton();
+	}
+
+	private async Task UpdateComentarioVoteButton()
+	{
+		if (Comentarios is not null)
+		{
+			foreach (var comentario in Comentarios)
+			{
+				string comentarioClass = await comentarioVotingService.GetButtonColor(comentario.Id, LoggedInUserId);
+				comentario.ComentarioHtmlClass = comentarioClass;
+
+				int comentarioTotalVotes = await comentarioVotingService.GetComentarioVotes(comentario.Id);
+				comentario.ComentarioTotalVotes = comentarioTotalVotes;
+			}
+		}
+	}
+
+	private async Task UpdateRoadmapVoteButton()
+	{
+		string roadmapClass = await roadmapVotingService.GetButtonColor(Roadmap.Id, LoggedInUserId);
+		Roadmap.RoadmapHtmlClass = roadmapClass;
+
+		int roadmapTotalVotes = await roadmapVotingService.GetRoadmapVotes(Roadmap.Id);
+		Roadmap.RoadmapTotalVotes = roadmapTotalVotes;
 	}
 }

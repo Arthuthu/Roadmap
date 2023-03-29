@@ -604,6 +604,10 @@ body {
     justify-content: space-between;
 }
 
+.roadmap-details-comentario {
+    margin: 15px 0 10px 0;
+}
+
 .delete-comment-button {
     color: #FFF;
     background-color: #ED1B1B;
@@ -689,11 +693,21 @@ body {
     margin: 0;
 }
 
+.comentario-vote-button-div {
+    display: flex;
+    align-items: center;
+}
+
 .comentario-vote-button-voted {
     color: #FFF;
     font-weight: bold;
     background-color: #EE690B;
     border-color: transparent;
+}
+
+.vote-count-div {
+    font-size: 20px;
+    margin: 0 0 0 10px;
 }
 
 .comentario-vote-button {
