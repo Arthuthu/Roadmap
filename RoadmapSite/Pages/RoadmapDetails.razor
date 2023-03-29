@@ -139,7 +139,7 @@
 
 			<button @onclick="SortComentariosByPopularity" id="roadmap-details-management-button"
 			class="first-style-button">
-				Popular
+				Top
 			</button>
 		</div>
 
@@ -174,7 +174,6 @@
 								<span id="vote-count">@comentario.ComentarioTotalVotes</span>
 							</div>
 						</div>
-
 					</div>
 
 					<div>
@@ -198,10 +197,10 @@
 	private Guid? LoggedInUserId { get; set; }
 	private RoadmapClassModel? Roadmap { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
-	private IList<ComentarioModel>? Comentarios { get; set; }
-	private ComentarioModel? Comentario = new();
-	private IList<NodeModel>? Nodes { get; set; }
 	private NodeModel? Node = new();
+	private ComentarioModel? Comentario = new();
+	private IList<ComentarioModel>? Comentarios { get; set; }
+	private IList<NodeModel>? Nodes { get; set; }
 	private bool editMode = false;
 	private bool isInitialized = false;
 
