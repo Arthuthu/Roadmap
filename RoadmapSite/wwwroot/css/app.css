@@ -1,5 +1,8 @@
 :root {
     --button-background-color: #EF9F00;
+    --lightgray-background-color: #212121;
+    --lightergray-color: #5c5c5c;
+    --greywhite-color: #797979;
 }
 
 html {
@@ -567,13 +570,68 @@ body {
     border-bottom: solid #FFF;
 }
 
+.comment-count-buttons-div {
+    display: flex;
+    align-items: center;
+    background-color: var(--lightgray-background-color);
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0 10px 0;
+}
+
+.comment-count-div {
+    font-size: 20px;
+    margin: 0 30px 0 0;
+}
+
+.comment-count-div > p {
+    margin: 0;
+}
+
+.comment-sort-button {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--greywhite-color);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.comment-sort-button:hover {
+    transition: 500ms;
+    background-color: var(--lightergray-color);
+    color: #FFF;
+}
+
+.comment-sort-button:focus {
+    transition: 500ms;
+    background-color: var(--lightergray-color);
+    color: #FFF;
+}
+
 .roadmap-details-comentario-box {
-    margin: 30px 0;
-    border-bottom: solid #FFF;
+    display: flex;
+    align-items: center;
+    margin: 0 0 32px 0;
+}
+
+.comment-profile-picture-div {
+    width: 4%;
+    margin: 0 20px 0 0;
+}
+
+.comment-profile-picture {
+    width: 100%;
+    border-radius: 50%;
+}
+
+.comment-data-div {
+    width: 100%;
 }
 
 .roadmap-details-author {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
     text-decoration: none;
     color: #fff;
@@ -595,7 +653,7 @@ body {
 }
 
 .roadmap-details-createddate {
-    font-size: 20px;
+    font-size: 16px;
     margin: 0 0 0 20px;
 }
 

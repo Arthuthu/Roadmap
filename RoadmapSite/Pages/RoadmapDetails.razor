@@ -131,59 +131,78 @@
 			</div>
 		</EditForm>
 
-		<div>
-			<button @onclick="SortComentariosByNew" id="roadmap-details-management-button"
-				class="first-style-button">
-				Novo
-			</button>
+		<div class="comment-count-buttons-div">
+			<div class="comment-count-div">
+				@if (Comentarios is not null)
+				{
+					<p>@Comentarios.Count() Comentarios</p>
+				}
+				else
+				{
+					<p>0 Comentarios</p>
+				}
+			</div>
 
-			<button @onclick="SortComentariosByPopularity" id="roadmap-details-management-button"
-			class="first-style-button">
-				Top
-			</button>
+			<div>
+				<button @onclick="SortComentariosByNew" id="roadmap-details-management-button"
+			class="comment-sort-button">
+					Novo
+				</button>
+
+				<button @onclick="SortComentariosByPopularity" id="roadmap-details-management-button"
+			class="comment-sort-button">
+					Top
+				</button>
+			</div>
 		</div>
+
 
 		<Virtualize Items="@Comentarios" Context="comentario" OverscanCount="50">
 			<div class="roadmap-details-comentario-box">
-				<div class="rodmap-details-comentario-author-createddate">
-					<a class="roadmap-details-author" href="/profile/@comentario.AuthorId">
-						@comentario.Author
-					</a>
-
-					<div class="roadmap-details-createddate">
-						@comentario.CreatedDate
-					</div>
+				<div class="comment-profile-picture-div">
+					<img class="comment-profile-picture" src="@DefaultProfilePicture" />
 				</div>
+				<div class="comment-data-div">
+					<div class="rodmap-details-comentario-author-createddate">
+						<a class="roadmap-details-author" href="/profile/@comentario.AuthorId">
+							@comentario.Author
+						</a>
 
-				<div class="roadmap-details-comentario-descricao-button-div">
-					<div>
-						<div class="roadmap-details-comentario">
-							@comentario.Description
-						</div>
-
-						<div class="comentario-vote-button-div">
-							<div onclick="toggleComentarioVoteButtonClass(this.querySelector('button'))">
-								<button class="@comentario.ComentarioHtmlClass" id="roadmap-vote-button"
-								@onclick="async () => await AddUserVoteOnComentario(comentario.Id)">
-									<div class="vote-icon">
-										<i class="fas fa-caret-up"></i>
-									</div>
-								</button>
-							</div>
-							<div class="vote-count-div">
-								<span id="vote-count">@comentario.ComentarioTotalVotes</span>
-							</div>
+						<div class="roadmap-details-createddate">
+							@comentario.CreatedDate
 						</div>
 					</div>
 
-					<div>
-						@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel.IsAdmin == "1")
-						{
-							<button @onclick="async () => await DeleteComment(comentario.Id)"
-								class="delete-comment-button">
-								Excluir
-							</button>
-						}
+					<div class="roadmap-details-comentario-descricao-button-div">
+						<div>
+							<div class="roadmap-details-comentario">
+								@comentario.Description
+							</div>
+
+							<div class="comentario-vote-button-div">
+								<div onclick="toggleComentarioVoteButtonClass(this.querySelector('button'))">
+									<button class="@comentario.ComentarioHtmlClass" id="roadmap-vote-button"
+									@onclick="async () => await AddUserVoteOnComentario(comentario.Id)">
+										<div class="vote-icon">
+											<i class="fas fa-caret-up"></i>
+										</div>
+									</button>
+								</div>
+								<div class="vote-count-div">
+									<span id="vote-count">@comentario.ComentarioTotalVotes</span>
+								</div>
+							</div>
+						</div>
+
+						<div>
+							@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel.IsAdmin == "1")
+							{
+								<button @onclick="async () => await DeleteComment(comentario.Id)"
+				   class="delete-comment-button">
+									Excluir
+								</button>
+							}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -203,6 +222,8 @@
 	private IList<NodeModel>? Nodes { get; set; }
 	private bool editMode = false;
 	private bool isInitialized = false;
+	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
+
 
 	protected override async Task OnInitializedAsync()
 	{
