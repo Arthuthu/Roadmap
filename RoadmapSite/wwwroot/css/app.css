@@ -2,7 +2,7 @@
     --button-background-color: #EF9F00;
     --lightgray-background-color: #212121;
     --lightergray-color: #5c5c5c;
-    --greywhite-color: #797979;
+    --greywhite-color: #B6B6B6;
 }
 
 html {
@@ -109,13 +109,28 @@ body {
     align-items: center;
 }
 
-.index-inicio-novo-popular-div {
+.index-search-input-button-div {
+    display: flex;
+    align-items: center;
+}
+
+.index-buscar-button-div {
     margin-left: 20px;
+}
+
+.index-search-input {
+    background-color: transparent;
+    color: #FFF;
+    border-radius: 10px;
+    border: solid var(--lightergray-color);
+    padding: 10px;
+    margin-right: 400px;
+    width: 100%;
 }
 
 .roadmap-main-div {
     margin: 10px 20px 0 20px;
-    width: 80%;
+    width: 100%;
 }
 
 .roadmap-second-div{
@@ -153,18 +168,34 @@ body {
 .index-buttons-searchbar-div {
     display: flex;
     justify-content: space-between;
-    align-items: end;
-    width: 80%;
+    align-items: center;
+    width: 75.7%;
+    background-color: var(--lightgray-background-color);
+    padding: 5px;
+    border-radius: 10px;
+    margin-left: 20px;
 }
 
-.index-search-input-button-div {
-    display: flex;
-    align-items: end;
+.index-sort-button {
+    padding: 15px;
+    border-radius: 15px;
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--greywhite-color);
+    font-size: 18px;
+    font-weight: bold;
 }
 
-#index-buscar-button-nome {
-    margin: 0;
-    padding: 17px 20px;
+.index-sort-button:hover {
+    transition: 500ms;
+    background-color: var(--lightergray-color);
+    color: #FFF;
+}
+
+.index-sort-button:focus {
+    transition: 500ms;
+    background-color: var(--lightergray-color);
+    color: #FFF;
 }
 
 .roadmap-name {
@@ -245,6 +276,7 @@ body {
     margin: 20px 0 40px 0;
 }
 
+
 .vote-button,
 .vote-button-details{
     height: 96.2%;
@@ -292,6 +324,7 @@ body {
 }
 
 .index-categorias-div {
+    width: 20%;
     text-align: center;
     margin: 10px 0 0 40px;
     border: solid #fff;
@@ -323,14 +356,7 @@ body {
         background-color: #E87108;
     }
 
-.index-search-input{
-    margin-top: 10px;
-    padding: 20px;
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: bold;
-    width: 95%;
-}
+    
 
 #index-buscar-button {
     margin: 20px 0;
@@ -382,9 +408,7 @@ body {
     padding: 0 0 10px 0;
 }
 
-.button-div{
-    text-align: center;
-}
+
 
 .first-style-button,
 .second-style-button {
@@ -407,33 +431,6 @@ body {
 
 .second-style-button{
     margin: 0;
-}
-
-.third-style-button {
-    background-color: #E89D0F;
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    border-color: transparent;
-    padding: 20px 30px;
-    margin: 0 -4px 0 0;
-}
-
-    .third-style-button:hover {
-        transition: 500ms;
-        background-color: #E8790F;
-    }
-
-    .third-style-button:focus {
-        background-color: #E8790F;
-    }
-
-#inicio-button {
-    border-radius: 10px 0 0 10px;
-}
-
-#popularity-button {
-    border-radius: 0 10px 10px 0;
 }
 
 .registre-se-aqui-div {
@@ -747,7 +744,11 @@ body {
     margin: 0;
 }
 
-#roadmap-details-management-button{
+.comentar-div {
+    margin: 100px 0 40px 0;
+}
+
+#roadmap-details-management-button {
     margin: 0;
 }
 

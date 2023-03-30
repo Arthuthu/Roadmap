@@ -40,3 +40,7 @@ function clearNodeInput() {
 function clearComentarioInput() {
     document.getElementById("comment-input").value = "";
 }
+
+function clearBuscarNomeInput() {
+    document.getElementById("buscar-nome-input").value = "";
+}

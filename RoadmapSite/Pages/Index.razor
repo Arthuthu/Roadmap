@@ -15,18 +15,18 @@
 </div>
 
 <div class="index-buttons-searchbar-div">
-	<div class="index-inicio-novo-popular-div">
-		<button class="third-style-button" id="inicio-button"
+	<div>
+		<button class="index-sort-button"
 				@onclick="OnInitializedAsync">
 			Inicio
 		</button>
 
-		<button class="third-style-button"
+		<button class="index-sort-button"
 				@onclick="SortRoadmapsByDate">
 			Novo
 		</button>
 
-		<button class="third-style-button" id="popularity-button"
+		<button class="index-sort-button"
 				@onclick="SortRoadmapsByPopularity">
 			Popular
 		</button>
@@ -34,12 +34,13 @@
 
 	<div class="index-search-input-button-div">
 		<div>
-			<InputText class="index-search-input" @bind-Value="@roadmapName" placeholder="Procurar por nome" />
+			<InputText class="index-search-input" @bind-Value="@roadmapName" placeholder="Procurar por nome" 
+			id="buscar-nome-input"/>
 		</div>
 
-		<div class="button-div">
+		<div class="index-buscar-button-div" onclick="clearBuscarNomeInput()">
 			<button @onclick="async () => await GetRoadmapsByName(roadmapName)"
-					class="first-style-button" id="index-buscar-button-nome">
+					class="index-sort-button">
 				Buscar
 			</button>
 		</div>
