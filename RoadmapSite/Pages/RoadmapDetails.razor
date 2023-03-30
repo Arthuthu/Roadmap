@@ -91,31 +91,43 @@
 		</div>
 
 		<div class="roadmap-manage-buttons-div">
-			@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
+
+			<button @onclick="ToggleShowEditOptions" class="toggle-show-edit-option-button">
+				Opções
+			</button>
+
+			@if (showEditOptions)
 			{
-				@if (LoggedInUserModel!.IsAdmin is null)
+				@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
 				{
 					<div>
-						<a href="deleteroadmapconfirmation/@Roadmap.Id" class="first-style-button"
-						   id="roadmap-details-management-button">
-							Excluir Roadmap
-						</a>
+						<button @onclick="ToggleEditMode"
+							class="roadmap-options-button">
+							Editar
+						</button>
 					</div>
-				}
-				else if (LoggedInUserModel.IsAdmin == "1")
-				{
-					<div>
-						<a href="admindeleteroadmapconfirmation/@Roadmap.Id" class="first-style-button"
-						   id="roadmap-details-management-button">
-							Excluir Roadmap
-						</a>
-					</div>
+					@if (LoggedInUserModel!.IsAdmin is null)
+					{
+						<div>
+							<a href="deleteroadmapconfirmation/@Roadmap.Id" class="roadmap-options-button"
+							   id="roadmap-details-management-button">
+								Excluir Roadmap
+							</a>
+						</div>
+					}
+					else if (LoggedInUserModel.IsAdmin == "1")
+					{
+						<div>
+							<a href="admindeleteroadmapconfirmation/@Roadmap.Id" class="roadmap-options-button">
+								Excluir Roadmap
+							</a>
+						</div>
+					}
 				}
 
 				<div>
-					<button @onclick="async () => await ToggleEditMode()" id="roadmap-details-management-button"
-					class="first-style-button">
-						Editar
+					<button class="toggle-show-edit-option-button">
+						Denunciar
 					</button>
 				</div>
 			}
@@ -128,7 +140,7 @@
 				 placeholder="Adicione um comentario (Maximo 1000 caracteres)" />
 				</div>
 				<div class="text-center">
-					<button type="submit" class="first-style-button" onclick="clearComentarioInput()">Comentar</button>
+					<button type="submit" class="comment-roadmap-button" onclick="clearComentarioInput()">Comentar</button>
 				</div>
 			</EditForm>
 		</div>
@@ -201,7 +213,7 @@
 							@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel.IsAdmin == "1")
 							{
 								<button @onclick="async () => await DeleteComment(comentario.Id)"
-				   class="delete-comment-button">
+									 class="delete-comment-button">
 									Excluir
 								</button>
 							}
@@ -224,6 +236,7 @@
 	private IList<ComentarioModel>? Comentarios { get; set; }
 	private IList<NodeModel>? Nodes { get; set; }
 	private bool editMode = false;
+	private bool showEditOptions = false;
 	private bool isInitialized = false;
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
 
@@ -374,18 +387,14 @@
 		await GetAllNodes();
 	}
 
-	private async Task<bool> ToggleEditMode()
+	private void ToggleEditMode()
 	{
-		if (editMode is true)
-		{
-			editMode = false;
+		editMode = !editMode;
+	}
 
-			return editMode;
-		}
-
-		editMode = true;
-
-		return editMode;
+	private void ToggleShowEditOptions()
+	{
+		showEditOptions = !showEditOptions;
 	}
 
 	private async Task AddUserVoteOnRoadmap(Guid roadmapId)

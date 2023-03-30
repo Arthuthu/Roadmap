@@ -3,6 +3,7 @@
     --lightgray-background-color: #212121;
     --lightergray-color: #5c5c5c;
     --greywhite-color: #B6B6B6;
+    --orange-background-color: #E87108;
 }
 
 html {
@@ -20,7 +21,7 @@ body {
 .navbar {
     display: flex;
     justify-content: space-between;
-    background-image: linear-gradient(#F1AF2A, #D78F00);
+    background-color: var(--lightgray-background-color);
     padding: 0 0 10px 0;
     margin: 0 0 30px 0;
 }
@@ -199,7 +200,7 @@ body {
 }
 
 .roadmap-name {
-    background-color: #F1AF2A;
+    background-color: var(--lightgray-background-color);
     font-weight: bold;
     font-size: 1.4rem;
     padding: 15px 0 15px 10px;
@@ -207,7 +208,7 @@ body {
 
     .roadmap-name:hover {
         transition: 0.5s;
-        background-color: #D78F00;
+        background-color: var(--orange-background-color);
     }
 
 .roadmap-description-div {
@@ -337,14 +338,14 @@ body {
     font-weight: bold;
     color: #FFF;
     padding: 10px 20px 20px 20px;
-    background-image: linear-gradient(#F1AF2A, #D78F00);
+    background-color: var(--lightgray-background-color);
     border-radius: 15px 15px 0 0;
 }
 
 .index-categorias-element {
     font-weight: bold;
     font-size: 25px;
-    background-color: #E89008;
+    background-color: var(--lightergray-color);
     color: #FFF;
     padding: 20px 0;
     border-top: #FFF solid;
@@ -353,7 +354,7 @@ body {
     .index-categorias-element:hover {
         transition: 500ms;
         cursor: pointer;
-        background-color: #E87108;
+        background-color: var(--orange-background-color);
     }
 
     
@@ -363,13 +364,14 @@ body {
 }
 
 /* Login and Registration page */
+
 .iniciar-sessao-paragraph {
     text-align: center;
     font-size: 2rem;
     font-weight: bold;
     color: #FFF;
     padding: 20px 0 10px 0;
-    background-image: linear-gradient(#F1AF2A, #D78F00)
+    background-color: var(--lightgray-background-color);
 }
 
 .form-div {
@@ -410,7 +412,6 @@ body {
 
 
 
-.first-style-button,
 .second-style-button {
     background-color: var(--button-background-color);
     margin: 20px 0 0 0;
@@ -423,11 +424,6 @@ body {
     transition: .4s;
     text-decoration: none;
 }
-
-    .first-style-button:hover {
-        background-color: #D78F00;
-        color: #FFF;
-    }
 
 .second-style-button{
     margin: 0;
@@ -531,7 +527,7 @@ body {
 .roadmap-details-name-category-div {
     display: flex;
     justify-content: space-between;
-    background-image: linear-gradient(#F1AF2A, #D78F00);
+    background-color: var(--lightgray-background-color);
     padding: 30px;
     font-weight: bold;
     font-size: 30px;
@@ -738,14 +734,58 @@ body {
 }
 
 .roadmap-manage-buttons-div {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin: 0;
+    text-align: center;
+}
+
+.first-style-button,
+.toggle-show-edit-option-button,
+.roadmap-options-button,
+.comment-roadmap-button {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--greywhite-color);
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.first-style-button {
+    font-size: 25px;
+    text-decoration: none;
+    background-color: var(--lightgray-background-color);
+    padding: 18px;
+}
+
+.roadmap-options-button {
+    text-decoration: none;
+}
+
+.first-style-button:hover,
+.toggle-show-edit-option-button:hover,
+.roadmap-options-button:hover,
+.comment-roadmap-button:hover {
+    transition: 500ms;
+    background-color: var(--lightergray-color);
+    color: #FFF;
+}
+
+first-style-button:focus,
+.toggle-show-edit-option-button:focus,
+.roadmap-options-button:focus,
+.comment-roadmap-button:focus {
+    transition: 500ms;
+    background-color: var(--lightergray-color);
+    color: #FFF;
 }
 
 .comentar-div {
     margin: 100px 0 40px 0;
+}
+
+.comment-roadmap-button {
+    font-size: 24px;
 }
 
 #roadmap-details-management-button {
