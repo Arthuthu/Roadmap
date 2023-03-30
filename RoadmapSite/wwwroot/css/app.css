@@ -804,6 +804,10 @@ first-style-button:focus,
     border-color: transparent;
 }
 
+.denunciar-excluir-comment-div {
+    display: flex;
+}
+
 .vote-count-div {
     font-size: 20px;
     margin: 0 0 0 10px;

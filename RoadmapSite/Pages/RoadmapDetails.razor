@@ -92,11 +92,11 @@
 
 		<div class="roadmap-manage-buttons-div">
 
-			<button @onclick="ToggleShowEditOptions" class="toggle-show-edit-option-button">
+			<button @onclick="ToggleShowRoadmapEditOptions" class="toggle-show-edit-option-button">
 				Opções
 			</button>
 
-			@if (showEditOptions)
+			@if (showRoadmapEditOptions)
 			{
 				@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
 				{
@@ -217,15 +217,21 @@
 								</div>
 							</div>
 						</div>
-
-						<div>
-							@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel.IsAdmin == "1")
-							{
-								<button @onclick="async () => await DeleteComment(comentario.Id)"
-									 class="delete-comment-button">
-									Excluir
+						<div class="denunciar-excluir-comment-div">
+							<div>
+								@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel.IsAdmin == "1")
+								{
+									<button @onclick="async () => await DeleteComment(comentario.Id)"
+									class="toggle-show-edit-option-button">
+										Excluir
+									</button>
+								}
+							</div>
+							<div>
+								<button class="toggle-show-edit-option-button">
+									Denunciar
 								</button>
-							}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -245,7 +251,7 @@
 	private IList<ComentarioModel>? Comentarios { get; set; }
 	private IList<NodeModel>? Nodes { get; set; }
 	private bool editMode = false;
-	private bool showEditOptions = false;
+	private bool showRoadmapEditOptions = false;
 	private bool showDeletePageAuthor = false;
 	private bool showDeletePageAdmin = false;
 	private bool isInitialized = false;
@@ -403,9 +409,9 @@
 		editMode = !editMode;
 	}
 
-	private void ToggleShowEditOptions()
+	private void ToggleShowRoadmapEditOptions()
 	{
-		showEditOptions = !showEditOptions;
+		showRoadmapEditOptions = !showRoadmapEditOptions;
 	}
 
 	private async Task AddUserVoteOnRoadmap(Guid roadmapId)
