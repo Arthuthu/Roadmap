@@ -109,18 +109,17 @@
 					@if (LoggedInUserModel!.IsAdmin is null)
 					{
 						<div>
-							<a href="deleteroadmapconfirmation/@Roadmap.Id" class="roadmap-options-button"
-							   id="roadmap-details-management-button">
+							<button @onclick="ToggleShowDeletePageAuthor" class="roadmap-options-button">
 								Excluir Roadmap
-							</a>
+							</button>
 						</div>
 					}
 					else if (LoggedInUserModel.IsAdmin == "1")
 					{
 						<div>
-							<a href="admindeleteroadmapconfirmation/@Roadmap.Id" class="roadmap-options-button">
+							<button @onclick="ToggleShowDeletePageAdmin" class="roadmap-options-button">
 								Excluir Roadmap
-							</a>
+							</button>
 						</div>
 					}
 				}
@@ -132,6 +131,16 @@
 				</div>
 			}
 		</div>
+
+		if (showDeletePageAuthor)
+		{
+			<DeleteRoadmapConfirmation RoadmapId="@RoadmapId" />
+		}
+
+		if (showDeletePageAdmin)
+		{
+			<AdminDeleteRoadmapConfirmation RoadmapId="@RoadmapId" />
+		}
 
 		<div class="comentar-div">
 			<EditForm Model="@Comentario" OnValidSubmit="CommentOnRoadmap" Context="ComentarioForm">
@@ -237,6 +246,8 @@
 	private IList<NodeModel>? Nodes { get; set; }
 	private bool editMode = false;
 	private bool showEditOptions = false;
+	private bool showDeletePageAuthor = false;
+	private bool showDeletePageAdmin = false;
 	private bool isInitialized = false;
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
 
@@ -450,5 +461,15 @@
 		{
 			Comentarios = Comentarios.OrderByDescending(x => x.ComentarioTotalVotes).ToList();
 		}
+	}
+
+	private void ToggleShowDeletePageAuthor()
+	{
+		showDeletePageAuthor = !showDeletePageAuthor;
+	}
+
+	private void ToggleShowDeletePageAdmin()
+	{
+		showDeletePageAdmin = !showDeletePageAdmin;
 	}
 }
