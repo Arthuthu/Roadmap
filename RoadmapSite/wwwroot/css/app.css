@@ -832,40 +832,19 @@ first-style-button:focus,
 }
 
 /* Delete Roadmap Confirmation */
+
+.delete-roadmap-confirmation-label-div {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 .roadmap-delet-confirmation-name-div {
     text-align: center;
     font-size: 30px;
     font-weight: bold;
     padding: 20px;
     background-image: linear-gradient(#F1AF2A, #D78F00);
-}
-
-.roadmap-delet-confirmation-description-parent-div {
-    border-style: groove;
-    border-color: white;
-    padding: 20px 0;
-    margin: 0 0 20px 0;
-}
-
-.roamap-delet-category-created-parent-div {
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.roadmap-delet-confirmation-descriptions {
-    font-size: 20px;
-    padding: 0 0 20px 10px;
-}
-
-.delete-roadmap-confirmation-label {
-    text-align: center;
-    font-weight: bold;
-    font-size: 40px;
-}
-
-.delete-roadmap-confirmation-buttons-div {
-    display: flex;
-    justify-content: space-evenly;
 }
 
 /* Roadmap Approval */

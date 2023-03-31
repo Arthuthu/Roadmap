@@ -7,10 +7,10 @@
 @if (isInitialized)
 {
     <div class="text-center">
-        <div class="delete-roadmap-confirmation-label">
+        <div class="delete-roadmap-confirmation-label-div">
             <p>Tem certeza que deseja deletar esse roadmap?</p>
         </div>
-        <div class="delete-roadmap-confirmation-buttons-div">
+        <div class="text-center">
             <button class="first-style-button"
                 @onclick="async () => await DeleteRoadmap(new Guid(RoadmapId!))">
                 Sim
