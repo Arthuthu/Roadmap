@@ -6,7 +6,7 @@
 @inject AuthenticationStateProvider authenticationStateProvider
 
 
-<div class="index-create-inicio-button-div">
+<div>
 	<div class="create-roadmap-button-div">
 		<a class="first-style-button" href="createroadmap">
 			Criar Roadmap
@@ -32,7 +32,7 @@
 		</button>
 	</div>
 
-	<div class="index-search-input-button-div">
+	<div class="index-search-input-buttons-div">
 		<div>
 			<InputText class="index-search-input" @bind-Value="@roadmapName" placeholder="Procurar por nome" 
 			id="buscar-nome-input"/>
@@ -48,8 +48,8 @@
 </div>
 
 
-<div class="index-main-div">
-	<div class="roadmap-main-div">
+<div class="display-flex">
+	<div class="roadmaps-div">
 		@if (Roadmaps is null)
 		{
 			<p>No roadmaps found.</p>
@@ -57,7 +57,7 @@
 		else
 		{
 			<Virtualize Items="@Roadmaps" Context="roadmap" OverscanCount="50">
-				<div class="roadmap-second-div">
+				<div class="display-flex">
 					<div onclick="toggleVoteButtonClass(this.querySelector('button'))">
 						<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
 							@onclick="async () => await AddUserVote(roadmap.Id)">
@@ -66,32 +66,32 @@
 							Vote
 						</button>
 					</div>
-					<div class="roadmap-box-div">
-						<a class="roadmap-name-a" href="roadmapdetails/@roadmap.Id">
-							<p class="roadmap-name">@roadmap.Name</p>
+					<div class="roadmap-div">
+						<a class="roadmap-name-label" href="roadmapdetails/@roadmap.Id">
+							<p class="roadmap-name-background">@roadmap.Name</p>
 						</a>
 
-						<div class="roadmap-description-div">
+						<div class="roadmap-description">
 							<p>@roadmap.Description</p>
 						</div>
 
-						<div class="roadmap-category-main-div">
-							<div class="roadmap-category-div">
+						<div>
+							<div class="display-flex">
 								<div class="roadmap-category-label">
 									<p>Categoria:</p>
 								</div>
-								<div class="roadmap-category-value">
+								<div class="roadmap-category">
 									@roadmap.Category
 								</div>
 							</div>
 						</div>
 
-						<div class="roadmap-created-author-div">
-							<div class="roadmad-created-div">
+						<div class="roadmap-date-author-div">
+							<div class="display-flex">
 								<div class="roadmap-created-label">
 									<p>Criado:</p>
 								</div>
-								<div class="roadmap-category-value">
+								<div>
 									@roadmap.CreatedDate
 								</div>
 							</div>
@@ -100,7 +100,7 @@
 								<div class="roadmap-author-label">
 									<p>Autor: </p>
 								</div>
-								<a class="roadmap-author-value" href="profile/@roadmap.AuthorId">
+								<a class="roadmap-author" href="profile/@roadmap.AuthorId">
 									@roadmap.Author
 								</a>
 							</div>
@@ -115,11 +115,11 @@
 		<div class="index-categorias-label">
 			Categorias
 		</div>
-		<div class="index-categorias-element"
+		<div class="index-categorias"
 			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.CSharp)">
 			C#
 		</div>
-		<div class="index-categorias-element"
+		<div class="index-categorias"
 			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.Javascript)">
 			Javascript
 		</div>
@@ -128,14 +128,15 @@
 			<InputText class="index-search-input" @bind-Value="@category" placeholder="Digite aqui uma categoria" />
 		</div>
 
-		<div class="button-div">
+		<div>
 			<button @onclick="async () => await GetRoadmapsByCustomCategory(category)"
-					class="first-style-button" id="index-buscar-button">
+				class="first-style-button" id="index-buscar-button">
 				Buscar
 			</button>
 		</div>
 	</div>
 </div>
+
 @code {
 
 	private IList<RoadmapClassModel>? Roadmaps;

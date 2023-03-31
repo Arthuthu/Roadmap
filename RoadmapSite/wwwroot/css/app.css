@@ -16,6 +16,10 @@ body {
     background-repeat: no-repeat;
 }
 
+.display-flex {
+    display: flex;
+}
+
 /* Navbar */
 
 .navbar {
@@ -73,6 +77,7 @@ body {
 }
 
 /* Alerts */
+
 .alert-message-div {
     margin: 20px 0 0 0;
     text-align: center;
@@ -85,70 +90,9 @@ body {
 
 /*Index page*/
 
-.index-main-div{
-    display: flex;
-}
-
-.index-create-inicio-button-div {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.index-search-input-button-div {
-    display: flex;
-    align-items: center;
-}
-
-.index-buscar-button-div {
-    margin-left: 20px;
-}
-
-.index-search-input {
-    background-color: transparent;
-    color: #FFF;
-    border-radius: 10px;
-    border: solid var(--lightergray-color);
-    padding: 10px;
-    margin-right: 400px;
-    width: 100%;
-}
-
-.roadmap-main-div {
-    margin: 10px 20px 0 20px;
-    width: 100%;
-}
-
-.roadmap-second-div{
-    display: flex;
-} 
-
-.roadmap-box-div {
-    border-style: groove;
-    border-color: #FFF;
-    margin: 0 0 10px 0;
-    width: 100%;
-}
-
-.roadmap-box-div-profile {
-    border-style: groove;
-    border-color: #FFF;
-    margin: 0 0 10px 0;
-}
-
-.roadmap-box-div-profile-parent-div {
-    width: 95%;
-    padding-left: 5%;
-}
-
-.roadmap-name-a {
-    color: white;
-    padding: 5px 0 2px 0;
-    text-decoration: none;
-}
-
-.roadmap-name-a:hover {
-    color: white;
+.create-roadmap-button-div {
+    text-align: center;
+    margin: 20px 0 40px 0;
 }
 
 .index-buttons-searchbar-div {
@@ -172,51 +116,55 @@ body {
     font-weight: bold;
 }
 
-.index-sort-button:hover {
-    transition: 500ms;
-    background-color: var(--lightergray-color);
-    color: #FFF;
+    .index-sort-button:hover {
+        transition: 500ms;
+        background-color: var(--lightergray-color);
+        color: #FFF;
+    }
+
+    .index-sort-button:focus {
+        transition: 500ms;
+        background-color: var(--lightergray-color);
+        color: #FFF;
+    }
+
+.roadmaps-div {
+    margin: 10px 20px 0 20px;
+    width: 100%;
 }
 
-.index-sort-button:focus {
-    transition: 500ms;
-    background-color: var(--lightergray-color);
-    color: #FFF;
+.roadmap-div {
+    border-style: groove;
+    border-color: #FFF;
+    margin: 0 0 10px 0;
+    width: 100%;
 }
 
-.roadmap-name {
-    background-color: var(--lightgray-background-color);
+.roadmap-name-label {
+    color: white;
+    padding: 5px 0 2px 0;
     font-weight: bold;
     font-size: 1.4rem;
+    text-decoration: none;
+}
+
+    .roadmap-name-label:hover {
+        color: white;
+    }
+
+.roadmap-name-background {
+    background-color: var(--lightgray-background-color);
     padding: 15px 0 15px 10px;
 }
 
-    .roadmap-name:hover {
+    .roadmap-name-background:hover {
         transition: 0.5s;
         background-color: var(--orange-background-color);
     }
 
-.roadmap-description-div {
+.roadmap-description {
     font-size: 18px;
     padding: 10px 0 0 10px;
-}
-
-.roadmap-category-main-div {
-    display: flex;
-}
-
-.roadmap-category-div {
-    display: flex;
-}
-
-.roadmad-created-div {
-    display: flex;
-}
-
-.roadmap-created-author-div {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
 }
 
 .roadmap-category-label {
@@ -225,17 +173,23 @@ body {
     font-size: 18px;
 }
 
+.roadmap-category {
+    font-size: 18px;
+}
+
+.roadmap-date-author-div {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
 .roadmap-created-label {
     margin: 0 10px 0 0;
     font-weight: bold;
     font-size: 18px;
 }
 
-.roadmap-category-value {
-    font-size: 18px;
-}
-
-.roadmap-author-div{
+.roadmap-author-div {
     display: flex;
     margin: 0 20px 0 40px;
 }
@@ -246,22 +200,72 @@ body {
     font-size: 18px;
 }
 
-.roadmap-author-value {
+.roadmap-author {
     font-size: 18px;
     text-decoration: none;
     color: #FFF;
 }
 
-    .roadmap-author-value:hover {
+    .roadmap-author:hover {
         color: #CAC9C8;
         transition: 500ms;
     }
 
-.create-roadmap-button-div {
+.index-categorias-div {
+    width: 20%;
     text-align: center;
-    margin: 20px 0 40px 0;
+    margin: 10px 0 0 40px;
+    border: solid #fff;
+    border-radius: 20px 20px 0 0;
+    height: 100%;
 }
 
+.index-categorias-label {
+    font-size: 40px;
+    font-weight: bold;
+    color: #FFF;
+    padding: 10px 20px 20px 20px;
+    background-color: var(--lightgray-background-color);
+    border-radius: 15px 15px 0 0;
+}
+
+.index-categorias {
+    font-weight: bold;
+    font-size: 25px;
+    background-color: var(--lightergray-color);
+    color: #FFF;
+    padding: 20px 0;
+    border-top: #FFF solid;
+}
+
+    .index-categorias:hover {
+        transition: 500ms;
+        cursor: pointer;
+        background-color: var(--orange-background-color);
+    }
+
+.index-search-input-buttons-div {
+    display: flex;
+    align-items: center;
+}
+
+.index-search-input {
+    background-color: transparent;
+    color: #FFF;
+    border-radius: 10px;
+    border: solid var(--lightergray-color);
+    padding: 10px;
+    margin-right: 400px;
+    width: 100%;
+}
+
+.index-buscar-button-div {
+    margin-left: 20px;
+}
+
+#index-buscar-button {
+    margin: 20px 0;
+}
 
 .vote-button,
 .vote-button-details{
@@ -292,60 +296,8 @@ body {
         background: #FC9A55;
     }
 
-.vote-button-voted-details {
-    border-radius: 20px;
-}
-
-.vote-button-details {
-    border-radius: 20px;
-}
-
-.vote-button-details:hover {
-    transition: 500ms;
-    background: #FC9A55;
-}
-
 .vote-icon {
     font-size: 30px;
-}
-
-.index-categorias-div {
-    width: 20%;
-    text-align: center;
-    margin: 10px 0 0 40px;
-    border: solid #fff;
-    border-radius: 20px 20px 0 0;
-    height: 100%;
-}
-
-.index-categorias-label {
-    font-size: 40px;
-    font-weight: bold;
-    color: #FFF;
-    padding: 10px 20px 20px 20px;
-    background-color: var(--lightgray-background-color);
-    border-radius: 15px 15px 0 0;
-}
-
-.index-categorias-element {
-    font-weight: bold;
-    font-size: 25px;
-    background-color: var(--lightergray-color);
-    color: #FFF;
-    padding: 20px 0;
-    border-top: #FFF solid;
-}
-
-    .index-categorias-element:hover {
-        transition: 500ms;
-        cursor: pointer;
-        background-color: var(--orange-background-color);
-    }
-
-    
-
-#index-buscar-button {
-    margin: 20px 0;
 }
 
 /* Login, Registration and CreateRoadmap page */
@@ -414,6 +366,17 @@ body {
 }
 
 /* Profile */
+
+.roadmap-box-div-profile {
+    border-style: groove;
+    border-color: #FFF;
+    margin: 0 0 10px 0;
+}
+
+.roadmap-box-div-profile-parent-div {
+    width: 95%;
+    padding-left: 5%;
+}
 
 .user-profile-div{
     display: flex;
@@ -799,6 +762,19 @@ first-style-button:focus,
     transition: 500ms;
     background: #FC9A55;
 }
+
+.vote-button-voted-details {
+    border-radius: 20px;
+}
+
+.vote-button-details {
+    border-radius: 20px;
+}
+
+    .vote-button-details:hover {
+        transition: 500ms;
+        background: #FC9A55;
+    }
 
 /* Delete Roadmap Confirmation */
 
