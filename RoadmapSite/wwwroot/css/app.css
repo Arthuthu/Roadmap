@@ -20,8 +20,33 @@ body {
     display: flex;
 }
 
-/* Navbar */
+/* Buttons */
 
+.first-style-button {
+    border-radius: 10px;
+    border-color: transparent;
+    color: var(--greywhite-color);
+    font-weight: bold;
+    margin: 20px 0;
+    text-decoration: none;
+    font-size: 25px;
+    background-color: var(--lightgray-background-color);
+    padding: 18px;
+}
+
+    .first-style-button:hover {
+        transition: 500ms;
+        background-color: var(--lightergray-color);
+        color: #FFF;
+    }
+
+    .first-style-button:focus {
+        transition: 500ms;
+        background-color: var(--lightergray-color);
+        color: #FFF;
+    }
+
+/* Navbar */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -367,24 +392,6 @@ body {
 
 /* Profile */
 
-.roadmap-box-div-profile {
-    border-style: groove;
-    border-color: #FFF;
-    margin: 0 0 10px 0;
-}
-
-.roadmap-box-div-profile-parent-div {
-    width: 95%;
-    padding-left: 5%;
-}
-
-.user-profile-div{
-    display: flex;
-    border: solid #FFF;
-    width: 100%;
-    margin: 0 0 50px 0;
-}
-
 .user-profile-photo-div {
     text-align: center;
     border-right: solid #FFF;
@@ -397,15 +404,33 @@ body {
     height: 140px;
 }
 
-    .user-profile-username-bio-div {
-        width: 100%;
-    }
+.user-information-div {
+    display: flex;
+    border: solid #FFF;
+    width: 100%;
+    margin: 0 0 50px 0;
+}
 
-.user-profile-username {
+.username-bio-div {
+    width: 100%;
+}
+
+.username-div {
     border-bottom: solid #FFF;
     padding: 10px 0 10px 10px;
     font-weight: bold;
     font-size: 30px;
+}
+
+.bio-div {
+    display: flex;
+    align-content: center;
+    font-size: 20px;
+    padding: 20px 0 20px 10px;
+}
+
+.bio-div > p {
+    margin: 0;
 }
 
 .edit-profile-button-div {
@@ -413,26 +438,34 @@ body {
     margin: 40px 0;
 }
 
-.profile-user-roadmaps-label-div {
+.approve-roadmaps-div {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.user-roadmaps-label {
     display: flex;
     justify-content: center;
     align-content: center;
 }
 
-.profile-user-roadmaps-label-div p {
-    font-size: 35px;
+    .user-roadmaps-label > p {
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+.no-roadmap-label {
+    text-align: center;
     font-weight: bold;
+    font-size: 30px;
 }
 
-.user-profile-bio {
-    display: flex;
-    align-content: center;
-    font-size: 20px;
-    padding: 20px 0 20px 10px;
-}
 
-.user-profile-bio p {
-    margin: 0;
+
+.roadmap-box-div-profile {
+    border-style: groove;
+    border-color: #FFF;
+    margin: 0 0 10px 0;
 }
 
 /* Edit Profile */
@@ -441,17 +474,6 @@ body {
     text-align: center;
     font-weight: bold;
     font-size: 30px;
-}
-
-.profile-no-roadmap-label {
-    text-align: center;
-    font-weight: bold;
-    font-size: 30px;
-}
-
-.profile-approve-roadmaps-div {
-    text-align: center;
-    padding: 20px 0;
 }
 
 /* Roadmap Details */
@@ -669,7 +691,6 @@ body {
     text-align: center;
 }
 
-.first-style-button,
 .toggle-show-edit-option-button,
 .roadmap-options-button,
 .comment-roadmap-button {
@@ -684,18 +705,10 @@ body {
     text-decoration: none;
 }
 
-.first-style-button {
-    font-size: 25px;
-    text-decoration: none;
-    background-color: var(--lightgray-background-color);
-    padding: 18px;
-}
-
 .roadmap-options-button {
     text-decoration: none;
 }
 
-.first-style-button:hover,
 .toggle-show-edit-option-button:hover,
 .roadmap-options-button:hover,
 .comment-roadmap-button:hover {
@@ -704,7 +717,6 @@ body {
     color: #FFF;
 }
 
-first-style-button:focus,
 .toggle-show-edit-option-button:focus,
 .roadmap-options-button:focus,
 .comment-roadmap-button:focus {

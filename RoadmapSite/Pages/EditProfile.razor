@@ -5,7 +5,6 @@
 
 @if (IsInitialized)
 {
-
 	<div class="edit-profile-label-div">
 		Escreva algo em sua bio
 	</div>
@@ -55,6 +54,11 @@
 		}
 
 		User = await userService.GetUserById(new Guid(UserId!));
+
+		if (User is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
 
 		if (UserId != LoggedInUserId.ToString())
 		{

@@ -6,138 +6,120 @@
 @inject IRoadmapService roadmapService
 @inject IRoadmapVotingService votingService
 
-<AuthorizeView>
-	<Authorized>
-		<div class="user-profile-photo-div">
-			<img src="@DefaultProfilePicture" />
-		</div>
+@if (IsInitialized)
+{
+	<div class="user-profile-photo-div">
+		<img src="@DefaultProfilePicture" />
+	</div>
 
-		<div class="user-profile-div">
-			<div class="user-profile-username-bio-div">
-				<div class="user-profile-username">
-					@User!.Username
-				</div>
-				<div class="user-profile-bio">
-					@if (User.Bio is null)
-					{
-						<p>
-							Não conhecemos @User.Username muito bem, mas temos certeza que é gente boa.
-						</p>
-					}
-
-					@User.Bio
-				</div>
+	<div class="user-information-div">
+		<div class="username-bio-div">
+			<div class="username-div">
+				@User!.Username
 			</div>
-		</div>
-
-		@if (UserId == LoggedInUserId.ToString())
-		{
-			<div class="edit-profile-button-div">
-				<a class="first-style-button" href="/editprofile/@User.Id">
-					Editar Perfil
-				</a>
-			</div>
-		}
-
-		@if (User.IsAdmin == "1")
-		{
-			<div class="profile-approve-roadmaps-div">
-				<a class="first-style-button" href="/adminroadmapapproval">Aprovar Roadmaps</a>
-			</div>
-		}
-
-		<div class="profile-user-roadmaps-label-div">
-			<p>@User.Username Roadmaps</p>
-		</div>
-
-		@if (Roadmaps is null)
-		{
-			<div class="profile-no-roadmap-label">
-				@User.Username não criou nenhum roadmap ainda.
-			</div>
-		}
-		else
-		{
-			<div class="roadmap-box-div-profile-parent-div">
-				@foreach (var roadmap in Roadmaps)
+			<div class="bio-div">
+				@if (User.Bio is null)
 				{
-					<div class="roadmap-second-div">
-						<div onclick="toggleVoteButtonClass(this.querySelector('button'))">
-							<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
-							@onclick="async () => await AddUserVote(roadmap.Id)">
-								<span id="vote-count">@roadmap.RoadmapTotalVotes</span>
-								<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
-								Vote
-							</button>
-						</div>
-						<div class="roadmap-box-div">
-							<a class="roadmap-name-a" href="roadmapdetails/@roadmap.Id">
-								<p class="roadmap-name">@roadmap.Name</p>
-							</a>
+					<p>
+						Não conhecemos @User.Username muito bem, mas temos certeza que é gente boa.
+					</p>
+				}
 
-							<div class="roadmap-description-div">
-								<p>@roadmap.Description</p>
+				@User.Bio
+			</div>
+		</div>
+	</div>
+
+	@if (UserId == LoggedInUserId.ToString())
+	{
+		<div class="edit-profile-button-div">
+			<a class="first-style-button" href="/editprofile/@User.Id">
+				Editar Perfil
+			</a>
+		</div>
+	}
+
+	@if (User.IsAdmin == "1")
+	{
+		<div class="approve-roadmaps-div">
+			<a class="first-style-button" href="/adminroadmapapproval">Aprovar Roadmaps</a>
+		</div>
+	}
+
+	<div class="user-roadmaps-label">
+		<p>@User.Username Roadmaps</p>
+	</div>
+
+	@if (Roadmaps is null)
+	{
+		<div class="no-roadmap-label">
+			@User.Username não criou nenhum roadmap ainda.
+		</div>
+	}
+	else
+	{
+		<Virtualize Items="@Roadmaps" Context="roadmap" OverscanCount="50">
+			<div class="display-flex">
+				<div onclick="toggleVoteButtonClass(this.querySelector('button'))">
+					<button class="@roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
+					@onclick="async () => await AddUserVote(roadmap.Id)">
+						<span id="vote-count">@roadmap.RoadmapTotalVotes</span>
+						<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
+						Vote
+					</button>
+				</div>
+				<div class="roadmap-div">
+					<a class="roadmap-name-label" href="roadmapdetails/@roadmap.Id">
+						<p class="roadmap-name-background">@roadmap.Name</p>
+					</a>
+
+					<div class="roadmap-description">
+						<p>@roadmap.Description</p>
+					</div>
+
+					<div>
+						<div class="display-flex">
+							<div class="roadmap-category-label">
+								<p>Categoria:</p>
 							</div>
-
-							<div class="roadmap-category-author-main-div">
-								<div class="roadmap-category-div">
-									<div class="roadmap-category-label">
-										<p>Categoria:</p>
-									</div>
-									<div class="roadmap-category-value">
-										@roadmap.Category
-									</div>
-								</div>
-							</div>
-							<div class="roadmap-created-author-div">
-								<div class="roadmad-created-div">
-									<div class="roadmap-created-label">
-										<p>Criado:</p>
-									</div>
-									<div class="roadmap-category-value">
-										@roadmap.CreatedDate
-									</div>
-								</div>
-
-								<div class="roadmap-author-div">
-									<div class="roadmap-author-label">
-										<p> </p>
-									</div>
-									<a class="roadmap-author-value" href="profile/@roadmap.AuthorId">
-										@roadmap.Author
-									</a>
-								</div>
+							<div class="roadmap-category">
+								@roadmap.Category
 							</div>
 						</div>
 					</div>
-				}
+
+					<div class="roadmap-date-author-div">
+						<div class="display-flex">
+							<div class="roadmap-created-label">
+								<p>Criado:</p>
+							</div>
+							<div>
+								@roadmap.CreatedDate
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-		}
-	</Authorized>
-	<NotAuthorized>
-		<div class="not-authorized-message-div">
-			<div class="not-authorized-message-p-div">
-				<p class="not-authorized-message">Você não esta autorizado para ver esta pagina, entre em uma conta primeiro</p>
-			</div>
-			<div>
-				<a class="first-style-button" href="login">
-					Entrar
-				</a>
-			</div>
-		</div>
-	</NotAuthorized>
-</AuthorizeView>
+		</Virtualize>
+	}
+}
 
 @code {
 	[Parameter]
 	public string? UserId { get; set; }
 	public Guid? LoggedInUserId { get; set; }
-	public UserModel? User { get; set; }
 	public IList<RoadmapClassModel>? Roadmaps { get; set; }
+	public UserModel? User { get; set; }
+	private bool IsInitialized = false;
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"; 
 
 	protected override async Task OnInitializedAsync()
 	{
+		if (UserId is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
@@ -145,21 +127,27 @@
 			navManager.NavigateTo("/login");
 		}
 
-		await GetUserByPageId(UserId!);
-		await GetRoadmapsByUserId(new Guid(UserId!));
+		User = await userService.GetUserById(new Guid(UserId!));
 
-		foreach (var roadmap in Roadmaps!)
+		if (User is null)
 		{
-			string roadmapClass = await votingService.GetButtonColor(roadmap.Id, LoggedInUserId);
-			roadmap.RoadmapHtmlClass = roadmapClass;
-
-			int roadmapTotalVotes = await votingService.GetRoadmapVotes(roadmap.Id);
-			roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+			navManager.NavigateTo("/notfound");
 		}
+
+		Roadmaps = await roadmapService.GetRoadmapByUserId(new Guid(UserId!));
+
+		await GetRoadmapsData();
+
+		IsInitialized = true;
 	}
 
 	protected override async Task OnParametersSetAsync()
 	{
+		if (UserId is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
@@ -167,29 +155,18 @@
 			navManager.NavigateTo("/login");
 		}
 
-		await GetUserByPageId(UserId!);
-		await GetRoadmapsByUserId(new Guid(UserId!));
+		User = await userService.GetUserById(new Guid(UserId!));
 
-		foreach (var roadmap in Roadmaps!)
+		if (User is null)
 		{
-			string roadmapClass = await votingService.GetButtonColor(roadmap.Id, LoggedInUserId);
-			roadmap.RoadmapHtmlClass = roadmapClass;
-
-			int roadmapTotalVotes = await votingService.GetRoadmapVotes(roadmap.Id);
-			roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+			navManager.NavigateTo("/notfound");
 		}
-	}
 
-	private async Task GetUserByPageId(string userId)
-	{
-		User = await userService.GetUserById(new Guid(userId));
-	}
+		Roadmaps = await roadmapService.GetRoadmapByUserId(new Guid(UserId!));
 
-	private async Task GetRoadmapsByUserId(Guid userId)
-	{
-		var roadmaps = await roadmapService.GetRoadmapByUserId(userId);
+		await GetRoadmapsData();
 
-		Roadmaps = roadmaps;
+		IsInitialized = true;
 	}
 
 	private async Task AddUserVote(Guid roadmapId)
@@ -197,5 +174,17 @@
 		await votingService.AddUserVote(roadmapId, LoggedInUserId);
 
 		await OnInitializedAsync();
+	}
+
+	private async Task GetRoadmapsData()
+	{
+		foreach (var roadmap in Roadmaps!)
+		{
+			string roadmapClass = await votingService.GetButtonColor(roadmap.Id, LoggedInUserId);
+			roadmap.RoadmapHtmlClass = roadmapClass;
+
+			int roadmapTotalVotes = await votingService.GetRoadmapVotes(roadmap.Id);
+			roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+		}
 	}
 }
