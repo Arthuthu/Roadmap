@@ -5,84 +5,79 @@
 @inject IUserService userService
 
 
-<AuthorizeView>
-	<Authorized>
-		<EditForm Model="roadmap" OnValidSubmit="ExecuteRoadmapCreation" Context="Form">
-			<div class="form-div">
-				<div class="iniciar-sessao-paragraph">
-					<p>Criar roadmap</p>
-				</div>
+@if (IsInitialized)
+{
+	<EditForm Model="Roadmap" OnValidSubmit="ExecuteRoadmapCreation" Context="Form">
+		<div class="form-div">
+			<div class="form-label-div">
+				<p>Criar roadmap</p>
+			</div>
 
-				<div class="first-form-label">
-					<label for="name" class="visually-hidden">Nome</label>
-					<div>
-						<InputText id="name" class="form-input-text" @bind-Value="roadmap.Name" placeholder="Nome do Roadmap" />
-					</div>
-				</div>
-
-				<div class="other-form-label">
-					<label for="description" class="visually-hidden">Descrição</label>
-					<div>
-						<InputTextArea id="description" class="form-input-text-description" @bind-Value="roadmap.Description" placeholder="Descrição (Maximo 500 caracteres)" />
-					</div>
-				</div>
-
-				<div class="other-form-label">
-					<label for="category" class="visually-hidden">Categoria</label>
-					<div>
-						<InputText id="category" class="form-input-text" @bind-Value="roadmap.Category" placeholder="Categoria" />
-					</div>
-				</div>
-
-				<div class="text-center">
-					<button type="submit" class="first-style-button">Criar Roadmap</button>
+			<div class="first-input-text-div">
+				<label for="name" class="visually-hidden">Nome</label>
+				<div>
+					<InputText id="name" class="form-input-text" @bind-Value="Roadmap.Name" placeholder="Nome do Roadmap" />
 				</div>
 			</div>
-		</EditForm>
-	</Authorized>
 
-	<NotAuthorized>
-		<div class="not-authorized-message-div">
-			<div class="not-authorized-message-p-div">
-				<p class="not-authorized-message">Você não esta autorizado para ver esta pagina, entre em uma conta primeiro</p>
+			<div class="input-text-div">
+				<label for="description" class="visually-hidden">Descrição</label>
+				<div>
+					<InputTextArea id="description" class="form-input-text-description" @bind-Value="Roadmap.Description" placeholder="Descrição (Maximo 500 caracteres)" />
+				</div>
 			</div>
-			<div>
-				<a class="first-style-button" href="login">
-					Entrar
-				</a>
+
+			<div class="input-text-div">
+				<label for="category" class="visually-hidden">Categoria</label>
+				<div>
+					<InputText id="category" class="form-input-text" @bind-Value="Roadmap.Category" placeholder="Categoria" />
+				</div>
+			</div>
+
+			<div class="text-center">
+				<button type="submit" class="first-style-button">Criar Roadmap</button>
 			</div>
 		</div>
-	</NotAuthorized>
-</AuthorizeView>
-<div role="alert" class="alert-message-div">
-	<p class="alert-message">@roadmapCreationMessage</p>
-</div>
+	</EditForm>
+
+	<div class="not-authorized-message-div">
+		<div class="not-authorized-message-p-div">
+			<p class="not-authorized-message">Você não esta autorizado para ver esta pagina, entre em uma conta primeiro</p>
+		</div>
+		<div>
+			<a class="first-style-button" href="login">
+				Entrar
+			</a>
+		</div>
+	</div>
+	<div role="alert" class="alert-message-div">
+		<p class="alert-message">@roadmapCreationMessage</p>
+	</div>
+}
 
 @code {
 	private Guid LoggedInUserId { get; set; }
-	private RoadmapClassModel roadmap = new();
+	private RoadmapClassModel Roadmap = new();
 	private string roadmapCreationMessage = "";
+	private bool IsInitialized = false;
 
 	protected override async Task OnInitializedAsync()
 	{
-		await GetLoggedInUserId();
+		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
 		}
-	}
 
-	private async Task GetLoggedInUserId()
-	{
-		LoggedInUserId = await userService.GetLoggedInUserId();
+		IsInitialized = true;
 	}
 
 	private async Task<string> ExecuteRoadmapCreation()
 	{
-		roadmap.UserId = LoggedInUserId;
+		Roadmap.UserId = LoggedInUserId;
 
-		var result = await roadmapServiceService.CreateRoadmap(roadmap);
+		var result = await roadmapServiceService.CreateRoadmap(Roadmap);
 
 		roadmapCreationMessage = result;
 

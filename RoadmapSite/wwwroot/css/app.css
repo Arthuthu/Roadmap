@@ -363,9 +363,16 @@ body {
     margin: 20px 0;
 }
 
-/* Login and Registration page */
+/* Login, Registration and CreateRoadmap page */
 
-.iniciar-sessao-paragraph {
+.form-div {
+    background-color: #FFF;
+    width: 25%;
+    margin: 0 auto;
+    padding: 0 0 30px 0;
+}
+
+.form-label-div {
     text-align: center;
     font-size: 2rem;
     font-weight: bold;
@@ -374,12 +381,21 @@ body {
     background-color: var(--lightgray-background-color);
 }
 
-.form-div {
-    background-color: #FFF;
-    width: 25%;
-    margin: 0 auto;
-    padding: 0 0 30px 0;
+.first-input-text-div {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0 0 10px 0;
+    margin: 20px 0 0 0;
 }
+
+.input-text-div {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0 0 10px 0;
+}
+
 
 .form-input-text,
 .form-input-text-description {
@@ -393,40 +409,6 @@ body {
 
 .form-input-text-description {
     height: 100px;
-}
-
-.first-form-label {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding: 0 0 10px 0;
-    margin: 20px 0 0 0;
-}
-
-.other-form-label {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding: 0 0 10px 0;
-}
-
-
-
-.second-style-button {
-    background-color: var(--button-background-color);
-    margin: 20px 0 0 0;
-    padding: 15px 20px;
-    color: #FFF;
-    font-weight: bold;
-    font-size: 1.5rem;
-    border-radius: 15px;
-    border-color: transparent;
-    transition: .4s;
-    text-decoration: none;
-}
-
-.second-style-button{
-    margin: 0;
 }
 
 .registre-se-aqui-div {

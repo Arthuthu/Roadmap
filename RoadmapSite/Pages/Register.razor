@@ -2,30 +2,30 @@
 @inject IRegistrationService registrationService
 @inject NavigationManager navManager
 
-<EditForm Model="model" OnValidSubmit="ExecuteRegister" class="">
+<EditForm Model="RegistrationUser" OnValidSubmit="ExecuteRegister">
 	<div class="form-div">
-		<div class="iniciar-sessao-paragraph">
+		<div class="form-label-div">
 			<p>Criar conta</p>
 		</div>
 
-		<div class="first-form-label">
+		<div class="first-input-text-div">
 			<label for="username" class="visually-hidden">Usuario</label>
 			<div>
-				<InputText id="username" class="form-input-text" @bind-Value="model.Username" placeholder="Usuario"/>
+				<InputText id="username" class="form-input-text" @bind-Value="RegistrationUser.Username" placeholder="Usuario" />
 			</div>
 		</div>
 
-		<div class="other-form-label">
+		<div class="input-text-div">
 			<div>
 				<label for="password" class="visually-hidden">Senha</label>
-				<InputText type="password" id="password" class="form-input-text" @bind-Value="model.Password" placeholder="Senha"/>
+				<InputText type="password" id="password" class="form-input-text" @bind-Value="RegistrationUser.Password" placeholder="Senha" />
 			</div>
 		</div>
 
-		<div class="other-form-label">
+		<div class="input-text-div">
 			<div>
 				<label for="confirmPassword" class="visually-hidden">Confirmar Senha</label>
-				<InputText type="password" id="confirmpassword" class="form-input-text" @bind-Value="model.ConfirmPassword" placeholder="Confirmar Senha" />
+				<InputText type="password" id="confirmpassword" class="form-input-text" @bind-Value="RegistrationUser.ConfirmPassword" placeholder="Confirmar Senha" />
 			</div>
 		</div>
 
@@ -40,21 +40,19 @@
 </div>
 
 @code {
-
-	private RegistrationModel model = new();
-
+	private RegistrationModel RegistrationUser = new();
 	private string registrationMessage = "";
 	private string messageWhenRegistrationIsSuccessfull = "Usuario registrado com sucesso";
 
 	private async Task ExecuteRegister()
 	{
-		if (model.Password != model.ConfirmPassword)
+		if (RegistrationUser.Password != RegistrationUser.ConfirmPassword)
 		{
 			registrationMessage = "As senhas não coincidem.";
 			return;
 		}
 
-		var result = await registrationService.RegisterUser(model);
+		var result = await registrationService.RegisterUser(RegistrationUser);
 
 		registrationMessage = result;
 		StateHasChanged();
