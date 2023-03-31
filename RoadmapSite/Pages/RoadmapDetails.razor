@@ -12,253 +12,250 @@
 
 @if (isInitialized)
 {
-	@if (Roadmap is not null)
-	{
-		<div>
-			<div class="roadmap-details-name-category-div">
-				<div>
-					@Roadmap.Name
-				</div>
-
-				<div>
-					@Roadmap.Category
-				</div>
-			</div>
-			<div class="roadmap-details-description-div">
-				@Roadmap.Description
-			</div>
-		</div>
-
-		<div class="nodes-box">
-			@if(Nodes is not null)
-			{
-				@foreach (var node in Nodes)
-				{
-					<div class="node-button-div">
-						<button class="node-button">
-							@node.Name
-						</button>
-						@if (editMode)
-						{
-							<button class="delete-roadmap-button"
-							@onclick="async () => await DeleteNode(node.Id)">
-								X
-							</button>
-						}
-					</div>
-
-					<div class="node-arrow-icon-div">
-						<i class="fa-solid fa-arrow-down" id="arrow-icon"></i>
-					</div>
-				}
-				<button class="node-button">
-					Fim
-				</button>
-			}
-			else
-			{
-				<div>
-					Não existe nenhum conteudo nesse roadmap ainda.
-				</div>
-			}
-
-			@if (Roadmap.UserId == LoggedInUserId)
-			{
-				<EditForm Model="@Node" OnValidSubmit="CreateNode" class="" Context="NodeForm">
-					<div class="node-input-text-div">
-						<label for="titulo" class="visually-hidden">Titulo</label>
-						<div>
-							<InputText id="node-input" class="node-name-input-text" @bind-Value="Node.Name" placeholder="Nome" />
-						</div>
-					</div>
-
-					<div class="button-div">
-						<button type="submit" class="first-style-button" id="adicionar-node-button"
-						onclick="clearNodeInput()">Adicionar</button>
-					</div>
-				</EditForm>
-			}
-		</div>
-
-		<div class="roadmap-details-vote-button">
-			<div onclick="toggleVoteButtonDetailsClass(this.querySelector('button'))">
-				<button class="@Roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
-				@onclick="async () => await AddUserVoteOnRoadmap(Roadmap.Id)">
-					<span id="vote-count">@Roadmap.RoadmapTotalVotes</span>
-					<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
-					Vote
-				</button>
-			</div>
-		</div>
-
-		<div class="roadmap-manage-buttons-div">
-
-			<button @onclick="ToggleShowRoadmapEditOptions" class="toggle-show-edit-option-button">
-				Opções
-			</button>
-
-			@if (showRoadmapEditOptions)
-			{
-				@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
-				{
-					<div>
-						<button @onclick="ToggleEditMode"
-							class="roadmap-options-button">
-							Editar
-						</button>
-					</div>
-					@if (LoggedInUserModel!.IsAdmin is null)
-					{
-						<div>
-							<button @onclick="ToggleShowDeletePageAuthor" class="roadmap-options-button">
-								Excluir Roadmap
-							</button>
-						</div>
-					}
-					else if (LoggedInUserModel.IsAdmin == "1")
-					{
-						<div>
-							<button @onclick="ToggleShowDeletePageAdmin" class="roadmap-options-button">
-								Excluir Roadmap
-							</button>
-						</div>
-					}
-				}
-
-				<div>
-					<button class="toggle-show-edit-option-button">
-						Denunciar
-					</button>
-				</div>
-			}
-		</div>
-
-		if (showDeletePageAuthor)
-		{
-			<DeleteRoadmapConfirmation RoadmapId="@RoadmapId" />
-		}
-
-		if (showDeletePageAdmin)
-		{
-			<AdminDeleteRoadmapConfirmation RoadmapId="@RoadmapId" />
-		}
-
-		<div class="comentar-div">
-			<EditForm Model="@Comentario" OnValidSubmit="CommentOnRoadmap" Context="ComentarioForm">
-				<div>
-					<InputTextArea id="comment-input" class="roadmap-details-comentario-text-area" @bind-Value="Comentario.Description"
-				 placeholder="Adicione um comentario (Maximo 1000 caracteres)" />
-				</div>
-				<div class="text-center">
-					<button type="submit" class="comment-roadmap-button" onclick="clearComentarioInput()">Comentar</button>
-				</div>
-			</EditForm>
-		</div>
-
-
-		<div class="comment-count-buttons-div">
-			<div class="comment-count-div">
-				@if (Comentarios is not null)
-				{
-					<p>@Comentarios.Count() Comentarios</p>
-				}
-				else
-				{
-					<p>0 Comentarios</p>
-				}
+	<div>
+		<div class="details-roadmap-div">
+			<div>
+				@Roadmap!.Name
 			</div>
 
 			<div>
-				<button @onclick="SortComentariosByNew" id="roadmap-details-management-button"
-			class="comment-sort-button">
-					Novo
-				</button>
-
-				<button @onclick="SortComentariosByPopularity" id="roadmap-details-management-button"
-			class="comment-sort-button">
-					Top
-				</button>
+				@Roadmap.Category
 			</div>
 		</div>
+		<div class="details-description-div">
+			@Roadmap.Description
+		</div>
+	</div>
 
-
-		<Virtualize Items="@Comentarios" Context="comentario" OverscanCount="50">
-			<div class="roadmap-details-comentario-box">
-				<div class="comment-profile-picture-div">
-					<img class="comment-profile-picture" src="@DefaultProfilePicture" />
+	<div class="nodes-box">
+		@if(Nodes is not null)
+		{
+			@foreach (var node in Nodes)
+			{
+				<div class="text-center">
+					<button class="node">
+						@node.Name
+					</button>
+					@if (editMode)
+					{
+						<button class="delete-roadmap-button"
+						@onclick="async () => await DeleteNode(node.Id)">
+							X
+						</button>
+					}
 				</div>
-				<div class="comment-data-div">
-					<div class="rodmap-details-comentario-author-createddate">
-						<a class="roadmap-details-author" href="/profile/@comentario.AuthorId">
-							@comentario.Author
-						</a>
 
-						<div class="roadmap-details-createddate">
-							@comentario.CreatedDate
+				<div class="text-center">
+					<i class="fa-solid fa-arrow-down" id="arrow-icon"></i>
+				</div>
+			}
+			<button class="node">
+				Fim
+			</button>
+		}
+		else
+		{
+			<div>
+				Não existe nenhum conteudo nesse roadmap ainda.
+			</div>
+		}
+
+		@if (Roadmap.UserId == LoggedInUserId)
+		{
+			<EditForm Model="@Node" OnValidSubmit="CreateNode" class="" Context="NodeForm">
+				<div class="text-center">
+					<label for="titulo" class="visually-hidden">Titulo</label>
+					<div>
+						<InputText id="node-input" class="node-input-text" @bind-Value="Node.Name" placeholder="Nome" />
+					</div>
+				</div>
+
+				<div>
+					<button type="submit" class="first-style-button" id="adicionar-node-button"
+					onclick="clearNodeInput()">Adicionar</button>
+				</div>
+			</EditForm>
+		}
+	</div>
+
+	<div class="text-center">
+		<div onclick="toggleVoteButtonDetailsClass(this.querySelector('button'))">
+			<button class="@Roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
+			@onclick="async () => await AddUserVoteOnRoadmap(Roadmap.Id)">
+				<span id="vote-count">@Roadmap.RoadmapTotalVotes</span>
+				<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
+				Vote
+			</button>
+		</div>
+	</div>
+
+	<div class="text-center">
+		<button @onclick="ToggleShowRoadmapEditOptions" class="second-style-button">
+			Opções
+		</button>
+
+		@if (showRoadmapEditOptions)
+		{
+			@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
+			{
+				<div>
+					<button @onclick="ToggleEditMode"
+						class="second-style-button">
+						Editar
+					</button>
+				</div>
+				@if (LoggedInUserModel!.IsAdmin is null)
+				{
+					<div>
+						<button @onclick="ToggleShowDeletePageAuthor" class="second-style-button">
+							Excluir Roadmap
+						</button>
+					</div>
+				}
+				else if (LoggedInUserModel.IsAdmin == "1")
+				{
+					<div>
+						<button @onclick="ToggleShowDeletePageAdmin" class="second-style-button">
+							Excluir Roadmap
+						</button>
+					</div>
+				}
+			}
+
+			<div>
+				<button class="second-style-button">
+					Denunciar
+				</button>
+			</div>
+		}
+	</div>
+
+	if (showDeletePageAuthor)
+	{
+		<DeleteRoadmapConfirmation RoadmapId="@RoadmapId" />
+	}
+
+	if (showDeletePageAdmin)
+	{
+		<AdminDeleteRoadmapConfirmation RoadmapId="@RoadmapId" />
+	}
+
+	<div>
+		<EditForm Model="@Comentario" OnValidSubmit="CommentOnRoadmap" Context="ComentarioForm">
+			<div>
+				<InputTextArea id="comment-input" class="comment-input-area" @bind-Value="Comentario.Description"
+				placeholder="Adicione um comentario (Maximo 1000 caracteres)" />
+			</div>
+			<div class="text-center">
+				<button type="submit" class="first-style-button" onclick="clearComentarioInput()">Comentar</button>
+			</div>
+		</EditForm>
+	</div>
+
+
+	<div class="comment-count-buttons-div">
+		<div class="comment-count-div">
+			@if (Comentarios is not null)
+			{
+				<p>@Comentarios.Count() Comentarios</p>
+			}
+			else
+			{
+				<p>0 Comentarios</p>
+			}
+		</div>
+
+		<div>
+			<button @onclick="SortComentariosByNew" id="roadmap-details-management-button"
+		class="second-style-button">
+				Novo
+			</button>
+
+			<button @onclick="SortComentariosByPopularity" id="roadmap-details-management-button"
+		class="second-style-button">
+				Top
+			</button>
+		</div>
+	</div>
+
+
+	<Virtualize Items="@Comentarios" Context="comentario" OverscanCount="50">
+		<div class="comment-box">
+			<div class="comment-profile-picture-div">
+				<img class="comment-profile-picture" src="@DefaultProfilePicture" />
+			</div>
+			<div class="comment-div">
+				<div class="comment-info-div">
+					<a class="comment-author" href="/profile/@comentario.AuthorId">
+						@comentario.Author
+					</a>
+
+					<div class="comment-date">
+						@comentario.CreatedDate
+					</div>
+				</div>
+
+				<div class="comment-description-div">
+					<div>
+						<div class="comment-description">
+							@comentario.Description
+						</div>
+
+						<div class="comment-buttons-div">
+							<div onclick="toggleComentarioVoteButtonClass(this.querySelector('button'))">
+								<button class="@comentario.ComentarioHtmlClass" id="roadmap-vote-button"
+								@onclick="async () => await AddUserVoteOnComentario(comentario.Id)">
+									<div class="vote-icon">
+										<i class="fas fa-caret-up"></i>
+									</div>
+								</button>
+							</div>
+
+							<div class="vote-count-div">
+								<span id="vote-count">@comentario.ComentarioTotalVotes</span>
+							</div>
 						</div>
 					</div>
-
-					<div class="roadmap-details-comentario-descricao-button-div">
+					<div class="comment-options-div">
 						<div>
-							<div class="roadmap-details-comentario">
-								@comentario.Description
-							</div>
+							@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
+							{
+								<button @onclick="ToggleShowDeleteComment"
+								class="second-style-button">
+									Excluir
+								</button>
 
-							<div class="comentario-vote-button-div">
-								<div onclick="toggleComentarioVoteButtonClass(this.querySelector('button'))">
-									<button class="@comentario.ComentarioHtmlClass" id="roadmap-vote-button"
-									@onclick="async () => await AddUserVoteOnComentario(comentario.Id)">
-										<div class="vote-icon">
-											<i class="fas fa-caret-up"></i>
-										</div>
-									</button>
-								</div>
-								<div class="vote-count-div">
-									<span id="vote-count">@comentario.ComentarioTotalVotes</span>
-								</div>
-							</div>
-						</div>
-						<div class="denunciar-excluir-comment-div">
-							<div>
-								@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
+								if (showDeleteComment)
 								{
-									<button @onclick="ToggleShowDeleteComment"
-									class="toggle-show-edit-option-button">
-										Excluir
+									<button @onclick="async () => await DeleteComment(comentario.Id)"
+									class="second-style-button" id="confirm-button">
+										Confirmar
 									</button>
-
-									if (showDeleteComment)
-									{
-										<button @onclick="async () => await DeleteComment(comentario.Id)"
-										class="toggle-show-edit-option-button" id="confirmar-excluir-comment-button">
-											Confirmar
-										</button>
-									}
 								}
-							</div>
-							<div>
-								<a class="toggle-show-edit-option-button" href="/createdenuncia/Comment/@comentario.Id">
-									Denunciar
-								</a>
-							</div>
+							}
+						</div>
+						<div>
+							<a class="second-style-button" href="/createdenuncia/Comment/@comentario.Id">
+								Denunciar
+							</a>
 						</div>
 					</div>
 				</div>
 			</div>
-		</Virtualize>
-	}
+		</div>
+	</Virtualize>
 }
 
 @code {
 	[Parameter]
 	public string? RoadmapId { get; set; }
 	private Guid? LoggedInUserId { get; set; }
+	private IList<ComentarioModel>? Comentarios { get; set; }
+	private IList<NodeModel>? Nodes { get; set; }
 	private RoadmapClassModel? Roadmap { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
 	private NodeModel? Node = new();
 	private ComentarioModel? Comentario = new();
-	private IList<ComentarioModel>? Comentarios { get; set; }
-	private IList<NodeModel>? Nodes { get; set; }
 	private bool editMode = false;
 	private bool showRoadmapEditOptions = false;
 	private bool showDeleteComment = false;
@@ -270,6 +267,11 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		if (RoadmapId is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
@@ -277,11 +279,11 @@
 			navManager.NavigateTo("/login");
 		}
 
-		await GetRoadmapById(new Guid(RoadmapId!));
+		Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId!));
 
-		if (RoadmapId == Guid.Empty.ToString())
+		if (Roadmap is null)
 		{
-			navManager.NavigateTo("/");
+			navManager.NavigateTo("/notfound");
 		}
 
 		await LoadPageData();
@@ -291,6 +293,11 @@
 
 	protected override async Task OnParametersSetAsync()
 	{
+		if (RoadmapId is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
@@ -298,24 +305,16 @@
 			navManager.NavigateTo("/login");
 		}
 
-		await GetRoadmapById(new Guid(RoadmapId!));
+		Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId!));
 
-		if (RoadmapId == Guid.Empty.ToString())
+		if (Roadmap is null)
 		{
-			navManager.NavigateTo("/");
+			navManager.NavigateTo("/notfound");
 		}
 
 		await LoadPageData();
-	}
 
-	private async Task GetRoadmapById(Guid roadmapId)
-	{
-		Roadmap = await roadmapService.GetRoadmapById(roadmapId);
-	}
-
-	private async Task GetLoggedInUserModel()
-	{
-		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
+		isInitialized = true;
 	}
 
 	private async Task LoadPageData()
@@ -325,6 +324,11 @@
 		await GetAllNodes();
 		await UpdateRoadmapVoteButton();
 		await UpdateComentarioVoteButton();
+	}
+
+	private async Task GetLoggedInUserModel()
+	{
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 	}
 
 	//Roadmap Votes
@@ -368,7 +372,7 @@
 
 	private async Task CreateNode()
 	{
-		Node.RoadmapId = new Guid(RoadmapId!);
+		Node!.RoadmapId = new Guid(RoadmapId!);
 		await nodeService.CreateNode(Node);
 
 		await GetAllNodes();
@@ -376,7 +380,7 @@
 
 	private async Task GetAllNodes()
 	{
-		var nodes = await nodeService.GetAllNodes(new Guid(RoadmapId));
+		var nodes = await nodeService.GetAllNodes(new Guid(RoadmapId!));
 
 		if (nodes is not null)
 		{
@@ -395,20 +399,23 @@
 	private async Task GetAllComentarios()
 	{
 		var comentarios = await comentarioService.GetAllComentarios();
-		var roadmapComentarios = comentarios.Where(x => x.RoadmapId.ToString() == RoadmapId).ToList();
+		var roadmapComentarios = comentarios?.Where(x => x.RoadmapId.ToString() == RoadmapId).ToList();
 
-		Comentarios = roadmapComentarios.OrderByDescending(x => x.CreatedDate).ToList();
+		Comentarios = roadmapComentarios?.OrderByDescending(x => x.CreatedDate).ToList();
 
-		var users = await userService.GetAllUsers();
-
-		foreach (var comentario in Comentarios)
+		if (Comentarios is not null)
 		{
-			foreach (var user in users)
+			var users = await userService.GetAllUsers();
+
+			foreach (var comentario in Comentarios)
 			{
-				if (user.Id == comentario.UserId)
+				foreach (var user in users)
 				{
-					comentario.Author = user.Username;
-					comentario.AuthorId = user.Id;
+					if (user.Id == comentario.UserId)
+					{
+						comentario.Author = user.Username;
+						comentario.AuthorId = user.Id;
+					}
 				}
 			}
 		}

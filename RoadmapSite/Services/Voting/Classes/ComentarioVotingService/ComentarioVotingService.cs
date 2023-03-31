@@ -53,12 +53,12 @@ public class ComentarioVotingService : IComentarioVotingService
 
 		if (votedComentarioId == Guid.Empty)
 		{
-			return "comentario-vote-button";
+			return "comment-vote-button";
 
 		}
 		else
 		{
-			return "comentario-vote-button-voted";
+			return "comment-vote-button-voted";
 		}
 	}
 
