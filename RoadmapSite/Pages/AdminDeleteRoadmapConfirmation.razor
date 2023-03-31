@@ -53,7 +53,7 @@
             navManager.NavigateTo("/notfound");
         }
 
-        await GetUserModel();
+        LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
         if (LoggedInUserModel is null)
         {
@@ -73,10 +73,5 @@
         var deleteResponse = await roadmapService.DeleteRoadmap(roadmapId);
 
         navManager.NavigateTo($"/profile/{LoggedInUserId}");
-    }
-
-    private async Task GetUserModel()
-    {
-        LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
     }
 }

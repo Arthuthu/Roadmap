@@ -26,15 +26,15 @@
 
 @code {
 	[Parameter]
-	public string? Type { get; set; }
-	[Parameter]
 	public string? Id { get; set; }
+	[Parameter]
+	public string? Type { get; set; }
 	private Guid LoggedInUserId { get; set; }
 	private DenunciaModel Denuncia = new();
 
 	protected override async Task OnInitializedAsync()
 	{
-		await GetLoggedInUserId();
+		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
 		{
@@ -50,11 +50,6 @@
 		{
 			navManager.NavigateTo("/notfound");
 		}
-	}
-
-	private async Task GetLoggedInUserId()
-	{
-		LoggedInUserId = await userService.GetLoggedInUserId();
 	}
 
 	private async Task ExecuteDenunciaCreation()

@@ -50,28 +50,13 @@ body {
     font-weight: bold;
 }
 
-    .nav-link:hover {
-        color: #E3E3E3;
-        transition: 0.3s;
-    }
-
-    .nav-link:focus {
-        color: #DCDCDC;
-    }
-
-/* Not Authorized */
-
-.not-authorized-message-div {
-    text-align: center;
+.nav-link:hover {
+    color: #E3E3E3;
+    transition: 0.3s;
 }
 
-.not-authorized-message-p-div {
-    padding: 0 0 40px 0;
-}
-
-.not-authorized-message {
-    font-weight: bold;
-    font-size: 24px;
+.nav-link:focus {
+    color: #DCDCDC;
 }
 
 /* Not Found */
@@ -487,7 +472,9 @@ body {
     margin: 0;
 }
 
-.edit-profile-bio-label {
+/* Edit Profile */
+
+.edit-profile-label-div {
     text-align: center;
     font-weight: bold;
     font-size: 30px;

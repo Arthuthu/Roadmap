@@ -5,67 +5,56 @@
 
 @if (IsInitialized)
 {
-	<AuthorizeView>
-		<Authorized>
-			<div class="edit-profile-bio-label">
-				Escreva algo em sua bio
-			</div>
-			<EditForm Model="User" OnValidSubmit="UpdateProfile" class="" Context="ProfileForm">
-				<div class="first-form-label">
-					<label for="bio" class="visually-hidden">Usuario</label>
-					<div>
-						<InputTextArea id="bio" class="form-input-text-description" @bind-Value="User!.Bio" placeholder="Bio (Maximo 1000 caracteres)" />
-					</div>
-				</div>
 
-				<div class="button-div">
-					<button type="submit" class="first-style-button">Salvar</button>
-				</div>
-			</EditForm>
+	<div class="edit-profile-label-div">
+		Escreva algo em sua bio
+	</div>
 
-			@if (showAuthenticationError)
-			{
-				<div role="alert" class="alert-message-div">
-					<p class="alert-message">@authenticationErrorText</p>
-				</div>
-			}
-		</Authorized>
-		<NotAuthorized>
-			<div class="not-authorized-message-div">
-				<div class="not-authorized-message-p-div">
-					<p class="not-authorized-message">Você não esta autorizado para ver esta pagina, entre em uma conta primeiro</p>
-				</div>
-				<div>
-					<a class="first-style-button" href="login">
-						Entrar
-					</a>
-				</div>
+	<EditForm Model="User" OnValidSubmit="UpdateProfile" class="" Context="ProfileForm">
+		<div class="first-input-text-div">
+			<label for="bio" class="visually-hidden">Usuario</label>
+			<div>
+				<InputTextArea id="bio" class="form-input-text-description" @bind-Value="User!.Bio" placeholder="Bio (Maximo 1000 caracteres)" />
 			</div>
-		</NotAuthorized>
-	</AuthorizeView>
+		</div>
+
+		<div>
+			<button type="submit" class="first-style-button">Salvar</button>
+		</div>
+	</EditForm>
+
+	@if (showAuthenticationError)
+	{
+		<div role="alert" class="alert-message-div">
+			<p class="alert-message">@authenticationErrorText</p>
+		</div>
+	}
 }
-
-
 
 @code {
 	[Parameter]
 	public string? UserId { get; set; }
 	public Guid LoggedInUserId { get; set; }
 	public UserModel? User { get; set; }
-	private bool IsInitialized { get; set; }
+	private bool IsInitialized = false;
 	private bool showAuthenticationError = false;
 	private string authenticationErrorText = "";
 
 	protected override async Task OnInitializedAsync()
 	{
-		await GetLoggedInUserId();
+		if (UserId is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
+		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
 		}
 
-		await GetUserByPageId(UserId!);
+		User = await userService.GetUserById(new Guid(UserId!));
 
 		if (UserId != LoggedInUserId.ToString())
 		{
@@ -73,16 +62,6 @@
 		}
 
 		IsInitialized = true;
-	}
-
-	private async Task GetLoggedInUserId()
-	{
-		LoggedInUserId = await userService.GetLoggedInUserId();
-	}
-
-	private async Task GetUserByPageId(string userId)
-	{
-		User = await userService.GetUserById(new Guid(userId));
 	}
 
 	private async Task UpdateProfile()
