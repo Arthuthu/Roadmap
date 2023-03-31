@@ -7,6 +7,7 @@ namespace RoadmapSite.Services.Comentario.Interfaces
         Task<string> CreateComentario(ComentarioModel comentario);
         Task<string> DeleteComentario(Guid id);
         Task<IList<ComentarioModel>?> GetAllComentarios();
-        Task<string> UpdateComentario(ComentarioModel comentario);
+        Task<ComentarioModel> GetComentarioById(Guid? comentarioId);
+		Task<string> UpdateComentario(ComentarioModel comentario);
     }
 }

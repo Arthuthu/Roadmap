@@ -58,16 +58,19 @@
 
 		if (Type == "Roadmap")
 		{
+			Denuncia.AuthorId = LoggedInUserId;
 			Denuncia.RoadmapId = new Guid(Id!);
 		}
 
 		if (Type == "User")
 		{
+			Denuncia.AuthorId = LoggedInUserId;
 			Denuncia.UserId = new Guid(Id!);
 		}
 
 		if (Type == "Comment")
 		{
+			Denuncia.AuthorId = LoggedInUserId;
 			Denuncia.CommentId = new Guid(Id!);
 		}
 

@@ -30,19 +30,34 @@
 		</div>
 	</div>
 
-	@if (UserId == LoggedInUserId.ToString())
-	{
-		<div class="edit-profile-button-div">
-			<a class="first-style-button" href="/editprofile/@User.Id">
-				Editar Perfil
-			</a>
-		</div>
-	}
+	<div class="text-center">
+		<button @onclick="ToggleShowProfileOptions" class="second-style-button">
+			Opções
+		</button>
+	</div>
 
-	@if (User.IsAdmin == "1")
+	if (showProfileOptions)
 	{
-		<div class="approve-roadmaps-div">
-			<a class="first-style-button" href="/adminroadmapapproval">Aprovar Roadmaps</a>
+		@if (UserId == LoggedInUserId.ToString())
+		{
+			<div class="edit-profile-button-div">
+				<a class="second-style-button" href="/editprofile/@User.Id">
+					Editar Perfil
+				</a>
+			</div>
+		}
+
+		@if (User.IsAdmin == "1")
+		{
+			<div class="approve-roadmaps-div">
+				<a class="second-style-button" href="/administration">Administrar</a>
+			</div>
+		}
+
+		<div class="text-center">
+			<a class="second-style-button" href="/createdenuncia/User/@UserId">
+				Denunciar
+			</a>
 		</div>
 	}
 
@@ -110,6 +125,7 @@
 	public Guid? LoggedInUserId { get; set; }
 	public IList<RoadmapClassModel>? Roadmaps { get; set; }
 	public UserModel? User { get; set; }
+	private bool showProfileOptions = false;
 	private bool IsInitialized = false;
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"; 
 
@@ -186,5 +202,10 @@
 			int roadmapTotalVotes = await votingService.GetRoadmapVotes(roadmap.Id);
 			roadmap.RoadmapTotalVotes = roadmapTotalVotes;
 		}
+	}
+
+	private void ToggleShowProfileOptions()
+	{
+		showProfileOptions = !showProfileOptions;
 	}
 }

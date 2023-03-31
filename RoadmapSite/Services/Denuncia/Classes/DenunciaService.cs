@@ -26,7 +26,8 @@ public class DenunciaService : IDenunciaService
             new KeyValuePair<string, string>("description", denuncia.Description),
             new KeyValuePair<string, string>("type", denuncia.Type),
             new KeyValuePair<string, string>("userId", denuncia.UserId.ToString()),
-            new KeyValuePair<string, string>("roadmapId", denuncia.RoadmapId.ToString()),
+            new KeyValuePair<string, string>("authorId", denuncia.AuthorId.ToString()),
+			new KeyValuePair<string, string>("roadmapId", denuncia.RoadmapId.ToString()),
             new KeyValuePair<string, string>("commentId", denuncia.CommentId.ToString()),
         });
 

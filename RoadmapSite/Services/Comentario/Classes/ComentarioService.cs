@@ -59,6 +59,23 @@ public class ComentarioService : IComentarioService
 		return comentarioModel;
 	}
 
+	public async Task<ComentarioModel> GetComentarioById(Guid? comentarioId)
+	{
+		string getComentarioByIdEndpoint = _config["apiLocation"] + _config["getComentarioByIdEndpoint"] + $"/{comentarioId}";
+		var authResult = await _client.GetAsync(getComentarioByIdEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro durante o carregamento do comentario: {authContent}");
+			return null;
+		}
+
+		var comentarioModel = JsonConvert.DeserializeObject<ComentarioModel>(authContent);
+
+		return comentarioModel;
+	}
+
 	public async Task<string> UpdateComentario(ComentarioModel comentario)
 	{
 		var data = new FormUrlEncodedContent(new[]

@@ -34,6 +34,7 @@ public class DenunciaRepository : IDenunciaRepository
             denuncia.Id,
             denuncia.Description,
             denuncia.Type,
+            denuncia.AuthorId,
             denuncia.UserId,
             denuncia.RoadmapId,
             denuncia.CommentId,

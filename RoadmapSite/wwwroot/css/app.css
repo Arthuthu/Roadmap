@@ -732,13 +732,12 @@ body {
     background-image: linear-gradient(#F1AF2A, #D78F00);
 }
 
-/* Roadmap Approval */
+/* Administration */
 
-.roadmap-approval-yes-delete-div {
+.administration-button-div {
     display: flex;
     justify-content: space-evenly;
 }
-
 
 /* Denuncia */
 

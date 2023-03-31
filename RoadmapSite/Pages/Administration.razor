@@ -1,80 +1,177 @@
 ﻿@page "/administration"
-@inject IRoadmapVotingService votingService;
 @inject IUserService userService;
 @inject IRoadmapService roadmapService;
+@inject IRoadmapVotingService votingService;
+@inject IComentarioService comentarioService;
+@inject IDenunciaService denunciaService;
 @inject NavigationManager navManager;
 
 @if (IsInitialized)
 {
-	@if (Roadmaps is not null)
+	<div class="text-center">
+		<button @onclick="ToggleShowDenuncias" class="second-style-button">
+			Denuncias
+		</button>
+	</div>
+
+	<div class="text-center">
+		<button @onclick="ToggleShowRoadmapsToApprove" class="second-style-button">
+			Roadmaps
+		</button>
+	</div>
+
+	if (showDenuncias)
 	{
-		foreach (var roadmap in Roadmaps)
+		<Virtualize Items="@Denuncias" Context="denuncia" OverscanCount="50">
+			@if (denuncia.Type == "Roadmap")
+			{
+				<div>
+					@denuncia.Id
+				</div>
+				<div>
+					@denuncia.Type
+				</div>
+				<div>
+					@denuncia.Description
+				</div>
+				<div>
+					@denuncia.CreatedDate
+				</div>
+				<div>
+					<a href="/roadmapdetails/@denuncia.RoadmapId">
+						Roadmap
+					</a>
+				</div>
+			}
+
+			@if (denuncia.Type == "User")
+			{
+				<div>
+					@denuncia.Id
+				</div>
+				<div>
+					@denuncia.Type
+				</div>
+				<div>
+					@denuncia.Description
+				</div>
+				<div>
+					@denuncia.CreatedDate
+				</div>
+				<div>
+					<a href="/profile/@denuncia.UserId">
+						Usuario
+					</a>
+				</div>
+			}
+
+			@if (denuncia.Type == "Comment")
+			{
+				<div>
+					@denuncia.Id
+				</div>
+				<div>
+					@denuncia.Type
+				</div>
+				<div>
+					@denuncia.Description
+				</div>
+				<div>
+					@denuncia.CreatedDate
+				</div>
+				<div>
+					<a href="/roadmapdetails/@denuncia.RoadmapId">
+						Roadmap
+					</a>
+				</div>
+			}
+		</Virtualize>
+	}
+
+	if (showRoadmapsToApprove)
+	{
+		@if (Roadmaps is not null)
 		{
-			<div class="roadmap-box-div">
-				<a class="roadmap-name-a" href="roadmapdetails/@roadmap.Id">
-					<p class="roadmap-name">@roadmap.Name</p>
-				</a>
+			<Virtualize Items="@Roadmaps" Context="roadmap" OverscanCount="50">
+				<div class="roadmap-div">
+					<a class="roadmap-name-label" href="roadmapdetails/@roadmap.Id">
+						<p class="roadmap-name-background">@roadmap.Name</p>
+					</a>
 
-				<div class="roadmap-description-div">
-					<p>@roadmap.Description</p>
-				</div>
+					<div class="roadmap-description">
+						<p>@roadmap.Description</p>
+					</div>
 
-				<div class="roadmap-category-main-div">
-					<div class="roadmap-category-div">
-						<div class="roadmap-category-label">
-							<p>Categoria:</p>
+					<div>
+						<div class="display-flex">
+							<div class="roadmap-category-label">
+								<p>Categoria:</p>
+							</div>
+							<div class="roadmap-category">
+								@roadmap.Category
+							</div>
 						</div>
-						<div class="roadmap-category-value">
-							@roadmap.Category
+					</div>
+
+					<div class="roadmap-date-author-div">
+						<div class="display-flex">
+							<div class="roadmap-created-label">
+								<p>Criado:</p>
+							</div>
+							<div>
+								@roadmap.CreatedDate
+							</div>
+						</div>
+
+						<div class="roadmap-author-div">
+							<div class="roadmap-author-label">
+								<p>Autor: </p>
+							</div>
+							<a class="roadmap-author" href="profile/@roadmap.AuthorId">
+								@roadmap.Author
+							</a>
 						</div>
 					</div>
 				</div>
 
-				<div class="roadmap-created-author-div">
-					<div class="roadmad-created-div">
-						<div class="roadmap-created-label">
-							<p>Criado:</p>
-						</div>
-						<div class="roadmap-category-value">
-							@roadmap.CreatedDate
-						</div>
-					</div>
-
-					<div class="roadmap-author-div">
-						<div class="roadmap-author-label">
-							<p>Autor: </p>
-						</div>
-						<a class="roadmap-author-value" href="profile/@roadmap.AuthorId">
-							@roadmap.Author
-						</a>
-					</div>
-				</div>
-			</div>
-			<div class="roadmap-approval-yes-delete-div">
-				<button class="first-style-button" 
+				<div class="administration-button-div">
+					<button class="first-style-button"
 				@onclick="async () => await ApproveRoadmap(roadmap)">
-					Aprovar
-				</button>
-				<a href="admindeleteroadmapconfirmation/@roadmap.Id" class="first-style-button"
-				id="roadmap-approval-delete-button">
-					Deletar
-				</a>
+						Aprovar
+					</button>
+
+					<button @onclick="ToggleShowDeletePage" class="first-style-button">
+						Excluir
+					</button>
+				</div>
+
+				@if (showDeletePage)
+				{
+					<AdminDeleteRoadmapConfirmation RoadmapId="@roadmap.Id.ToString()" />
+				}
+			</Virtualize>
+		}
+		else
+		{
+			<div class="text-center">
+				Não há nada aqui
 			</div>
 		}
 	}
-	else
-	{
-		<div class="text-center">
-			Não há nada aqui
-		</div>
-	}
+
 }
 
 @code {
-	private IList<RoadmapClassModel>? Roadmaps;
 	private Guid? LoggedInUserId;
+	private IList<RoadmapClassModel>? Roadmaps;
+	private IList<ComentarioModel>? Comentarios;
+	private IList<DenunciaModel>? Denuncias;
 	private UserModel? LoggedInUserModel;
+	private ComentarioModel? Comentario;
 	private bool IsInitialized = false;
+	private bool showDeletePage = false;
+	private bool showRoadmapsToApprove = false;
+	private bool showDenuncias = false;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -87,7 +184,12 @@
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
-		if (LoggedInUserModel.IsAdmin == "0")
+		if (LoggedInUserModel is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
+		if (LoggedInUserModel!.IsAdmin != "1")
 		{
 			navManager.NavigateTo("/notfound");
 		}
@@ -127,5 +229,22 @@
 
 		await roadmapService.UpdateRoadmap(roadmap);
 		await GetAllRoadmaps();
+	}
+
+	private async Task ToggleShowRoadmapsToApprove()
+	{
+		showRoadmapsToApprove = !showRoadmapsToApprove;
+		await GetAllRoadmaps();
+	}
+
+	private void ToggleShowDeletePage()
+	{
+		showDeletePage = !showDeletePage;
+	}
+
+	private async Task ToggleShowDenuncias()
+	{
+		showDenuncias = !showDenuncias;
+		Denuncias = await denunciaService.GetAllDenuncias();
 	}
 }

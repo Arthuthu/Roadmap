@@ -30,7 +30,7 @@ public class DenunciaController : ControllerBase
     public async Task<ActionResult<List<DenunciaResponse>>> GetAllDenuncias()
     {
         var denuncias = await _denunciaService.GetAllDenuncias();
-        var responseDenuncias = denuncias.Select(roadmap => _mapper.Map<DenunciaResponse>(denuncias));
+        var responseDenuncias = denuncias.Select(denuncias => _mapper.Map<DenunciaResponse>(denuncias));
 
         return Ok(responseDenuncias);
     }
