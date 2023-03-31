@@ -34,7 +34,7 @@ public class ComentarioController : ControllerBase
 	public async Task<ActionResult<List<ComentarioResponse>>> GetAllComentarios()
 	{
 		var comentarios = await _comentarioService.GetAllComentarios();
-		var responseComentarios = comentarios.Select(roadmap => _mapper.Map<ComentarioResponse>(roadmap));
+		var responseComentarios = comentarios.Select(comentarios => _mapper.Map<ComentarioResponse>(comentarios));
 
 		return Ok(responseComentarios);
 	}

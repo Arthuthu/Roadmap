@@ -749,6 +749,7 @@ body {
     font-size: 18px;
     font-weight: bold;
     margin: 20px 0;
+    text-decoration: none;
 }
 
 .first-style-button {
@@ -797,6 +798,10 @@ first-style-button:focus,
     align-items: center;
 }
 
+#confirmar-excluir-comment-button {
+    margin: 0 20px;
+}
+
 .comentario-vote-button-voted {
     color: #FFF;
     font-weight: bold;
@@ -806,6 +811,7 @@ first-style-button:focus,
 
 .denunciar-excluir-comment-div {
     display: flex;
+    align-items: center;
 }
 
 .vote-count-div {
@@ -869,3 +875,27 @@ first-style-button:focus,
     justify-content: space-evenly;
 }
 
+
+/* Denuncia */
+
+.criar-denuncia-label{
+    font-size: 24px;
+    font-weight: bold;
+    background-color: var(--lightergray-color);
+    padding: 20px;
+    border-radius: 15px;
+    align-items: center;
+    margin: 20px 0 20px 25%;
+    width: 50%;
+}
+
+.criar-denuncia-label > p {
+    margin: 0;
+}
+
+.denuncia-input-text-area {
+    background-color: var(--lightgray-background-color);
+    color: #FFF;
+    height: 200px;
+    width: 1000px;
+}

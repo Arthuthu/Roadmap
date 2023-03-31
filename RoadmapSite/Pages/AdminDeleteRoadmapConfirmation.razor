@@ -12,7 +12,7 @@
         </div>
         <div class="delete-roadmap-confirmation-buttons-div">
             <button class="first-style-button"
-                @onclick="async () => await DeleteRoadmap(new Guid(RoadmapId))">
+                @onclick="async () => await DeleteRoadmap(new Guid(RoadmapId!))">
                 Sim
             </button>
         </div>
@@ -21,9 +21,9 @@
 
 @code {
     [Parameter]
-    public string RoadmapId { get; set; }
+    public string? RoadmapId { get; set; }
     private Guid LoggedInUserId { get; set; }
-    private UserModel LoggedInUserModel { get; set; }
+    private UserModel? LoggedInUserModel { get; set; }
     private RoadmapClassModel? Roadmap { get; set; }
     private bool isInitialized = false;
 
@@ -36,16 +36,31 @@
             navManager.NavigateTo("/notfound");
         }
 
-        Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId));
+        if (RoadmapId is null)
+        {
+            navManager.NavigateTo("/notfound");
+        }
 
-        if (new Guid(RoadmapId) == Guid.Empty)
+        if (new Guid(RoadmapId!) == Guid.Empty)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId!));
+
+        if (Roadmap is null)
         {
             navManager.NavigateTo("/notfound");
         }
 
         await GetUserModel();
 
-        if (LoggedInUserModel.IsAdmin is null)
+        if (LoggedInUserModel is null)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        if (LoggedInUserModel!.IsAdmin is null)
         {
             navManager.NavigateTo("/notfound");
         }

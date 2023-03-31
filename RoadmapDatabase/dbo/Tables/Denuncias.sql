@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[Denuncias]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [Description] NVARCHAR(1000) NOT NULL, 
+    [Type] NVARCHAR(20) NOT NULL, 
+    [UserId] UNIQUEIDENTIFIER NULL, 
+    [RoadmapId] UNIQUEIDENTIFIER NULL, 
+    [CommentId] UNIQUEIDENTIFIER NULL, 
+    [CreatedDate] DATETIME2 NULL, 
+    [UpdatedDate] DATETIME2 NULL
+)

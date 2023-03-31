@@ -28,7 +28,11 @@ public class ResponseProfile : Profile
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 
-		CreateMap<NodeResponse, NodeModel>()
+        CreateMap<DenunciaResponse, DenunciaModel>()
+			.IgnoreAllPropertiesWithAnInaccessibleSetter()
+			.ReverseMap();
+
+        CreateMap<NodeResponse, NodeModel>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 	}

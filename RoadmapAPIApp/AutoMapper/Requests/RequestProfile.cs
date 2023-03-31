@@ -36,7 +36,11 @@ public class RequestProfile : Profile
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 
-		CreateMap<NodeModel, NodeRequest>()
+        CreateMap<DenunciaModel, DenunciaRequest>()
+			.IgnoreAllPropertiesWithAnInaccessibleSetter()
+			.ReverseMap();
+
+        CreateMap<NodeModel, NodeRequest>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 

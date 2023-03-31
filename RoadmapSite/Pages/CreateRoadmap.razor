@@ -1,8 +1,9 @@
 ﻿@page "/createroadmap"
-@inject IRoadmapService roadmapServiceService
-@inject IUserService userService
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager navManager
+@inject IRoadmapService roadmapServiceService
+@inject IUserService userService
+
 
 <AuthorizeView>
 	<Authorized>

@@ -1,0 +1,83 @@
+﻿@page "/createdenuncia/{type}/{id}"
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager navManager
+@inject IUserService userService
+@inject IDenunciaService denunciaService
+
+<EditForm Model="Denuncia" OnValidSubmit="ExecuteDenunciaCreation" Context="Form">
+	<div class="text-center">
+		<div class="criar-denuncia-label">
+			<p>Criar Denuncia</p>
+		</div>
+
+		<div>
+			<label for="name" class="visually-hidden">Descrição</label>
+			<div>
+				<InputTextArea id="description" @bind-Value="Denuncia.Description" 
+				placeholder="Descreve a denuncia" class="denuncia-input-text-area"/>
+			</div>
+		</div>
+
+		<div class="text-center">
+			<button type="submit" class="first-style-button">Enviar Denuncia</button>
+		</div>
+	</div>
+</EditForm>
+
+@code {
+	[Parameter]
+	public string? Type { get; set; }
+	[Parameter]
+	public string? Id { get; set; }
+	private Guid LoggedInUserId { get; set; }
+	private DenunciaModel Denuncia = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await GetLoggedInUserId();
+
+		if (LoggedInUserId == Guid.Empty)
+		{
+			navManager.NavigateTo("/login");
+		}
+
+		if (Type is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
+		if (Id is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+	}
+
+	private async Task GetLoggedInUserId()
+	{
+		LoggedInUserId = await userService.GetLoggedInUserId();
+	}
+
+	private async Task ExecuteDenunciaCreation()
+	{
+		Denuncia.Type = Type;
+
+		if (Type == "Roadmap")
+		{
+			Denuncia.RoadmapId = new Guid(Id!);
+		}
+
+		if (Type == "User")
+		{
+			Denuncia.UserId = new Guid(Id!);
+		}
+
+		if (Type == "Comment")
+		{
+			Denuncia.CommentId = new Guid(Id!);
+		}
+
+		await denunciaService.CreateDenuncia(Denuncia);
+
+		navManager.NavigateTo("/");
+	}
+}

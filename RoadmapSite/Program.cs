@@ -10,6 +10,8 @@ using RoadmapSite.Services.Authentication.Interfaces;
 using RoadmapSite.Services.Comentario.Classes;
 using RoadmapSite.Services.Comentario.Interfaces;
 using RoadmapSite.Services.ComentarioVotes.Interfaces;
+using RoadmapSite.Services.Denuncia.Classes;
+using RoadmapSite.Services.Denuncia.Interfaces;
 using RoadmapSite.Services.Node.Classes;
 using RoadmapSite.Services.Node.Interfaces;
 using RoadmapSite.Services.Registration.Classes;
@@ -39,6 +41,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoadmapVotingService, RoadmapVotingService>();
 builder.Services.AddScoped<IComentarioVotingService, ComentarioVotingService>();
 builder.Services.AddScoped<IComentarioService, ComentarioService>();
+builder.Services.AddScoped<IDenunciaService, DenunciaService>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
 builder.Services.AddBlazoredLocalStorage();

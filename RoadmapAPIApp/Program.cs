@@ -36,6 +36,7 @@ builder.Services.AddSingleton<INodeRepository, NodeRepository>();
 builder.Services.AddSingleton<IRoadmapVotesRepository, RoadmapVotesRepository>();
 builder.Services.AddSingleton<IComentarioRepository, ComentarioRepository>();
 builder.Services.AddSingleton<IComentarioVotesRepository, ComentarioVotesRepository>();
+builder.Services.AddSingleton<IDenunciaRepository, DenunciaRepository>();
 
 //Services
 builder.Services.AddSingleton<IUserService, UserService>();
@@ -44,6 +45,7 @@ builder.Services.AddSingleton<IRoadmapVotesService, RoadmapVotesService>();
 builder.Services.AddSingleton<INodeService, NodeService>();
 builder.Services.AddSingleton<IComentarioService, ComentarioService>();
 builder.Services.AddSingleton<IComentarioVotesService, ComentarioVotesService>();
+builder.Services.AddSingleton<IDenunciaService, DenunciaService>();
 
 
 //Validators / MessageHandler

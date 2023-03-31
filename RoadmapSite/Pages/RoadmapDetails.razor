@@ -2,12 +2,13 @@
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navManager
 @inject IUserService userService
-@inject INodeService nodeService
 @inject IRoadmapService roadmapService
-@inject IComentarioService comentarioService
-@inject IComentarioVotingService comentarioVotingService
 @inject IRoadmapVotingService roadmapVotingService
 @inject IRoadmapVotesService roadmapVotesService
+@inject INodeService nodeService
+@inject IComentarioService comentarioService
+@inject IComentarioVotingService comentarioVotingService
+
 
 @if (isInitialized)
 {
@@ -219,18 +220,26 @@
 						</div>
 						<div class="denunciar-excluir-comment-div">
 							<div>
-								@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel.IsAdmin == "1")
+								@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
 								{
-									<button @onclick="async () => await DeleteComment(comentario.Id)"
+									<button @onclick="ToggleShowDeleteComment"
 									class="toggle-show-edit-option-button">
 										Excluir
 									</button>
+
+									if (showDeleteComment)
+									{
+										<button @onclick="async () => await DeleteComment(comentario.Id)"
+										class="toggle-show-edit-option-button" id="confirmar-excluir-comment-button">
+											Confirmar
+										</button>
+									}
 								}
 							</div>
 							<div>
-								<button class="toggle-show-edit-option-button">
+								<a class="toggle-show-edit-option-button" href="/createdenuncia/Comment/@comentario.Id">
 									Denunciar
-								</button>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -252,6 +261,7 @@
 	private IList<NodeModel>? Nodes { get; set; }
 	private bool editMode = false;
 	private bool showRoadmapEditOptions = false;
+	private bool showDeleteComment = false;
 	private bool showDeletePageAuthor = false;
 	private bool showDeletePageAdmin = false;
 	private bool isInitialized = false;
@@ -317,6 +327,24 @@
 		await UpdateComentarioVoteButton();
 	}
 
+	//Roadmap Votes
+
+	private async Task AddUserVoteOnRoadmap(Guid roadmapId)
+	{
+		await roadmapVotingService.AddUserVote(roadmapId, LoggedInUserId);
+
+		await UpdateRoadmapVoteButton();
+	}
+
+	private async Task UpdateRoadmapVoteButton()
+	{
+		string roadmapClass = await GetButtonColorDetails(Roadmap.Id, LoggedInUserId);
+		Roadmap.RoadmapHtmlClass = roadmapClass;
+
+		int roadmapTotalVotes = await roadmapVotingService.GetRoadmapVotes(Roadmap.Id);
+		Roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+	}
+
 	private async Task<string> GetButtonColorDetails(Guid roadmapId, Guid? loggedInUserId)
 	{
 		var roadmapVotes = await roadmapVotesService.GetAllRoadmapVotes();
@@ -335,6 +363,34 @@
 			return "vote-button-voted-details";
 		}
 	}
+
+	// Nodes
+
+	private async Task CreateNode()
+	{
+		Node.RoadmapId = new Guid(RoadmapId!);
+		await nodeService.CreateNode(Node);
+
+		await GetAllNodes();
+	}
+
+	private async Task GetAllNodes()
+	{
+		var nodes = await nodeService.GetAllNodes(new Guid(RoadmapId));
+
+		if (nodes is not null)
+		{
+			Nodes = nodes.OrderBy(x => x.CreatedDate).ToList();
+		}
+	}
+
+	private async Task DeleteNode(Guid nodeId)
+	{
+		await nodeService.DeleteNode(nodeId);
+		await GetAllNodes();
+	}
+
+	//Comments
 
 	private async Task GetAllComentarios()
 	{
@@ -380,47 +436,6 @@
 		}
 	}
 
-	private async Task CreateNode()
-	{
-		Node.RoadmapId = new Guid(RoadmapId);
-		await nodeService.CreateNode(Node);
-
-		await GetAllNodes();
-	}
-
-	private async Task GetAllNodes()
-	{
-		var nodes = await nodeService.GetAllNodes(new Guid(RoadmapId));
-
-		if (nodes is not null)
-		{
-			Nodes = nodes.OrderBy(x => x.CreatedDate).ToList();
-		}
-	}
-
-	private async Task DeleteNode(Guid nodeId)
-	{
-		await nodeService.DeleteNode(nodeId);
-		await GetAllNodes();
-	}
-
-	private void ToggleEditMode()
-	{
-		editMode = !editMode;
-	}
-
-	private void ToggleShowRoadmapEditOptions()
-	{
-		showRoadmapEditOptions = !showRoadmapEditOptions;
-	}
-
-	private async Task AddUserVoteOnRoadmap(Guid roadmapId)
-	{
-		await roadmapVotingService.AddUserVote(roadmapId, LoggedInUserId);
-
-		await UpdateComentarioVoteButton();
-	}
-
 	private async Task AddUserVoteOnComentario(Guid comentarioId)
 	{
 		await comentarioVotingService.AddUserVote(comentarioId, LoggedInUserId);
@@ -444,14 +459,7 @@
 		}
 	}
 
-	private async Task UpdateRoadmapVoteButton()
-	{
-		string roadmapClass = await roadmapVotingService.GetButtonColor(Roadmap.Id, LoggedInUserId);
-		Roadmap.RoadmapHtmlClass = roadmapClass;
-
-		int roadmapTotalVotes = await roadmapVotingService.GetRoadmapVotes(Roadmap.Id);
-		Roadmap.RoadmapTotalVotes = roadmapTotalVotes;
-	}
+	//Sorts
 
 	private void SortComentariosByNew()
 	{
@@ -469,6 +477,18 @@
 		}
 	}
 
+	//Toggles
+
+	private void ToggleShowRoadmapEditOptions()
+	{
+		showRoadmapEditOptions = !showRoadmapEditOptions;
+	}
+
+	private void ToggleEditMode()
+	{
+		editMode = !editMode;
+	}
+
 	private void ToggleShowDeletePageAuthor()
 	{
 		showDeletePageAuthor = !showDeletePageAuthor;
@@ -477,5 +497,10 @@
 	private void ToggleShowDeletePageAdmin()
 	{
 		showDeletePageAdmin = !showDeletePageAdmin;
+	}
+
+	private void ToggleShowDeleteComment()
+	{
+		showDeleteComment = !showDeleteComment;
 	}
 }
