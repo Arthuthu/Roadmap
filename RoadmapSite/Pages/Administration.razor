@@ -8,27 +8,25 @@
 
 @if (IsInitialized)
 {
-	<div class="text-center">
-		<button @onclick="ToggleShowDenuncias" class="second-style-button">
-			Denuncias
-		</button>
-	</div>
+	<div class="administration-buttons-div">
+		<div class="text-center">
+			<button @onclick="ToggleShowDenuncias" class="second-style-button">
+				Denuncias
+			</button>
+		</div>
 
-	<div class="text-center">
-		<button @onclick="ToggleShowRoadmapsToApprove" class="second-style-button">
-			Roadmaps
-		</button>
+		<div class="text-center">
+			<button @onclick="ToggleShowRoadmapsToApprove" class="second-style-button">
+				Roadmaps
+			</button>
+		</div>
 	</div>
 
 	if (showDenuncias)
 	{
 		<Virtualize Items="@Denuncias" Context="denuncia" OverscanCount="50">
-			@if (denuncia.Type == "Roadmap")
-			{
-				<div>
-					@denuncia.Id
-				</div>
-				<div>
+			<div class="text-center">
+				<div class="denuncia-type">
 					@denuncia.Type
 				</div>
 				<div>
@@ -37,54 +35,29 @@
 				<div>
 					@denuncia.CreatedDate
 				</div>
-				<div>
-					<a href="/roadmapdetails/@denuncia.RoadmapId">
-						Roadmap
-					</a>
-				</div>
-			}
-
-			@if (denuncia.Type == "User")
-			{
-				<div>
-					@denuncia.Id
-				</div>
-				<div>
-					@denuncia.Type
-				</div>
-				<div>
-					@denuncia.Description
-				</div>
-				<div>
-					@denuncia.CreatedDate
-				</div>
-				<div>
-					<a href="/profile/@denuncia.UserId">
-						Usuario
-					</a>
-				</div>
-			}
-
-			@if (denuncia.Type == "Comment")
-			{
-				<div>
-					@denuncia.Id
-				</div>
-				<div>
-					@denuncia.Type
-				</div>
-				<div>
-					@denuncia.Description
-				</div>
-				<div>
-					@denuncia.CreatedDate
-				</div>
-				<div>
-					<a href="/roadmapdetails/@denuncia.RoadmapId">
-						Roadmap
-					</a>
-				</div>
-			}
+				@if (denuncia.Type == "Roadmap")
+				{
+					<div>
+						<a href="/roadmapdetails/@denuncia.RoadmapId">
+							Roadmap
+						</a>
+					</div>
+				}
+				else if (denuncia.Type == "User")
+				{
+					<div>
+						<a href="/profile/@denuncia.UserId">
+							Usuario
+						</a>
+					</div>
+				}
+				else if (denuncia.Type == "Comment")
+				{
+					<div>
+						@denuncia.CommentId
+					</div>
+				}
+			</div>
 		</Virtualize>
 	}
 
@@ -134,7 +107,7 @@
 					</div>
 				</div>
 
-				<div class="administration-button-div">
+				<div class="approve-buttons-div">
 					<button class="first-style-button"
 				@onclick="async () => await ApproveRoadmap(roadmap)">
 						Aprovar

@@ -1,0 +1,44 @@
+﻿@inject IComentarioService comentarioService
+
+@if (IsInitialized)
+{
+    <div class="display-comment-div">
+        <div class="display-comment-label">
+            Comentario
+        </div>
+        <div class="display-comment-description">
+            @Comment!.Description
+        </div>
+        <div class="display-comment-date">
+            Criado em: @Comment.CreatedDate
+        </div>
+        <div class="text-center my-4">
+            <a class="second-style-button" href="/profile/@Comment.UserId">
+                Usuario
+            </a>
+
+            <a class="second-style-button" href="/roadmapdetails/@Comment.RoadmapId">
+                Roadmap
+            </a>
+        </div>
+    </div>
+
+}
+
+@code {
+    [Parameter]
+    public Guid? CommentId { get; set; }
+    private ComentarioModel? Comment { get; set; }
+    private bool IsInitialized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Comment = await comentarioService.GetComentarioById(CommentId);
+
+        if (Comment is not null)
+        {
+            IsInitialized = true;
+        }
+    }
+
+}

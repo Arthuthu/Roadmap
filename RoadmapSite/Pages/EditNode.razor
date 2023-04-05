@@ -1,0 +1,43 @@
+﻿@page "/editnode/{nodeid}"
+@inject INodeService nodeService
+@inject NavigationManager navManager
+
+@if(IsInitialized)
+{
+    <div>
+        @Node.Name
+        @Node.Description
+    </div>
+    <div>
+        <button>
+            Excluir Node
+        </button>
+        <button>
+            Editar Node
+        </button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Guid NodeId { get; set; }
+    private NodeModel? Node { get; set; }
+    private bool IsInitialized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (NodeId == Guid.Empty)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        Node = await nodeService.GetNodeById(NodeId);
+
+        if (Node is null)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        IsInitialized = true;
+    }
+}

@@ -1,0 +1,17 @@
+﻿
+
+<div class="node-content-div">
+    <div class="node-content-label">
+        Descrição
+    </div>
+    <div class="node-content-description">
+        @Description
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Guid? NodeId { get; set; }
+    [Parameter]
+    public string? Description { get; set; }
+}

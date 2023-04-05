@@ -460,12 +460,6 @@ body {
 
 .edit-profile-button-div {
     text-align: center;
-    margin: 40px 0;
-}
-
-.approve-roadmaps-div {
-    text-align: center;
-    padding: 20px 0;
 }
 
 .user-roadmaps-label {
@@ -733,8 +727,18 @@ body {
 }
 
 /* Administration */
+.administration-buttons-div {
+    display: flex;
+    justify-content: center;
+}
 
-.administration-button-div {
+.denuncia-type {
+    background-color: var(--lightgray-background-color);
+    color: #FFF;
+    padding: 20px;
+}
+
+.approve-buttons-div {
     display: flex;
     justify-content: space-evenly;
 }

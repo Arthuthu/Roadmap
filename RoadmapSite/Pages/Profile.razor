@@ -40,7 +40,7 @@
 	{
 		@if (UserId == LoggedInUserId.ToString())
 		{
-			<div class="edit-profile-button-div">
+			<div class="text-center m-4">
 				<a class="second-style-button" href="/editprofile/@User.Id">
 					Editar Perfil
 				</a>
@@ -49,12 +49,12 @@
 
 		@if (User.IsAdmin == "1")
 		{
-			<div class="approve-roadmaps-div">
+			<div class="text-center m-4">
 				<a class="second-style-button" href="/administration">Administrar</a>
 			</div>
 		}
 
-		<div class="text-center">
+		<div class="text-center m-4">
 			<a class="second-style-button" href="/createdenuncia/User/@UserId">
 				Denunciar
 			</a>
