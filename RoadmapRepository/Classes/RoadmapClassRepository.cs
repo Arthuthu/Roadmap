@@ -45,7 +45,7 @@ public class RoadmapClassRepository : IRoadmapClassRepository
 			roadmap.Description,
 			roadmap.Category,
 			roadmap.IsApproved,
-			roadmap.IsHidden,
+			roadmap.AuthorName,
 			roadmap.UserId,
 			roadmap.CreatedDate
 		});
@@ -60,7 +60,6 @@ public class RoadmapClassRepository : IRoadmapClassRepository
 			roadmap.Description,
 			roadmap.Category,
 			roadmap.IsApproved,
-			roadmap.IsHidden,
 			roadmap.UpdatedDate,
 			roadmap.UserId
 		});

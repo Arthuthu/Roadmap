@@ -109,6 +109,8 @@
     <Build Include="dbo\StoredProcedures\Denuncia\spDenuncia_GetAll.sql" />
     <Build Include="dbo\StoredProcedures\Denuncia\spDenuncia_GetById.sql" />
     <Build Include="dbo\StoredProcedures\Denuncia\spDenuncias_Update.sql" />
+    <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_DeleteAllUserRoadmaps.sql" />
+    <Build Include="dbo\StoredProcedures\Comentario\spComentario_DeleteAllUserComments.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />

@@ -57,6 +57,7 @@ public class UserRepository : IUserRepository
             user.Username,
             user.Password,
             user.Bio,
+            user.IsBanned,
             user.UpdatedDate
         });
 

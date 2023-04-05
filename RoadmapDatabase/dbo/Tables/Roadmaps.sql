@@ -4,9 +4,9 @@
     [Name] NVARCHAR(50) NOT NULL, 
     [Description] NVARCHAR(200) NULL,
     [Category] NVARCHAR(50) NULL, 
+    [AuthorName] NVARCHAR(50) NULL, 
+    [IsApproved] NVARCHAR NULL,
     [UserId] UNIQUEIDENTIFIER NOT NULL, 
-    [IsApproved] NVARCHAR NULL, 
-    [IsHidden] NVARCHAR NULL, 
     [CreatedDate] DATETIME2 NULL,
     [UpdatedDate] DATETIME2 NULL, 
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE

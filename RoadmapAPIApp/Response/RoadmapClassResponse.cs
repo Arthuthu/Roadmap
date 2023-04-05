@@ -7,7 +7,7 @@ public class RoadmapClassResponse
 	public string? Description { get; set; }
 	public string? Category { get; set; }
 	public string? IsApproved { get; set; }
-	public string? IsHidden { get; set; }
+	public string? AuthorName { get; set; }
 
 
 	public DateTime? CreatedDate { get; set; }

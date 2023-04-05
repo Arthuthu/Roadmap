@@ -58,6 +58,7 @@
 @code {
 	private Guid LoggedInUserId { get; set; }
 	private RoadmapClassModel Roadmap = new();
+	private UserModel User { get; set; }
 	private string roadmapCreationMessage = "";
 	private bool IsInitialized = false;
 
@@ -76,6 +77,10 @@
 	private async Task<string> ExecuteRoadmapCreation()
 	{
 		Roadmap.UserId = LoggedInUserId;
+
+		User = await userService.GetUserById(LoggedInUserId);
+
+		Roadmap.AuthorName = User.Username;
 
 		var result = await roadmapServiceService.CreateRoadmap(Roadmap);
 

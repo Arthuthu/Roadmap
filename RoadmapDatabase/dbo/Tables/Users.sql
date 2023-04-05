@@ -6,7 +6,8 @@
     [Password] NVARCHAR(50) NULL, 
     [PasswordHash] VARBINARY(MAX) NULL, 
     [PasswordSalt] VARBINARY(MAX) NULL, 
-    [IsAdmin] NVARCHAR NULL ,
+    [IsAdmin] NVARCHAR NULL,
+    [IsBanned] NVARCHAR NULL,
     [CreatedDate] DATETIME2 NULL, 
     [UpdatedDate] DATETIME2 NULL,
 

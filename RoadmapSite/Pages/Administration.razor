@@ -100,8 +100,8 @@
 							<div class="roadmap-author-label">
 								<p>Autor: </p>
 							</div>
-							<a class="roadmap-author" href="profile/@roadmap.AuthorId">
-								@roadmap.Author
+							<a class="roadmap-author" href="profile/@roadmap.UserId">
+								@roadmap.AuthorName
 							</a>
 						</div>
 					</div>
@@ -179,20 +179,6 @@
 		if (roadmaps is not null)
 		{
 			Roadmaps = roadmaps.Where(x => x.IsApproved == "0").ToList();
-
-			var users = await userService.GetAllUsers();
-
-			foreach (var roadmap in Roadmaps!)
-			{
-				foreach (var user in users)
-				{
-					if (roadmap.UserId == user.Id)
-					{
-						roadmap.Author = user.Username;
-						roadmap.AuthorId = user.Id.ToString();
-					}
-				}
-			}
 		}
 	}
 

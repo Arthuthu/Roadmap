@@ -123,14 +123,11 @@ public class UserService : IUserService
 
     private async Task<bool> VerifyIfUserAlreadyExists(UserModel user)
     {
-		var users = await _userRepository.GetAllUsers();
+		var requestedUser = await _userRepository.GetUserByName(user);
 
-		foreach (var u in users)
+		if (requestedUser is not null)
 		{
-			if (u.Username == user.Username)
-			{
-                return true;
-			}
+			return true;
 		}
 
         return false;

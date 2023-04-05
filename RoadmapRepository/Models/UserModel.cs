@@ -7,6 +7,7 @@ public class UserModel
 	public string Password { get; set; }
 	public string? Bio { get; set; }
 	public int? IsAdmin { get; set; }
+	public int? IsBanned { get; set; }
 
 	public byte[]? PasswordHash { get; set; }
 	public byte[]? PasswordSalt { get; set; }

@@ -30,6 +30,7 @@ public class RoadmapService : IRoadmapService
 			new KeyValuePair<string, string>("name", roadmap.Name),
 			new KeyValuePair<string, string>("description", roadmap.Description),
 			new KeyValuePair<string, string>("category", roadmap.Category),
+			new KeyValuePair<string, string>("authorname", roadmap.AuthorName),
 			new KeyValuePair<string, string>("userId", roadmap.UserId.ToString())
 		});
 
@@ -106,7 +107,6 @@ public class RoadmapService : IRoadmapService
 				new KeyValuePair<string, string>("description", roadmap.Description),
 				new KeyValuePair<string, string>("category", roadmap.Category),
 				new KeyValuePair<string, string>("isapproved", roadmap.IsApproved),
-				new KeyValuePair<string, string>("ishidden", roadmap.IsHidden),
 				new KeyValuePair<string, string>("userId", roadmap.UserId.ToString())
 			});
 
