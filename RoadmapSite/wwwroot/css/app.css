@@ -54,7 +54,7 @@ body {
     color: var(--greywhite-color);
     font-size: 18px;
     font-weight: bold;
-    margin: 20px 0;
+    margin: 10px 0;
     text-decoration: none;
 }
 
@@ -518,32 +518,33 @@ body {
     margin: 0 0 20px 0;
     text-align: center;
     align-items: center;
+    background-color: var(--lightgray-background-color);
 }
 
 .node {
-    background-color: var(--button-background-color);
+    background-color: var(--lightergray-color);
     color: #FFF;
-    padding: 20px 40px;
+    padding: 20px 25px;
     font-weight: bold;
     font-size: 25px;
-    margin: 20px 0;
-}
-
-.delete-roadmap-button {
-    color: #FFF;
-    background-color: #BA0000;
-    border-radius: 50%;
     border-color: transparent;
-    padding: 0 8px;
-    font-size: 15px;
-    font-weight: bold;
-    margin: 0 0 0 5px;
 }
 
-    .delete-roadmap-button:hover {
-        transition: 500ms;
-        background-color: #DF0000;
-    }
+.node:hover {
+    transition: 400ms;
+    background-color: var(--orange-background-color);
+}
+
+.node:focus {
+    transition: 400ms;
+    background-color: var(--orange-background-color);
+}
+
+.node-edit-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 #arrow-icon {
     font-size: 40px;
@@ -727,20 +728,56 @@ body {
 }
 
 /* Administration */
-.administration-buttons-div {
+.administration-button-div {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    margin: 0 0 20px 0;
+}
+
+.denuncias-div {
+    border: solid #FFF;
+    margin: 0 0 15px 0;
 }
 
 .denuncia-type {
+    text-align: center;
     background-color: var(--lightgray-background-color);
     color: #FFF;
-    padding: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px 0;
 }
 
-.approve-buttons-div {
-    display: flex;
-    justify-content: space-evenly;
+.denuncia-description {
+    font-size: 17px;
+    padding: 5px;
+}
+
+.denuncia-date {
+    font-size: 15px;
+    padding: 5px;
+}
+
+.display-comment-div {
+    margin: 20px 0 0 0;
+    border-top: solid var(--lightergray-color);
+}
+
+.display-comment-label {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.display-comment-description {
+    font-size: 20px;
+    padding: 5px;
+    margin: 15px 0;
+}
+
+.display-comment-date {
+    margin: 5px;
 }
 
 /* Denuncia */
@@ -765,4 +802,23 @@ body {
     color: #FFF;
     height: 200px;
     width: 1000px;
+}
+
+/* Node Content */
+
+.node-content-label {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.node-content-div {
+    border: solid #FFF;
+    font-size: 20px;
+    text-align: start;
+    padding: 10px;
+}
+
+.node-content-description {
+    margin: 20px 0 0 0;
 }

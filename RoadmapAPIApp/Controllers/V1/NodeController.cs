@@ -31,10 +31,11 @@ public class NodeController : ControllerBase
         return Ok(responseNodes);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<NodeResponse>> GetNodeById(Guid id)
+	[Route("/getbodebyid/{nodeId}")]
+	[HttpGet]
+    public async Task<ActionResult<NodeResponse>> GetNodeById(Guid nodeId)
     {
-        var node = await _nodeService.GetNodeById(id);
+        var node = await _nodeService.GetNodeById(nodeId);
         var responseNodes = _mapper.Map<NodeResponse>(node);
 
         return Ok(responseNodes);

@@ -33,17 +33,33 @@
 			@foreach (var node in Nodes)
 			{
 				<div class="text-center">
-					<button class="node">
+					<button class="node" @onclick="() => ToggleShowNodeContent(node.Id)">
 						@node.Name
 					</button>
 					@if (editMode)
 					{
-						<button class="delete-roadmap-button"
+						<div class="node-edit-buttons">
+							<div>
+								<button class="second-style-button"
 						@onclick="async () => await DeleteNode(node.Id)">
-							X
-						</button>
+									Excluir
+								</button>
+							</div>
+							<div>
+								<a class="second-style-button" href="/editnode/@node.Id">
+									Editar
+								</a>
+							</div>
+						</div>
 					}
 				</div>
+
+				if (showNodeContent.ContainsKey(node.Id) && showNodeContent[node.Id])
+				{
+					<div>
+						<NodeContent NodeId="@node.Id" Description="@node.Description" />
+					</div>
+				}
 
 				<div class="text-center">
 					<i class="fa-solid fa-arrow-down" id="arrow-icon"></i>
@@ -261,6 +277,7 @@
 	private bool showDeleteComment = false;
 	private bool showDeletePageAuthor = false;
 	private bool showDeletePageAdmin = false;
+	private Dictionary<Guid, bool> showNodeContent = new Dictionary<Guid, bool>();
 	private bool isInitialized = false;
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
 
@@ -420,6 +437,7 @@
 			}
 		}
 	}
+	//Actual
 
 	private async Task CommentOnRoadmap()
 	{
@@ -509,5 +527,17 @@
 	private void ToggleShowDeleteComment()
 	{
 		showDeleteComment = !showDeleteComment;
+	}
+
+	private void ToggleShowNodeContent(Guid nodeId)
+	{
+		if (showNodeContent.ContainsKey(nodeId))
+		{
+			showNodeContent[nodeId] = !showNodeContent[nodeId];
+		}
+		else
+		{
+			showNodeContent[nodeId] = true;
+		}
 	}
 }

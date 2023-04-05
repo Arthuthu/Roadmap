@@ -8,54 +8,51 @@
 
 @if (IsInitialized)
 {
-	<div class="administration-buttons-div">
-		<div class="text-center">
-			<button @onclick="ToggleShowDenuncias" class="second-style-button">
-				Denuncias
-			</button>
-		</div>
+	<div class="administration-button-div">
+		<button @onclick="ToggleShowDenuncias" class="second-style-button">
+			Denuncias
+		</button>
 
-		<div class="text-center">
-			<button @onclick="ToggleShowRoadmapsToApprove" class="second-style-button">
-				Roadmaps
-			</button>
-		</div>
+		<button @onclick="ToggleShowRoadmapsToApprove" class="second-style-button">
+			Roadmaps
+		</button>
 	</div>
 
 	if (showDenuncias)
 	{
+		<div class="text-center h4 my-5">
+			Denuncias
+		</div>
 		<Virtualize Items="@Denuncias" Context="denuncia" OverscanCount="50">
-			<div class="text-center">
+			<div class="denuncias-div">
 				<div class="denuncia-type">
 					@denuncia.Type
 				</div>
-				<div>
+				<div class="denuncia-description">
 					@denuncia.Description
 				</div>
-				<div>
-					@denuncia.CreatedDate
+				<div class="denuncia-date">
+					Criada em: @denuncia.CreatedDate
 				</div>
 				@if (denuncia.Type == "Roadmap")
 				{
-					<div>
-						<a href="/roadmapdetails/@denuncia.RoadmapId">
+					<div class="text-center my-4">
+						<a href="/roadmapdetails/@denuncia.RoadmapId" class="second-style-button">
 							Roadmap
 						</a>
 					</div>
 				}
 				else if (denuncia.Type == "User")
 				{
-					<div>
-						<a href="/profile/@denuncia.UserId">
+					<div class="text-center my-4">
+						<a href="/profile/@denuncia.UserId" class="second-style-button">
 							Usuario
 						</a>
 					</div>
 				}
 				else if (denuncia.Type == "Comment")
 				{
-					<div>
-						@denuncia.CommentId
-					</div>
+					<DisplayComment CommentId="@denuncia.CommentId" />
 				}
 			</div>
 		</Virtualize>
@@ -65,6 +62,9 @@
 	{
 		@if (Roadmaps is not null)
 		{
+			<div class="text-center h4 my-5">
+				Roadmaps
+			</div>
 			<Virtualize Items="@Roadmaps" Context="roadmap" OverscanCount="50">
 				<div class="roadmap-div">
 					<a class="roadmap-name-label" href="roadmapdetails/@roadmap.Id">
@@ -107,13 +107,13 @@
 					</div>
 				</div>
 
-				<div class="approve-buttons-div">
-					<button class="first-style-button"
+				<div class="administration-button-div">
+					<button class="second-style-button"
 				@onclick="async () => await ApproveRoadmap(roadmap)">
 						Aprovar
 					</button>
 
-					<button @onclick="ToggleShowDeletePage" class="first-style-button">
+					<button @onclick="ToggleShowDeletePage" class="second-style-button">
 						Excluir
 					</button>
 				</div>

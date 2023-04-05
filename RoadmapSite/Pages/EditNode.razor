@@ -1,11 +1,13 @@
 ﻿@page "/editnode/{nodeid}"
 @inject INodeService nodeService
+@inject IRoadmapService roadmapService
+@inject IUserService userService
 @inject NavigationManager navManager
 
-@if(IsInitialized)
+@if (IsInitialized)
 {
     <div>
-        @Node.Name
+        @Node!.Name
         @Node.Description
     </div>
     <div>
@@ -20,20 +22,36 @@
 
 @code {
     [Parameter]
-    public Guid NodeId { get; set; }
+    public string? NodeId { get; set; }
+    private Guid LoggedInUserId { get; set; }
     private NodeModel? Node { get; set; }
+    private RoadmapClassModel? Roadmap { get; set; }
     private bool IsInitialized = false;
 
     protected override async Task OnInitializedAsync()
     {
-        if (NodeId == Guid.Empty)
+        if (NodeId is null)
         {
             navManager.NavigateTo("/notfound");
         }
 
-        Node = await nodeService.GetNodeById(NodeId);
+        LoggedInUserId = await userService.GetLoggedInUserId();
+
+        Node = await nodeService.GetNodeById(new Guid(NodeId!));
 
         if (Node is null)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        Roadmap = await roadmapService.GetRoadmapById(Node!.RoadmapId);
+
+        if (Roadmap is null)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        if (Roadmap!.UserId != LoggedInUserId)
         {
             navManager.NavigateTo("/notfound");
         }

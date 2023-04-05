@@ -63,6 +63,23 @@ public class NodeService : INodeService
 		return nodeModel;
 	}
 
+	public async Task<NodeModel> GetNodeById(Guid? nodeId)
+	{
+		string getNodeByIdEndpoint = _config["apiLocation"] + _config["getNodeByIdEndpoint"] + $"/{nodeId}";
+		var authResult = await _client.GetAsync(getNodeByIdEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro durante o carregamento do comentario: {authContent}");
+			return null;
+		}
+
+		var nodeModel = JsonConvert.DeserializeObject<NodeModel>(authContent);
+
+		return nodeModel;
+	}
+
 	public async Task<string> DeleteNode(Guid nodeId)
 	{
 		string deleteNodeEndpoint = _config["apiLocation"] + _config["deleteNodeEndpoint"] + $"/{nodeId}";
