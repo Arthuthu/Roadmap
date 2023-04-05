@@ -1,0 +1,19 @@
+﻿@page "/expiration"
+@inject IAuthenticationService authService
+
+<div class="text-center fw-bold h2 my-4">
+	Sua sessão expirou
+</div>
+
+<div class="text-center my-2">
+	<a href="/login" class="second-style-button">
+		Fazer login
+	</a>
+</div>
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		await authService.Logout();
+	}
+}

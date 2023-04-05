@@ -190,8 +190,9 @@ public class UserService : IUserService
 		{
 			new Claim(ClaimTypes.Name, user.Username),
 			new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-			new Claim(ClaimTypes.Role, "User")
-        };
+			new Claim(ClaimTypes.Role, "User"),
+			new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(2).ToString())
+		};
 
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
@@ -201,7 +202,7 @@ public class UserService : IUserService
 
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.Now.AddDays(1),
+            expires: DateTime.UtcNow.AddDays(2),
             signingCredentials: credentials);
 
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);

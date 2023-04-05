@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
 using RoadmapSite.Models;
@@ -13,18 +14,21 @@ public class UserService : IUserService
 	private readonly HttpClient _client;
 	private readonly ILocalStorageService _localStorage;
 	private readonly AuthenticationStateProvider _authenticationStateProvider;
+	private readonly NavigationManager _navigationManager;
 	private readonly IConfiguration _config;
 	private readonly ILogger<UserService> _logger;
 
 	public UserService(HttpClient client,
-	ILocalStorageService localStorage,
 	AuthenticationStateProvider authenticationStateProvider,
+	NavigationManager navigationManager,
+	ILocalStorageService localStorage,
 	IConfiguration config,
 	ILogger<UserService> logger)
 	{
 		_client = client;
 		_localStorage = localStorage;
 		_authenticationStateProvider = authenticationStateProvider;
+		_navigationManager = navigationManager;
 		_config = config;
 		_logger = logger;
 	}
@@ -38,6 +42,18 @@ public class UserService : IUserService
 		if (userId is null)
 		{
 			return Guid.Empty;
+		}
+
+		var expirationClaim = user.FindFirst(ClaimTypes.Expiration);
+
+		if (expirationClaim is not null)
+		{
+			var expirationDate = DateTime.Parse(expirationClaim.Value);
+			if (expirationDate < DateTime.UtcNow)
+			{
+				_navigationManager.NavigateTo("/expiration");
+				return Guid.Empty;
+			}
 		}
 
 		return new Guid(userId);

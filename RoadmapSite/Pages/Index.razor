@@ -150,6 +150,7 @@
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 		Roadmaps = await GetAllRoadmaps();
+
 		if (LoggedInUserId != Guid.Empty)
 		{
 			foreach (var roadmap in Roadmaps!)
