@@ -54,6 +54,13 @@
 			</div>
 		}
 
+		@if (LoggedInUserModel!.IsAdmin == "1")
+		{
+			<div class="text-center m-4">
+				<a class="second-style-button" href="/banuser/@UserId">Banir</a>
+			</div>
+		}
+
 		<div class="text-center m-4">
 			<a class="second-style-button" href="/createdenuncia/User/@UserId">
 				Denunciar
@@ -124,7 +131,8 @@
 	public string? UserId { get; set; }
 	public Guid? LoggedInUserId { get; set; }
 	public IList<RoadmapClassModel>? Roadmaps { get; set; }
-	public UserModel? User { get; set; }
+	private UserModel? User { get; set; }
+	private UserModel? LoggedInUserModel { get; set; }
 	private bool showProfileOptions = false;
 	private bool IsInitialized = false;
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"; 
@@ -150,10 +158,14 @@
 			navManager.NavigateTo("/notfound");
 		}
 
-		if (User!.IsBanned == "1")
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
+
+		if (LoggedInUserModel!.IsBanned == "1")
 		{
 			navManager.NavigateTo("/banned");
 		}
+
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
 		Roadmaps = await roadmapService.GetRoadmapByUserId(new Guid(UserId!));
 

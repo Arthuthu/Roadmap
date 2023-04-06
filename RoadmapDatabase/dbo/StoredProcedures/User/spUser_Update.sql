@@ -3,10 +3,11 @@
 	@Username nvarchar(50),
 	@Password nvarchar(50),
 	@Bio nvarchar(1000),
-	@IsBanned nvarchar(1)
+	@IsBanned nvarchar(1),
+	@UpdatedDate datetime2(7)
 AS
 BEGIN
 	UPDATE dbo.[Users]
-	SET Username = @Username, Password = @Password, Bio = @Bio, IsBanned = @IsBanned
+	SET Username = @Username, Password = @Password, Bio = @Bio, IsBanned = @IsBanned, UpdatedDate = @UpdatedDate
 	WHERE Id = @Id
 END

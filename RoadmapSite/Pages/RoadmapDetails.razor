@@ -284,38 +284,15 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		if (RoadmapId is null)
-		{
-			navManager.NavigateTo("/notfound");
-		}
-
-		LoggedInUserId = await userService.GetLoggedInUserId();
-
-		if (LoggedInUserId == Guid.Empty)
-		{
-			navManager.NavigateTo("/login");
-		}
-
-		Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId!));
-
-		if (Roadmap is null)
-		{
-			navManager.NavigateTo("/notfound");
-		}
-
-		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
-
-		if (LoggedInUserModel.IsBanned == "1")
-		{
-			navManager.NavigateTo("/notfound");
-		}
-
-		await LoadPageData();
-
-		isInitialized = true;
+		await PageVerification();
 	}
 
 	protected override async Task OnParametersSetAsync()
+	{
+		await PageVerification();
+	}
+
+	private async Task PageVerification()
 	{
 		if (RoadmapId is null)
 		{

@@ -8,20 +8,20 @@
 
 @if (IsInitialized)
 {
-    <div>
+    <div class="text-center my-4 h4">
         Tem certeza que deseja banir este usuario?
     </div>
 
-    <div>
-        <button @onclick=ToggleBanConfirmation>
+    <div class="text-center">
+        <button @onclick=ToggleBanConfirmation class="second-style-button">
             Sim
         </button>
     </div>
 
     @if (showBanConfirmation)
     {
-        <div>
-            <button @onclick="BanTheUser">
+        <div class="text-center">
+            <button @onclick="BanTheUser" class="second-style-button">
                 Confirmar
             </button>
         </div>
@@ -69,14 +69,19 @@
         {
             navManager.NavigateTo("/notfound");
         }
+
+        IsInitialized = true;
     }
 
     private async Task BanTheUser()
     {
         UserThatWillBeBanned!.IsBanned = "1";
 
+        await userService.UpdateUser(UserThatWillBeBanned);
         await roadmapService.DeleteAllUserRoadmaps(new Guid(UserId!));
         await comentarioService.DeleteAllUserComentarios(new Guid(UserId!));
+
+        navManager.NavigateTo("/administration");
     }
 
     private void ToggleBanConfirmation()

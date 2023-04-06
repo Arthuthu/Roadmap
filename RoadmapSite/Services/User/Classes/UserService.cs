@@ -99,8 +99,9 @@ public class UserService : IUserService
 			new KeyValuePair<string, string>("id", user.Id.ToString()),
 			new KeyValuePair<string, string>("username", user.Username!),
 			new KeyValuePair<string, string>("password", user.Password),
-			new KeyValuePair<string, string>("bio", user.Bio)
-		});
+			new KeyValuePair<string, string>("bio", user.Bio),
+			new KeyValuePair<string, string>("isbanned", user.IsBanned)
+        });
 
 		string updateUserEndpoint = _config["apiLocation"] + _config["updateUserEndpoint"];
 		var authResult = await _client.PutAsync(updateUserEndpoint, data);
