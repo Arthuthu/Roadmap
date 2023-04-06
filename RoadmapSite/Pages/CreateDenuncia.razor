@@ -29,7 +29,7 @@
 	[Parameter]
 	public string? Type { get; set; }
 	private Guid LoggedInUserId { get; set; }
-	private UserModel? User { get; set; }
+	private UserModel? LoggedInUserModel { get; set; }
 	private DenunciaModel Denuncia = new();
 
 	protected override async Task OnInitializedAsync()
@@ -56,12 +56,14 @@
 			navManager.NavigateTo("/notfound");
 		}
 
-		if (User is null)
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
+
+		if (LoggedInUserModel is null)
 		{
 			navManager.NavigateTo("/notfound");
 		}
 
-		if (User!.IsBanned == "1")
+		if (LoggedInUserModel!.IsBanned == "1")
 		{
 			navManager.NavigateTo("/banned");
 		}

@@ -168,6 +168,13 @@
 			navManager.NavigateTo("/notfound");
 		}
 
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
+
+		if (LoggedInUserModel is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
 		Roadmaps = await roadmapService.GetRoadmapByUserId(new Guid(UserId!));
 
 		await GetRoadmapsData();

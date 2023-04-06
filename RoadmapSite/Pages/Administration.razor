@@ -209,6 +209,11 @@
 	private async Task ToggleShowDenuncias()
 	{
 		showDenuncias = !showDenuncias;
-		Denuncias = await denunciaService.GetAllDenuncias();
+		var denuncias = await denunciaService.GetAllDenuncias();
+
+		if (denuncias is not null)
+		{
+			Denuncias = denuncias.OrderBy(x => x.CreatedDate).ToList();
+		}
 	}
 }
