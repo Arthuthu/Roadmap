@@ -62,11 +62,37 @@
 			</div>
 		}
 
-		@if (LoggedInUserModel!.IsAdmin == "1")
+		@if (LoggedInUserModel!.IsAdmin == "1" && User!.IsBanned == null)
 		{
-			<div class="text-center m-4">
-				<a class="second-style-button" href="/banuser/@UserId">Banir</a>
+			<div class="text-center">
+				<button class="second-style-button" @onclick=ToggleShowBanConfirmation>
+					Banir
+				</button>
 			</div>
+
+			if (showBanConfirmation)
+			{
+				<div class="text-center m-4">
+					<BanUser UserId="@UserId" />
+				</div>
+			}
+
+		}
+
+		@if (LoggedInUserModel!.IsAdmin == "1" && User!.IsBanned == "1")
+		{
+			<div class="text-center">
+				<button class="second-style-button" @onclick=ToggleShowUnbanConfirmation>
+					Desbanir
+				</button>
+			</div>
+
+			if (showUnbanConfirmation)
+			{
+				<div class="text-center m-4">
+					<UnbanUser UserId="@UserId" />
+				</div>
+			}
 		}
 
 		<div class="text-center m-4">
@@ -142,6 +168,8 @@
 	private UserModel? User { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
 	private bool showProfileOptions = false;
+	private bool showBanConfirmation = false;
+	private bool showUnbanConfirmation = false;
 	private bool IsInitialized = false;
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"; 
 
@@ -212,5 +240,15 @@
 	private void ToggleShowProfileOptions()
 	{
 		showProfileOptions = !showProfileOptions;
+	}
+
+	private void ToggleShowBanConfirmation()
+	{
+		showBanConfirmation = !showBanConfirmation;
+	}
+
+	private void ToggleShowUnbanConfirmation()
+	{
+		showUnbanConfirmation = !showUnbanConfirmation;
 	}
 }

@@ -1,27 +1,23 @@
 ﻿@inject NavigationManager navManager
 @inject IUserService userService
-@inject IRoadmapService roadmapService
-@inject IComentarioService comentarioService
-@inject IAuthenticationService authService
-
 
 @if (IsInitialized)
 {
     <div class="ban-unban-div">
         <div class="text-center my-4 h4">
-            Tem certeza que deseja banir este usuario?
+            Tem certeza que deseja desbanir este usuario?
         </div>
 
         <div class="text-center">
-            <button @onclick=ToggleBanConfirmation class="second-style-button">
+            <button @onclick=ToggleUnbanConfirmation class="second-style-button">
                 Sim
             </button>
         </div>
 
-        @if (showBanConfirmation)
+        @if (showUnbanConfirmation)
         {
             <div class="text-center">
-                <button @onclick="BanTheUser" class="second-style-button">
+                <button @onclick="UnbanTheUser" class="second-style-button">
                     Confirmar
                 </button>
             </div>
@@ -34,9 +30,9 @@
     public string? UserId { get; set; }
     private Guid LoggedInUserId { get; set; }
     private UserModel? AdministratorModel { get; set; }
-    private UserModel? UserThatWillBeBanned { get; set; }
+    private UserModel? UserThatWillBeUnbanned { get; set; }
     private bool IsInitialized = false;
-    private bool showBanConfirmation = false;
+    private bool showUnbanConfirmation = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,9 +65,9 @@
             navManager.NavigateTo("/notfound");
         }
 
-        UserThatWillBeBanned = await userService.GetUserById(new Guid(UserId!));
+        UserThatWillBeUnbanned = await userService.GetUserById(new Guid(UserId!));
 
-        if (UserThatWillBeBanned is null)
+        if (UserThatWillBeUnbanned is null)
         {
             navManager.NavigateTo("/notfound");
         }
@@ -79,20 +75,17 @@
         IsInitialized = true;
     }
 
-    private async Task BanTheUser()
+    private async Task UnbanTheUser()
     {
-        UserThatWillBeBanned!.IsBanned = "1";
-        UserThatWillBeBanned!.Bio = "...";
+        UserThatWillBeUnbanned!.IsBanned = null;
 
-        await userService.UpdateUser(UserThatWillBeBanned);
-        await roadmapService.DeleteAllUserRoadmaps(new Guid(UserId!));
-        await comentarioService.DeleteAllUserComentarios(new Guid(UserId!));
+        await userService.UpdateUser(UserThatWillBeUnbanned);
 
         navManager.NavigateTo($"/profile/{UserId}", forceLoad: true);
     }
 
-    private void ToggleBanConfirmation()
+    private void ToggleUnbanConfirmation()
     {
-        showBanConfirmation = !showBanConfirmation;
+        showUnbanConfirmation = !showUnbanConfirmation;
     }
 }

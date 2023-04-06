@@ -822,3 +822,11 @@ body {
 .node-content-description {
     margin: 20px 0 0 0;
 }
+
+/* Ban Unban */
+
+.ban-unban-div {
+    border: solid #FFF;
+    padding: 5px 0;
+    background-color: var(--lightgray-background-color);
+}
