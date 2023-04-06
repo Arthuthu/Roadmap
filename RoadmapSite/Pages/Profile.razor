@@ -2,8 +2,8 @@
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navManager
 @inject IUserService userService
-@inject IRoadmapVotesService roadmapVotesService
 @inject IRoadmapService roadmapService
+@inject IRoadmapVotesService roadmapVotesService
 @inject IRoadmapVotingService votingService
 
 @if (IsInitialized)
@@ -139,42 +139,15 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		if (UserId is null)
-		{
-			navManager.NavigateTo("/notfound");
-		}
-
-		LoggedInUserId = await userService.GetLoggedInUserId();
-
-		if (LoggedInUserId == Guid.Empty)
-		{
-			navManager.NavigateTo("/login");
-		}
-
-		User = await userService.GetUserById(new Guid(UserId!));
-
-		if (User is null)
-		{
-			navManager.NavigateTo("/notfound");
-		}
-
-		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
-
-		if (LoggedInUserModel!.IsBanned == "1")
-		{
-			navManager.NavigateTo("/banned");
-		}
-
-		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
-
-		Roadmaps = await roadmapService.GetRoadmapByUserId(new Guid(UserId!));
-
-		await GetRoadmapsData();
-
-		IsInitialized = true;
+		await PageVerification();
 	}
 
 	protected override async Task OnParametersSetAsync()
+	{
+		await PageVerification();
+	}
+
+	private async Task PageVerification()
 	{
 		if (UserId is null)
 		{

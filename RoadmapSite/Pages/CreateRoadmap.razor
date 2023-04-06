@@ -1,8 +1,7 @@
 ﻿@page "/createroadmap"
-@inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager navManager
-@inject IRoadmapService roadmapServiceService
 @inject IUserService userService
+@inject IRoadmapService roadmapServiceService
 
 
 @if (IsInitialized)
@@ -47,12 +46,17 @@
 
 @code {
 	private Guid LoggedInUserId { get; set; }
+	private UserModel? LoggedInUserModel { get; set; }
 	private RoadmapClassModel Roadmap = new();
-	private UserModel? User { get; set; }
 	private string roadmapCreationMessage = "";
 	private bool IsInitialized = false;
 
 	protected override async Task OnInitializedAsync()
+	{
+		await PageVerification();
+	}
+
+	private async Task PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
@@ -61,14 +65,14 @@
 			navManager.NavigateTo("/login");
 		}
 
-		User = await userService.GetUserById(LoggedInUserId);
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
-		if (User is null)
+		if (LoggedInUserModel is null)
 		{
 			navManager.NavigateTo("/notfound");
 		}
 
-		if (User!.IsBanned == "1")
+		if (LoggedInUserModel!.IsBanned == "1")
 		{
 			navManager.NavigateTo("/banned");
 		}
@@ -80,9 +84,9 @@
 	{
 		Roadmap.UserId = LoggedInUserId;
 
-		User = await userService.GetUserById(LoggedInUserId);
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
-		Roadmap.AuthorName = User.Username;
+		Roadmap.AuthorName = LoggedInUserModel.Username;
 
 		var result = await roadmapServiceService.CreateRoadmap(Roadmap);
 

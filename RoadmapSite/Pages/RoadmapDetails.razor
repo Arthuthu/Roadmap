@@ -268,6 +268,7 @@
 	private Guid? LoggedInUserId { get; set; }
 	private IList<ComentarioModel>? Comentarios { get; set; }
 	private IList<NodeModel>? Nodes { get; set; }
+	private Dictionary<Guid, bool> showNodeContent = new Dictionary<Guid, bool>();
 	private RoadmapClassModel? Roadmap { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
 	private NodeModel? Node = new();
@@ -277,7 +278,6 @@
 	private bool showDeleteComment = false;
 	private bool showDeletePageAuthor = false;
 	private bool showDeletePageAdmin = false;
-	private Dictionary<Guid, bool> showNodeContent = new Dictionary<Guid, bool>();
 	private bool isInitialized = false;
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
 

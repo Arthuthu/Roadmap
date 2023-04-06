@@ -39,6 +39,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await PageVerification();
+    }
+
+    private async Task PageVerification()
+    {
         if (UserId is null)
         {
             navManager.NavigateTo("/notfound");

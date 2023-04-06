@@ -1,10 +1,10 @@
 ﻿@page "/administration"
+@inject NavigationManager navManager;
 @inject IUserService userService;
 @inject IRoadmapService roadmapService;
 @inject IRoadmapVotingService votingService;
 @inject IComentarioService comentarioService;
 @inject IDenunciaService denunciaService;
-@inject NavigationManager navManager;
 
 @if (IsInitialized)
 {
@@ -147,6 +147,11 @@
 	private bool showDenuncias = false;
 
 	protected override async Task OnInitializedAsync()
+	{
+		await PageVerification();
+	}
+
+	private async Task PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 

@@ -32,6 +32,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await PageVerification();
+    }
+
+    private async Task PageVerification()
+    {
         Comment = await comentarioService.GetComentarioById(CommentId);
 
         if (Comment is not null)
@@ -39,5 +44,4 @@
             IsInitialized = true;
         }
     }
-
 }

@@ -1,10 +1,9 @@
 ﻿@page "/"
-@inject IRoadmapService roadmapService
-@inject IUserService userService
-@inject ILocalStorageService localStorage
-@inject IRoadmapVotingService votingService
 @inject NavigationManager navManager
-@inject AuthenticationStateProvider authenticationStateProvider
+@inject IUserService userService
+@inject IRoadmapService roadmapService
+@inject IRoadmapVotingService votingService
+@inject ILocalStorageService localStorage
 
 <div>
 	<div class="create-roadmap-button-div">
@@ -138,17 +137,21 @@
 </div>
 
 @code {
-
-	private UserModel? User { get; set; }
+	private Guid? LoggedInUserId;
 	private IList<RoadmapClassModel>? Roadmaps;
+	private UserModel? User { get; set; }
 	private const string RoadmapList = "RoadmapList";
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
-	private Guid? LoggedInUserId;
 	private string? category;
 	private string? roadmapName;
 
 
 	protected override async Task OnInitializedAsync()
+	{
+		await PageVerification();
+	}
+
+	private async Task PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 		Roadmaps = await GetAllRoadmaps();
@@ -238,17 +241,6 @@
 		}
 	}
 
-	private void SortRoadmapsByDate()
-	{
-		Roadmaps = Roadmaps!.OrderByDescending(x => x.CreatedDate).ToList();
-	}
-
-
-	private void SortRoadmapsByPopularity()
-	{
-		Roadmaps = Roadmaps!.OrderByDescending(x => x.RoadmapTotalVotes).ToList();
-	}
-
 	private async Task AddUserVote(Guid roadmapId)
 	{
 		if (LoggedInUserId != Guid.Empty)
@@ -265,5 +257,15 @@
 		await votingService.AddUserVote(roadmapId, LoggedInUserId);
 
 		await OnInitializedAsync();
+	}
+
+	private void SortRoadmapsByDate()
+	{
+		Roadmaps = Roadmaps!.OrderByDescending(x => x.CreatedDate).ToList();
+	}
+
+	private void SortRoadmapsByPopularity()
+	{
+		Roadmaps = Roadmaps!.OrderByDescending(x => x.RoadmapTotalVotes).ToList();
 	}
 }

@@ -1,8 +1,8 @@
 ﻿@page "/editnode/{nodeid}"
-@inject INodeService nodeService
-@inject IRoadmapService roadmapService
-@inject IUserService userService
 @inject NavigationManager navManager
+@inject IUserService userService
+@inject IRoadmapService roadmapService
+@inject INodeService nodeService
 
 @if (IsInitialized)
 {
@@ -24,12 +24,17 @@
     [Parameter]
     public string? NodeId { get; set; }
     private Guid LoggedInUserId { get; set; }
-    private NodeModel? Node { get; set; }
-    private UserModel? User { get; set; }
+    private UserModel? LoggedInUserModel { get; set; }
     private RoadmapClassModel? Roadmap { get; set; }
+    private NodeModel? Node { get; set; }
     private bool IsInitialized = false;
 
     protected override async Task OnInitializedAsync()
+    {
+        await PageVerification();
+    }
+
+    private async Task PageVerification()
     {
         if (NodeId is null)
         {
@@ -38,9 +43,9 @@
 
         LoggedInUserId = await userService.GetLoggedInUserId();
 
-        User = await userService.GetUserById(LoggedInUserId);
+        LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
-        if (User.IsBanned == "1")
+        if (LoggedInUserModel.IsBanned == "1")
         {
             navManager.NavigateTo("/banned");
         }

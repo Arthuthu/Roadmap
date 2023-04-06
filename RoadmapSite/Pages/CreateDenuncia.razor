@@ -1,5 +1,4 @@
 ﻿@page "/createdenuncia/{type}/{id}"
-@inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager navManager
 @inject IUserService userService
 @inject IDenunciaService denunciaService
@@ -34,6 +33,11 @@
 	private DenunciaModel Denuncia = new();
 
 	protected override async Task OnInitializedAsync()
+	{
+		await PageVerification();
+	}
+
+	private async Task PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 

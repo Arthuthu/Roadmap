@@ -1,5 +1,4 @@
 ﻿@page "/editprofile/{userid}"
-@inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navManager
 @inject IUserService userService
 
@@ -9,11 +8,11 @@
 		Escreva algo em sua bio
 	</div>
 
-	<EditForm Model="User" OnValidSubmit="UpdateProfile" class="" Context="ProfileForm">
+	<EditForm Model="LoggedInUserModel" OnValidSubmit="UpdateProfile" class="" Context="ProfileForm">
 		<div class="first-input-text-div">
 			<label for="bio" class="visually-hidden">Usuario</label>
 			<div>
-				<InputTextArea id="bio" class="form-input-text-description" @bind-Value="User!.Bio" placeholder="Bio (Maximo 1000 caracteres)" />
+				<InputTextArea id="bio" class="form-input-text-description" @bind-Value="LoggedInUserModel!.Bio" placeholder="Bio (Maximo 1000 caracteres)" />
 			</div>
 		</div>
 
@@ -34,12 +33,17 @@
 	[Parameter]
 	public string? UserId { get; set; }
 	public Guid LoggedInUserId { get; set; }
-	public UserModel? User { get; set; }
+	public UserModel? LoggedInUserModel { get; set; }
 	private bool IsInitialized = false;
 	private bool showAuthenticationError = false;
 	private string authenticationErrorText = "";
 
 	protected override async Task OnInitializedAsync()
+	{
+		await PageVerification();
+	}
+
+	private async Task PageVerification()
 	{
 		if (UserId is null)
 		{
@@ -53,14 +57,14 @@
 			navManager.NavigateTo("/login");
 		}
 
-		User = await userService.GetUserById(new Guid(UserId!));
+		LoggedInUserModel = await userService.GetUserById(new Guid(UserId!));
 
-		if (User is null)
+		if (LoggedInUserModel is null)
 		{
 			navManager.NavigateTo("/notfound");
 		}
 
-		if (User.IsBanned == "1")
+		if (LoggedInUserModel.IsBanned == "1")
 		{
 			navManager.NavigateTo("/banned");
 		}
@@ -75,7 +79,7 @@
 
 	private async Task UpdateProfile()
 	{
-		var result = await userService.UpdateUser(User!);
+		var result = await userService.UpdateUser(LoggedInUserModel!);
 
 		if (result is not null)
 		{

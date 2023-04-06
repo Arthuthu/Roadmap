@@ -1,7 +1,7 @@
-﻿@inject IRoadmapService roadmapService
+﻿@inject NavigationManager navManager
 @inject IUserService userService
+@inject IRoadmapService roadmapService
 @inject IRoadmapVotingService votingService
-@inject NavigationManager navManager
 
 @if (isInitialized)
 {
@@ -28,6 +28,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await PageVerification();
+    }
+
+    private async Task PageVerification()
+    {
         LoggedInUserId = await userService.GetLoggedInUserId();
 
         if (LoggedInUserId == Guid.Empty)
@@ -40,7 +45,7 @@
             navManager.NavigateTo("/notfound");
         }
 
-        if (new Guid(RoadmapId) == Guid.Empty)
+        if (new Guid(RoadmapId!) == Guid.Empty)
         {
             navManager.NavigateTo("/notfound");
         }
