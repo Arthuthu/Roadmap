@@ -78,6 +78,15 @@ public class RoadmapClassController : ControllerBase
         return Ok(requestRoadmap);
     }
 
+    [Route("/deletealluserroadmaps/{userId}")]
+    [HttpDelete]
+    public async Task<ActionResult<RoadmapClassResponse>> DeleteAllUserRoadmaps(Guid userId)
+    {
+        await _roadmapService.DeleteAllUserRoadmaps(userId);
+
+        return Ok("Roadmaps do usuario foram deletados com sucesso");
+    }
+
     [Route("/deleteroadmap/{id}")]
     [HttpDelete]
     public async Task<ActionResult<RoadmapClassResponse>> DeleteRoadmap(Guid id)

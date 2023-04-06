@@ -65,7 +65,12 @@ public class RoadmapClassRepository : IRoadmapClassRepository
 		});
 	}
 
-	public Task DeleteRoadmap(Guid id)
+	public Task DeleteAllUserRoadmaps(Guid userId)
+	{
+        return _db.SaveData("dbo.spRoadmap_DeleteAllUserRoadmaps", new { UserId = userId });
+    }
+
+    public Task DeleteRoadmap(Guid id)
 	{
 		return _db.SaveData("dbo.spRoadmap_Delete", new { Id = id });
 	}

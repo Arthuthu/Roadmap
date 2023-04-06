@@ -71,11 +71,14 @@ public class RoadmapClassService : IRoadmapClassService
 	{
 		roadmap.UpdatedDate = DateTime.UtcNow.AddHours(-3);
 		Convert.ToInt32(roadmap.IsApproved);
-		Convert.ToInt32(roadmap.IsHidden);
 		return _roadmapRepository.UpdateRoadmap(roadmap);
 	}
+    public Task DeleteAllUserRoadmaps(Guid userId)
+    {
+        return _roadmapRepository.DeleteAllUserRoadmaps(userId);
+    }
 
-	public Task DeleteRoadmap(Guid id)
+    public Task DeleteRoadmap(Guid id)
 	{
 		return _roadmapRepository.DeleteRoadmap(id);
 	}

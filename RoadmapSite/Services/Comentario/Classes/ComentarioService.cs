@@ -97,8 +97,22 @@ public class ComentarioService : IComentarioService
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
+    public async Task<string> DeleteAllUserComentarios(Guid userId)
+    {
+        string deleteAllUserComentariosEndpoint = _config["apiLocation"] + _config["deleteAllUserComentariosEndpoint"] + $"/{userId}";
+        var authResult = await _client.DeleteAsync(deleteAllUserComentariosEndpoint);
+        var authContent = await authResult.Content.ReadAsStringAsync();
 
-	public async Task<string> DeleteComentario(Guid id)
+        if (authResult.IsSuccessStatusCode is false)
+        {
+            _logger.LogInformation($"Ocorreu um erro para deletar os comentarios: {authContent}");
+            return authContent;
+        }
+
+        return authContent;
+    }
+
+    public async Task<string> DeleteComentario(Guid id)
 	{
 		string deleteComentarioEndpoint = _config["apiLocation"] + _config["deleteComentarioEndpoint"] + $"/{id}";
 		var authResult = await _client.DeleteAsync(deleteComentarioEndpoint);

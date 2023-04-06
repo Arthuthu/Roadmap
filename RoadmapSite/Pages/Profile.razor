@@ -150,6 +150,11 @@
 			navManager.NavigateTo("/notfound");
 		}
 
+		if (User!.IsBanned == "1")
+		{
+			navManager.NavigateTo("/banned");
+		}
+
 		Roadmaps = await roadmapService.GetRoadmapByUserId(new Guid(UserId!));
 
 		await GetRoadmapsData();

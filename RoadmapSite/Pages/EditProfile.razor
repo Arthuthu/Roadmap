@@ -60,6 +60,11 @@
 			navManager.NavigateTo("/notfound");
 		}
 
+		if (User.IsBanned == "1")
+		{
+			navManager.NavigateTo("/banned");
+		}
+
 		if (UserId != LoggedInUserId.ToString())
 		{
 			navManager.NavigateTo("/notfound");

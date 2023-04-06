@@ -1,5 +1,6 @@
 ﻿@page "/login"
 @inject IAuthenticationService authService
+@inject IUserService userService
 @inject NavigationManager navManager
 
 <EditForm Model="LoginUser" OnValidSubmit="ExecuteLogin">

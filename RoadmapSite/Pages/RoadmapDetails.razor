@@ -303,6 +303,13 @@
 			navManager.NavigateTo("/notfound");
 		}
 
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
+
+		if (LoggedInUserModel.IsBanned == "1")
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
 		await LoadPageData();
 
 		isInitialized = true;
@@ -329,6 +336,13 @@
 			navManager.NavigateTo("/notfound");
 		}
 
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
+
+		if (LoggedInUserModel.IsBanned == "1")
+		{
+			navManager.NavigateTo("/banned");
+		}
+
 		await LoadPageData();
 
 		isInitialized = true;
@@ -336,16 +350,10 @@
 
 	private async Task LoadPageData()
 	{
-		await GetLoggedInUserModel();
 		await GetAllComentarios();
 		await GetAllNodes();
 		await UpdateRoadmapVoteButton();
 		await UpdateComentarioVoteButton();
-	}
-
-	private async Task GetLoggedInUserModel()
-	{
-		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 	}
 
 	//Roadmap Votes

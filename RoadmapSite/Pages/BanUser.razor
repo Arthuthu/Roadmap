@@ -1,0 +1,86 @@
+﻿@page "/banuser/{userid}"
+@inject NavigationManager navManager
+@inject IUserService userService
+@inject IRoadmapService roadmapService
+@inject IComentarioService comentarioService
+@inject IAuthenticationService authService
+
+
+@if (IsInitialized)
+{
+    <div>
+        Tem certeza que deseja banir este usuario?
+    </div>
+
+    <div>
+        <button @onclick=ToggleBanConfirmation>
+            Sim
+        </button>
+    </div>
+
+    @if (showBanConfirmation)
+    {
+        <div>
+            <button @onclick="BanTheUser">
+                Confirmar
+            </button>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public string? UserId { get; set; }
+    private Guid LoggedInUserId { get; set; }
+    private UserModel? AdministratorModel { get; set; }
+    private UserModel? UserThatWillBeBanned { get; set; }
+    private bool IsInitialized = false;
+    private bool showBanConfirmation = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserId is null)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        LoggedInUserId = await userService.GetLoggedInUserId();
+
+        if (LoggedInUserId == Guid.Empty)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        AdministratorModel = await userService.GetUserById(LoggedInUserId);
+
+        if (AdministratorModel is null)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        if (AdministratorModel!.IsAdmin is null)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+
+        UserThatWillBeBanned = await userService.GetUserById(new Guid(UserId!));
+
+        if (UserThatWillBeBanned is null)
+        {
+            navManager.NavigateTo("/notfound");
+        }
+    }
+
+    private async Task BanTheUser()
+    {
+        UserThatWillBeBanned!.IsBanned = "1";
+
+        await roadmapService.DeleteAllUserRoadmaps(new Guid(UserId!));
+        await comentarioService.DeleteAllUserComentarios(new Guid(UserId!));
+    }
+
+    private void ToggleBanConfirmation()
+    {
+        showBanConfirmation = !showBanConfirmation;
+    }
+}

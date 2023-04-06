@@ -25,6 +25,7 @@
     public string? NodeId { get; set; }
     private Guid LoggedInUserId { get; set; }
     private NodeModel? Node { get; set; }
+    private UserModel? User { get; set; }
     private RoadmapClassModel? Roadmap { get; set; }
     private bool IsInitialized = false;
 
@@ -36,6 +37,13 @@
         }
 
         LoggedInUserId = await userService.GetLoggedInUserId();
+
+        User = await userService.GetUserById(LoggedInUserId);
+
+        if (User.IsBanned == "1")
+        {
+            navManager.NavigateTo("/banned");
+        }
 
         Node = await nodeService.GetNodeById(new Guid(NodeId!));
 

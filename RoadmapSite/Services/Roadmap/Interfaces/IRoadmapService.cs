@@ -10,4 +10,5 @@ public interface IRoadmapService
 	Task<IList<RoadmapClassModel>?> GetRoadmapByUserId(Guid userId);
 	Task<RoadmapClassModel?> GetRoadmapById(Guid id);
 	Task<string> DeleteRoadmap(Guid id);
+	Task<string> DeleteAllUserRoadmaps(Guid userId);
 }

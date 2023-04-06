@@ -39,17 +39,7 @@
 			</div>
 		</div>
 	</EditForm>
-
-	<div class="not-authorized-message-div">
-		<div class="not-authorized-message-p-div">
-			<p class="not-authorized-message">Você não esta autorizado para ver esta pagina, entre em uma conta primeiro</p>
-		</div>
-		<div>
-			<a class="first-style-button" href="login">
-				Entrar
-			</a>
-		</div>
-	</div>
+	 
 	<div role="alert" class="alert-message-div">
 		<p class="alert-message">@roadmapCreationMessage</p>
 	</div>
@@ -58,7 +48,7 @@
 @code {
 	private Guid LoggedInUserId { get; set; }
 	private RoadmapClassModel Roadmap = new();
-	private UserModel User { get; set; }
+	private UserModel? User { get; set; }
 	private string roadmapCreationMessage = "";
 	private bool IsInitialized = false;
 
@@ -69,6 +59,18 @@
 		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
+		}
+
+		User = await userService.GetUserById(LoggedInUserId);
+
+		if (User is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
+		if (User!.IsBanned == "1")
+		{
+			navManager.NavigateTo("/banned");
 		}
 
 		IsInitialized = true;

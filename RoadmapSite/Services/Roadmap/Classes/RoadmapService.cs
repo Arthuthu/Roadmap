@@ -138,4 +138,19 @@ public class RoadmapService : IRoadmapService
 
 		return authContent;
 	}
+
+    public async Task<string> DeleteAllUserRoadmaps(Guid userId)
+    {
+        string deleteAllUserRoadmapsEndpoint = _config["apiLocation"] + _config["deleteAllUserRoadmapsEndpoint"] + $"/{userId}";
+        var authResult = await _client.DeleteAsync(deleteAllUserRoadmapsEndpoint);
+        var authContent = await authResult.Content.ReadAsStringAsync();
+
+        if (authResult.IsSuccessStatusCode is false)
+        {
+            _logger.LogInformation($"Ocorreu um erro para deletar os roadmaps: {authContent}");
+            return authContent;
+        }
+
+        return authContent;
+    }
 }

@@ -3,6 +3,7 @@
 @inject IUserService userService
 @inject ILocalStorageService localStorage
 @inject IRoadmapVotingService votingService
+@inject NavigationManager navManager
 @inject AuthenticationStateProvider authenticationStateProvider
 
 <div>
@@ -138,6 +139,7 @@
 
 @code {
 
+	private UserModel? User { get; set; }
 	private IList<RoadmapClassModel>? Roadmaps;
 	private const string RoadmapList = "RoadmapList";
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
@@ -195,7 +197,7 @@
 	{
 		var roadmaps = await GetAllRoadmaps();
 
-		Roadmaps = roadmaps?.Where(x => x.Category == category).ToList();
+		Roadmaps = roadmaps?.Where(x => x.Category!.ToLower().Contains(category.ToLower())).ToList();
 
 		await FillRoadmapsButtons();
 	}
@@ -249,6 +251,17 @@
 
 	private async Task AddUserVote(Guid roadmapId)
 	{
+		if (LoggedInUserId != Guid.Empty)
+		{
+			User = await userService.GetUserById(LoggedInUserId);
+
+			if (User.IsBanned == "1")
+			{
+				navManager.NavigateTo("/banned");
+				return;
+			}
+		}
+
 		await votingService.AddUserVote(roadmapId, LoggedInUserId);
 
 		await OnInitializedAsync();

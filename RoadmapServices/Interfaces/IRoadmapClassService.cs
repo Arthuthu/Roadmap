@@ -9,6 +9,7 @@ namespace RoadmapServices.Interfaces
 		Task<IList<RoadmapClassModel>> GetRoadmapByUserId(Guid userId);
 		Task<IList<string>> AddRoadmap(RoadmapClassModel roadmap);
 		Task UpdateRoadmap(RoadmapClassModel roadmap);
-		Task DeleteRoadmap(Guid id);
+        Task DeleteAllUserRoadmaps(Guid userId);
+        Task DeleteRoadmap(Guid id);
     }
 }

@@ -10,5 +10,6 @@ namespace RoadmapRepository.Interfaces
 		Task AddRoadmap(RoadmapClassModel roadmap);
 		Task UpdateRoadmap(RoadmapClassModel roadmap);
 		Task DeleteRoadmap(Guid id);
-	}
+		Task DeleteAllUserRoadmaps(Guid userId);
+    }
 }

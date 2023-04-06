@@ -30,6 +30,7 @@
 	[Parameter]
 	public string? Type { get; set; }
 	private Guid LoggedInUserId { get; set; }
+	private UserModel? User { get; set; }
 	private DenunciaModel Denuncia = new();
 
 	protected override async Task OnInitializedAsync()
@@ -49,6 +50,16 @@
 		if (Id is null)
 		{
 			navManager.NavigateTo("/notfound");
+		}
+
+		if (User is null)
+		{
+			navManager.NavigateTo("/notfound");
+		}
+
+		if (User!.IsBanned == "1")
+		{
+			navManager.NavigateTo("/banned");
 		}
 	}
 

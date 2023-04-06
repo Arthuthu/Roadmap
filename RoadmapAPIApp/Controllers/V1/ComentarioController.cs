@@ -69,7 +69,16 @@ public class ComentarioController : ControllerBase
 		return Ok(requestComentario);
 	}
 
-	[Route("/deletecomentario/{id}")]
+    [Route("/deleteallusercomentarios/{userid}")]
+    [HttpDelete]
+    public async Task<ActionResult<ComentarioResponse>> DeleteAllUserComentarios(Guid userId)
+    {
+        await _comentarioService.DeleteAllUserComentarios(userId);
+
+        return Ok("Comentario foi deletado com sucesso");
+    }
+
+    [Route("/deletecomentario/{id}")]
 	[HttpDelete]
 	public async Task<ActionResult<ComentarioResponse>> DeleteRoadmap(Guid id)
 	{
