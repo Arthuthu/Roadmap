@@ -51,8 +51,9 @@ public class NodeController : ControllerBase
         return Ok(requestNode);
     }
 
+    [Route("/updatenode")]
     [HttpPut]
-    public async Task<ActionResult<List<NodeResponse>>> UpdateNode(NodeRequest node)
+    public async Task<ActionResult<List<NodeResponse>>> UpdateNode([FromForm] NodeRequest node)
     {
         var requestNode = _mapper.Map<NodeModel>(node);
         await _nodeService.UpdateNode(requestNode);

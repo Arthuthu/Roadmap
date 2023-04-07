@@ -80,7 +80,29 @@ public class NodeService : INodeService
 		return nodeModel;
 	}
 
-	public async Task<string> DeleteNode(Guid nodeId)
+    public async Task<string> UpdateNode(NodeModel node)
+    {
+        var data = new FormUrlEncodedContent(new[]
+        {
+                new KeyValuePair<string, string>("id", node.Id.ToString()),
+                new KeyValuePair<string, string>("name", node.Name),
+                new KeyValuePair<string, string>("description", node.Description)
+            });
+
+        string updateNodeEndpoint = _config["apiLocation"] + _config["updateNodeEndpoint"];
+        var authResult = await _client.PutAsync(updateNodeEndpoint, data);
+        var authContent = await authResult.Content.ReadAsStringAsync();
+
+        if (authResult.IsSuccessStatusCode is false)
+        {
+            _logger.LogInformation($"Ocorreu um erro ao atualizar o node: {authContent}");
+            return null;
+        }
+
+        return await authResult.Content.ReadAsStringAsync();
+    }
+
+    public async Task<string> DeleteNode(Guid nodeId)
 	{
 		string deleteNodeEndpoint = _config["apiLocation"] + _config["deleteNodeEndpoint"] + $"/{nodeId}";
 		var authResult = await _client.DeleteAsync(deleteNodeEndpoint);

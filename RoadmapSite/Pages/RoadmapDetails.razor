@@ -89,8 +89,26 @@
 				<div>
 					<button type="submit" class="first-style-button" id="adicionar-node-button"
 					onclick="clearNodeInput()">Adicionar</button>
+
+					<button class="first-style-button" @onclick=ToggleEditMode>
+						Editar
+					</button>
 				</div>
 			</EditForm>
+		}
+	</div>
+
+	<div>
+		@if (LoggedInUserModel!.IsAdmin == "1" && Roadmap.IsApproved == "0")
+		{
+			<div class="text-center text-info h4 my-4">
+				Este roadmap não foi aprovado
+			</div>
+			<div class="text-center my-4">
+				<button class="first-style-button" @onclick="async () => await ApproveRoadmap(Roadmap)">
+					Aprovar
+				</button>
+			</div>
 		}
 	</div>
 
@@ -114,12 +132,6 @@
 		{
 			@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
 			{
-				<div>
-					<button @onclick="ToggleEditMode"
-						class="second-style-button">
-						Editar
-					</button>
-				</div>
 				@if (LoggedInUserModel!.IsAdmin is null)
 				{
 					<div>
@@ -423,6 +435,14 @@
 		}
 	}
 	//Actual
+
+	private async Task ApproveRoadmap(RoadmapClassModel roadmap)
+	{
+		roadmap.IsApproved = "1";
+
+		await roadmapService.UpdateRoadmap(roadmap);
+		navManager.NavigateTo("/administration");
+	}
 
 	private async Task CommentOnRoadmap()
 	{

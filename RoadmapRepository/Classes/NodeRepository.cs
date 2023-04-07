@@ -41,7 +41,13 @@ public class NodeRepository : INodeRepository
 
 	public Task UpdateNode(NodeModel node)
 	{
-		return _db.SaveData("dbo.spNode_Update", node);
+		return _db.SaveData("dbo.spNode_Update", new
+		{
+			node.Id,
+			node.Name,
+			node.Description,
+			node.UpdatedDate
+		});
 	}
 
 	public Task DeleteNode(Guid id)
