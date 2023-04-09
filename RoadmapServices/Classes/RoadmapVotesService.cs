@@ -23,7 +23,12 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return _roadmapVotesRepository.GetAllRoadmapVotes();
 	}
 
-	public async Task<string> AddRoadmapVote(Guid userId, Guid roadmapId)
+    public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotesByUserId(Guid userId)
+    {
+        return _roadmapVotesRepository.GetAllRoadmapVotesByUserId(userId);
+    }
+
+    public async Task<string> AddRoadmapVote(Guid userId, Guid roadmapId)
 	{
 		Guid roadmapVoteId = Guid.NewGuid();
 

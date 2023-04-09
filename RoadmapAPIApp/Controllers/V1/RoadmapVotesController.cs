@@ -35,7 +35,16 @@ public class RoadmapVotesController : ControllerBase
 		return Ok(responseRoadmapVotes);
 	}
 
-	[Route("/addroadmapvote/{userId}/{roadmapId}")]
+    [Route("/getallroadmapvotesbyuserid/{userId}")]
+    [HttpGet]
+    public async Task<ActionResult<string>> CreateRoadmapVote(Guid userId)
+    {
+        var roadmapVotingResponseMessage = await _roadmapVotesService.GetAllRoadmapVotesByUserId(userId);
+
+        return Ok(roadmapVotingResponseMessage);
+    }
+
+    [Route("/addroadmapvote/{userId}/{roadmapId}")]
 	[HttpPost]
 	public async Task<ActionResult<string>> CreateRoadmapVote(Guid userId, Guid roadmapId)
 	{

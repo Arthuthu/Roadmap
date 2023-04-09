@@ -62,7 +62,24 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return roadmapVotesModel;
 	}
 
-	public async Task<string?> RemoveRoadmapVote(Guid roadmapVoteId)
+    public async Task<IList<RoadmapVotesModel>?> GetAllRoadmapVotesByUserId(Guid? userId)
+    {
+        string getallroadmapvotesbyuseridEndpoint = _config["apiLocation"] + _config["getallroadmapvotesbyuseridEndpoint"] + $"/{userId}";
+        var authResult = await _client.GetAsync(getallroadmapvotesbyuseridEndpoint);
+        var authContent = await authResult.Content.ReadAsStringAsync();
+
+        if (authResult.IsSuccessStatusCode is false)
+        {
+            _logger.LogInformation($"Ocorreu um erro durante o carregamento dos votos pelo usuario: {authContent}");
+            return null;
+        }
+
+        var roadmapVotesModel = JsonConvert.DeserializeObject<IList<RoadmapVotesModel>>(authContent);
+
+        return roadmapVotesModel;
+    }
+
+    public async Task<string?> RemoveRoadmapVote(Guid roadmapVoteId)
 	{
 		string removeRoadmapVoteEndpoint = _config["apiLocation"] + _config["removeRoadmapVoteEndpoint"] + $"/{roadmapVoteId}";
 		var authResult = await _client.DeleteAsync(removeRoadmapVoteEndpoint);

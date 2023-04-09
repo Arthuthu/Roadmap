@@ -23,7 +23,7 @@ public class ComentarioVotesService : IComentarioVotesService
 		return _comentarioVotesRepository.GetAllComentarioVotes();
 	}
 
-	public async Task<string> AddComentarioVote(Guid userId, Guid comentarioId)
+    public async Task<string> AddComentarioVote(Guid userId, Guid comentarioId)
 	{
 		Guid comentarioVoteId = Guid.NewGuid();
 
