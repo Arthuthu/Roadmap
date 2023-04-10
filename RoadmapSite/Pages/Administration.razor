@@ -54,6 +54,21 @@
 				{
 					<DisplayComment CommentId="@denuncia.CommentId" />
 				}
+				<div class="text-center">
+					<div>
+						<button class="second-style-button" @onclick=ToggleShowExcluirDenuncia>
+							Excluir
+						</button>
+					</div>
+					@if (showExcluirDenuncia)
+					{
+						<div>
+							<button class="second-style-button" @onclick="async () => await DeleteDenuncia(denuncia.Id)">
+								Confirmar
+							</button>
+						</div>
+					}
+				</div>
 			</div>
 		</Virtualize>
 	}
@@ -113,6 +128,7 @@
 						Aprovar
 					</button>
 
+
 					<button @onclick="ToggleShowDeletePage" class="second-style-button">
 						Excluir
 					</button>
@@ -145,6 +161,7 @@
 	private bool showDeletePage = false;
 	private bool showRoadmapsToApprove = false;
 	private bool showDenuncias = false;
+	private bool showExcluirDenuncia = false;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -195,6 +212,18 @@
 		await GetAllRoadmaps();
 	}
 
+	private async Task DeleteDenuncia(Guid denunciaId)
+	{
+		await denunciaService.DeleteDenuncia(denunciaId);
+
+		var denuncias = await denunciaService.GetAllDenuncias();
+
+		if (denuncias is not null)
+		{
+			Denuncias = denuncias.OrderBy(x => x.CreatedDate).ToList();
+		}
+	}
+
 	private async Task ToggleShowRoadmapsToApprove()
 	{
 		showRoadmapsToApprove = !showRoadmapsToApprove;
@@ -215,5 +244,10 @@
 		{
 			Denuncias = denuncias.OrderBy(x => x.CreatedDate).ToList();
 		}
+	}
+
+	private void ToggleShowExcluirDenuncia()
+	{
+		showExcluirDenuncia = !showExcluirDenuncia;
 	}
 }
