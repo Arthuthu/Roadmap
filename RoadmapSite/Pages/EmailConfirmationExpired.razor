@@ -7,7 +7,7 @@
 </div>
 
 <div class="text-center my-4">
-	<button class="first-style-button">
+	<button class="first-style-button" @onclick=UpdateEmailCodeAndDate>
 		Reenviar Email
 	</button>
 </div>
@@ -24,6 +24,19 @@
 		}
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId!);
+
+		if (LoggedInUserModel.IsConfirmed == "1" ||
+		LoggedInUserModel.ConfirmationCodeExpirationDate < DateTime.UtcNow.AddHours(-3))
+		{
+			navManager.NavigateTo("/");
+		}
 	}
 
+	private async Task UpdateEmailCodeAndDate()
+	{
+		LoggedInUserModel!.ConfirmationCode = Guid.NewGuid();
+		LoggedInUserModel!.ConfirmationCodeExpirationDate = DateTime.UtcNow.AddDays(1).AddHours(-3);
+
+		await userService.UpdateUser(LoggedInUserModel);
+	}
 }
