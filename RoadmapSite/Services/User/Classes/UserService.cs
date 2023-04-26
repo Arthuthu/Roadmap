@@ -92,6 +92,23 @@ public class UserService : IUserService
         return roadmapClassModel;
     }
 
+	public async Task<UserModel> GetUserByConfirmationCode(Guid? confirmationCode)
+	{
+		string getUserByConfirmationCodeEndpoint = _config["apiLocation"] + _config["getUserByConfirmationCodeEndpoint"] + $"/{confirmationCode}";
+		var authResult = await _client.GetAsync(getUserByConfirmationCodeEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario com o codigo de confirmação: {authContent}");
+			return null;
+		}
+
+		var roadmapClassModel = JsonConvert.DeserializeObject<UserModel>(authContent);
+
+		return roadmapClassModel;
+	}
+
 	public async Task<string> UpdateUser(UserModel user)
 	{
 		var data = new FormUrlEncodedContent(new[]

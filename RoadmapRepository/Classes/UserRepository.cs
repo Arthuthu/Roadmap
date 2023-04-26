@@ -27,6 +27,15 @@ public class UserRepository : IUserRepository
         return results.FirstOrDefault();
     }
 
+	public async Task<UserModel?> GetUserByConfirmationCode(Guid confirmationCode)
+	{
+		var results = await _db.LoadData<UserModel, dynamic>(
+			"dbo.spUser_GetByConfirmationCode",
+			new { ConfirmationCode = confirmationCode });
+
+		return results.FirstOrDefault();
+	}
+
 	public async Task<UserModel?> GetUserByName(UserModel user)
 	{
 		var results = await _db.LoadData<UserModel, dynamic>(
@@ -43,6 +52,7 @@ public class UserRepository : IUserRepository
             user.Id,
             user.Username,
             user.Password,
+            user.ConfirmationCode,
             user.PasswordHash,
             user.PasswordSalt,
             user.CreatedDate
@@ -56,8 +66,10 @@ public class UserRepository : IUserRepository
             user.Id,
             user.Username,
             user.Password,
+            user.ConfirmationCode,
             user.Bio,
             user.IsBanned,
+            user.IsConfirmed,
             user.UpdatedDate
         });
 

@@ -1,0 +1,47 @@
+﻿@page "/emailconfirmation/{confirmationcode}"
+@inject IUserService userService
+@inject NavigationManager navManager
+@code {
+	[Parameter]
+	public string? ConfirmationCode { get; set; }
+	private UserModel? User { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (ConfirmationCode is null)
+		{
+			navManager.NavigateTo("/");	
+		}
+
+		User = await userService.GetUserByConfirmationCode(new Guid(ConfirmationCode!));
+
+		if (User is null)
+		{
+			navManager.NavigateTo("/");
+		}
+
+		if (User!.IsConfirmed == "1")
+		{
+			navManager.NavigateTo("/");
+		}
+
+		if (User.ConfirmationCodeExpirationDate < DateTime.UtcNow.AddHours(-3))
+		{
+			navManager.NavigateTo("/confirmationemailexpired");
+		}
+
+		if (User!.ConfirmationCode.ToString() == ConfirmationCode)
+		{
+			await UpdateUser();
+
+			navManager.NavigateTo("/emailcofirmationsuccess");
+		}
+	}
+
+	private async Task UpdateUser()
+	{
+		User!.IsConfirmed = "1";
+
+		await userService.UpdateUser(User);
+	}
+}

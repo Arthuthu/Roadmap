@@ -41,6 +41,11 @@ public class UserService : IUserService
 		return await _userRepository.GetUserByName(user);
 	}
 
+	public async Task<UserModel?> GetUserByConfirmationCode(Guid confirmationCode)
+	{
+		return await _userRepository.GetUserByConfirmationCode(confirmationCode);
+	}
+
 	public async Task<IList<string>> AddUser(UserModel user)
     {
 		IList<string> registrationMessages = new List<string>();
@@ -60,7 +65,7 @@ public class UserService : IUserService
 			return registrationMessages;
 		}
 
-        var createdUser = await InsertUserIdPasswordHashSaltAndCreatedTime(user);
+        var createdUser = await InsertUserData(user);
 
 		try
 		{
@@ -169,13 +174,15 @@ public class UserService : IUserService
 		}
 	}
 
-    private async Task<UserModel> InsertUserIdPasswordHashSaltAndCreatedTime(UserModel user)
+    private async Task<UserModel> InsertUserData(UserModel user)
     {
 		CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
 		user.Id = Guid.NewGuid();
 		user.PasswordHash = passwordHash;
 		user.PasswordSalt = passwordSalt;
+		user.ConfirmationCode = Guid.NewGuid();
+		user.ConfirmationCodeExpirationDate = DateTime.UtcNow.AddDays(1).AddHours(-3);
 		user.CreatedDate = DateTime.UtcNow.AddHours(-3);
 
         return user;

@@ -1,0 +1,29 @@
+﻿@page "/confirmationemailexpired"
+@inject IUserService userService
+@inject NavigationManager navManager
+
+<div class="text-center fw-bold h4 my-4">
+	Seu email de confirmação expirou, clique no botão abaixo para solicitar um novo email
+</div>
+
+<div class="text-center my-4">
+	<button class="first-style-button">
+		Reenviar Email
+	</button>
+</div>
+
+@code {
+	private Guid LoggedInUserId { get; set; }
+	private UserModel? LoggedInUserModel { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (LoggedInUserId == Guid.Empty)
+		{
+			navManager.NavigateTo("/login");
+		}
+
+		LoggedInUserModel = await userService.GetUserById(LoggedInUserId!);
+	}
+
+}

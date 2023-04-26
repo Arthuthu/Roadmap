@@ -1,0 +1,43 @@
+﻿@page "/emailconfirmationsuccess"
+@inject IUserService userService
+
+<div class="fw-bold my-5 h4 text-center">
+	Seu email foi confirmado com sucesso
+</div>
+
+@if (IsLoggedIn)
+{
+	<div class="text-center my-4">
+		<a class="first-style-button" href="/">
+			Inicio
+		</a>
+	</div>
+}
+
+@if (!IsLoggedIn)
+{
+	<div class="text-center my-4">
+		<a class="first-style-button" href="/login">
+			Fazer login
+		</a>
+	</div>
+}
+
+@code {
+	private Guid LoggedInUserId { get; set; }
+	private bool IsLoggedIn { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		LoggedInUserId = await userService.GetLoggedInUserId();
+
+		if (LoggedInUserId == Guid.Empty)
+		{
+			IsLoggedIn = false;
+		}
+		else
+		{
+			IsLoggedIn = true;
+		}
+	}
+}
