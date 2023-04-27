@@ -46,6 +46,7 @@ public class UserController : ControllerBase
 
 	[Route("/getuserbyconfirmationcode/{confirmationcode}")]
 	[HttpGet]
+	[AllowAnonymous]
 	public async Task<ActionResult<UserResponse>> GetUserByConfirmationCode(Guid confirmationCode)
 	{
 		var user = await _userService.GetUserByConfirmationCode(confirmationCode);
@@ -74,7 +75,18 @@ public class UserController : ControllerBase
         return Ok("Perfil atualizado com sucesso");
     }
 
-    [HttpDelete("{id}")]
+	[Route("/updateuseremailconfirmation")]
+	[HttpPut]
+    [AllowAnonymous]
+	public async Task<ActionResult<List<UserResponse>>> UpdateUserEmailConfirmation([FromForm] UserRequest user)
+	{
+		var requestUser = _mapper.Map<UserModel>(user);
+		await _userService.UpdateUserEmailConfirmation(requestUser);
+
+		return Ok("Confirmação de email atualizada com sucesso");
+	}
+
+	[HttpDelete("{id}")]
     public async Task<ActionResult<UserResponse>> DeleteUser(Guid id)
     {
         await _userService.DeleteUser(id);

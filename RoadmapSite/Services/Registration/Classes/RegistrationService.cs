@@ -24,7 +24,8 @@ public class RegistrationService : IRegistrationService
         var data = new FormUrlEncodedContent(new[]
         {
             new KeyValuePair<string, string>("username", registrationUser.Username),
-            new KeyValuePair<string, string>("password", registrationUser.Password)
+			new KeyValuePair<string, string>("email", registrationUser.Email),
+			new KeyValuePair<string, string>("password", registrationUser.Password)
         });
 
         string registerEndpoint = _config["apiLocation"] + _config["registerEndpoint"];

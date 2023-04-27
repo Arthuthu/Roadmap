@@ -51,8 +51,10 @@ public class UserRepository : IUserRepository
         new { 
             user.Id,
             user.Username,
+            user.Email,
             user.Password,
             user.ConfirmationCode,
+            user.ConfirmationCodeExpirationDate,
             user.PasswordHash,
             user.PasswordSalt,
             user.CreatedDate
@@ -67,15 +69,27 @@ public class UserRepository : IUserRepository
             user.Username,
             user.Password,
             user.ConfirmationCode,
+            user.ConfirmationCodeExpirationDate,
             user.Bio,
             user.IsBanned,
             user.IsConfirmed,
             user.UpdatedDate
         });
-
     }
 
-    public Task DeleteUser(Guid id)
+	public Task UpdateUserEmailConfirmation(UserModel user)
+	{
+		return _db.SaveData("dbo.spUser_UpdateEmailConfirmation", new
+		{
+			user.Id,
+			user.ConfirmationCode,
+			user.ConfirmationCodeExpirationDate,
+			user.IsConfirmed,
+			user.UpdatedDate
+		});
+	}
+
+	public Task DeleteUser(Guid id)
     {
         return _db.SaveData("dbo.spUser_Delete", new { Id = id });
     }

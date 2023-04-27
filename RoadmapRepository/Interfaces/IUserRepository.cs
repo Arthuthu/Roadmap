@@ -9,6 +9,7 @@ namespace RoadmapRepository.Interfaces
         Task<UserModel?> GetUserByConfirmationCode(Guid confirmationCode);
 		Task<UserModel?> GetUserByName(UserModel user);
 		Task AddUser(UserModel user);
+        Task UpdateUserEmailConfirmation(UserModel user);
         Task UpdateUser(UserModel user);
         Task DeleteUser(Guid id);
 

@@ -1,0 +1,43 @@
+﻿@page "/emailconfirmationexpired/{confirmationcode}"
+@inject IUserService userService
+@inject NavigationManager navManager
+
+<div class="text-center fw-bold h4 my-4">
+	Seu email de confirmação expirou, clique no botão abaixo para solicitar um novo email
+</div>
+
+<div class="text-center my-4">
+	<button class="first-style-button" @onclick=UpdateEmailCodeAndDate>
+		Reenviar Email
+	</button>
+</div>
+
+@code {
+	[Parameter]
+	public string? ConfirmationCode { get; set; }
+	private UserModel? User { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (ConfirmationCode is null)
+		{
+			navManager.NavigateTo("/");
+		}
+
+		User = await userService.GetUserByConfirmationCode(new Guid(ConfirmationCode!));
+
+		if (User.IsConfirmed == "1" ||
+		User.ConfirmationCodeExpirationDate > DateTime.UtcNow.AddHours(-3))
+		{
+			navManager.NavigateTo("/");
+		}
+	}
+
+	private async Task UpdateEmailCodeAndDate()
+	{
+		User!.ConfirmationCode = Guid.NewGuid();
+		User!.ConfirmationCodeExpirationDate = DateTime.UtcNow.AddDays(1).AddHours(-3);
+
+		await userService.UpdateUserEmailConfirmation(User);
+	}
+}

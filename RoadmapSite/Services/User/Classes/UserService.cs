@@ -132,4 +132,27 @@ public class UserService : IUserService
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
+
+	public async Task<string> UpdateUserEmailConfirmation(UserModel user)
+	{
+		var data = new FormUrlEncodedContent(new[]
+		{
+			new KeyValuePair<string, string>("id", user.Id.ToString()),
+			new KeyValuePair<string, string>("confirmationcode", user.ConfirmationCode.ToString()),
+			new KeyValuePair<string, string>("confirmationcodeexpirationdate", user.ConfirmationCodeExpirationDate.ToString()),
+			new KeyValuePair<string, string>("isconfirmed", user.IsConfirmed)
+		});
+
+		string updateUserEmailConfirmationEndpoint = _config["apiLocation"] + _config["updateUserEmailConfirmationEndpoint"];
+		var authResult = await _client.PutAsync(updateUserEmailConfirmationEndpoint, data);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro ao atualizar a confirmação de email: {authContent}");
+			return null;
+		}
+
+		return await authResult.Content.ReadAsStringAsync();
+	}
 }

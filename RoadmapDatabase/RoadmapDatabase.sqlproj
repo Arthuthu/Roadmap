@@ -113,6 +113,7 @@
     <Build Include="dbo\StoredProcedures\Comentario\spComentario_DeleteAllUserComments.sql" />
     <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_GetAllByUserId.sql" />
     <Build Include="dbo\StoredProcedures\User\User_GetByConfirmationCode.sql" />
+    <Build Include="dbo\StoredProcedures\User\spUser_UpdateEmailConfirmation.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />

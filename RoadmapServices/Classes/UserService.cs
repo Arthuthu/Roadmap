@@ -87,7 +87,14 @@ public class UserService : IUserService
         return _userRepository.UpdateUser(user);
     }
 
-    public Task DeleteUser(Guid id)
+	public Task UpdateUserEmailConfirmation(UserModel user)
+	{
+		user.UpdatedDate = DateTime.UtcNow.AddHours(-3);
+
+		return _userRepository.UpdateUserEmailConfirmation(user);
+	}
+
+	public Task DeleteUser(Guid id)
     {
         return _userRepository.DeleteUser(id);
     }

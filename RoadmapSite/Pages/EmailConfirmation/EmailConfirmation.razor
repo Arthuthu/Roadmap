@@ -27,14 +27,14 @@
 
 		if (User.ConfirmationCodeExpirationDate < DateTime.UtcNow.AddHours(-3))
 		{
-			navManager.NavigateTo("/confirmationemailexpired");
+			navManager.NavigateTo($"/emailconfirmationexpired/{ConfirmationCode}", true);
 		}
 
 		if (User!.ConfirmationCode.ToString() == ConfirmationCode)
 		{
 			await UpdateUser();
 
-			navManager.NavigateTo("/emailcofirmationsuccess");
+			navManager.NavigateTo("/emailconfirmationsuccess");
 		}
 	}
 
@@ -42,6 +42,6 @@
 	{
 		User!.IsConfirmed = "1";
 
-		await userService.UpdateUser(User);
+		await userService.UpdateUserEmailConfirmation(User);
 	}
 }
