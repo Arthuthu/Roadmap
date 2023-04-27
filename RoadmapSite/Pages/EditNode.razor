@@ -82,20 +82,31 @@
         await PageVerification();
     }
 
-    private async Task PageVerification()
+    private async Task<bool> PageVerification()
     {
         if (NodeId is null)
         {
             navManager.NavigateTo("/notfound");
+
+            return false;
         }
 
         LoggedInUserId = await userService.GetLoggedInUserId();
 
         LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
+        if (LoggedInUserModel.IsConfirmed is null)
+        {
+            navManager.NavigateTo("/emailnotconfirmed");
+
+            return false;
+        }
+
         if (LoggedInUserModel.IsBanned == "1")
         {
             navManager.NavigateTo("/banned");
+
+            return false;
         }
 
         Node = await nodeService.GetNodeById(new Guid(NodeId!));
@@ -103,6 +114,8 @@
         if (Node is null)
         {
             navManager.NavigateTo("/notfound");
+
+            return false;
         }
 
         Roadmap = await roadmapService.GetRoadmapById(Node!.RoadmapId);
@@ -110,14 +123,20 @@
         if (Roadmap is null)
         {
             navManager.NavigateTo("/notfound");
+
+            return false;
         }
 
         if (Roadmap!.UserId != LoggedInUserId)
         {
             navManager.NavigateTo("/notfound");
+
+            return false;
         }
 
         IsInitialized = true;
+
+        return true;
     }
 
     private async Task DeleteNode()

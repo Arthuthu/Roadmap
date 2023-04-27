@@ -1,6 +1,6 @@
 ﻿@inject IComentarioService comentarioService
 
-@if (IsInitialized)
+@if (isInitialized)
 {
     <div class="display-comment-div">
         <div class="display-comment-label">
@@ -28,7 +28,7 @@
     [Parameter]
     public Guid? CommentId { get; set; }
     private ComentarioModel? Comment { get; set; }
-    private bool IsInitialized = false;
+    private bool isInitialized = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,7 +41,7 @@
 
         if (Comment is not null)
         {
-            IsInitialized = true;
+            isInitialized = true;
         }
     }
 }

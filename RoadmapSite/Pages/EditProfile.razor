@@ -2,7 +2,7 @@
 @inject NavigationManager navManager
 @inject IUserService userService
 
-@if (IsInitialized)
+@if (isInitialized)
 {
 	<div class="edit-profile-label-div">
 		Escreva algo em sua bio
@@ -34,7 +34,7 @@
 	public string? UserId { get; set; }
 	public Guid LoggedInUserId { get; set; }
 	public UserModel? LoggedInUserModel { get; set; }
-	private bool IsInitialized = false;
+	private bool isInitialized = false;
 	private bool showAuthenticationError = false;
 	private string authenticationErrorText = "";
 
@@ -43,11 +43,13 @@
 		await PageVerification();
 	}
 
-	private async Task PageVerification()
+	private async Task<bool> PageVerification()
 	{
 		if (UserId is null)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
 		}
 
 		LoggedInUserId = await userService.GetLoggedInUserId();
@@ -55,6 +57,8 @@
 		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
+
+			return false;
 		}
 
 		LoggedInUserModel = await userService.GetUserById(new Guid(UserId!));
@@ -62,19 +66,34 @@
 		if (LoggedInUserModel is null)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
+		}
+
+		if (LoggedInUserModel.IsConfirmed is null)
+		{
+			navManager.NavigateTo("/emailnotconfirmed");
+
+			return false;
 		}
 
 		if (LoggedInUserModel.IsBanned == "1")
 		{
 			navManager.NavigateTo("/banned");
+
+			return false;
 		}
 
 		if (UserId != LoggedInUserId.ToString())
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
 		}
 
-		IsInitialized = true;
+		isInitialized = true;
+
+		return true;
 	}
 
 	private async Task UpdateProfile()

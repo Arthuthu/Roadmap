@@ -4,7 +4,7 @@
 @inject IRoadmapService roadmapServiceService
 
 
-@if (IsInitialized)
+@if (isInitialized)
 {
 	<EditForm Model="Roadmap" OnValidSubmit="ExecuteRoadmapCreation" Context="Form">
 		<div class="form-div">
@@ -49,7 +49,7 @@
 	private UserModel? LoggedInUserModel { get; set; }
 	private RoadmapClassModel Roadmap = new();
 	private string roadmapCreationMessage = "";
-	private bool IsInitialized = false;
+	private bool isInitialized = false;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -90,7 +90,7 @@
 			return false;
 		}
 
-		IsInitialized = true;
+		isInitialized = true;
 
 		return true;
 	}

@@ -6,7 +6,7 @@
 @inject IRoadmapVotesService roadmapVotesService
 @inject IRoadmapVotingService votingService
 
-@if (IsInitialized)
+@if (isInitialized)
 {
 	<div class="user-profile-photo-div">
 		<img src="@DefaultProfilePicture" />
@@ -170,7 +170,7 @@
 	private bool showProfileOptions = false;
 	private bool showBanConfirmation = false;
 	private bool showUnbanConfirmation = false;
-	private bool IsInitialized = false;
+	private bool isInitialized = false;
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"; 
 
 	protected override async Task OnInitializedAsync()
@@ -183,11 +183,13 @@
 		await PageVerification();
 	}
 
-	private async Task PageVerification()
+	private async Task<bool> PageVerification()
 	{
 		if (UserId is null)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
 		}
 
 		LoggedInUserId = await userService.GetLoggedInUserId();
@@ -195,6 +197,8 @@
 		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
+
+			return false;
 		}
 
 		User = await userService.GetUserById(new Guid(UserId!));
@@ -202,6 +206,8 @@
 		if (User is null)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
 		}
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
@@ -209,13 +215,31 @@
 		if (LoggedInUserModel is null)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
+		}
+
+		if (LoggedInUserModel.IsConfirmed is null)
+		{
+			navManager.NavigateTo("/emailnotconfirmed");
+
+			return false;
+		}
+
+		if (LoggedInUserModel.IsBanned == "1")
+		{
+			navManager.NavigateTo("/banned");
+
+			return false;
 		}
 
 		Roadmaps = await roadmapService.GetRoadmapByUserId(new Guid(UserId!));
 
 		await GetRoadmapsData();
 
-		IsInitialized = true;
+		isInitialized = true;
+
+		return true;
 	}
 
 	private async Task AddUserVote(Guid roadmapId)

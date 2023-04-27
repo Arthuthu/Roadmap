@@ -3,25 +3,29 @@
 @inject IUserService userService
 @inject IDenunciaService denunciaService
 
-<EditForm Model="Denuncia" OnValidSubmit="ExecuteDenunciaCreation" Context="Form">
-	<div class="text-center">
-		<div class="criar-denuncia-label">
-			<p>Criar Denuncia</p>
-		</div>
+@if (isInitialized)
+{
+	<EditForm Model="Denuncia" OnValidSubmit="ExecuteDenunciaCreation" Context="Form">
+		<div class="text-center">
+			<div class="criar-denuncia-label">
+				<p>Criar Denuncia</p>
+			</div>
 
-		<div>
-			<label for="name" class="visually-hidden">Descrição</label>
 			<div>
-				<InputTextArea id="description" @bind-Value="Denuncia.Description" 
-				placeholder="Descreve a denuncia" class="denuncia-input-text-area"/>
+				<label for="name" class="visually-hidden">Descrição</label>
+				<div>
+					<InputTextArea id="description" @bind-Value="Denuncia.Description"
+			  placeholder="Descreve a denuncia" class="denuncia-input-text-area" />
+				</div>
+			</div>
+
+			<div class="text-center">
+				<button type="submit" class="first-style-button">Enviar Denuncia</button>
 			</div>
 		</div>
+	</EditForm>
+}
 
-		<div class="text-center">
-			<button type="submit" class="first-style-button">Enviar Denuncia</button>
-		</div>
-	</div>
-</EditForm>
 
 @code {
 	[Parameter]
@@ -31,29 +35,36 @@
 	private Guid LoggedInUserId { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
 	private DenunciaModel Denuncia = new();
+	private bool isInitialized = false;
 
 	protected override async Task OnInitializedAsync()
 	{
 		await PageVerification();
 	}
 
-	private async Task PageVerification()
+	private async Task<bool> PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
+
+			return false;
 		}
 
 		if (Type is null)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
 		}
 
 		if (Id is null)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
 		}
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
@@ -61,12 +72,27 @@
 		if (LoggedInUserModel is null)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
+		}
+
+		if (LoggedInUserModel!.IsConfirmed is null)
+		{
+			navManager.NavigateTo("/emailnotconfirmed");
+
+			return false;
 		}
 
 		if (LoggedInUserModel!.IsBanned == "1")
 		{
 			navManager.NavigateTo("/banned");
+
+			return false;
 		}
+
+		isInitialized = true;
+
+		return true;
 	}
 
 	private async Task ExecuteDenunciaCreation()
