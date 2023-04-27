@@ -56,28 +56,43 @@
 		await PageVerification();
 	}
 
-	private async Task PageVerification()
+	private async Task<bool> PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/login");
+
+			return false;
 		}
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
 		if (LoggedInUserModel is null)
 		{
-			navManager.NavigateTo("/notfound");
+			navManager.NavigateTo("/notfound", true);
+
+			return false;
+		}
+
+		if (LoggedInUserModel.IsConfirmed is null)
+		{
+			navManager.NavigateTo($"emailconfirmationnotconfirmed");
+
+			return false;
 		}
 
 		if (LoggedInUserModel!.IsBanned == "1")
 		{
 			navManager.NavigateTo("/banned");
+
+			return false;
 		}
 
 		IsInitialized = true;
+
+		return true;
 	}
 
 	private async Task<string> ExecuteRoadmapCreation()

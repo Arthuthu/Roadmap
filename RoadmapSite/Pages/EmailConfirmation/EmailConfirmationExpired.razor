@@ -39,5 +39,7 @@
 		User!.ConfirmationCodeExpirationDate = DateTime.UtcNow.AddDays(1).AddHours(-3);
 
 		await userService.UpdateUserEmailConfirmation(User);
+
+		navManager.NavigateTo("/emailconfirmationsendmessage");
 	}
 }
