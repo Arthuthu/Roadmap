@@ -78,12 +78,11 @@ public class UserService : IUserService
 		}
 
         var createdUser = InsertUserData(user);
-		await SendEmail();
 
 		try
 		{
 			await _userRepository.AddUser(createdUser);
-
+			await SendEmail();
 			registrationMessages.Add("Usuario registrado com sucesso");
 		}
 		catch (Exception ex)
@@ -122,7 +121,9 @@ public class UserService : IUserService
 			verificationMessages.Add(message);
 		}
 
-		return verificationMessages;
+		var cleanMessages = verificationMessages.Where(x => !x.IsNullOrEmpty()).ToList();
+
+		return cleanMessages;
 	}
 
 	private async Task<IList<string?>> UserLoginVerifications(UserModel user)
@@ -248,21 +249,21 @@ public class UserService : IUserService
 
 	private async Task SendEmail()
 	{
-		//var sender = new SmtpSender(() => new SmtpClient("localhost")
-		//{
-		//	EnableSsl = true,
-		//	DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
-		//	PickupDirectoryLocation = @"C:\Users\User\Desktop\Emails"
-		//});
+		var sender = new SmtpSender(() => new SmtpClient("localhost")
+		{
+			EnableSsl = true,
+			DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
+			PickupDirectoryLocation = @"C:\Users\User\Desktop\Emails"
+		});
 
-		//Email.DefaultSender = sender;
+		Email.DefaultSender = sender;
 
-		//var email = await Email
-		//	.From("arthurgeromello@hotmail.com")
-		//	.To("arthur_geromello@hotmail.com")
-		//	.Subject("Thanks")
-		//	.Body("Thanks for buying our product")
-		//	.SendAsync();
+		var email = await Email
+			.From("arthurgeromello@hotmail.com")
+			.To("arthur_geromello@hotmail.com")
+			.Subject("Thanks")
+			.Body("Thanks for buying our product")
+			.SendAsync();
 	}
 
     private string CreateToken(UserModel user)
