@@ -82,7 +82,7 @@ public class UserService : IUserService
 		try
 		{
 			await _userRepository.AddUser(createdUser);
-			await SendEmail();
+			await SendEmail(createdUser);
 			registrationMessages.Add("Usuario registrado com sucesso");
 		}
 		catch (Exception ex)
@@ -247,23 +247,22 @@ public class UserService : IUserService
         return user;
     }
 
-	private async Task SendEmail()
+	private async Task SendEmail(UserModel user)
 	{
-		var sender = new SmtpSender(() => new SmtpClient("localhost")
-		{
-			EnableSsl = true,
-			DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
-			PickupDirectoryLocation = @"C:\Users\User\Desktop\Emails"
-		});
+			var sender = new SmtpSender(() => new SmtpClient("localhost")
+			{
+				DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
+				PickupDirectoryLocation = @"C:\Users\User\Desktop\Emails"
+			});
 
-		Email.DefaultSender = sender;
+			Email.DefaultSender = sender;
 
-		var email = await Email
-			.From("arthurgeromello@hotmail.com")
-			.To("arthur_geromello@hotmail.com")
-			.Subject("Thanks")
-			.Body("Thanks for buying our product")
-			.SendAsync();
+			var email = await Email
+				.From("arthurgeromello@hotmail.com")
+				.To("arthur_geromello@hotmail.com")
+				.Subject("Roadmap Email Confirmation")
+				.Body($"Clique no link para confirmar o seu email: https://localhost:7290/emailconfirmation/{user.ConfirmationCode}")
+				.SendAsync();
 	}
 
     private string CreateToken(UserModel user)
