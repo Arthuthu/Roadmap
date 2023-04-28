@@ -251,17 +251,19 @@ public class UserService : IUserService
 	{
 			var sender = new SmtpSender(() => new SmtpClient("localhost")
 			{
-				DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
-				PickupDirectoryLocation = @"C:\Users\User\Desktop\Emails"
+				EnableSsl = false,
+				DeliveryMethod = SmtpDeliveryMethod.Network,
+				Port = 25
 			});
 
 			Email.DefaultSender = sender;
 
 			var email = await Email
 				.From("arthurgeromello@hotmail.com")
-				.To("arthur_geromello@hotmail.com")
+				.To(user.Email)
 				.Subject("Roadmap Email Confirmation")
-				.Body($"Clique no link para confirmar o seu email: https://localhost:7290/emailconfirmation/{user.ConfirmationCode}")
+				.Body($"Clique no link para confirmar o seu email: " +
+				$"{_configuration.GetSection("SiteUrl").Value}/emailconfirmation/{user.ConfirmationCode}")
 				.SendAsync();
 	}
 
