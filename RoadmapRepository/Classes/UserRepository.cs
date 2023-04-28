@@ -45,6 +45,15 @@ public class UserRepository : IUserRepository
 		return results.FirstOrDefault();
 	}
 
+	public async Task<UserModel?> GetUserByEmail(UserModel user)
+	{
+		var results = await _db.LoadData<UserModel, dynamic>(
+			"dbo.spUser_GetByEmail",
+			new { Email = user.Email });
+
+		return results.FirstOrDefault();
+	}
+
 	public Task AddUser(UserModel user)
     {
         return _db.SaveData("dbo.spUser_Add",

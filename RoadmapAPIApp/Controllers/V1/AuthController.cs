@@ -31,8 +31,12 @@ public class AuthController : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult> Login([FromForm] LoginRequest loginUser)
 	{
+		string token = "";
+
 		var requestUser = _mapper.Map<UserModel>(loginUser);
-		string token = await _userService.Login(requestUser);
+		var loginResponse = await _userService.Login(requestUser);
+
+		token = loginResponse.FirstOrDefault()!;
 
 		var output = new
 		{

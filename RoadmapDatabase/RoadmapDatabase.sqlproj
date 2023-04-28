@@ -114,6 +114,7 @@
     <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_GetAllByUserId.sql" />
     <Build Include="dbo\StoredProcedures\User\User_GetByConfirmationCode.sql" />
     <Build Include="dbo\StoredProcedures\User\spUser_UpdateEmailConfirmation.sql" />
+    <Build Include="dbo\StoredProcedures\User\spUser_GetByEmail.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />
