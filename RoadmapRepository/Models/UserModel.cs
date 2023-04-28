@@ -9,9 +9,9 @@ public class UserModel
 	public Guid? ConfirmationCode { get; set; }
 	public DateTime? ConfirmationCodeExpirationDate { get; set; }
 	public string? Bio { get; set; }
-	public int? IsAdmin { get; set; }
-	public int? IsConfirmed { get; set; }
-	public int? IsBanned { get; set; }
+	public bool IsAdmin { get; set; }
+	public bool IsConfirmed { get; set; }
+	public bool IsBanned { get; set; }
 
 	public byte[]? PasswordHash { get; set; }
 	public byte[]? PasswordSalt { get; set; }

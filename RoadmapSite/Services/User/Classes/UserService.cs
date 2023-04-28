@@ -117,7 +117,7 @@ public class UserService : IUserService
 			new KeyValuePair<string, string>("username", user.Username!),
 			new KeyValuePair<string, string>("password", user.Password),
 			new KeyValuePair<string, string>("bio", user.Bio),
-			new KeyValuePair<string, string>("isbanned", user.IsBanned)
+			new KeyValuePair<string, string>("isbanned", user.IsBanned.ToString())
         });
 
 		string updateUserEndpoint = _config["apiLocation"] + _config["updateUserEndpoint"];
@@ -140,7 +140,7 @@ public class UserService : IUserService
 			new KeyValuePair<string, string>("id", user.Id.ToString()),
 			new KeyValuePair<string, string>("confirmationcode", user.ConfirmationCode.ToString()),
 			new KeyValuePair<string, string>("confirmationcodeexpirationdate", user.ConfirmationCodeExpirationDate.ToString()),
-			new KeyValuePair<string, string>("isconfirmed", user.IsConfirmed)
+			new KeyValuePair<string, string>("isconfirmed", user.IsConfirmed.ToString())
 		});
 
 		string updateUserEmailConfirmationEndpoint = _config["apiLocation"] + _config["updateUserEmailConfirmationEndpoint"];

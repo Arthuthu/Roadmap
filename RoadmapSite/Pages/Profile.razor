@@ -30,7 +30,7 @@
 		</div>
 	</div>
 
-	if (User!.IsBanned == "1")
+	if (User!.IsBanned is true)
 	{
 		<div class="text-center text-danger my-4 h4 ">
 			Este usuário foi banido
@@ -55,14 +55,14 @@
 			</div>
 		}
 
-		@if (User.IsAdmin == "1")
+		@if (User.IsAdmin is true)
 		{
 			<div class="text-center m-4">
 				<a class="second-style-button" href="/administration">Administrar</a>
 			</div>
 		}
 
-		@if (LoggedInUserModel!.IsAdmin == "1" && User!.IsBanned == null)
+		@if (LoggedInUserModel!.IsAdmin is true && User!.IsBanned is false)
 		{
 			<div class="text-center">
 				<button class="second-style-button" @onclick=ToggleShowBanConfirmation>
@@ -79,7 +79,7 @@
 
 		}
 
-		@if (LoggedInUserModel!.IsAdmin == "1" && User!.IsBanned == "1")
+		@if (LoggedInUserModel!.IsAdmin is true && User!.IsBanned is true)
 		{
 			<div class="text-center">
 				<button class="second-style-button" @onclick=ToggleShowUnbanConfirmation>
@@ -219,14 +219,14 @@
 			return false;
 		}
 
-		if (LoggedInUserModel.IsConfirmed is null)
+		if (LoggedInUserModel.IsConfirmed is false)
 		{
 			navManager.NavigateTo("/emailnotconfirmed");
 
 			return false;
 		}
 
-		if (LoggedInUserModel.IsBanned == "1")
+		if (LoggedInUserModel.IsBanned is true)
 		{
 			navManager.NavigateTo("/banned");
 

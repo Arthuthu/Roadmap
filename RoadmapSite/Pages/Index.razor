@@ -247,7 +247,7 @@
 		{
 			User = await userService.GetUserById(LoggedInUserId);
 
-			if (User.IsBanned == "1")
+			if (User.IsBanned is true)
 			{
 				navManager.NavigateTo("/banned");
 				return;

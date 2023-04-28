@@ -99,7 +99,7 @@
 	</div>
 
 	<div>
-		@if (LoggedInUserModel!.IsAdmin == "1" && Roadmap.IsApproved == "0")
+		@if (LoggedInUserModel!.IsAdmin is true && Roadmap.IsApproved == "0")
 		{
 			<div class="text-center text-info h4 my-4">
 				Este roadmap não foi aprovado
@@ -130,9 +130,9 @@
 
 		@if (showRoadmapEditOptions)
 		{
-			@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
+			@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin is true)
 			{
-				@if (LoggedInUserModel!.IsAdmin is null)
+				@if (LoggedInUserModel!.IsAdmin is false)
 				{
 					<div>
 						<button @onclick="ToggleShowDeletePageAuthor" class="second-style-button">
@@ -140,7 +140,7 @@
 						</button>
 					</div>
 				}
-				else if (LoggedInUserModel.IsAdmin == "1")
+				else if (LoggedInUserModel.IsAdmin is true)
 				{
 					<div>
 						<button @onclick="ToggleShowDeletePageAdmin" class="second-style-button">
@@ -246,7 +246,7 @@
 					</div>
 					<div class="comment-options-div">
 						<div>
-							@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel!.IsAdmin == "1")
+							@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel!.IsAdmin is true)
 							{
 								<button @onclick="ToggleShowDeleteComment"
 								class="second-style-button">
@@ -333,14 +333,14 @@
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
-		if (LoggedInUserModel.IsConfirmed is null)
+		if (LoggedInUserModel.IsConfirmed is false)
 		{
 			navManager.NavigateTo("/emailnotconfirmed");
 
 			return false;
 		}
 
-		if (LoggedInUserModel.IsBanned == "1")
+		if (LoggedInUserModel.IsBanned is true)
 		{
 			navManager.NavigateTo("/banned");
 

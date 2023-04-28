@@ -76,14 +76,14 @@
 			return false;
 		}
 
-		if (LoggedInUserModel!.IsConfirmed is null)
+		if (LoggedInUserModel!.IsConfirmed is false)
 		{
 			navManager.NavigateTo("/emailnotconfirmed");
 
 			return false;
 		}
 
-		if (LoggedInUserModel!.IsBanned == "1")
+		if (LoggedInUserModel!.IsBanned is true)
 		{
 			navManager.NavigateTo("/banned");
 

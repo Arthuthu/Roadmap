@@ -9,9 +9,9 @@
     [ConfirmationCodeExpirationDate] datetime2(7) NULL, 
     [PasswordHash] VARBINARY(MAX) NULL, 
     [PasswordSalt] VARBINARY(MAX) NULL, 
-    [IsAdmin] NVARCHAR NULL,
-    [IsConfirmed] NVARCHAR NULL,
-    [IsBanned] NVARCHAR NULL,
+    [IsAdmin] BIT NULL DEFAULT 0,
+    [IsConfirmed] BIT NULL DEFAULT 0,
+    [IsBanned] BIT NULL DEFAULT 0,
     [CreatedDate] DATETIME2 NULL, 
     [UpdatedDate] DATETIME2 NULL,
 

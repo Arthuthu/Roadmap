@@ -168,13 +168,15 @@
 		await PageVerification();
 	}
 
-	private async Task PageVerification()
+	private async Task<bool> PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
 		if (LoggedInUserId == Guid.Empty)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
 		}
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
@@ -182,16 +184,22 @@
 		if (LoggedInUserModel is null)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
 		}
 
-		if (LoggedInUserModel!.IsAdmin != "1")
+		if (LoggedInUserModel!.IsAdmin is not true)
 		{
 			navManager.NavigateTo("/notfound");
+
+			return false;
 		}
 
 		await GetAllRoadmaps();
 
 		IsInitialized = true;
+
+		return true;
 	}
 
 	private async Task GetAllRoadmaps()

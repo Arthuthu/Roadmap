@@ -26,7 +26,7 @@
 
 		User = await userService.GetUserByConfirmationCode(new Guid(ConfirmationCode!));
 
-		if (User.IsConfirmed == "1" ||
+		if (User.IsConfirmed is true ||
 		User.ConfirmationCodeExpirationDate > DateTime.UtcNow.AddHours(-3))
 		{
 			navManager.NavigateTo("/");

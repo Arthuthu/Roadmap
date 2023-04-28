@@ -43,11 +43,13 @@
         await PageVerification();
     }
 
-    private async Task PageVerification()
+    private async Task<bool> PageVerification()
     {
         if (UserId is null)
         {
             navManager.NavigateTo("/notfound");
+
+            return false;
         }
 
         LoggedInUserId = await userService.GetLoggedInUserId();
@@ -55,6 +57,8 @@
         if (LoggedInUserId == Guid.Empty)
         {
             navManager.NavigateTo("/notfound");
+
+            return false;
         }
 
         AdministratorModel = await userService.GetUserById(LoggedInUserId);
@@ -62,11 +66,15 @@
         if (AdministratorModel is null)
         {
             navManager.NavigateTo("/notfound");
+
+            return false;
         }
 
-        if (AdministratorModel!.IsAdmin is null)
+        if (AdministratorModel!.IsAdmin is false)
         {
             navManager.NavigateTo("/notfound");
+
+            return false;
         }
 
         UserThatWillBeBanned = await userService.GetUserById(new Guid(UserId!));
@@ -74,14 +82,18 @@
         if (UserThatWillBeBanned is null)
         {
             navManager.NavigateTo("/notfound");
+
+            return false;
         }
 
         IsInitialized = true;
+
+        return true;
     }
 
     private async Task BanTheUser()
     {
-        UserThatWillBeBanned!.IsBanned = "1";
+        UserThatWillBeBanned!.IsBanned = true;
         UserThatWillBeBanned!.Bio = "...";
 
         await userService.UpdateUser(UserThatWillBeBanned);

@@ -9,6 +9,6 @@ public class UserRequest
 	public Guid? ConfirmationCode { get; set; }
 	public DateTime? ConfirmationCodeExpirationDate { get; set; }
 	public string? Bio { get; set; }
-	public string? IsBanned { get; set; }
-	public string? IsConfirmed { get; set; }
+	public bool IsBanned { get; set; }
+	public bool IsConfirmed { get; set; }
 }
