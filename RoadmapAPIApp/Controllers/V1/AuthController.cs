@@ -31,12 +31,18 @@ public class AuthController : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult> Login([FromForm] LoginRequest loginUser)
 	{
-		string token = "";
 
 		var requestUser = _mapper.Map<UserModel>(loginUser);
 		var loginResponse = await _userService.Login(requestUser);
 
-		token = loginResponse.FirstOrDefault()!;
+		string? token = loginResponse.FirstOrDefault()!;
+
+		if (!token.StartsWith("ey"))
+		{
+			token = null;
+
+			return BadRequest("Não foi possivel efetuar o login");
+		}
 
 		var output = new
 		{
