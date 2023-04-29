@@ -1,13 +1,14 @@
-﻿using FluentEmail.Core;
-using FluentEmail.Smtp;
+﻿using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MimeKit;
+using MimeKit.Text;
 using RoadmapRepository.Interfaces;
 using RoadmapRepository.Models;
 using RoadmapServices.Interfaces;
 using RoadmapServices.Validators.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -82,7 +83,7 @@ public class UserService : IUserService
 		try
 		{
 			await _userRepository.AddUser(createdUser);
-			await SendEmail(createdUser);
+			SendEmail(createdUser);
 			registrationMessages.Add("Usuario registrado com sucesso");
 		}
 		catch (Exception ex)
@@ -247,27 +248,27 @@ public class UserService : IUserService
         return user;
     }
 
-	private async Task SendEmail(UserModel user)
+	private void SendEmail(UserModel user)
 	{
-			var sender = new SmtpSender(() => new SmtpClient("localhost")
-			{
-				EnableSsl = false,
-				DeliveryMethod = SmtpDeliveryMethod.Network,
-				Port = 25
-			});
+		var email = new MimeMessage();
+		email.From.Add(MailboxAddress.Parse($"{_configuration.GetSection("EmailCredentials:Email").Value}"));
+		email.To.Add(MailboxAddress.Parse($"{_configuration.GetSection("EmailCredentials:Email").Value}"));
+		email.Subject = "Roadmap Email Confirmation";
+		email.Body = new TextPart(TextFormat.Html)
+		{
+			Text = $"Clique no link para confirmar seu email: " +
+			$"{_configuration.GetSection("SiteUrl").Value}/emailconfirmation/{user.ConfirmationCode}"
+		};
 
-			Email.DefaultSender = sender;
-
-			var email = await Email
-				.From("arthurgeromello@hotmail.com")
-				.To(user.Email)
-				.Subject("Roadmap Email Confirmation")
-				.Body($"Clique no link para confirmar o seu email: " +
-				$"{_configuration.GetSection("SiteUrl").Value}/emailconfirmation/{user.ConfirmationCode}")
-				.SendAsync();
+		using var smtp = new SmtpClient();
+		smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
+		smtp.Authenticate($"{_configuration.GetSection("EmailCredentials:Email").Value}",
+			$"{_configuration.GetSection("EmailCredentials:Password").Value}");
+		smtp.Send(email);
+		smtp.Disconnect(true);
 	}
 
-    private string CreateToken(UserModel user)
+	private string CreateToken(UserModel user)
     {
 		List<Claim> claims = new List<Claim>
 		{
