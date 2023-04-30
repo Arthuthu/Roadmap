@@ -93,7 +93,7 @@
 
         await userService.UpdateUser(UserThatWillBeUnbanned);
 
-        navManager.NavigateTo($"/profile/{UserId}", forceLoad: true);
+        navManager.NavigateTo($"/profile/{UserThatWillBeUnbanned.Username}", forceLoad: true);
     }
 
     private void ToggleUnbanConfirmation()

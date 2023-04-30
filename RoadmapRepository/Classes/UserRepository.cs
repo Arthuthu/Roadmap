@@ -36,11 +36,11 @@ public class UserRepository : IUserRepository
 		return results.FirstOrDefault();
 	}
 
-	public async Task<UserModel?> GetUserByName(UserModel user)
+	public async Task<UserModel?> GetUserByName(string username)
 	{
 		var results = await _db.LoadData<UserModel, dynamic>(
 			"dbo.spUser_GetByName",
-			new { Username = user.Username });
+			new { Username = username });
 
 		return results.FirstOrDefault();
 	}

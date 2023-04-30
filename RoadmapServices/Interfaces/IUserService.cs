@@ -6,7 +6,7 @@ namespace RoadmapServices.Interfaces
     {
         Task<IEnumerable<UserModel>> GetAllUsers();
         Task<UserModel?> GetUserById(Guid id);
-        Task<UserModel?> GetUserByName(UserModel user);
+        Task<UserModel?> GetUserByName(string username);
         Task<UserModel?> GetUserByConfirmationCode(Guid confirmationCode);
 		Task<IList<string?>> AddUser(UserModel user);
 		Task<IEnumerable<string?>> Login(UserModel user);

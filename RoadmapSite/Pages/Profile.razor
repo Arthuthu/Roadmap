@@ -1,4 +1,4 @@
-﻿@page "/profile/{userid}"
+﻿@page "/profile/{username}"
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navManager
 @inject IUserService userService
@@ -46,7 +46,7 @@
 
 	if (showProfileOptions)
 	{
-		@if (UserId == LoggedInUserId.ToString())
+		@if (User.Id == LoggedInUserId)
 		{
 			<div class="text-center m-4">
 				<a class="second-style-button" href="/editprofile/@User.Id">
@@ -73,7 +73,7 @@
 			if (showBanConfirmation)
 			{
 				<div class="text-center m-4">
-					<BanUser UserId="@UserId" />
+					<BanUser UserId="@User.Id.ToString()" />
 				</div>
 			}
 
@@ -90,13 +90,13 @@
 			if (showUnbanConfirmation)
 			{
 				<div class="text-center m-4">
-					<UnbanUser UserId="@UserId" />
+					<UnbanUser UserId="@User.Id.ToString()" />
 				</div>
 			}
 		}
 
 		<div class="text-center m-4">
-			<a class="second-style-button" href="/createdenuncia/User/@UserId">
+			<a class="second-style-button" href="/createdenuncia/User/@User.Id">
 				Denunciar
 			</a>
 		</div>
@@ -162,7 +162,7 @@
 
 @code {
 	[Parameter]
-	public string? UserId { get; set; }
+	public string? Username { get; set; }
 	public Guid? LoggedInUserId { get; set; }
 	public IList<RoadmapClassModel>? Roadmaps { get; set; }
 	private UserModel? User { get; set; }
@@ -185,7 +185,7 @@
 
 	private async Task<bool> PageVerification()
 	{
-		if (UserId is null)
+		if (Username is null)
 		{
 			navManager.NavigateTo("/notfound");
 
@@ -201,7 +201,7 @@
 			return false;
 		}
 
-		User = await userService.GetUserById(new Guid(UserId!));
+		User = await userService.GetUserByName(Username);
 
 		if (User is null)
 		{
@@ -233,7 +233,7 @@
 			return false;
 		}
 
-		Roadmaps = await roadmapService.GetRoadmapByUserId(new Guid(UserId!));
+		Roadmaps = await roadmapService.GetRoadmapByUserId(User.Id);
 
 		await GetRoadmapsData();
 

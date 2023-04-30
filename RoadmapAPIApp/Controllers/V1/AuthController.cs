@@ -60,7 +60,7 @@ public class AuthController : ControllerBase
 	{
 		var requestUser = _mapper.Map<UserModel>(registerRequest);
 		var registrationMessages = await _userService.AddUser(requestUser);
-		var cleanResponses = await _messageHandler.ConcatRegistrationMessages(registrationMessages);
+		var cleanResponses = _messageHandler.ConcatRegistrationMessages(registrationMessages);
 
 		return Ok(cleanResponses);
 	}

@@ -44,7 +44,17 @@ public class UserController : ControllerBase
         return Ok(responseUsers);
     }
 
-	[Route("/getuserbyconfirmationcode/{confirmationcode}")]
+    [Route("/getuserbyname/{username}")]
+    [HttpGet]
+    public async Task<ActionResult<UserResponse>> GetUserByName(string username)
+    {
+        var user = await _userService.GetUserByName(username);
+        var responseUsers = _mapper.Map<UserResponse>(user);
+
+        return Ok(responseUsers);
+    }
+
+    [Route("/getuserbyconfirmationcode/{confirmationcode}")]
 	[HttpGet]
 	[AllowAnonymous]
 	public async Task<ActionResult<UserResponse>> GetUserByConfirmationCode(Guid confirmationCode)

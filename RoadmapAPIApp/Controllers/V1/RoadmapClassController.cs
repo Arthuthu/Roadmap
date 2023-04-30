@@ -63,7 +63,7 @@ public class RoadmapClassController : ControllerBase
     {
         var requestRoadmap = _mapper.Map<RoadmapClassModel>(roadmap);
         var roadmapCreationMessages = await _roadmapService.AddRoadmap(requestRoadmap);
-        var cleanResponses = await _messageHandler.ConcatRegistrationMessages(roadmapCreationMessages);
+        var cleanResponses = _messageHandler.ConcatRegistrationMessages(roadmapCreationMessages);
 
         return Ok(cleanResponses);
     }

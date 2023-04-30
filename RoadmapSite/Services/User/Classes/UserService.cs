@@ -83,7 +83,7 @@ public class UserService : IUserService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario: {authContent}");
+            _logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario por id: {authContent}");
             return null;
         }
 
@@ -92,7 +92,24 @@ public class UserService : IUserService
         return roadmapClassModel;
     }
 
-	public async Task<UserModel> GetUserByConfirmationCode(Guid? confirmationCode)
+    public async Task<UserModel> GetUserByName(string? username)
+    {
+        string getUserByNameEndpoint = _config["apiLocation"] + _config["getUserByNameEndpoint"] + $"/{username}";
+        var authResult = await _client.GetAsync(getUserByNameEndpoint);
+        var authContent = await authResult.Content.ReadAsStringAsync();
+
+        if (authResult.IsSuccessStatusCode is false)
+        {
+            _logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario por nome: {authContent}");
+            return null;
+        }
+
+        var roadmapClassModel = JsonConvert.DeserializeObject<UserModel>(authContent);
+
+        return roadmapClassModel;
+    }
+
+    public async Task<UserModel> GetUserByConfirmationCode(Guid? confirmationCode)
 	{
 		string getUserByConfirmationCodeEndpoint = _config["apiLocation"] + _config["getUserByConfirmationCodeEndpoint"] + $"/{confirmationCode}";
 		var authResult = await _client.GetAsync(getUserByConfirmationCodeEndpoint);

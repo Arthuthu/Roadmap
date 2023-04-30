@@ -14,7 +14,7 @@ public class MessageHandler : IMessageHandler
 		_roadmapValidator = roadmapValidator;
 		_userValidator = userValidator;
 	}
-	public async Task<IList<string>> ValidateUserRegistration(UserModel userData)
+	public IList<string> ValidateUserRegistration(UserModel userData)
 	{
 		var validationResult = _userValidator.Validate(userData);
 		IList<string> validationMessages = new List<string>();
@@ -32,7 +32,7 @@ public class MessageHandler : IMessageHandler
 		return validationMessages;
 	}
 
-	public async Task<IList<string>> ValidateRoadmapCreation(RoadmapClassModel roadmapData)
+	public IList<string> ValidateRoadmapCreation(RoadmapClassModel roadmapData)
 	{
 		var validationResult = _roadmapValidator.Validate(roadmapData);
 		IList<string> validationMessages = new List<string>();
@@ -50,7 +50,7 @@ public class MessageHandler : IMessageHandler
 		return validationMessages;
 	}
 
-	public async Task<string> ConcatRegistrationMessages(IList<string> responseMessages)
+	public string ConcatRegistrationMessages(IList<string> responseMessages)
 	{
 		string cleanMessage = string.Join(", ", responseMessages);
 

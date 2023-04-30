@@ -43,7 +43,7 @@ public class RoadmapClassService : IRoadmapClassService
 	{
 		IList<string> registrationMessages = new List<string>();
 
-		registrationMessages = await _messageHandler.ValidateRoadmapCreation(roadmap);
+		registrationMessages =  _messageHandler.ValidateRoadmapCreation(roadmap);
 
 		if (registrationMessages.Count != 0)
 		{

@@ -104,7 +104,7 @@
 		{
 			authenticationErrorText = "Perfil atualizado com sucesso";
 			showAuthenticationError = true;
-			navManager.NavigateTo($"/profile/{UserId}");
+			navManager.NavigateTo($"/profile/{LoggedInUserModel.Username}");
 		}
 		else
 		{

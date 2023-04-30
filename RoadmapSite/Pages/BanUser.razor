@@ -100,7 +100,7 @@
         await roadmapService.DeleteAllUserRoadmaps(new Guid(UserId!));
         await comentarioService.DeleteAllUserComentarios(new Guid(UserId!));
 
-        navManager.NavigateTo($"/profile/{UserId}", forceLoad: true);
+        navManager.NavigateTo($"/profile/{UserThatWillBeBanned.Username}", forceLoad: true);
     }
 
     private void ToggleBanConfirmation()

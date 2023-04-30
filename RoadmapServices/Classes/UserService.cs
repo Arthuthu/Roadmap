@@ -40,9 +40,9 @@ public class UserService : IUserService
         return await _userRepository.GetUserById(id);
     }
 
-	public async Task<UserModel?> GetUserByName(UserModel user)
+	public async Task<UserModel?> GetUserByName(string username)
 	{
-		return await _userRepository.GetUserByName(user);
+		return await _userRepository.GetUserByName(username);
 	}
 
 	public async Task<UserModel?> GetUserByConfirmationCode(Guid confirmationCode)
@@ -100,7 +100,16 @@ public class UserService : IUserService
 
 		loginVerifications = await UserLoginVerifications(user);
 
-		loginVerifications.Add(CreateToken(user));
+		var requestedUser = await GetUserByName(user.Username);
+
+		if (requestedUser is null)
+		{
+			loginVerifications.Add("Usuario não encontrado");
+
+			return loginVerifications;
+		}
+
+		loginVerifications.Add(CreateToken(requestedUser));
 
 		var loginReturn = loginVerifications.Where(x => x != null);
 
@@ -115,7 +124,7 @@ public class UserService : IUserService
 		verificationMessages.Add(await VerifyIfUserAlreadyExists(user));
 		verificationMessages.Add(await VerifyIfEmailIsRegistered(user));
 
-		var fluentValidationMessages = await _messageHandler.ValidateUserRegistration(user);
+		var fluentValidationMessages = _messageHandler.ValidateUserRegistration(user);
 
 		foreach (var message in fluentValidationMessages)
 		{
@@ -134,7 +143,7 @@ public class UserService : IUserService
 		loginMessages.Add(await VerifyIfUsernameIsCorrect(user));
 		loginMessages.Add(await VerifyIfPasswordIsCorrect(user));
 
-		var requestedLogInUser = await _userRepository.GetUserByName(user);
+		var requestedLogInUser = await _userRepository.GetUserByName(user.Username);
 
 		if (requestedLogInUser is null)
 		{
@@ -153,7 +162,7 @@ public class UserService : IUserService
 
     private async Task<string?> VerifyIfUserAlreadyExists(UserModel user)
     {
-		var requestedUser = await _userRepository.GetUserByName(user);
+		var requestedUser = await _userRepository.GetUserByName(user.Username);
 
 		if (requestedUser is not null)
 		{
@@ -177,7 +186,7 @@ public class UserService : IUserService
 
 	private async Task<string?> VerifyIfUsernameIsCorrect(UserModel user)
 	{
-		var requestedUser = await _userRepository.GetUserByName(user);
+		var requestedUser = await _userRepository.GetUserByName(user.Username);
 
 		if (requestedUser is not null)
 		{
@@ -189,7 +198,7 @@ public class UserService : IUserService
 
 	private async Task<string?> VerifyIfPasswordIsCorrect(UserModel user)
 	{
-		var requestedUser = await _userRepository.GetUserByName(user);
+		var requestedUser = await _userRepository.GetUserByName(user.Username);
 
         if (requestedUser!.Password != user.Password)
         {
