@@ -90,6 +90,6 @@
     {
         var deleteResponse = await roadmapService.DeleteRoadmap(roadmapId);
 
-        navManager.NavigateTo($"/profile/{LoggedInUserModel.Username}");
+        navManager.NavigateTo($"/profile/{LoggedInUserModel!.Username}");
     }
 }

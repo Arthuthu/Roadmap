@@ -151,10 +151,15 @@
 			}
 
 			<div>
-				<a class="second-style-button" href="/createdenuncia/Roadmap/@RoadmapId">
+				<button class="second-style-button" @onclick=ToggleShowDenunciaScreenRoadmap>
 					Denunciar
-				</a>
+				</button>
 			</div>
+
+			@if (showDenunciaScreenRoadmap)
+			{
+				<CreateDenuncia Type="Roadmap" Id="@Roadmap.Id.ToString()" />
+			}
 		}
 	</div>
 
@@ -263,29 +268,39 @@
 							}
 						</div>
 						<div>
-							<a class="second-style-button" href="/createdenuncia/Comment/@comentario.Id">
+							<button class="second-style-button" 
+							@onclick="() => ToggleShowDenunciaScreenComment(comentario.Id)">
 								Denunciar
-							</a>
+							</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		@if (showDenunciaScreenComment.ContainsKey(comentario.Id)
+			&& showDenunciaScreenComment[comentario.Id])
+		{
+			<div>
+				<CreateDenuncia Type="Comment" Id="@comentario.Id.ToString()" />
+			</div>
+		}
 	</Virtualize>
 }
 
 @code {
-	[Parameter]
-	public string? RoadmapId { get; set; }
+		[Parameter]
+		public string? RoadmapId { get; set; }
 	private Guid? LoggedInUserId { get; set; }
 	private IList<ComentarioModel>? Comentarios { get; set; }
 	private IList<NodeModel>? Nodes { get; set; }
 	private Dictionary<Guid, bool> showNodeContent = new Dictionary<Guid, bool>();
+	private Dictionary<Guid, bool> showDenunciaScreenComment = new Dictionary<Guid, bool>();
 	private RoadmapClassModel? Roadmap { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
 	private NodeModel? Node = new();
 	private ComentarioModel? Comentario = new();
 	private bool editMode = false;
+	private bool showDenunciaScreenRoadmap = false;
 	private bool showRoadmapEditOptions = false;
 	private bool showDeleteComment = false;
 	private bool showDeletePageAuthor = false;
@@ -549,6 +564,23 @@
 	private void ToggleShowDeleteComment()
 	{
 		showDeleteComment = !showDeleteComment;
+	}
+
+	private void ToggleShowDenunciaScreenRoadmap()
+	{
+		showDenunciaScreenRoadmap = !showDenunciaScreenRoadmap;
+	}
+
+	private void ToggleShowDenunciaScreenComment(Guid comentarioId)
+	{
+		if (showDenunciaScreenComment.ContainsKey(comentarioId))
+		{
+			showDenunciaScreenComment[comentarioId] = !showDenunciaScreenComment[comentarioId];
+		}
+		else
+		{
+			showDenunciaScreenComment[comentarioId] = true;
+		}
 	}
 
 	private void ToggleShowNodeContent(Guid nodeId)

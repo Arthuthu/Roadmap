@@ -4,9 +4,11 @@
     [Description] NVARCHAR(1000) NOT NULL, 
     [Type] NVARCHAR(20) NOT NULL, 
     [AuthorId] UNIQUEIDENTIFIER NULL,
-    [UserId] UNIQUEIDENTIFIER NULL, 
+    [Username] NVARCHAR(50) NULL, 
     [RoadmapId] UNIQUEIDENTIFIER NULL, 
     [CommentId] UNIQUEIDENTIFIER NULL, 
     [CreatedDate] DATETIME2 NULL, 
-    [UpdatedDate] DATETIME2 NULL
+    [UpdatedDate] DATETIME2 NULL,
+    FOREIGN KEY (RoadmapId) REFERENCES Roadmaps(Id) ON DELETE CASCADE,
+    FOREIGN KEY (CommentId) REFERENCES Comentarios(Id) ON DELETE CASCADE,
 )

@@ -7,7 +7,7 @@ public class DenunciaModel
     public string? Type { get; set; }
 
     public Guid AuthorId { get; set; }
-    public Guid? UserId { get; set; }
+    public string? Username { get; set; }
     public Guid? RoadmapId { get; set; }
     public Guid? CommentId { get; set; }
 

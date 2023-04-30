@@ -35,4 +35,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ComentarioId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="34f24701-26be-4271-921b-b14208be08be" ChangeDateTime="04/30/2023 14:00:14">
+    <Property Name="ElementName" Value="[dbo].[Denuncias].[UserId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Denuncias]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="User" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a5eabcb4-f52f-4fbb-8879-178a42ffe1ad" ChangeDateTime="04/30/2023 14:00:58">
+    <Property Name="ElementName" Value="[dbo].[Denuncias].[User]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Denuncias]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Username" />
+  </Operation>
 </Operations>

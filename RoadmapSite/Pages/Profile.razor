@@ -96,10 +96,15 @@
 		}
 
 		<div class="text-center m-4">
-			<a class="second-style-button" href="/createdenuncia/User/@User.Id">
+			<button class="second-style-button" @onclick=ToggleShowDenunciaScreen>
 				Denunciar
-			</a>
+			</button>
 		</div>
+
+		@if (showDenunciaScreen)
+		{
+			<CreateDenuncia Type="User" Id="@User.Id.ToString()" />
+		}
 	}
 
 	<div class="user-roadmaps-label">
@@ -168,6 +173,7 @@
 	private UserModel? User { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
 	private bool showProfileOptions = false;
+	private bool showDenunciaScreen = false;
 	private bool showBanConfirmation = false;
 	private bool showUnbanConfirmation = false;
 	private bool isInitialized = false;
@@ -274,5 +280,10 @@
 	private void ToggleShowUnbanConfirmation()
 	{
 		showUnbanConfirmation = !showUnbanConfirmation;
+	}
+
+	private void ToggleShowDenunciaScreen()
+	{
+		showDenunciaScreen = !showDenunciaScreen;
 	}
 }

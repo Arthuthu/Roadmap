@@ -1,5 +1,4 @@
-﻿@page "/createdenuncia/{type}/{id}"
-@inject NavigationManager navManager
+﻿@inject NavigationManager navManager
 @inject IUserService userService
 @inject IDenunciaService denunciaService
 
@@ -26,13 +25,13 @@
 	</EditForm>
 }
 
-
 @code {
 	[Parameter]
 	public string? Id { get; set; }
 	[Parameter]
 	public string? Type { get; set; }
 	private Guid LoggedInUserId { get; set; }
+	private UserModel? UserDenunciado { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
 	private DenunciaModel Denuncia = new();
 	private bool isInitialized = false;
@@ -90,9 +89,19 @@
 			return false;
 		}
 
+		if (Type == "User")
+		{
+			await GetUsernameById();
+		}
+
 		isInitialized = true;
 
 		return true;
+	}
+
+	private async Task GetUsernameById()
+	{
+		UserDenunciado = await userService.GetUserById(new Guid(Id!));
 	}
 
 	private async Task ExecuteDenunciaCreation()
@@ -103,22 +112,24 @@
 		{
 			Denuncia.AuthorId = LoggedInUserId;
 			Denuncia.RoadmapId = new Guid(Id!);
+			await denunciaService.CreateDenuncia(Denuncia);
+			navManager.NavigateTo($"/roadmapdetails/{Denuncia.RoadmapId}", true);
 		}
 
 		if (Type == "User")
 		{
 			Denuncia.AuthorId = LoggedInUserId;
-			Denuncia.UserId = new Guid(Id!);
+			Denuncia.Username = UserDenunciado!.Username;
+			await denunciaService.CreateDenuncia(Denuncia);
+			navManager.NavigateTo($"/profile/{Denuncia.Username}", true);
 		}
 
 		if (Type == "Comment")
 		{
 			Denuncia.AuthorId = LoggedInUserId;
 			Denuncia.CommentId = new Guid(Id!);
+			await denunciaService.CreateDenuncia(Denuncia);
+			navManager.NavigateTo("/");
 		}
-
-		await denunciaService.CreateDenuncia(Denuncia);
-
-		navManager.NavigateTo("/");
 	}
 }
