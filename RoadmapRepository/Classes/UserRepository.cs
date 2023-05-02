@@ -79,7 +79,9 @@ public class UserRepository : IUserRepository
             user.Password,
             user.ConfirmationCode,
             user.ConfirmationCodeExpirationDate,
-            user.Bio,
+			user.RestorationCode,
+			user.RestorationCodeExpirationDate,
+			user.Bio,
             user.IsBanned,
             user.IsConfirmed,
             user.UpdatedDate

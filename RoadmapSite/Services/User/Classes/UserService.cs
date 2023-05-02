@@ -172,4 +172,24 @@ public class UserService : IUserService
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
+
+	public async Task<string> SendRestorationEmail(UserModel user)
+	{
+		var data = new FormUrlEncodedContent(new[]
+		{
+			new KeyValuePair<string, string>("email", user.Email),
+		});
+
+		string sendRestorationEmailEndpoint = _config["apiLocation"] + _config["sendRestorationEmailEndpoint"];
+		var authResult = await _client.PutAsync(sendRestorationEmailEndpoint, data);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro ao resgatar a conta: {authContent}");
+			return null;
+		}
+
+		return await authResult.Content.ReadAsStringAsync();
+	}
 }

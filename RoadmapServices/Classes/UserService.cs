@@ -83,7 +83,7 @@ public class UserService : IUserService
 		try
 		{
 			await _userRepository.AddUser(createdUser);
-			SendEmail(createdUser);
+			SendEmailConfirmation(createdUser);
 			registrationMessages.Add("Usuario registrado com sucesso");
 		}
 		catch (Exception ex)
@@ -257,10 +257,28 @@ public class UserService : IUserService
         return user;
     }
 
-	private void SendEmail(UserModel user)
+	private async Task<UserModel?> InsertRestorationData(UserModel user)
+	{
+		var requestedUser = await _userRepository.GetUserByEmail(user);
+
+		if (requestedUser is not null)
+		{
+			requestedUser.RestorationCode = Guid.NewGuid();
+			requestedUser.RestorationCodeExpirationDate = DateTime.UtcNow.AddDays(24).AddHours(-3);
+
+			await _userRepository.UpdateUser(requestedUser);
+
+			return requestedUser;
+		}
+
+		return null;
+	}
+
+	private void SendEmailConfirmation(UserModel user)
 	{
 		var email = new MimeMessage();
 		email.From.Add(MailboxAddress.Parse($"{_configuration.GetSection("EmailCredentials:Email").Value}"));
+		//Alterar para user.Email
 		email.To.Add(MailboxAddress.Parse($"{_configuration.GetSection("EmailCredentials:Email").Value}"));
 		email.Subject = "Roadmap Email Confirmation";
 		email.Body = new TextPart(TextFormat.Html)
@@ -275,6 +293,39 @@ public class UserService : IUserService
 			$"{_configuration.GetSection("EmailCredentials:Password").Value}");
 		smtp.Send(email);
 		smtp.Disconnect(true);
+	}
+
+	public async Task SendRestorationEmail(UserModel user)
+	{
+		try
+		{
+			var updatedUser = await InsertRestorationData(user);
+
+			if (updatedUser is not null)
+			{
+				var email = new MimeMessage();
+				email.From.Add(MailboxAddress.Parse($"{_configuration.GetSection("EmailCredentials:Email").Value}"));
+				//Alterar para user.Email
+				email.To.Add(MailboxAddress.Parse($"{_configuration.GetSection("EmailCredentials:Email").Value}"));
+				email.Subject = "Roadmap Restauracao de Conta";
+				email.Body = new TextPart(TextFormat.Html)
+				{
+					Text = $"Clique no link para mudar a sua senha" +
+					$"{_configuration.GetSection("SiteUrl").Value}/passwordchange/{updatedUser.RestorationCode}"
+				};
+
+				using var smtp = new SmtpClient();
+				smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
+				smtp.Authenticate($"{_configuration.GetSection("EmailCredentials:Email").Value}",
+					$"{_configuration.GetSection("EmailCredentials:Password").Value}");
+				smtp.Send(email);
+				smtp.Disconnect(true);
+			}
+		}
+		catch (Exception ex)
+		{
+			throw new Exception($"Ocorreu um erro para restaurar a conta, {ex.Message}");
+		}
 	}
 
 	private string CreateToken(UserModel user)

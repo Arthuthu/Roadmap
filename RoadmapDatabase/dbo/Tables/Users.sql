@@ -7,6 +7,8 @@
     [Password] NVARCHAR(50) NULL,
     [ConfirmationCode] UNIQUEIDENTIFIER NULL, 
     [ConfirmationCodeExpirationDate] datetime2(7) NULL, 
+    [RestorationCode] UNIQUEIDENTIFIER NULL,
+    [RestorationCodeExpirationDate] datetime2(7) NULL,
     [PasswordHash] VARBINARY(MAX) NULL, 
     [PasswordSalt] VARBINARY(MAX) NULL, 
     [IsAdmin] BIT NULL DEFAULT 0,

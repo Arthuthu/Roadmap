@@ -8,6 +8,8 @@ public class UserRequest
 	public string? Password { get; set; }
 	public Guid? ConfirmationCode { get; set; }
 	public DateTime? ConfirmationCodeExpirationDate { get; set; }
+	public Guid? RestorationCode { get; set; }
+	public DateTime? RestoraionCodeExpirationDate { get; set; }
 	public string? Bio { get; set; }
 	public bool IsBanned { get; set; }
 	public bool IsConfirmed { get; set; }

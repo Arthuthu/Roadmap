@@ -10,5 +10,4 @@
     [CreatedDate] DATETIME2 NULL, 
     [UpdatedDate] DATETIME2 NULL,
     FOREIGN KEY (RoadmapId) REFERENCES Roadmaps(Id) ON DELETE CASCADE,
-    FOREIGN KEY (CommentId) REFERENCES Comentarios(Id) ON DELETE CASCADE,
 )

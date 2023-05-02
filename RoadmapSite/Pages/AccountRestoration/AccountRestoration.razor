@@ -1,0 +1,27 @@
+﻿@page "/accountrestoration"
+@inject IUserService userService
+@inject NavigationManager navManager
+
+<div class="text-center my-4 fw-bold h4">
+	Digite o seu email, enviaremos um email com um link para que você possa recuperar sua conta.
+</div>
+
+<EditForm Model="User" OnValidSubmit="RestoreAccountEmail">
+	<div class="text-center">
+		<InputText id="email" class="form-input-text" @bind-Value="User.Email" placeholder="Email" />
+	</div>
+	<div class="text-center">
+		<button type="submit" class="first-style-button">Recuperar</button>
+	</div>
+</EditForm>
+
+@code {
+	public UserModel? User = new();
+
+	private async Task RestoreAccountEmail()
+	{
+		await userService.SendRestorationEmail(User!);
+
+		navManager.NavigateTo("/restorationemailsend");
+	}
+}

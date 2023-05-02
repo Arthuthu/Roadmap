@@ -96,6 +96,17 @@ public class UserController : ControllerBase
 		return Ok("Confirmação de email atualizada com sucesso");
 	}
 
+	[Route("/sendrestorationemail")]
+	[HttpPut]
+	[AllowAnonymous]
+	public async Task<ActionResult<List<UserResponse>>> SendRestorationEmail([FromForm] UserRequest user)
+	{
+		var requestUser = _mapper.Map<UserModel>(user);
+		await _userService.SendRestorationEmail(requestUser);
+
+		return Ok("Email enviado para restauração da conta");
+	}
+
 	[HttpDelete("{id}")]
     public async Task<ActionResult<UserResponse>> DeleteUser(Guid id)
     {

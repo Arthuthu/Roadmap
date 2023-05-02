@@ -13,5 +13,7 @@ namespace RoadmapServices.Interfaces
 		Task UpdateUserEmailConfirmation(UserModel user);
         Task UpdateUser(UserModel user);
         Task DeleteUser(Guid id);
+        Task SendRestorationEmail(UserModel user);
+
 	}
 }
