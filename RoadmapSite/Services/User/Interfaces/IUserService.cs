@@ -11,6 +11,7 @@ namespace RoadmapSite.Services.User.Interfaces
         Task<string> UpdateUserEmailConfirmation(UserModel user);
 		Task<Guid> GetLoggedInUserId();
         Task<UserModel> GetUserByConfirmationCode(Guid? confirmationCode);
-        Task<string> SendRestorationEmail(UserModel user);
+		Task<UserModel> GetUserByRestorationCode(Guid? restorationCode);
+		Task<string> SendRestorationEmail(UserModel user);
 	}
 }

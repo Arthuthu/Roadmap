@@ -7,7 +7,8 @@ namespace RoadmapRepository.Interfaces
         Task<IEnumerable<UserModel>> GetAllUsers();
         Task<UserModel?> GetUserById(Guid id);
         Task<UserModel?> GetUserByConfirmationCode(Guid confirmationCode);
-        Task<UserModel?> GetUserByName(string username);
+        Task<UserModel?> GetUserByRestorationCode(Guid restorationCode);
+		Task<UserModel?> GetUserByName(string username);
         Task<UserModel?> GetUserByEmail(UserModel user);
 		Task AddUser(UserModel user);
         Task UpdateUserEmailConfirmation(UserModel user);

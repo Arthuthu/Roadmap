@@ -49,6 +49,11 @@ public class UserService : IUserService
 	{
 		return await _userRepository.GetUserByConfirmationCode(confirmationCode);
 	}
+
+	public async Task<UserModel?> GetUserByRestorationCode(Guid restorationCode)
+	{
+		return await _userRepository.GetUserByRestorationCode(restorationCode);
+	}
 	public Task UpdateUser(UserModel user)
 	{
 		user.UpdatedDate = DateTime.UtcNow.AddHours(-3);

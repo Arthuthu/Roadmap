@@ -126,6 +126,23 @@ public class UserService : IUserService
 		return roadmapClassModel;
 	}
 
+	public async Task<UserModel> GetUserByRestorationCode(Guid? restorationCode)
+	{
+		string getUserByRestorationCodeEndpoint = _config["apiLocation"] + _config["getUserByRestorationCodeEndpoint"] + $"/{restorationCode}";
+		var authResult = await _client.GetAsync(getUserByRestorationCodeEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario com o codigo de restauracao: {authContent}");
+			return null;
+		}
+
+		var roadmapClassModel = JsonConvert.DeserializeObject<UserModel>(authContent);
+
+		return roadmapClassModel;
+	}
+
 	public async Task<string> UpdateUser(UserModel user)
 	{
 		var data = new FormUrlEncodedContent(new[]

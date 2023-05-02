@@ -65,6 +65,17 @@ public class UserController : ControllerBase
 		return Ok(responseUsers);
 	}
 
+	[Route("/getuserbyrestorationcode/{restorationcode}")]
+	[HttpGet]
+	[AllowAnonymous]
+	public async Task<ActionResult<UserResponse>> GetUserByRestorationCode(Guid restorationCode)
+	{
+		var user = await _userService.GetUserByRestorationCode(restorationCode);
+		var responseUsers = _mapper.Map<UserResponse>(user);
+
+		return Ok(responseUsers);
+	}
+
 	[HttpPost]
     [AllowAnonymous]
     public async Task<ActionResult<List<UserResponse>>> CreateUser(UserRequest user)

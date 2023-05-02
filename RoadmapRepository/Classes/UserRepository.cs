@@ -36,6 +36,15 @@ public class UserRepository : IUserRepository
 		return results.FirstOrDefault();
 	}
 
+	public async Task<UserModel?> GetUserByRestorationCode(Guid restorationCode)
+	{
+		var results = await _db.LoadData<UserModel, dynamic>(
+			"dbo.spUser_GetByRestorationCode",
+			new { RestorationCode = restorationCode });
+
+		return results.FirstOrDefault();
+	}
+
 	public async Task<UserModel?> GetUserByName(string username)
 	{
 		var results = await _db.LoadData<UserModel, dynamic>(
