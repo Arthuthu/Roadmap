@@ -2,11 +2,59 @@
 @inject IUserService userService
 @inject NavigationManager navManager
 
-<div class="text-center fw-bold h4 my-4">
-	Seu email não foi confirmado ainda, verifique as suas mensagens de email ou clique no botão abaixo
-	para reenviar o email.
-</div>
+@if (isInitialized)
+{
+	<div class="text-center fw-bold h4 my-4">
+		Seu email não foi confirmado ainda, verifique as suas mensagens de email ou clique no botão abaixo
+		para reenviar o email.
+	</div>
+
+	<div class="text-center my-4">
+		<button class="first-style-button" @onclick=ResendRemail>
+			Enviar
+		</button>
+	</div>
+}
 
 @code {
+	private Guid LoggedInUserId { get; set; }
+	private UserModel? User { get; set; }
+	private bool isInitialized = false;
 
+	protected override async Task OnInitializedAsync()
+	{
+		await PageVerification();
+	}
+
+	private async Task<bool> PageVerification()
+	{
+		LoggedInUserId = await userService.GetLoggedInUserId();
+
+		if (LoggedInUserId == Guid.Empty)
+		{
+			navManager.NavigateTo("/notfound");
+
+			return false;
+		}
+
+		User = await userService.GetUserById(LoggedInUserId);
+
+		if (User is null)
+		{
+			navManager.NavigateTo("/notfound");
+
+			return false;
+		}
+
+		isInitialized = true;
+
+		return true;
+	}
+
+	private async Task ResendRemail()
+	{
+		await userService.SendConfirmationEmail(User!);
+
+		navManager.NavigateTo("/emailconfirmationsendmessage");
+	}
 }

@@ -211,6 +211,26 @@ public class UserService : IUserService
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
+	public async Task<string> SendConfirmationEmail(UserModel user)
+	{
+		var data = new FormUrlEncodedContent(new[]
+		{
+			new KeyValuePair<string, string>("email", user.Email),
+		});
+
+		string sendConfirmationEmailEndpoint = _config["apiLocation"] + _config["sendConfirmationEmailEndpoint"];
+		var authResult = await _client.PutAsync(sendConfirmationEmailEndpoint, data);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro ao enviar email de confirmação: {authContent}");
+			return null;
+		}
+
+		return await authResult.Content.ReadAsStringAsync();
+	}
+
 	public async Task<string> SendRestorationEmail(UserModel user)
 	{
 		var data = new FormUrlEncodedContent(new[]

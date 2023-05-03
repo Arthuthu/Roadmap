@@ -95,7 +95,7 @@ public class UserService : IUserService
 		try
 		{
 			await _userRepository.AddUser(createdUser);
-			SendEmailConfirmation(createdUser);
+			await SendConfirmationEmail(createdUser);
 			registrationMessages.Add("Usuario registrado com sucesso");
 		}
 		catch (Exception ex)
@@ -262,12 +262,28 @@ public class UserService : IUserService
 		user.Id = Guid.NewGuid();
 		user.PasswordHash = passwordHash;
 		user.PasswordSalt = passwordSalt;
-		user.ConfirmationCode = Guid.NewGuid();
-		user.ConfirmationCodeExpirationDate = DateTime.UtcNow.AddDays(1).AddHours(-3);
 		user.CreatedDate = DateTime.UtcNow.AddHours(-3);
 
         return user;
     }
+
+	private async Task<UserModel?> InsertConfirmationData(UserModel user)
+	{
+		var requestedUser = await _userRepository.GetUserByEmail(user);
+
+		if (requestedUser is not null)
+		{
+			requestedUser.ConfirmationCode = Guid.NewGuid();
+			requestedUser.ConfirmationCodeExpirationDate = DateTime.UtcNow.AddDays(1)
+				.AddHours(-3);
+
+			await _userRepository.UpdateUser(requestedUser);
+
+			return requestedUser;
+		}
+
+		return null;
+	}
 
 	private async Task<UserModel?> InsertRestorationData(UserModel user)
 	{
@@ -287,25 +303,38 @@ public class UserService : IUserService
 		return null;
 	}
 
-	private void SendEmailConfirmation(UserModel user)
+	public async Task SendConfirmationEmail(UserModel user)
 	{
-		var email = new MimeMessage();
-		email.From.Add(MailboxAddress.Parse($"{_configuration.GetSection("EmailCredentials:Email").Value}"));
-		//Alterar para user.Email
-		email.To.Add(MailboxAddress.Parse($"{_configuration.GetSection("EmailCredentials:Email").Value}"));
-		email.Subject = "Roadmap Email Confirmation";
-		email.Body = new TextPart(TextFormat.Html)
+		try
 		{
-			Text = $"Clique no link para confirmar seu email: " +
-			$"{_configuration.GetSection("SiteUrl").Value}/emailconfirmation/{user.ConfirmationCode}"
-		};
+			var updatedUser = await InsertConfirmationData(user);
 
-		using var smtp = new SmtpClient();
-		smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-		smtp.Authenticate($"{_configuration.GetSection("EmailCredentials:Email").Value}",
-			$"{_configuration.GetSection("EmailCredentials:Password").Value}");
-		smtp.Send(email);
-		smtp.Disconnect(true);
+			if (updatedUser is not null)
+			{
+				var email = new MimeMessage();
+				email.From.Add(MailboxAddress.Parse($"{_configuration.GetSection("EmailCredentials:Email").Value}"));
+				//Alterar para user.Email
+				email.To.Add(MailboxAddress.Parse($"{_configuration.GetSection("EmailCredentials:Email").Value}"));
+				email.Subject = "Roadmap Email Confirmation";
+				email.Body = new TextPart(TextFormat.Html)
+				{
+					Text = $"Clique no link para confirmar seu email: " +
+					$"{_configuration.GetSection("SiteUrl").Value}/emailconfirmation/{updatedUser.ConfirmationCode}"
+				};
+
+				using var smtp = new SmtpClient();
+				smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
+				smtp.Authenticate($"{_configuration.GetSection("EmailCredentials:Email").Value}",
+					$"{_configuration.GetSection("EmailCredentials:Password").Value}");
+				smtp.Send(email);
+				smtp.Disconnect(true);
+			}
+		}
+		catch (Exception ex)
+		{
+			throw new Exception($"Ocorreu um erro ao enviar o email de confirmação, {ex.Message}");
+		}
+		
 	}
 
 	public async Task SendRestorationEmail(UserModel user)

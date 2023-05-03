@@ -13,6 +13,7 @@ namespace RoadmapSite.Services.User.Interfaces
 		Task<Guid> GetLoggedInUserId();
         Task<UserModel> GetUserByConfirmationCode(Guid? confirmationCode);
 		Task<UserModel> GetUserByRestorationCode(Guid? restorationCode);
+        Task<string> SendConfirmationEmail(UserModel user);
 		Task<string> SendRestorationEmail(UserModel user);
 	}
 }

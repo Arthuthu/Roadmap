@@ -113,7 +113,9 @@ public class UserRepository : IUserRepository
 	{
 		return _db.SaveData("dbo.spUser_UpdatePassword", new
 		{
+			user.Id,
 			user.Password,
+			user.RestorationCodeExpirationDate,
 			user.UpdatedDate
 		});
 	}

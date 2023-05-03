@@ -15,7 +15,8 @@ namespace RoadmapServices.Interfaces
         Task UpdateUserPassword(UserModel user);
 		Task UpdateUser(UserModel user);
         Task DeleteUser(Guid id);
-        Task SendRestorationEmail(UserModel user);
+        Task SendConfirmationEmail(UserModel user);
+		Task SendRestorationEmail(UserModel user);
 
 	}
 }

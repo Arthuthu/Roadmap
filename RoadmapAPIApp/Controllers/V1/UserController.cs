@@ -118,6 +118,17 @@ public class UserController : ControllerBase
 		return Ok("Senha atualizada com sucesso");
 	}
 
+	[Route("/sendconfirmationemail")]
+	[HttpPut]
+	[AllowAnonymous]
+	public async Task<ActionResult<List<UserResponse>>> SendConfirmationEmail([FromForm] UserRequest user)
+	{
+		var requestUser = _mapper.Map<UserModel>(user);
+		await _userService.SendConfirmationEmail(requestUser);
+
+		return Ok("Email enviado para confirmação de conta");
+	}
+
 	[Route("/sendrestorationemail")]
 	[HttpPut]
 	[AllowAnonymous]
