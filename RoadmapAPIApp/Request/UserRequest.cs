@@ -9,7 +9,7 @@ public class UserRequest
 	public Guid? ConfirmationCode { get; set; }
 	public DateTime? ConfirmationCodeExpirationDate { get; set; }
 	public Guid? RestorationCode { get; set; }
-	public DateTime? RestoraionCodeExpirationDate { get; set; }
+	public DateTime? RestorationCodeExpirationDate { get; set; }
 	public string? Bio { get; set; }
 	public bool IsBanned { get; set; }
 	public bool IsConfirmed { get; set; }

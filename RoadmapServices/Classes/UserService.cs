@@ -67,6 +67,13 @@ public class UserService : IUserService
 
 		return _userRepository.UpdateUserEmailConfirmation(user);
 	}
+
+	public Task UpdateUserPassword(UserModel user)
+	{
+		user.UpdatedDate = DateTime.UtcNow.AddHours(-3);
+
+		return _userRepository.UpdateUserPassword(user);
+	}
 	public Task DeleteUser(Guid id)
 	{
 		return _userRepository.DeleteUser(id);
@@ -269,7 +276,8 @@ public class UserService : IUserService
 		if (requestedUser is not null)
 		{
 			requestedUser.RestorationCode = Guid.NewGuid();
-			requestedUser.RestorationCodeExpirationDate = DateTime.UtcNow.AddDays(24).AddHours(-3);
+			requestedUser.RestorationCodeExpirationDate = DateTime.UtcNow.AddDays(1)
+                .AddHours(-3);
 
 			await _userRepository.UpdateUser(requestedUser);
 
@@ -315,7 +323,7 @@ public class UserService : IUserService
 				email.Subject = "Roadmap Restauracao de Conta";
 				email.Body = new TextPart(TextFormat.Html)
 				{
-					Text = $"Clique no link para mudar a sua senha" +
+					Text = $"Clique no link para mudar a sua senha: " +
 					$"{_configuration.GetSection("SiteUrl").Value}/passwordchange/{updatedUser.RestorationCode}"
 				};
 

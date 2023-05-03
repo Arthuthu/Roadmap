@@ -98,13 +98,24 @@ public class UserController : ControllerBase
 
 	[Route("/updateuseremailconfirmation")]
 	[HttpPut]
-    [AllowAnonymous]
+	[AllowAnonymous]
 	public async Task<ActionResult<List<UserResponse>>> UpdateUserEmailConfirmation([FromForm] UserRequest user)
 	{
 		var requestUser = _mapper.Map<UserModel>(user);
 		await _userService.UpdateUserEmailConfirmation(requestUser);
 
 		return Ok("Confirmação de email atualizada com sucesso");
+	}
+
+	[Route("/updateuserpassword")]
+	[HttpPut]
+    [AllowAnonymous]
+	public async Task<ActionResult<List<UserResponse>>> UpdateUserPassword([FromForm] UserRequest user)
+	{
+		var requestUser = _mapper.Map<UserModel>(user);
+		await _userService.UpdateUserPassword(requestUser);
+
+		return Ok("Senha atualizada com sucesso");
 	}
 
 	[Route("/sendrestorationemail")]

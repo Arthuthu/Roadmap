@@ -70,9 +70,9 @@ public class UserService : IUserService
 			return null;
 		}
 
-		var roadmapClassModel = JsonConvert.DeserializeObject<IList<UserModel>>(authContent);
+		var userModel = JsonConvert.DeserializeObject<IList<UserModel>>(authContent);
 
-		return roadmapClassModel;
+		return userModel;
 	}
 
 	public async Task<UserModel> GetUserById(Guid? userId)
@@ -87,9 +87,9 @@ public class UserService : IUserService
             return null;
         }
 
-        var roadmapClassModel = JsonConvert.DeserializeObject<UserModel>(authContent);
+        var userModel = JsonConvert.DeserializeObject<UserModel>(authContent);
 
-        return roadmapClassModel;
+        return userModel;
     }
 
     public async Task<UserModel> GetUserByName(string? username)
@@ -104,9 +104,9 @@ public class UserService : IUserService
             return null;
         }
 
-        var roadmapClassModel = JsonConvert.DeserializeObject<UserModel>(authContent);
+        var userModel = JsonConvert.DeserializeObject<UserModel>(authContent);
 
-        return roadmapClassModel;
+        return userModel;
     }
 
     public async Task<UserModel> GetUserByConfirmationCode(Guid? confirmationCode)
@@ -121,9 +121,9 @@ public class UserService : IUserService
 			return null;
 		}
 
-		var roadmapClassModel = JsonConvert.DeserializeObject<UserModel>(authContent);
+		var userModel = JsonConvert.DeserializeObject<UserModel>(authContent);
 
-		return roadmapClassModel;
+		return userModel;
 	}
 
 	public async Task<UserModel> GetUserByRestorationCode(Guid? restorationCode)
@@ -138,9 +138,9 @@ public class UserService : IUserService
 			return null;
 		}
 
-		var roadmapClassModel = JsonConvert.DeserializeObject<UserModel>(authContent);
+		var userModel = JsonConvert.DeserializeObject<UserModel>(authContent);
 
-		return roadmapClassModel;
+		return userModel;
 	}
 
 	public async Task<string> UpdateUser(UserModel user)
@@ -184,6 +184,27 @@ public class UserService : IUserService
 		if (authResult.IsSuccessStatusCode is false)
 		{
 			_logger.LogInformation($"Ocorreu um erro ao atualizar a confirmação de email: {authContent}");
+			return null;
+		}
+
+		return await authResult.Content.ReadAsStringAsync();
+	}
+
+	public async Task<string> UpdateUserPassword(UserModel user)
+	{
+		var data = new FormUrlEncodedContent(new[]
+		{
+			new KeyValuePair<string, string>("id", user.Id.ToString()),
+			new KeyValuePair<string, string>("password", user.Password)
+		});
+
+		string updateUserPasswordEndpoint = _config["apiLocation"] + _config["updateUserPasswordEndpoint"];
+		var authResult = await _client.PutAsync(updateUserPasswordEndpoint, data);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro ao atualizar a senha: {authContent}");
 			return null;
 		}
 

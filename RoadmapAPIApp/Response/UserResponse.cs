@@ -5,11 +5,10 @@ public class UserResponse
 	public Guid Id { get; set; }
 	public string Username { get; set; }
 	public string Email { get; set; }
-	public string Password { get; set; }
 	public Guid ConfirmationCode { get; set; }
 	public DateTime? ConfirmationCodeExpirationDate { get; set; }
 	public Guid? RestorationCode { get; set; }
-	public DateTime? RestoraionCodeExpirationDate { get; set; }
+	public DateTime? RestorationCodeExpirationDate { get; set; }
 	public string Bio { get; set; }
 	public bool IsAdmin { get; set; }
 	public bool IsBanned { get; set; }

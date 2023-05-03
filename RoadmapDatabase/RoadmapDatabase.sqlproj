@@ -116,6 +116,7 @@
     <Build Include="dbo\StoredProcedures\User\spUser_UpdateEmailConfirmation.sql" />
     <Build Include="dbo\StoredProcedures\User\spUser_GetByEmail.sql" />
     <Build Include="dbo\StoredProcedures\User\spUser_GetByRestorationCode.sql" />
+    <Build Include="dbo\StoredProcedures\User\spUser_UpdatePassword.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />

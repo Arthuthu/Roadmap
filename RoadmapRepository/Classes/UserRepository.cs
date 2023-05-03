@@ -109,6 +109,15 @@ public class UserRepository : IUserRepository
 		});
 	}
 
+	public Task UpdateUserPassword(UserModel user)
+	{
+		return _db.SaveData("dbo.spUser_UpdatePassword", new
+		{
+			user.Password,
+			user.UpdatedDate
+		});
+	}
+
 	public Task DeleteUser(Guid id)
     {
         return _db.SaveData("dbo.spUser_Delete", new { Id = id });

@@ -12,7 +12,8 @@ namespace RoadmapServices.Interfaces
 		Task<IList<string?>> AddUser(UserModel user);
 		Task<IEnumerable<string?>> Login(UserModel user);
 		Task UpdateUserEmailConfirmation(UserModel user);
-        Task UpdateUser(UserModel user);
+        Task UpdateUserPassword(UserModel user);
+		Task UpdateUser(UserModel user);
         Task DeleteUser(Guid id);
         Task SendRestorationEmail(UserModel user);
 

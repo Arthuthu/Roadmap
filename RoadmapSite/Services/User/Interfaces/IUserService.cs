@@ -8,7 +8,8 @@ namespace RoadmapSite.Services.User.Interfaces
         Task<UserModel> GetUserById(Guid? userId);
         Task<UserModel> GetUserByName(string? username);
         Task<string> UpdateUser(UserModel user);
-        Task<string> UpdateUserEmailConfirmation(UserModel user);
+        Task<string> UpdateUserPassword(UserModel user);
+		Task<string> UpdateUserEmailConfirmation(UserModel user);
 		Task<Guid> GetLoggedInUserId();
         Task<UserModel> GetUserByConfirmationCode(Guid? confirmationCode);
 		Task<UserModel> GetUserByRestorationCode(Guid? restorationCode);
