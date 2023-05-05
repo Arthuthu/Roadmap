@@ -17,37 +17,25 @@ public class MessageHandler : IMessageHandler
 	public IList<string> ValidateUserRegistration(UserModel userData)
 	{
 		var validationResult = _userValidator.Validate(userData);
-		IList<string> validationMessages = new List<string>();
 
-		if (validationResult.IsValid is false)
+		if (!validationResult.IsValid)
 		{
-			foreach (var errors in validationResult.Errors)
-			{
-				validationMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-			}
-
-			return validationMessages;
+			return validationResult.Errors.Select(e => e.ErrorMessage).ToList();
 		}
 
-		return validationMessages;
+		return new List<string>();
 	}
 
 	public IList<string> ValidateRoadmapCreation(RoadmapClassModel roadmapData)
 	{
 		var validationResult = _roadmapValidator.Validate(roadmapData);
-		IList<string> validationMessages = new List<string>();
 
-		if (validationResult.IsValid is false)
+		if (!validationResult.IsValid)
 		{
-			foreach (var errors in validationResult.Errors)
-			{
-				validationMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-			}
-
-			return validationMessages;
+			return validationResult.Errors.Select(e => e.ErrorMessage).ToList();
 		}
 
-		return validationMessages;
+		return new List<string>();
 	}
 
 	public string ConcatRegistrationMessages(IList<string> responseMessages)

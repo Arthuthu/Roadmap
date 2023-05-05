@@ -1,10 +1,14 @@
 ﻿using AutoFixture;
 using FluentAssertions;
+using FluentValidation;
+using FluentValidation.Results;
+using FluentValidation.TestHelper;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using RoadmapRepository.Interfaces;
 using RoadmapRepository.Models;
 using RoadmapServices.Classes;
+using RoadmapServices.Validators;
 using RoadmapServices.Validators.Interfaces;
 
 namespace RoadmapAPITests;
@@ -26,18 +30,28 @@ public class UserServiceTests
 	}
 
 	[Fact]
-	public void AddUser_ShouldCreateUser_WhenAllParametersAreValid()
+	public async Task AddUser_ShoudlReturnSuccessMessage_WhenAllParametersAreCorrect()
 	{
-		//Arrange
-		UserModel user = new UserModel();
-		user.Username = "John";
-		user.Password = "johnpassword123";
+		// Arrange
+		var userModel = _fixture.Build<UserModel>()
+			.With(u => u.Username, "John")
+			.With(u => u.Email, "john@hotmail.com")
+			.With(u => u.Password, "johnpassword123")
+			.Create();
 
+		var userValidator = new UserValidator();
+		var validationResult = userValidator.TestValidate(userModel);
 
-		//Act
-		var result = _sut.AddUser(user);
+		_userRepository.GetUserByName(userModel.Username).Returns(Task.FromResult<UserModel?>(null));
 
-		//Assert
-		result.Result.Should().Contain("Usuario registrado com sucesso");
+		// Act
+		var result = await _sut.AddUser(userModel);
+
+		// Assert
+		validationResult.ShouldNotHaveAnyValidationErrors();
+
+		result.Should().NotBeNull()
+			.And.HaveCount(1)
+			.And.Contain("Usuario registrado com sucesso");
 	}
 }
