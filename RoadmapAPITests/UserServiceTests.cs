@@ -91,7 +91,7 @@ public class UserServiceTests
 			new UserModel { Id = Guid.NewGuid(), Username = "user3", Email = "user3@example.com" }
 		};
 
-		_userRepository.GetAllUsers().Returns(Task.FromResult<IEnumerable<UserModel>>(expectedUsers));
+		_userRepository.GetAllUsers().Returns(expectedUsers);
 
 		// Act
 		var result = await _sut.GetAllUsers();
@@ -106,7 +106,7 @@ public class UserServiceTests
 	{
 		// Arrange
 		var expectedUsers = Enumerable.Empty<UserModel>();
-		_userRepository.GetAllUsers().Returns(Task.FromResult(expectedUsers));
+		_userRepository.GetAllUsers().Returns(expectedUsers);
 
 		// Act
 		var result = await _sut.GetAllUsers();
@@ -118,19 +118,18 @@ public class UserServiceTests
 	//GetUserById
 
 	[Fact]
-	public async Task GetUserById_ShouldReturnUser_WhenIdParameterIsValid()
+	public async Task GetUserById_ShouldReturnUser_WhenIdIsValid()
 	{
 		// Arrange
 		var userId = Guid.NewGuid();
-		UserModel? expectedUser = new UserModel 
-		{ 
-			Id = userId,
-			Username = "John",
-			Email = "john@hotmail.com",
-			Password = "johnpassword123"
-		};
 
-		_userRepository.GetUserById(userId)!.Returns(Task.FromResult(expectedUser));
+		UserModel? expectedUser = _fixture.Build<UserModel>()
+			.With(u => u.Id, userId)
+			.With(u => u.Username, "John")
+			.With(u => u.Email, "john@hotmail.com")
+			.Create();
+
+		_userRepository.GetUserById(userId)!.Returns(expectedUser);
 
 		//Act
 		var result = await _sut.GetUserById(userId);
@@ -146,14 +145,54 @@ public class UserServiceTests
 	{
 		// Arrange
 		var userId = Guid.NewGuid();
-		UserModel? expectedUser = null;
+		UserModel? expectedUser = _fixture.Build<UserModel>()
+			.With(u => u.Id, userId)
+			.Create();
 
-		_userRepository.GetUserById(userId).Returns(Task.FromResult(expectedUser));
+		_userRepository.GetUserById(userId).Returns(Task.FromResult<UserModel?>(null));
 
 		// Act
 		var result = await _sut.GetUserById(userId);
 
 		// Assert
+		result.Should().BeNull();
+	}
+
+	//GetUserByName
+
+	[Fact]
+	public async Task GetUserByName_ShouldReturnUser_WhenNameIsValid()
+	{
+		//Arrange
+		string username = "John";
+		UserModel? expectedUser = _fixture.Build<UserModel>()
+			.With(u => u.Username, username)
+			.Create();
+
+		_userRepository.GetUserByName(username)!.Returns(expectedUser);
+
+		//Act
+		var result = await _sut.GetUserByName(username);
+
+		//Assert
+		result.Should().NotBeNull()
+			.And.BeOfType<UserModel>()
+			.And.BeSameAs(expectedUser);
+	}
+
+	[Fact]
+	public async Task GetUserByName_ShouldReturnNull_WhenUsernameIsInvalid()
+	{
+		//Arrange
+		string username = "spiri";
+		UserModel? expectedUser = null;
+
+		_userRepository.GetUserByName(username).Returns(expectedUser);
+
+		//Act
+		var result = await _sut.GetUserByName(username);
+
+		//Assert
 		result.Should().BeNull();
 	}
 }
