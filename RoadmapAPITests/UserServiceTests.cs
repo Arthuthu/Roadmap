@@ -156,5 +156,4 @@ public class UserServiceTests
 		// Assert
 		result.Should().BeNull();
 	}
-
 }
