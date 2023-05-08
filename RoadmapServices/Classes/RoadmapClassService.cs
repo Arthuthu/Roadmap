@@ -27,7 +27,7 @@ public class RoadmapClassService : IRoadmapClassService
 		return await _roadmapRepository.GetRoadmapById(id);
 	}
 
-	public async Task<IList<RoadmapClassModel>> GetRoadmapByUserId(Guid userId)
+	public async Task<IList<RoadmapClassModel>> GetRoadmapsByUserId(Guid userId)
 	{
 		var results = await _roadmapRepository.GetRoadmapByUserId(userId);
 
@@ -50,13 +50,11 @@ public class RoadmapClassService : IRoadmapClassService
 			return registrationMessages;
 		}
 
-		roadmap.Id = Guid.NewGuid();
-		roadmap.IsApproved = false;
-		roadmap.CreatedDate = DateTime.UtcNow.AddHours(-3);
+		var creadtedRoadmap = InsertRoadmapData(roadmap);
 
 		try
 		{
-			await _roadmapRepository.AddRoadmap(roadmap);
+			await _roadmapRepository.AddRoadmap(creadtedRoadmap);
 			registrationMessages.Add("Roadmap criado com sucesso");
 		}
 		catch (Exception ex)
@@ -80,5 +78,14 @@ public class RoadmapClassService : IRoadmapClassService
     public Task DeleteRoadmap(Guid id)
 	{
 		return _roadmapRepository.DeleteRoadmap(id);
+	}
+
+	private RoadmapClassModel InsertRoadmapData(RoadmapClassModel roadmap)
+	{
+		roadmap.Id = Guid.NewGuid();
+		roadmap.IsApproved = false;
+		roadmap.CreatedDate = DateTime.UtcNow.AddHours(-3);
+
+		return roadmap;
 	}
 }
