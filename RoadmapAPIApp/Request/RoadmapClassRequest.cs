@@ -6,7 +6,7 @@ public class RoadmapClassRequest
 	public string Name { get; set; }
 	public string? Description { get; set; }
 	public string? Category { get; set; }
-	public string? IsApproved { get; set; }
+	public bool IsApproved { get; set; }
 	public string? AuthorName { get; set; }
 
 	public Guid UserId { get; set; }

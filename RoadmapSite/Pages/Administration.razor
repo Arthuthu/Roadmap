@@ -208,13 +208,13 @@
 
 		if (roadmaps is not null)
 		{
-			Roadmaps = roadmaps.Where(x => x.IsApproved == "0").ToList();
+			Roadmaps = roadmaps.Where(x => x.IsApproved == false).ToList();
 		}
 	}
 
 	private async Task ApproveRoadmap(RoadmapClassModel roadmap)
 	{
-		roadmap.IsApproved = "1";
+		roadmap.IsApproved = true;
 
 		await roadmapService.UpdateRoadmap(roadmap);
 		await GetAllRoadmaps();

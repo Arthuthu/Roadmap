@@ -182,7 +182,7 @@
 	private async Task<IList<RoadmapClassModel>> GetAllRoadmaps()
 	{
 		var allRoadmaps = await roadmapService.GetAllRoadmaps();
-		var roadmaps = allRoadmaps!.Where(x => x.IsApproved == "1").ToList();
+		var roadmaps = allRoadmaps!.Where(x => x.IsApproved == true).ToList();
 
 		return roadmaps;
 	}

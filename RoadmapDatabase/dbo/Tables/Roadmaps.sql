@@ -5,7 +5,7 @@
     [Description] NVARCHAR(200) NULL,
     [Category] NVARCHAR(50) NULL, 
     [AuthorName] NVARCHAR(50) NULL, 
-    [IsApproved] NVARCHAR NULL,
+    [IsApproved] BIT NULL,
     [UserId] UNIQUEIDENTIFIER NOT NULL, 
     [CreatedDate] DATETIME2 NULL,
     [UpdatedDate] DATETIME2 NULL, 

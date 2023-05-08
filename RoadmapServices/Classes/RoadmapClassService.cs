@@ -51,7 +51,7 @@ public class RoadmapClassService : IRoadmapClassService
 		}
 
 		roadmap.Id = Guid.NewGuid();
-		roadmap.IsApproved = "0";
+		roadmap.IsApproved = false;
 		roadmap.CreatedDate = DateTime.UtcNow.AddHours(-3);
 
 		try
@@ -70,7 +70,6 @@ public class RoadmapClassService : IRoadmapClassService
 	public Task UpdateRoadmap(RoadmapClassModel roadmap)
 	{
 		roadmap.UpdatedDate = DateTime.UtcNow.AddHours(-3);
-		Convert.ToInt32(roadmap.IsApproved);
 		return _roadmapRepository.UpdateRoadmap(roadmap);
 	}
     public Task DeleteAllUserRoadmaps(Guid userId)

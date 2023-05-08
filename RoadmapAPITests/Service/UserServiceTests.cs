@@ -82,7 +82,7 @@ public class UserServiceTests
     //GetAllUsers
 
     [Fact]
-    public async Task GetAllUsers_ShouldReturnAllUsers_WhenTheMethodIsCalled()
+    public async Task GetAllUsers_ShouldReturnAllUsers_WhenThereIsUsers()
     {
         var expectedUsers = new List<UserModel>
         {
@@ -141,7 +141,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public async Task GetUserById_ShouldReturnNull_WhenUserNotFound()
+    public async Task GetUserById_ShouldReturnNull_WhenThereAreNoUsers()
     {
         // Arrange
         var userId = Guid.NewGuid();
