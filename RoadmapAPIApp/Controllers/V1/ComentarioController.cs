@@ -30,10 +30,10 @@ public class ComentarioController : ControllerBase
 
 	[HttpGet]
 	[AllowAnonymous]
-	[Route("/getallcomentarios")]
-	public async Task<ActionResult<List<ComentarioResponse>>> GetAllComentarios()
+	[Route("/getallcomentariosbyroadmapid/{roadmapid}")]
+	public async Task<ActionResult<List<ComentarioResponse>>> GetAllComentarios(Guid roadmapid)
 	{
-		var comentarios = await _comentarioService.GetAllComentarios();
+		var comentarios = await _comentarioService.GetAllComentarios(roadmapid);
 		var responseComentarios = comentarios.Select(comentarios => _mapper.Map<ComentarioResponse>(comentarios));
 
 		return Ok(responseComentarios);

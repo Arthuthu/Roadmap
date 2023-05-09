@@ -94,7 +94,7 @@
     <Build Include="dbo\StoredProcedures\RoadmapVotes\spRoadmapVotes_GetAll.sql" />
     <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_GetRoadmapByUserId.sql" />
     <Build Include="dbo\Tables\Comentarios.sql" />
-    <Build Include="dbo\StoredProcedures\Comentario\spComentario_GetAll.sql" />
+    <Build Include="dbo\StoredProcedures\Comentario\spComentario_GetAllComentariosByRoadmapId.sql" />
     <Build Include="dbo\StoredProcedures\Comentario\spComentario_GetById.sql" />
     <Build Include="dbo\StoredProcedures\Comentario\spComentario_Add.sql" />
     <Build Include="dbo\StoredProcedures\Comentario\spComentario_Delete.sql" />

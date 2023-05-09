@@ -7,7 +7,7 @@ namespace RoadmapRepository.Interfaces
         Task CreateComentario(ComentarioModel Comentario);
         Task DeleteComentario(Guid id);
         Task DeleteAllUserComentarios(Guid userId);
-        Task<IEnumerable<ComentarioModel>> GetAllComentarios();
+        Task<IEnumerable<ComentarioModel>> GetAllComentarios(Guid roadmapId);
         Task<ComentarioModel?> GetComentarioById(Guid id);
         Task UpdateComentario(ComentarioModel Comentario);
     }

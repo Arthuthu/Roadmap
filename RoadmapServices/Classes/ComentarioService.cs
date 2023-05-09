@@ -13,9 +13,9 @@ public class ComentarioService : IComentarioService
 		_comentarioRepository = comentarioRepository;
 	}
 
-	public Task<IEnumerable<ComentarioModel>> GetAllComentarios()
+	public Task<IEnumerable<ComentarioModel>> GetAllComentarios(Guid roadmapId)
 	{
-		return _comentarioRepository.GetAllComentarios();
+		return _comentarioRepository.GetAllComentarios(roadmapId);
 	}
 
 	public async Task<ComentarioModel?> GetComentarioById(Guid id)

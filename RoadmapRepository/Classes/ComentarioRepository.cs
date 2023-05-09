@@ -13,9 +13,10 @@ public class ComentarioRepository : IComentarioRepository
 		_db = db;
 	}
 
-	public Task<IEnumerable<ComentarioModel>> GetAllComentarios()
+	public Task<IEnumerable<ComentarioModel>> GetAllComentarios(Guid roadmapId)
 	{
-		return _db.LoadData<ComentarioModel, dynamic>("dbo.spComentario_GetAll", new { });
+		return _db.LoadData<ComentarioModel, dynamic>("dbo.spComentario_GetAllComentariosByRoadmapId",
+			new { RoadmapId = roadmapId });
 	}
 
 	public async Task<ComentarioModel?> GetComentarioById(Guid id)

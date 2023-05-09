@@ -42,10 +42,10 @@ public class ComentarioService : IComentarioService
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
-	public async Task<IList<ComentarioModel>?> GetAllComentarios()
+	public async Task<IList<ComentarioModel>?> GetAllComentariosByRoadmapId(Guid roadmapid)
 	{
-		string getAllComentariosEndpoint = _config["apiLocation"] + _config["getAllComentariosEndpoint"];
-		var authResult = await _client.GetAsync(getAllComentariosEndpoint);
+		string getAllComentariosByRoadmapIdEndpoint = _config["apiLocation"] + _config["getAllComentariosByRoadmapIdEndpoint"] + $"/{roadmapid}";
+		var authResult = await _client.GetAsync(getAllComentariosByRoadmapIdEndpoint);
 		var authContent = await authResult.Content.ReadAsStringAsync();
 
 		if (authResult.IsSuccessStatusCode is false)

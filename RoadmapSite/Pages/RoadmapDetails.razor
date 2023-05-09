@@ -444,10 +444,9 @@
 
 	private async Task GetAllComentarios()
 	{
-		var comentarios = await comentarioService.GetAllComentarios();
-		var roadmapComentarios = comentarios?.Where(x => x.RoadmapId.ToString() == RoadmapId).ToList();
+		var comentarios = await comentarioService.GetAllComentariosByRoadmapId(new Guid(RoadmapId!));
 
-		Comentarios = roadmapComentarios?.OrderByDescending(x => x.CreatedDate).ToList();
+		Comentarios = comentarios?.OrderByDescending(x => x.CreatedDate).ToList();
 
 		if (Comentarios is not null)
 		{
