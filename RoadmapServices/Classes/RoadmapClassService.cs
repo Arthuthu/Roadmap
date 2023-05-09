@@ -39,9 +39,9 @@ public class RoadmapClassService : IRoadmapClassService
 		return results;
 	}
 
-	public async Task<IList<string>> AddRoadmap(RoadmapClassModel roadmap)
+	public async Task<IList<string?>> AddRoadmap(RoadmapClassModel roadmap)
 	{
-		IList<string> registrationMessages = new List<string>();
+		IList<string?> registrationMessages = new List<string?>();
 
 		registrationMessages =  _messageHandler.ValidateRoadmapCreation(roadmap);
 
@@ -50,11 +50,11 @@ public class RoadmapClassService : IRoadmapClassService
 			return registrationMessages;
 		}
 
-		var creadtedRoadmap = InsertRoadmapData(roadmap);
+		var createdRoadmap = InsertRoadmapData(roadmap);
 
 		try
 		{
-			await _roadmapRepository.AddRoadmap(creadtedRoadmap);
+			await _roadmapRepository.AddRoadmap(createdRoadmap);
 			registrationMessages.Add("Roadmap criado com sucesso");
 		}
 		catch (Exception ex)

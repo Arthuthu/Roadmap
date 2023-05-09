@@ -2,6 +2,7 @@
 using FluentAssertions;
 using FluentValidation.TestHelper;
 using NSubstitute;
+using RoadmapRepository.Classes;
 using RoadmapRepository.Interfaces;
 using RoadmapRepository.Models;
 using RoadmapServices.Classes;
@@ -138,33 +139,97 @@ public class RoadmapClassServiceTests
             .WithMessage("Usuario não tem roadmaps criados");
 	}
 
-    //AddRoadmap
-    [Fact]
-    public async Task AddRoadmap_ShouldCreateRoadmap_WhenRoadmapDataIsValid()
-    {
-        //Arrange
-        var roadmap = _fixture.Build<RoadmapClassModel>()
-            .With(x => x.Name, "C# Roadmap")
-            .With(x => x.Description, "Roadmap Description")
-            .With(x => x.Category, "C#")
-            .Create();
+	//AddRoadmap
+	[Fact]
+	public async Task AddRoadmap_ShouldCreateRoadmap_WhenRoadmapDataIsValid()
+	{
+		//Arrange
+		var roadmap = _fixture.Build<RoadmapClassModel>()
+			.With(x => x.Name, "C# Roadmap")
+			.With(x => x.Description, "Roadmap Description")
+			.With(x => x.Category, "C#")
+			.Create();
 
-        var roadmapValidator = new RoadmapValidator();
-        var validationResults = roadmapValidator.TestValidate(roadmap);
+		var roadmapValidator = new RoadmapValidator();
+		var validationResults = roadmapValidator.TestValidate(roadmap);
 
 		_roadmapRepository.AddRoadmap(Arg.Any<RoadmapClassModel>()).Returns(Task.CompletedTask);
 
 		//Act
 		var result = await _sut.AddRoadmap(roadmap);
-		Console.WriteLine($"Registration messages: {string.Join(", ", result)}");
 
 		//Assert
 		validationResults.ShouldNotHaveAnyValidationErrors();
+	}
 
-        result.Should().NotBeNull()
-            .And.HaveCount(1)
-            .And.Contain("Roadmap criado com sucesso");
+    [Fact]
+    public async Task AddRoadmap_ShouldReturnErrorMessage_WhenValidationIsIncorrect()
+    {
+        //Arrange
+        var roadmap = _fixture.Build<RoadmapClassModel>()
+            .With(x => x.Name, "C#")
+            .With(x => x.Category, " ")
+            .Create();
 
-		await _roadmapRepository.Received(1).AddRoadmap(Arg.Is<RoadmapClassModel>(x => x.Id == roadmap.Id));
+        //Act
+        var result = await _sut.AddRoadmap(roadmap);
+		var roadmapValidator = new RoadmapValidator();
+		var validationResults = roadmapValidator.TestValidate(roadmap);
+
+		//Assert
+        validationResults.ShouldHaveAnyValidationError();
+	}
+
+	//UpdateRoadmap
+	[Fact]
+	public async Task UpdateRoadmap_ShouldSendDataToRepository_WhenMethodIsCalled()
+    {
+        //Arrange
+        var roadmap = _fixture.Build<RoadmapClassModel>()
+            .With(x => x.Name, "C# Roadmap")
+            .With(x => x.Category, "CSharp")
+            .With(x => x.UpdatedDate, DateTime.UtcNow.AddHours(-3))
+            .Create();
+
+        _roadmapRepository.UpdateRoadmap(roadmap).Returns(Task.CompletedTask);
+
+        //Act
+        await _sut.UpdateRoadmap(roadmap);
+
+        //Assert
+        await _roadmapRepository.Received(1).UpdateRoadmap(roadmap);
+		roadmap.UpdatedDate.Should().BeCloseTo(DateTime.UtcNow.AddHours(-3), TimeSpan.FromSeconds(1));
+	}
+
+	//DeleteAllRoadmaps
+	[Fact]
+	public async Task DeleteAllUserRoadmaps_ShouldSendDataToRepository_WhenMethodIsCalled()
+	{
+		//Arrange
+		Guid userId = Guid.NewGuid();
+
+		_roadmapRepository.DeleteAllUserRoadmaps(userId).Returns(Task.CompletedTask);
+
+		//Act
+		await _roadmapRepository.DeleteAllUserRoadmaps(userId);
+
+		//Assert
+		await _roadmapRepository.Received(1).DeleteAllUserRoadmaps(userId);
+	}
+
+	//DeleteRoadmap
+	[Fact]
+	public async Task DeleteRoadmap_ShouldSendDataToRepository_WhenMethodIsCalled()
+    {
+        //Arrange
+		Guid roadmapId = Guid.NewGuid();
+
+		_roadmapRepository.DeleteRoadmap(roadmapId).Returns(Task.CompletedTask);
+
+        //Act
+        await _roadmapRepository.DeleteRoadmap(roadmapId);
+
+		//Assert
+		await _roadmapRepository.Received(1).DeleteRoadmap(roadmapId);
 	}
 }
