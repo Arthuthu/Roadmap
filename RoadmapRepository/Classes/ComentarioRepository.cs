@@ -34,6 +34,7 @@ public class ComentarioRepository : IComentarioRepository
 		{
 			comentario.Id,
 			comentario.Description,
+			comentario.AuthorName,
 			comentario.CreatedDate,
 			comentario.UserId,
 			comentario.RoadmapId

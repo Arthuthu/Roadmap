@@ -219,8 +219,8 @@
 			</div>
 			<div class="comment-div">
 				<div class="comment-info-div">
-					<a class="comment-author" href="/profile/@comentario.Author">
-						@comentario.Author
+					<a class="comment-author" href="/profile/@comentario.AuthorName">
+						@comentario.AuthorName
 					</a>
 
 					<div class="comment-date">
@@ -288,8 +288,8 @@
 }
 
 @code {
-		[Parameter]
-		public string? RoadmapId { get; set; }
+	[Parameter]
+	public string? RoadmapId { get; set; }
 	private Guid? LoggedInUserId { get; set; }
 	private IList<ComentarioModel>? Comentarios { get; set; }
 	private IList<NodeModel>? Nodes { get; set; }
@@ -447,38 +447,13 @@
 		var comentarios = await comentarioService.GetAllComentariosByRoadmapId(new Guid(RoadmapId!));
 
 		Comentarios = comentarios?.OrderByDescending(x => x.CreatedDate).ToList();
-
-		if (Comentarios is not null)
-		{
-			var users = await userService.GetAllUsers();
-
-			foreach (var comentario in Comentarios)
-			{
-				foreach (var user in users)
-				{
-					if (user.Id == comentario.UserId)
-					{
-						comentario.Author = user.Username;
-						comentario.AuthorId = user.Id;
-					}
-				}
-			}
-		}
-	}
-
-	//Actual
-	private async Task ApproveRoadmap(RoadmapClassModel roadmap)
-	{
-		roadmap.IsApproved = true;
-
-		await roadmapService.UpdateRoadmap(roadmap);
-		navManager.NavigateTo("/administration");
 	}
 
 	private async Task CommentOnRoadmap()
 	{
 		Comentario!.RoadmapId = new Guid(RoadmapId!);
 		Comentario.UserId = LoggedInUserId;
+		Comentario.AuthorName = LoggedInUserModel!.Username;
 		await comentarioService.CreateComentario(Comentario);
 
 		await GetAllComentarios();
@@ -495,6 +470,15 @@
 		{
 			Comentarios!.Remove(comentario);
 		}
+	}
+
+	//Actual
+	private async Task ApproveRoadmap(RoadmapClassModel roadmap)
+	{
+		roadmap.IsApproved = true;
+
+		await roadmapService.UpdateRoadmap(roadmap);
+		navManager.NavigateTo("/administration");
 	}
 
 	private async Task AddUserVoteOnComentario(Guid comentarioId)

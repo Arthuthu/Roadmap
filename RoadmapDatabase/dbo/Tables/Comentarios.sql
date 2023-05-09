@@ -2,6 +2,7 @@
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
     [Description] NVARCHAR(1000) NOT NULL, 
+    [AuthorName] nvarchar(50) NOT NULL,
     [UserId] UNIQUEIDENTIFIER NOT NULL,
     [RoadmapId] UNIQUEIDENTIFIER NULL,
     [CreatedDate] DATETIME2 NULL, 
