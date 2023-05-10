@@ -15,9 +15,9 @@ public class ComentarioVotesService : IComentarioVotesService
 		_comentarioVotesRepository = comentarioVotesRepository;
 	}
 
-	public Task<IEnumerable<ComentarioVotesModel>> GetAllComentarioVotes(Guid id, Guid userId)
+	public Task<IEnumerable<ComentarioVotesModel>> GetAllComentarioVotes(Guid userId, Guid comentarioId)
 	{
-		return _comentarioVotesRepository.GetAllComentarioVotes(id, userId);
+		return _comentarioVotesRepository.GetAllComentarioVotes(userId, comentarioId);
 	}
 
     public async Task<string> AddComentarioVote(Guid userId, Guid comentarioId)

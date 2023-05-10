@@ -2,8 +2,8 @@
 {
     public interface IComentarioVotingService
     {
-        Task AddUserVote(Guid comentarioId, Guid? loggedInUserId);
-        Task<string> GetButtonColor(Guid comentarioId, Guid? loggedInUserId);
-        Task<int> GetComentarioVotes(Guid comentarioId, Guid? loggedInUserId);
+        Task AddUserVote(Guid? loggedInUserId, Guid comentarioId);
+        Task<string> GetButtonColor(Guid? loggedInUserId, Guid comentarioId);
+        Task<int> GetComentarioVotes(Guid? loggedInUserId, Guid comentarioId);
     }
 }

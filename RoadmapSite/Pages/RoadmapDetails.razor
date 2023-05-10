@@ -483,7 +483,7 @@
 
 	private async Task AddUserVoteOnComentario(Guid comentarioId)
 	{
-		await comentarioVotingService.AddUserVote(comentarioId, LoggedInUserId);
+		await comentarioVotingService.AddUserVote(LoggedInUserId, comentarioId);
 
 		await GetAllComentarios();
 		await UpdateComentarioVoteButton();
@@ -495,10 +495,10 @@
 		{
 			foreach (var comentario in Comentarios)
 			{
-				string comentarioClass = await comentarioVotingService.GetButtonColor(comentario.Id, LoggedInUserId);
+				string comentarioClass = await comentarioVotingService.GetButtonColor(LoggedInUserId, comentario.Id);
 				comentario.ComentarioHtmlClass = comentarioClass;
 
-				int comentarioTotalVotes = await comentarioVotingService.GetComentarioVotes(comentario.Id, LoggedInUserId);
+				int comentarioTotalVotes = await comentarioVotingService.GetComentarioVotes(LoggedInUserId, comentario.Id);
 				comentario.ComentarioTotalVotes = comentarioTotalVotes;
 			}
 		}

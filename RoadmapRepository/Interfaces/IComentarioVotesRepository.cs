@@ -6,6 +6,6 @@ namespace RoadmapRepository.Interfaces
     {
         Task AddComentarioVote(Guid Id, Guid userId, Guid comentarioId);
         Task DeleteComentarioVote(Guid id);
-        Task<IEnumerable<ComentarioVotesModel>> GetAllComentarioVotes(Guid id, Guid userId);
+        Task<IEnumerable<ComentarioVotesModel>> GetAllComentarioVotes(Guid userId, Guid comentarioId);
     }
 }

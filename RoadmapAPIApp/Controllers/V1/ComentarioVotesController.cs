@@ -25,11 +25,11 @@ public class ComentarioVotesController : ControllerBase
 	}
 
 	[AllowAnonymous]
-	[Route("/getallcomentariovotes/{id}/{userid}")]
+	[Route("/getallcomentariovotes/{userId}/{comentarioId}")]
 	[HttpGet]
-	public async Task<ActionResult<List<ComentarioVotesResponse>>> GetAllComentarioVotes(Guid id, Guid userid)
+	public async Task<ActionResult<List<ComentarioVotesResponse>>> GetAllComentarioVotes(Guid userId, Guid comentarioId)
 	{
-		var comentarioVotes = await _comentarioVotesService.GetAllComentarioVotes(id, userid);
+		var comentarioVotes = await _comentarioVotesService.GetAllComentarioVotes(userId, comentarioId);
 		var responseComentarioVotes = comentarioVotes.Select(comentarioVotes => _mapper.Map<ComentarioVotesResponse>(comentarioVotes));
 
 		return Ok(responseComentarioVotes);
