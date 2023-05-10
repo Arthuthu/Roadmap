@@ -381,26 +381,25 @@
 
 	private async Task AddUserVoteOnRoadmap(Guid roadmapId)
 	{
-		await roadmapVotingService.AddUserVote(roadmapId, LoggedInUserId);
+		await roadmapVotingService.AddUserVote(LoggedInUserId, roadmapId);
 
 		await UpdateRoadmapVoteButton();
 	}
 
 	private async Task UpdateRoadmapVoteButton()
 	{
-		string roadmapClass = await GetButtonColorDetails(Roadmap.Id, LoggedInUserId);
+		string roadmapClass = await GetButtonColorDetails(LoggedInUserId, Roadmap!.Id);
 		Roadmap.RoadmapHtmlClass = roadmapClass;
 
-		int roadmapTotalVotes = await roadmapVotingService.GetRoadmapVotes(Roadmap.Id);
+		int roadmapTotalVotes = await roadmapVotingService.GetRoadmapVotes(LoggedInUserId, Roadmap.Id);
 		Roadmap.RoadmapTotalVotes = roadmapTotalVotes;
 	}
 
-	private async Task<string> GetButtonColorDetails(Guid roadmapId, Guid? loggedInUserId)
+	private async Task<string> GetButtonColorDetails(Guid? loggedInUserId, Guid roadmapId)
 	{
-		var roadmapVotes = await roadmapVotesService.GetAllRoadmapVotes();
+		var roadmapVotes = await roadmapVotesService.GetAllRoadmapVotes(loggedInUserId, roadmapId);
 
 		var votedRoadmapId = roadmapVotes!
-			.Where(x => x.UserId == loggedInUserId && x.RoadmapId == roadmapId)
 			.Select(x => x.Id).FirstOrDefault();
 
 		if (votedRoadmapId == Guid.Empty)

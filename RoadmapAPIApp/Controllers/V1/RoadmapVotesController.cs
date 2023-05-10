@@ -25,11 +25,11 @@ public class RoadmapVotesController : ControllerBase
 	}
 
 	[AllowAnonymous]
-	[Route("/getallroadmapvotes")]
+	[Route("/getallroadmapvotes/{userId}/{roadmapId}")]
 	[HttpGet]
-	public async Task<ActionResult<List<RoadmapVotesResponse>>> GetAllRoadmapVotes()
+	public async Task<ActionResult<List<RoadmapVotesResponse>>> GetAllRoadmapVotes(Guid userId, Guid roadmapId)
 	{
-		var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes();
+		var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes(userId, roadmapId);
 		var responseRoadmapVotes = roadmapVotes.Select(roadmapVotes => _mapper.Map<RoadmapVotesResponse>(roadmapVotes));
 
 		return Ok(responseRoadmapVotes);

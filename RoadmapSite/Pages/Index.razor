@@ -160,10 +160,10 @@
 		{
 			foreach (var roadmap in Roadmaps!)
 			{
-				string roadmapClass = await votingService.GetButtonColor(roadmap.Id, LoggedInUserId);
+				string roadmapClass = await votingService.GetButtonColor(LoggedInUserId, roadmap.Id);
 				roadmap.RoadmapHtmlClass = roadmapClass;
 
-				int roadmapTotalVotes = await votingService.GetRoadmapVotes(roadmap.Id);
+				int roadmapTotalVotes = await votingService.GetRoadmapVotes(LoggedInUserId, roadmap.Id);
 				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
 			}
 		}
@@ -171,7 +171,7 @@
 		{
 			foreach (var roadmap in Roadmaps!)
 			{
-				int roadmapTotalVotes = await votingService.GetRoadmapVotes(roadmap.Id);
+				int roadmapTotalVotes = await votingService.GetRoadmapVotes(LoggedInUserId, roadmap.Id);
 
 				roadmap.RoadmapHtmlClass = "vote-button";
 				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
@@ -222,10 +222,10 @@
 		{
 			foreach (var roadmap in Roadmaps!)
 			{
-				string roadmapClass = await votingService.GetButtonColor(roadmap.Id, LoggedInUserId);
+				string roadmapClass = await votingService.GetButtonColor(LoggedInUserId, roadmap.Id);
 				roadmap.RoadmapHtmlClass = roadmapClass;
 
-				int roadmapTotalVotes = await votingService.GetRoadmapVotes(roadmap.Id);
+				int roadmapTotalVotes = await votingService.GetRoadmapVotes(LoggedInUserId, roadmap.Id);
 				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
 			}
 		}
@@ -233,7 +233,7 @@
 		{
 			foreach (var roadmap in Roadmaps!)
 			{
-				int roadmapTotalVotes = await votingService.GetRoadmapVotes(roadmap.Id);
+				int roadmapTotalVotes = await votingService.GetRoadmapVotes(LoggedInUserId, roadmap.Id);
 
 				roadmap.RoadmapHtmlClass = "vote-button";
 				roadmap.RoadmapTotalVotes = roadmapTotalVotes;
@@ -254,7 +254,7 @@
 			}
 		}
 
-		await votingService.AddUserVote(roadmapId, LoggedInUserId);
+		await votingService.AddUserVote(LoggedInUserId, roadmapId);
 
 		await OnInitializedAsync();
 	}

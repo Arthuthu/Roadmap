@@ -45,9 +45,9 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
-	public async Task<IList<RoadmapVotesModel>?> GetAllRoadmapVotes()
+	public async Task<IList<RoadmapVotesModel>?> GetAllRoadmapVotes(Guid? userId, Guid roadmapId)
 	{
-		string getAllRoadmapsVotesEndpoint = _config["apiLocation"] + _config["getAllRoadmapVotesEndpoint"];
+		string getAllRoadmapsVotesEndpoint = _config["apiLocation"] + _config["getAllRoadmapVotesEndpoint"] + $"/{userId}" + $"/{roadmapId}";
 		var authResult = await _client.GetAsync(getAllRoadmapsVotesEndpoint);
 		var authContent = await authResult.Content.ReadAsStringAsync();
 

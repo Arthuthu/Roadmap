@@ -250,7 +250,7 @@
 
 	private async Task AddUserVote(Guid roadmapId)
 	{
-		await votingService.AddUserVote(roadmapId, LoggedInUserId);
+		await votingService.AddUserVote(LoggedInUserId, roadmapId);
 
 		await OnInitializedAsync();
 	}
@@ -259,10 +259,10 @@
 	{
 		foreach (var roadmap in Roadmaps!)
 		{
-			string roadmapClass = await votingService.GetButtonColor(roadmap.Id, LoggedInUserId);
+			string roadmapClass = await votingService.GetButtonColor(LoggedInUserId, roadmap.Id);
 			roadmap.RoadmapHtmlClass = roadmapClass;
 
-			int roadmapTotalVotes = await votingService.GetRoadmapVotes(roadmap.Id);
+			int roadmapTotalVotes = await votingService.GetRoadmapVotes(LoggedInUserId, roadmap.Id);
 			roadmap.RoadmapTotalVotes = roadmapTotalVotes;
 		}
 	}

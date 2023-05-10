@@ -7,6 +7,6 @@ namespace RoadmapServices.Interfaces
         Task<string> AddRoadmapVote(Guid userId, Guid roadmapId);
 		Task DeleteRoadmapVote(Guid id);
         Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotesByUserId(Guid userId);
-        Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotes();
+        Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotes(Guid userId, Guid roadmapId);
 	}
 }

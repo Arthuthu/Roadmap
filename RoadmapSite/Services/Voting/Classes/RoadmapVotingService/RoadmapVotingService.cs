@@ -21,17 +21,16 @@ public class RoadmapVotingService : IRoadmapVotingService
         _roadmapVotesService = roadmapVotesService;
     }
 
-    public async Task AddUserVote(Guid roadmapId, Guid? loggedInUserId)
+    public async Task AddUserVote(Guid? loggedInUserId, Guid roadmapId)
     {
         if (loggedInUserId == Guid.Empty)
         {
             _navigationManager.NavigateTo("/login");
         }
 
-        var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes();
+        var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes(loggedInUserId, roadmapId);
 
         var votedRoadmapId = roadmapVotes!
-            .Where(x => x.UserId == loggedInUserId && x.RoadmapId == roadmapId)
             .Select(x => x.Id).FirstOrDefault();
 
         if (votedRoadmapId != Guid.Empty)
@@ -44,12 +43,11 @@ public class RoadmapVotingService : IRoadmapVotingService
         }
     }
 
-    public async Task<string> GetButtonColor(Guid roadmapId, Guid? loggedInUserId)
+    public async Task<string> GetButtonColor(Guid? loggedInUserId, Guid roadmapId)
     {
-        var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes();
+        var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes(loggedInUserId, roadmapId);
 
         var votedRoadmapId = roadmapVotes!
-            .Where(x => x.UserId == loggedInUserId && x.RoadmapId == roadmapId)
             .Select(x => x.Id).FirstOrDefault();
 
         if (votedRoadmapId == Guid.Empty)
@@ -63,9 +61,9 @@ public class RoadmapVotingService : IRoadmapVotingService
         }
     }
 
-    public async Task<int> GetRoadmapVotes(Guid roadmapId)
+    public async Task<int> GetRoadmapVotes(Guid? loggedInUserId, Guid roadmapId)
     {
-        var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes();
+        var roadmapVotes = await _roadmapVotesService.GetAllRoadmapVotes(loggedInUserId, roadmapId);
 
         if (roadmapVotes is null)
         {

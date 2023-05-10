@@ -13,9 +13,10 @@ public class RoadmapVotesRepository : IRoadmapVotesRepository
 		_db = db;
 	}
 
-	public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotes()
+	public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotes(Guid userId, Guid roadmapId)
 	{
-		return _db.LoadData<RoadmapVotesModel, dynamic>("dbo.spRoadmapVotes_GetAll", new { });
+		return _db.LoadData<RoadmapVotesModel, dynamic>("dbo.spRoadmapVotes_GetAll",
+			new { UserId = userId, RoadmapId = roadmapId });
 	}
 
     public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotesByUserId(Guid userId)

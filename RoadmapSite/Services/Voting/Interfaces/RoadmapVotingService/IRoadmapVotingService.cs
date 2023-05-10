@@ -2,9 +2,9 @@
 {
     public interface IRoadmapVotingService
     {
-        Task AddUserVote(Guid roadmapId, Guid? loggedInUserId);
-        Task<string> GetButtonColor(Guid roadmapId, Guid? loggedInUserId);
-        Task<int> GetRoadmapVotes(Guid roadmapId);
+        Task AddUserVote(Guid? loggedInUserId, Guid roadmapId);
+        Task<string> GetButtonColor(Guid? loggedInUserId, Guid roadmapId);
+        Task<int> GetRoadmapVotes(Guid? loggedInUserId, Guid roadmapId);
 
     }
 }

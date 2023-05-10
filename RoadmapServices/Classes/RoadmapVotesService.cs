@@ -18,9 +18,9 @@ public class RoadmapVotesService : IRoadmapVotesService
 		_messageHandler = messageHandler;
 	}
 
-	public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotes()
+	public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotes(Guid userId, Guid roadmapId)
 	{
-		return _roadmapVotesRepository.GetAllRoadmapVotes();
+		return _roadmapVotesRepository.GetAllRoadmapVotes(userId, roadmapId);
 	}
 
     public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotesByUserId(Guid userId)
