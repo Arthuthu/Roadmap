@@ -27,11 +27,9 @@ public class ComentarioVotingService : IComentarioVotingService
 			_navigationManager.NavigateTo("/login");
 		}
 
-		var comentarioVotes = await _comentarioVotesService.GetAllComentarioVotes();
+		var comentarioVotes = await _comentarioVotesService.GetAllComentarioVotes(comentarioId, loggedInUserId);
 
-		var votedComentarioId = comentarioVotes!
-			.Where(x => x.UserId == loggedInUserId && x.ComentarioId == comentarioId)
-			.Select(x => x.Id).FirstOrDefault();
+		var votedComentarioId = comentarioVotes!.Select(x => x.Id).FirstOrDefault();
 
 		if (votedComentarioId != Guid.Empty)
 		{
@@ -45,11 +43,9 @@ public class ComentarioVotingService : IComentarioVotingService
 
 	public async Task<string> GetButtonColor(Guid comentarioId, Guid? loggedInUserId)
 	{
-		var comentarioVotes = await _comentarioVotesService.GetAllComentarioVotes();
+		var comentarioVotes = await _comentarioVotesService.GetAllComentarioVotes(comentarioId, loggedInUserId);
 
-		var votedComentarioId = comentarioVotes!
-			.Where(x => x.UserId == loggedInUserId && x.ComentarioId == comentarioId)
-			.Select(x => x.Id).FirstOrDefault();
+		var votedComentarioId = comentarioVotes!.Select(x => x.Id).FirstOrDefault();
 
 		if (votedComentarioId == Guid.Empty)
 		{
@@ -62,9 +58,9 @@ public class ComentarioVotingService : IComentarioVotingService
 		}
 	}
 
-	public async Task<int> GetComentarioVotes(Guid comentarioId)
+	public async Task<int> GetComentarioVotes(Guid comentarioId, Guid? loggedInUserId)
 	{
-		var comentarioVotes = await _comentarioVotesService.GetAllComentarioVotes();
+		var comentarioVotes = await _comentarioVotesService.GetAllComentarioVotes(comentarioId, loggedInUserId);
 
 		if (comentarioVotes is null)
 		{

@@ -13,9 +13,10 @@ public class ComentarioVotesRepository : IComentarioVotesRepository
 		_db = db;
 	}
 
-	public Task<IEnumerable<ComentarioVotesModel>> GetAllComentarioVotes()
+	public Task<IEnumerable<ComentarioVotesModel>> GetAllComentarioVotes(Guid id, Guid userId)
 	{
-		return _db.LoadData<ComentarioVotesModel, dynamic>("dbo.spComentarioVotes_GetAll", new { });
+		return _db.LoadData<ComentarioVotesModel, dynamic>("dbo.spComentarioVotes_GetAll", 
+			new { Id = id, UserId = userId });
 	}
 
     public Task AddComentarioVote(Guid Id, Guid userId, Guid comentarioId)

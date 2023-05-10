@@ -44,9 +44,9 @@ public class ComentarioVotesService : IComentarioVotesService
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
-	public async Task<IList<ComentarioVotesModel>?> GetAllComentarioVotes()
+	public async Task<IList<ComentarioVotesModel>?> GetAllComentarioVotes(Guid id, Guid? userid)
 	{
-		string getAllComentariosVotesEndpoint = _config["apiLocation"] + _config["getAllComentarioVotesEndpoint"];
+		string getAllComentariosVotesEndpoint = _config["apiLocation"] + _config["getAllComentarioVotesEndpoint"] + $"/{id}" + $"/{userid}";
 		var authResult = await _client.GetAsync(getAllComentariosVotesEndpoint);
 		var authContent = await authResult.Content.ReadAsStringAsync();
 

@@ -8,19 +8,16 @@ namespace RoadmapServices.Classes;
 public class ComentarioVotesService : IComentarioVotesService
 {
 	private readonly IComentarioVotesRepository _comentarioVotesRepository;
-	private readonly IMessageHandler _messageHandler;
 	private string comentarioVotingResponseMessage = "";
 
-	public ComentarioVotesService(IComentarioVotesRepository comentarioVotesRepository,
-		IMessageHandler messageHandler)
+	public ComentarioVotesService(IComentarioVotesRepository comentarioVotesRepository)
 	{
 		_comentarioVotesRepository = comentarioVotesRepository;
-		_messageHandler = messageHandler;
 	}
 
-	public Task<IEnumerable<ComentarioVotesModel>> GetAllComentarioVotes()
+	public Task<IEnumerable<ComentarioVotesModel>> GetAllComentarioVotes(Guid id, Guid userId)
 	{
-		return _comentarioVotesRepository.GetAllComentarioVotes();
+		return _comentarioVotesRepository.GetAllComentarioVotes(id, userId);
 	}
 
     public async Task<string> AddComentarioVote(Guid userId, Guid comentarioId)

@@ -498,7 +498,7 @@
 				string comentarioClass = await comentarioVotingService.GetButtonColor(comentario.Id, LoggedInUserId);
 				comentario.ComentarioHtmlClass = comentarioClass;
 
-				int comentarioTotalVotes = await comentarioVotingService.GetComentarioVotes(comentario.Id);
+				int comentarioTotalVotes = await comentarioVotingService.GetComentarioVotes(comentario.Id, LoggedInUserId);
 				comentario.ComentarioTotalVotes = comentarioTotalVotes;
 			}
 		}

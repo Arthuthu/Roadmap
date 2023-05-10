@@ -4,6 +4,6 @@
     {
         Task AddUserVote(Guid comentarioId, Guid? loggedInUserId);
         Task<string> GetButtonColor(Guid comentarioId, Guid? loggedInUserId);
-        Task<int> GetComentarioVotes(Guid comentarioId);
+        Task<int> GetComentarioVotes(Guid comentarioId, Guid? loggedInUserId);
     }
 }
