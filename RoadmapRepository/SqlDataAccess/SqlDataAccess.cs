@@ -24,13 +24,13 @@ public class SqlDataAccess : ISqlDataAccess
 		return await connection.QueryAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
 	}
 
-	public async Task SaveData<T>(
-		string storedProcedure,
-		T parameters,
-		string connectionId = "RoadmapConnection")
-	{
-		using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+		public async Task SaveData<T>(
+			string storedProcedure,
+			T parameters,
+			string connectionId = "RoadmapConnection")
+		{
+			using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
 
-		await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
-	}
+			await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+		}
 }
