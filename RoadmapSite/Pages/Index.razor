@@ -215,8 +215,6 @@
 
 	private async Task FillRoadmapsButtons()
 	{
-		var users = await userService.GetAllUsers();
-
 		if (LoggedInUserId != Guid.Empty)
 		{
 			foreach (var roadmap in Roadmaps!)
