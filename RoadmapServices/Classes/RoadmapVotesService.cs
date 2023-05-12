@@ -8,14 +8,11 @@ namespace RoadmapServices.Classes;
 public class RoadmapVotesService : IRoadmapVotesService
 {
 	private readonly IRoadmapVotesRepository _roadmapVotesRepository;
-	private readonly IMessageHandler _messageHandler;
 	private string roadmapVotingResponseMessage = "";
 
-	public RoadmapVotesService(IRoadmapVotesRepository roadmapVotesRepository,
-		IMessageHandler messageHandler)
+	public RoadmapVotesService(IRoadmapVotesRepository roadmapVotesRepository)
 	{
 		_roadmapVotesRepository = roadmapVotesRepository;
-		_messageHandler = messageHandler;
 	}
 
 	public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotes(Guid userId, Guid roadmapId)
