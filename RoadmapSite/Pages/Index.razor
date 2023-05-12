@@ -154,7 +154,7 @@
 	private async Task PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
-		Roadmaps = await GetAllRoadmaps();
+		Roadmaps = await roadmapService.GetAllApprovedRoadmaps();
 
 		if (LoggedInUserId != Guid.Empty)
 		{
@@ -179,17 +179,16 @@
 		}
 	}
 
-	private async Task<IList<RoadmapClassModel>> GetAllRoadmaps()
+	private async Task<IList<RoadmapClassModel>?> GetAllApprovedRoadmaps()
 	{
-		var allRoadmaps = await roadmapService.GetAllRoadmaps();
-		var roadmaps = allRoadmaps!.Where(x => x.IsApproved == true).ToList();
+		var roadmaps = await roadmapService.GetAllApprovedRoadmaps();
 
 		return roadmaps;
 	}
 
 	private async Task? GetRoadmapsByCategory(CategoryModel category)
 	{
-		var roadmaps = await GetAllRoadmaps();
+		var roadmaps = await GetAllApprovedRoadmaps();
 
 		Roadmaps = roadmaps?.Where(x => x.Category == category.ToString()).ToList();
 
@@ -198,7 +197,7 @@
 
 	private async Task? GetRoadmapsByCustomCategory(string category)
 	{
-		var roadmaps = await GetAllRoadmaps();
+		var roadmaps = await GetAllApprovedRoadmaps();
 
 		Roadmaps = roadmaps?.Where(x => x.Category!.ToLower().Contains(category.ToLower())).ToList();
 
@@ -207,7 +206,7 @@
 
 	private async Task GetRoadmapsByName(string name)
 	{
-		var roadmaps = await GetAllRoadmaps();
+		var roadmaps = await GetAllApprovedRoadmaps();
 
 		Roadmaps = roadmaps?.Where(x => x.Name!.ToLower().Contains(name.ToLower())).ToList();
 

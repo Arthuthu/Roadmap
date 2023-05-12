@@ -5,6 +5,7 @@ namespace RoadmapRepository.Interfaces
 	public interface IRoadmapClassRepository
 	{
 		Task<IEnumerable<RoadmapClassModel>> GetAllRoadmaps();
+		Task<IEnumerable<RoadmapClassModel>> GetAllApprovedRoadmaps();
 		Task<RoadmapClassModel?> GetRoadmapById(Guid id);
 		Task<IList<RoadmapClassModel>> GetRoadmapByUserId(Guid userId);
 		Task AddRoadmap(RoadmapClassModel roadmap);

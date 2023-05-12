@@ -64,6 +64,23 @@ public class RoadmapService : IRoadmapService
 		return roadmapClassModel;
 	}
 
+	public async Task<IList<RoadmapClassModel>?> GetAllApprovedRoadmaps()
+	{
+		string getAllApprovedRoadmapsEndpoint = _config["apiLocation"] + _config["getAllApprovedRoadmapsEndpoint"];
+		var authResult = await _client.GetAsync(getAllApprovedRoadmapsEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogInformation($"Ocorreu um erro durante o carregamento de roadmaps aprovados: {authContent}");
+			return null;
+		}
+
+		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
+
+		return roadmapClassModel;
+	}
+
 	public async Task<IList<RoadmapClassModel>?> GetRoadmapByUserId(Guid userId)
 	{
 		string getRoadmapByUserIdEndpoint = _config["apiLocation"] + _config["getRoadmapByUserIdEndpoint"] + $"/{userId}";
