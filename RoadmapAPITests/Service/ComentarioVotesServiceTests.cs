@@ -122,5 +122,4 @@ public class ComentarioVotesServiceTests
 		// Act and Assert
 		await Assert.ThrowsAsync<Exception>(async () => await _sut.DeleteComentarioVote(comentarioVoteId));
 	}
-
 }
