@@ -82,6 +82,29 @@ public class RoadmapClassServiceTests
 		Assert.True(result.All(x => x.IsApproved));
 	}
 
+	//GetAllNotApprovedRoadmaps
+	[Fact]
+	public async Task GetAllNotApprovedRoadmaps_ShouldReturnRoadmaps_WhenMethodIsCalled()
+	{
+		//Arrange
+		var expectedRoadmaps = new List<RoadmapClassModel>()
+		{
+			new RoadmapClassModel { Id = Guid.NewGuid(), Name = "C# Roadmap", Description = "Description", IsApproved = false },
+			new RoadmapClassModel { Id = Guid.NewGuid(), Name = "Javascript Roadmap", Description = "Description", IsApproved = false },
+			new RoadmapClassModel { Id = Guid.NewGuid(), Name = "C++ Roadmap", Description= "Description", IsApproved = false }
+		};
+
+		_roadmapRepository.GetAllNotApprovedRoadmaps().Returns(expectedRoadmaps);
+
+		//Act
+		var result = await _sut.GetAllNotApprovedRoadmaps();
+
+		//Assert
+		result.Should().NotBeNull();
+		result.Should().BeEquivalentTo(expectedRoadmaps);
+		Assert.False(result.All(x => x.IsApproved));
+	}
+
 	//GetRoadmapById
 	[Fact]
     public async Task GetRoadmapById_ShouldReturnRoadmap_WhenIdIsValid()

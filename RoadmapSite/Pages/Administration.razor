@@ -195,21 +195,16 @@
 			return false;
 		}
 
-		await GetAllRoadmaps();
+		await GetAllNotApprovedRoadmaps();
 
 		IsInitialized = true;
 
 		return true;
 	}
 
-	private async Task GetAllRoadmaps()
+	private async Task GetAllNotApprovedRoadmaps()
 	{
-		var roadmaps = await roadmapService.GetAllRoadmaps();
-
-		if (roadmaps is not null)
-		{
-			Roadmaps = roadmaps.Where(x => x.IsApproved == false).ToList();
-		}
+		Roadmaps = await roadmapService.GetAllNotApprovedRoadmaps();
 	}
 
 	private async Task ApproveRoadmap(RoadmapClassModel roadmap)
@@ -217,7 +212,7 @@
 		roadmap.IsApproved = true;
 
 		await roadmapService.UpdateRoadmap(roadmap);
-		await GetAllRoadmaps();
+		await GetAllNotApprovedRoadmaps();
 	}
 
 	private async Task DeleteDenuncia(Guid denunciaId)
@@ -235,7 +230,7 @@
 	private async Task ToggleShowRoadmapsToApprove()
 	{
 		showRoadmapsToApprove = !showRoadmapsToApprove;
-		await GetAllRoadmaps();
+		await GetAllNotApprovedRoadmaps();
 	}
 
 	private void ToggleShowDeletePage()

@@ -27,6 +27,11 @@ public class RoadmapClassService : IRoadmapClassService
 		return _roadmapRepository.GetAllApprovedRoadmaps();
 	}
 
+	public Task<IEnumerable<RoadmapClassModel>> GetAllNotApprovedRoadmaps()
+	{
+		return _roadmapRepository.GetAllNotApprovedRoadmaps();
+	}
+
 	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
 	{
 		return await _roadmapRepository.GetRoadmapById(id);
