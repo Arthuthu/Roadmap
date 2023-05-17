@@ -67,9 +67,11 @@
     <Folder Include="dbo\StoredProcedures\Comentario" />
     <Folder Include="dbo\StoredProcedures\ComentarioVotes" />
     <Folder Include="dbo\StoredProcedures\Denuncia" />
+    <Folder Include="LinuxLocations\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\RoadmapDatabase.publish.xml" />
+    <None Include="LinuxLocations\RoadmapDatabase.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Users.sql" />
