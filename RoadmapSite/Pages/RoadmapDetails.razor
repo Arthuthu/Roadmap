@@ -82,7 +82,7 @@
 				<div class="text-center">
 					<label for="titulo" class="visually-hidden">Titulo</label>
 					<div>
-						<InputText id="node-input" class="node-input-text" @bind-Value="Node.Name" placeholder="Nome" />
+						<InputText id="node-input" class="node-input-text" @bind-Value="Node!.Name" placeholder="Nome" />
 					</div>
 				</div>
 
@@ -176,7 +176,7 @@
 	<div>
 		<EditForm Model="@Comentario" OnValidSubmit="CommentOnRoadmap" Context="ComentarioForm">
 			<div>
-				<InputTextArea id="comment-input" class="comment-input-area" @bind-Value="Comentario.Description"
+				<InputTextArea id="comment-input" class="comment-input-area" @bind-Value="Comentario!.Description"
 				placeholder="Adicione um comentario (Maximo 1000 caracteres)" />
 			</div>
 			<div class="text-center">
@@ -319,13 +319,13 @@
 		await PageVerification();
 	}
 
-	private async Task<bool> PageVerification()
+	private async Task PageVerification()
 	{
 		if (RoadmapId is null)
 		{
 			navManager.NavigateTo("/notfound");
 
-			return false;
+			return;
 		}
 
 		LoggedInUserId = await userService.GetLoggedInUserId();
@@ -334,7 +334,7 @@
 		{
 			navManager.NavigateTo("/login");
 
-			return false;
+			return;
 		}
 
 		Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId!));
@@ -343,30 +343,37 @@
 		{
 			navManager.NavigateTo("/notfound");
 
-			return false;
+			return;
 		}
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
+
+		if (LoggedInUserModel is null)
+		{
+			navManager.NavigateTo("/notfound");
+
+			return;
+		}
 
 		if (LoggedInUserModel.IsConfirmed is false)
 		{
 			navManager.NavigateTo("/emailnotconfirmed");
 
-			return false;
+			return;
 		}
 
 		if (LoggedInUserModel.IsBanned is true)
 		{
 			navManager.NavigateTo("/banned");
 
-			return false;
+			return;
 		}
 
 		await LoadPageData();
 
 		isInitialized = true;
 
-		return true;
+		return;
 	}
 
 	private async Task LoadPageData()

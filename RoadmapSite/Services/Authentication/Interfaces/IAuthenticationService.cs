@@ -4,7 +4,7 @@ namespace RoadmapSite.Services.Authentication.Interfaces
 {
     public interface IAuthenticationService
     {
-        Task<AuthenticatedUserModel> Login(AuthenticationUserModel userForAuthentication);
+        Task<AuthenticatedUserModel?> Login(AuthenticationUserModel userForAuthentication);
         Task Logout();
     }
 }

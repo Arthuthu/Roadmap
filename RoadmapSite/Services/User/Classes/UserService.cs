@@ -12,7 +12,6 @@ namespace RoadmapSite.Services.User.Classes;
 public class UserService : IUserService
 {
 	private readonly HttpClient _client;
-	private readonly ILocalStorageService _localStorage;
 	private readonly AuthenticationStateProvider _authenticationStateProvider;
 	private readonly NavigationManager _navigationManager;
 	private readonly IConfiguration _config;
@@ -21,12 +20,10 @@ public class UserService : IUserService
 	public UserService(HttpClient client,
 	AuthenticationStateProvider authenticationStateProvider,
 	NavigationManager navigationManager,
-	ILocalStorageService localStorage,
 	IConfiguration config,
 	ILogger<UserService> logger)
 	{
 		_client = client;
-		_localStorage = localStorage;
 		_authenticationStateProvider = authenticationStateProvider;
 		_navigationManager = navigationManager;
 		_config = config;
@@ -58,7 +55,7 @@ public class UserService : IUserService
 
 		return new Guid(userId);
 	}
-	public async Task<IList<UserModel>> GetAllUsers()
+	public async Task<IList<UserModel>?> GetAllUsers()
 	{
 		string getAllUsersEndpoint = _config["apiLocation"] + _config["getAllUsersEndpoint"];
 		var authResult = await _client.GetAsync(getAllUsersEndpoint);
@@ -66,7 +63,9 @@ public class UserService : IUserService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento de usuarios: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro durante o carregamento de usuarios: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -75,7 +74,7 @@ public class UserService : IUserService
 		return userModel;
 	}
 
-	public async Task<UserModel> GetUserById(Guid? userId)
+	public async Task<UserModel?> GetUserById(Guid? userId)
 	{
         string getUserByIdEndpoint = _config["apiLocation"] + _config["getUserByIdEndpoint"] + $"/{userId}";
         var authResult = await _client.GetAsync(getUserByIdEndpoint);
@@ -83,7 +82,9 @@ public class UserService : IUserService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario por id: {authContent}");
+            _logger
+				.LogInformation("Ocorreu um erro durante o carregamento do usuario por id: {authContent}",
+				authContent);
             return null;
         }
 
@@ -92,7 +93,7 @@ public class UserService : IUserService
         return userModel;
     }
 
-    public async Task<UserModel> GetUserByName(string? username)
+    public async Task<UserModel?> GetUserByName(string? username)
     {
         string getUserByNameEndpoint = _config["apiLocation"] + _config["getUserByNameEndpoint"] + $"/{username}";
         var authResult = await _client.GetAsync(getUserByNameEndpoint);
@@ -100,7 +101,9 @@ public class UserService : IUserService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario por nome: {authContent}");
+            _logger
+				.LogInformation("Ocorreu um erro durante o carregamento do usuario por nome: {authContent}",
+				authContent);
             return null;
         }
 
@@ -109,7 +112,7 @@ public class UserService : IUserService
         return userModel;
     }
 
-    public async Task<UserModel> GetUserByConfirmationCode(Guid? confirmationCode)
+    public async Task<UserModel?> GetUserByConfirmationCode(Guid? confirmationCode)
 	{
 		string getUserByConfirmationCodeEndpoint = _config["apiLocation"] + _config["getUserByConfirmationCodeEndpoint"] + $"/{confirmationCode}";
 		var authResult = await _client.GetAsync(getUserByConfirmationCodeEndpoint);
@@ -117,7 +120,9 @@ public class UserService : IUserService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario com o codigo de confirmação: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro durante o carregamento do usuario com o codigo de confirmação: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -126,7 +131,7 @@ public class UserService : IUserService
 		return userModel;
 	}
 
-	public async Task<UserModel> GetUserByRestorationCode(Guid? restorationCode)
+	public async Task<UserModel?> GetUserByRestorationCode(Guid? restorationCode)
 	{
 		string getUserByRestorationCodeEndpoint = _config["apiLocation"] + _config["getUserByRestorationCodeEndpoint"] + $"/{restorationCode}";
 		var authResult = await _client.GetAsync(getUserByRestorationCodeEndpoint);
@@ -134,7 +139,9 @@ public class UserService : IUserService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento do usuario com o codigo de restauracao: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro durante o carregamento do usuario com o codigo de restauracao: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -143,14 +150,14 @@ public class UserService : IUserService
 		return userModel;
 	}
 
-	public async Task<string> UpdateUser(UserModel user)
+	public async Task<string?> UpdateUser(UserModel user)
 	{
 		var data = new FormUrlEncodedContent(new[]
 {
 			new KeyValuePair<string, string>("id", user.Id.ToString()),
 			new KeyValuePair<string, string>("username", user.Username!),
-			new KeyValuePair<string, string>("password", user.Password),
-			new KeyValuePair<string, string>("bio", user.Bio),
+			new KeyValuePair<string, string>("password", user.Password!),
+			new KeyValuePair<string, string>("bio", user.Bio!),
 			new KeyValuePair<string, string>("isbanned", user.IsBanned.ToString())
         });
 
@@ -160,20 +167,21 @@ public class UserService : IUserService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro ao atualizar o perfil: {authContent}");
+			_logger.LogInformation("Ocorreu um erro ao atualizar o perfil: {authContent}",
+				authContent);
 			return null;
 		}
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
-	public async Task<string> UpdateUserEmailConfirmation(UserModel user)
+	public async Task<string?> UpdateUserEmailConfirmation(UserModel user)
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
 			new KeyValuePair<string, string>("id", user.Id.ToString()),
-			new KeyValuePair<string, string>("confirmationcode", user.ConfirmationCode.ToString()),
-			new KeyValuePair<string, string>("confirmationcodeexpirationdate", user.ConfirmationCodeExpirationDate.ToString()),
+			new KeyValuePair<string, string>("confirmationcode", user.ConfirmationCode.ToString()!),
+			new KeyValuePair<string, string>("confirmationcodeexpirationdate", user.ConfirmationCodeExpirationDate.ToString()!),
 			new KeyValuePair<string, string>("isconfirmed", user.IsConfirmed.ToString())
 		});
 
@@ -183,19 +191,21 @@ public class UserService : IUserService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro ao atualizar a confirmação de email: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro ao atualizar a confirmação de email: {authContent}",
+				authContent);
 			return null;
 		}
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
-	public async Task<string> UpdateUserPassword(UserModel user)
+	public async Task<string?> UpdateUserPassword(UserModel user)
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
 			new KeyValuePair<string, string>("id", user.Id.ToString()),
-			new KeyValuePair<string, string>("password", user.Password)
+			new KeyValuePair<string, string>("password", user.Password!)
 		});
 
 		string updateUserPasswordEndpoint = _config["apiLocation"] + _config["updateUserPasswordEndpoint"];
@@ -204,14 +214,15 @@ public class UserService : IUserService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro ao atualizar a senha: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro ao atualizar a senha: {authContent}", authContent);
 			return null;
 		}
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
-	public async Task<string> SendConfirmationEmail(UserModel user)
+	public async Task<string?> SendConfirmationEmail(UserModel user)
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
@@ -224,14 +235,16 @@ public class UserService : IUserService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro ao enviar email de confirmação: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro ao enviar email de confirmação: {authContent}",
+				authContent);
 			return null;
 		}
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
 
-	public async Task<string> SendRestorationEmail(UserModel user)
+	public async Task<string?> SendRestorationEmail(UserModel user)
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
@@ -244,7 +257,9 @@ public class UserService : IUserService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro ao resgatar a conta: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro ao resgatar a conta: {authContent}",
+				authContent);
 			return null;
 		}
 

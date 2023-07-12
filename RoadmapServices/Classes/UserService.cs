@@ -81,9 +81,7 @@ public class UserService : IUserService
 
 	public async Task<IList<string?>> AddUser(UserModel user)
     {
-		IList<string?> registrationMessages = new List<string?>();
-
-		registrationMessages = await UserRegistrationVerifications(user);
+		IList<string?> registrationMessages = await UserRegistrationVerifications(user);
 
 		if (registrationMessages.Count != 0)
 		{
@@ -131,10 +129,11 @@ public class UserService : IUserService
 	//Verifications
 	private async Task<IList<string?>> UserRegistrationVerifications(UserModel user)
 	{
-		IList<string?> verificationMessages = new List<string?>();
-
-		verificationMessages.Add(await VerifyIfUserAlreadyExists(user));
-		verificationMessages.Add(await VerifyIfEmailIsRegistered(user));
+		IList<string?> verificationMessages = new List<string?>
+		{
+			await VerifyIfUserAlreadyExists(user),
+			await VerifyIfEmailIsRegistered(user)
+		};
 
 		var fluentValidationMessages = _messageHandler.ValidateUserRegistration(user);
 
@@ -150,10 +149,11 @@ public class UserService : IUserService
 
 	private async Task<IList<string?>> UserLoginVerifications(UserModel user)
 	{
-		IList<string?> loginMessages = new List<string?>();
-
-		loginMessages.Add(await VerifyIfUsernameIsCorrect(user));
-		loginMessages.Add(await VerifyIfPasswordIsCorrect(user));
+		IList<string?> loginMessages = new List<string?>
+		{
+			await VerifyIfUsernameIsCorrect(user),
+			await VerifyIfPasswordIsCorrect(user)
+		};
 
 		var requestedLogInUser = await _userRepository.GetUserByName(user.Username);
 
@@ -220,7 +220,7 @@ public class UserService : IUserService
 		return null;
 	}
 
-	private string? VerifyPasswordHash(
+	private static string? VerifyPasswordHash(
 		string? password,
 		byte[]? passwordHash,
 		byte[]? passwordSalt)
@@ -243,19 +243,17 @@ public class UserService : IUserService
 	}
 
 	//Data Creation
-	private void CreatePasswordHash(
+	private static void CreatePasswordHash(
 		string password,
 		out byte[] passwordHash,
 		out byte[] passwordSalt)
 	{
-		using (var hmac = new HMACSHA512())
-		{
-			passwordSalt = hmac.Key;
-			passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-		}
+		using var hmac = new HMACSHA512();
+		passwordSalt = hmac.Key;
+		passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 	}
 
-    private UserModel InsertUserData(UserModel user)
+	private static UserModel InsertUserData(UserModel user)
     {
 		CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -372,7 +370,7 @@ public class UserService : IUserService
 
 	private string CreateToken(UserModel user)
     {
-		List<Claim> claims = new List<Claim>
+		List<Claim> claims = new()
 		{
 			new Claim(ClaimTypes.Name, user.Username),
 			new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()!),

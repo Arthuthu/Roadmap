@@ -27,7 +27,7 @@ public class ComentarioVotesService : IComentarioVotesService
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
-			new KeyValuePair<string, string>("userId", userId.ToString()),
+			new KeyValuePair<string, string>("userId", userId.ToString()!),
 			new KeyValuePair<string, string>("comentarioId", comentarioId.ToString())
 		});
 
@@ -37,7 +37,8 @@ public class ComentarioVotesService : IComentarioVotesService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro para adicionar o voto: {authContent}");
+			_logger.LogError("Ocorreu um erro para adicionar o voto: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -52,7 +53,8 @@ public class ComentarioVotesService : IComentarioVotesService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento dos votos: {authContent}");
+			_logger.LogError("Ocorreu um erro durante o carregamento dos votos: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -69,7 +71,8 @@ public class ComentarioVotesService : IComentarioVotesService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro para remover o voto: {authContent}");
+			_logger.LogError("Ocorreu um erro para remover o voto: {authContent}",
+				authContent);
 			return null;
 		}
 

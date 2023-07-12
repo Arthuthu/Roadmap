@@ -8,28 +8,25 @@ namespace RoadmapSite.Services.Roadmap.Classes;
 public class RoadmapService : IRoadmapService
 {
 	private readonly HttpClient _client;
-	private readonly ILocalStorageService _localStorage;
 	private readonly IConfiguration _config;
 	private readonly ILogger<RoadmapService> _logger;
 
 	public RoadmapService(HttpClient client,
-		ILocalStorageService localStorage,
 		IConfiguration config,
 		ILogger<RoadmapService> logger)
 	{
 		_client = client;
-		_localStorage = localStorage;
 		_config = config;
 		_logger = logger;
 	}
 
-	public async Task<string> CreateRoadmap(RoadmapClassModel roadmap)
+	public async Task<string?> CreateRoadmap(RoadmapClassModel roadmap)
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
-			new KeyValuePair<string, string>("name", roadmap.Name),
-			new KeyValuePair<string, string>("description", roadmap.Description),
-			new KeyValuePair<string, string>("category", roadmap.Category),
+			new KeyValuePair<string, string>("name", roadmap.Name!),
+			new KeyValuePair<string, string>("description", roadmap.Description!),
+			new KeyValuePair<string, string>("category", roadmap.Category!),
 			new KeyValuePair<string, string>("authorname", roadmap.AuthorName),
 			new KeyValuePair<string, string>("userId", roadmap.UserId.ToString())
 		});
@@ -40,7 +37,9 @@ public class RoadmapService : IRoadmapService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante a criação do roadmap: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro durante a criação do roadmap: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -55,7 +54,8 @@ public class RoadmapService : IRoadmapService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento de roadmaps: {authContent}");
+			_logger.LogInformation("Ocorreu um erro durante o carregamento de roadmaps: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -72,7 +72,9 @@ public class RoadmapService : IRoadmapService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento de roadmaps aprovados: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro durante o carregamento de roadmaps aprovados: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -89,7 +91,9 @@ public class RoadmapService : IRoadmapService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento de roadmaps não aprovados: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro durante o carregamento de roadmaps não aprovados: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -106,7 +110,8 @@ public class RoadmapService : IRoadmapService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento dos roadmaps do usuario: {authContent}");
+			_logger.LogInformation("Ocorreu um erro durante o carregamento dos roadmaps do usuario: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -123,7 +128,9 @@ public class RoadmapService : IRoadmapService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento do roadmap: {authContent}");
+			_logger
+				.LogInformation("Ocorreu um erro durante o carregamento do roadmap: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -132,14 +139,14 @@ public class RoadmapService : IRoadmapService
 		return roadmapClassModel;
 	}
 
-    public async Task<string> UpdateRoadmap(RoadmapClassModel roadmap)
+    public async Task<string?> UpdateRoadmap(RoadmapClassModel roadmap)
 	{
 			var data = new FormUrlEncodedContent(new[]
 			{
 				new KeyValuePair<string, string>("id", roadmap.Id.ToString()),
 				new KeyValuePair<string, string>("name", roadmap.Name),
-				new KeyValuePair<string, string>("description", roadmap.Description),
-				new KeyValuePair<string, string>("category", roadmap.Category),
+				new KeyValuePair<string, string>("description", roadmap.Description!),
+				new KeyValuePair<string, string>("category", roadmap.Category!),
 				new KeyValuePair<string, string>("isapproved", roadmap.IsApproved.ToString()),
 				new KeyValuePair<string, string>("userId", roadmap.UserId.ToString())
 			});
@@ -150,7 +157,9 @@ public class RoadmapService : IRoadmapService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogInformation($"Ocorreu um erro ao atualizar o roadmap: {authContent}");
+            _logger
+				.LogInformation("Ocorreu um erro ao atualizar o roadmap: {authContent}",
+				authContent);
             return null;
         }
 
@@ -158,7 +167,7 @@ public class RoadmapService : IRoadmapService
     }
 
 
-    public async Task<string> DeleteRoadmap(Guid id)
+    public async Task<string?> DeleteRoadmap(Guid id)
 	{
 		string deleteRoadmapEndpoint = _config["apiLocation"] + _config["deleteRoadmapEndpoint"] + $"/{id}";
 		var authResult = await _client.DeleteAsync(deleteRoadmapEndpoint);
@@ -166,14 +175,16 @@ public class RoadmapService : IRoadmapService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro para deletar o roadmap: {authContent}");
-			return authContent;
+			_logger
+				.LogInformation("Ocorreu um erro para deletar o roadmap: {authContent}",
+				authContent);
+			return null;
 		}
 
 		return authContent;
 	}
 
-    public async Task<string> DeleteAllUserRoadmaps(Guid userId)
+    public async Task<string?> DeleteAllUserRoadmaps(Guid userId)
     {
         string deleteAllUserRoadmapsEndpoint = _config["apiLocation"] + _config["deleteAllUserRoadmapsEndpoint"] + $"/{userId}";
         var authResult = await _client.DeleteAsync(deleteAllUserRoadmapsEndpoint);
@@ -181,8 +192,9 @@ public class RoadmapService : IRoadmapService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogInformation($"Ocorreu um erro para deletar os roadmaps: {authContent}");
-            return authContent;
+            _logger.LogInformation("Ocorreu um erro para deletar os roadmaps: {authContent}",
+				authContent);
+            return null;
         }
 
         return authContent;

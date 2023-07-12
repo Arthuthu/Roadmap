@@ -20,13 +20,13 @@ public class ComentarioService : IComentarioService
 		_logger = logger;
 	}
 
-	public async Task<string> CreateComentario(ComentarioModel comentario)
+	public async Task<string?> CreateComentario(ComentarioModel comentario)
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
 			new KeyValuePair<string, string>("description", comentario.Description),
 			new KeyValuePair<string, string>("authorname", comentario.AuthorName),
-			new KeyValuePair<string, string>("userId", comentario.UserId.ToString()),
+			new KeyValuePair<string, string>("userId", comentario.UserId.ToString()!),
 			new KeyValuePair<string, string>("roadmapId", comentario.RoadmapId.ToString()),
 		});
 
@@ -36,7 +36,9 @@ public class ComentarioService : IComentarioService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante a criação do comentario: {authContent}");
+			_logger
+				.LogError("Ocorreu um erro durante a criação do comentario: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -51,7 +53,9 @@ public class ComentarioService : IComentarioService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento dos comentarios: {authContent}");
+			_logger
+				.LogError("Ocorreu um erro durante o carregamento dos comentarios: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -60,7 +64,7 @@ public class ComentarioService : IComentarioService
 		return comentarioModel;
 	}
 
-	public async Task<ComentarioModel> GetComentarioById(Guid? comentarioId)
+	public async Task<ComentarioModel?> GetComentarioById(Guid? comentarioId)
 	{
 		string getComentarioByIdEndpoint = _config["apiLocation"] + _config["getComentarioByIdEndpoint"] + $"/{comentarioId}";
 		var authResult = await _client.GetAsync(getComentarioByIdEndpoint);
@@ -68,7 +72,9 @@ public class ComentarioService : IComentarioService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento do comentario: {authContent}");
+			_logger
+				.LogError("Ocorreu um erro durante o carregamento do comentario: {authContent}",
+				authContent);
 			return null;
 		}
 
@@ -77,13 +83,13 @@ public class ComentarioService : IComentarioService
 		return comentarioModel;
 	}
 
-	public async Task<string> UpdateComentario(ComentarioModel comentario)
+	public async Task<string?> UpdateComentario(ComentarioModel comentario)
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
 				new KeyValuePair<string, string>("id", comentario.Id.ToString()),
 				new KeyValuePair<string, string>("comentario", comentario.Description),
-				new KeyValuePair<string, string>("userid", comentario.UserId.ToString())
+				new KeyValuePair<string, string>("userid", comentario.UserId.ToString()!)
 			});
 
 		string updateComentarioEndpoint = _config["apiLocation"] + _config["updateComentarioEndpoint"];
@@ -92,13 +98,15 @@ public class ComentarioService : IComentarioService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro ao atualizar o comentario: {authContent}");
+			_logger
+				.LogError("Ocorreu um erro ao atualizar o comentario: {authContent}",
+				authContent);
 			return null;
 		}
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
-    public async Task<string> DeleteAllUserComentarios(Guid userId)
+    public async Task<string?> DeleteAllUserComentarios(Guid userId)
     {
         string deleteAllUserComentariosEndpoint = _config["apiLocation"] + _config["deleteAllUserComentariosEndpoint"] + $"/{userId}";
         var authResult = await _client.DeleteAsync(deleteAllUserComentariosEndpoint);
@@ -106,14 +114,16 @@ public class ComentarioService : IComentarioService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogInformation($"Ocorreu um erro para deletar os comentarios: {authContent}");
-            return authContent;
+            _logger
+				.LogError("Ocorreu um erro para deletar os comentarios: {authContent}",
+				authContent);
+            return null;
         }
 
         return authContent;
     }
 
-    public async Task<string> DeleteComentario(Guid id)
+    public async Task<string?> DeleteComentario(Guid id)
 	{
 		string deleteComentarioEndpoint = _config["apiLocation"] + _config["deleteComentarioEndpoint"] + $"/{id}";
 		var authResult = await _client.DeleteAsync(deleteComentarioEndpoint);
@@ -121,8 +131,9 @@ public class ComentarioService : IComentarioService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro para deletar o comentario: {authContent}");
-			return authContent;
+			_logger.LogError("Ocorreu um erro para deletar o comentario: {authContent}",
+				authContent);
+			return null;
 		}
 
 		return authContent;

@@ -58,7 +58,7 @@ public class UserRepository : IUserRepository
 	{
 		var results = await _db.LoadData<UserModel, dynamic>(
 			"dbo.spUser_GetByEmail",
-			new { Email = user.Email });
+			new { user.Email });
 
 		return results.FirstOrDefault();
 	}

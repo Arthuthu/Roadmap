@@ -14,7 +14,7 @@ public class AuthenticationService : IAuthenticationService
     private readonly ILocalStorageService _localStorage;
     private readonly IConfiguration _config;
     private readonly ILogger<AuthenticationService> _logger;
-    private string authTokenStorageKey;
+	private readonly string authTokenStorageKey;
 
     public AuthenticationService(HttpClient client,
         AuthenticationStateProvider authStateProvider,
@@ -27,10 +27,10 @@ public class AuthenticationService : IAuthenticationService
         _localStorage = localStorage;
         _config = config;
         _logger = logger;
-        authTokenStorageKey = _config["authTokenStorageKey"];
+        authTokenStorageKey = _config["authTokenStorageKey"]!;
     }
 
-    public async Task<AuthenticatedUserModel> Login(AuthenticationUserModel userForAuthentication)
+    public async Task<AuthenticatedUserModel?> Login(AuthenticationUserModel userForAuthentication)
     {
         var data = new FormUrlEncodedContent(new[]
         {
@@ -44,7 +44,9 @@ public class AuthenticationService : IAuthenticationService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogInformation($"Ocorreu um erro durante o login {authContent}");
+            _logger
+                .LogError("Ocorreu um erro durante o login {authContent}",
+                authContent);
             return null;
         }
 
@@ -52,7 +54,7 @@ public class AuthenticationService : IAuthenticationService
             authContent,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-        await _localStorage.SetItemAsync(authTokenStorageKey, result.Access_Token);
+        await _localStorage.SetItemAsync(authTokenStorageKey, result!.Access_Token);
 
         ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.Access_Token);
 
