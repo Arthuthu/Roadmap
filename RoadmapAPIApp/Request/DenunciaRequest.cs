@@ -3,8 +3,8 @@
 public class DenunciaRequest
 {
     public Guid Id { get; set; }
-    public string? Description { get; set; }
-    public string? Type { get; set; }
+    public string? Description { get; set; } = string.Empty;
+    public string? Type { get; set; } = string.Empty;
 
     public Guid AuthorId { get; set; }
     public Guid? UserId { get; set; }

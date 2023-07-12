@@ -24,7 +24,7 @@ public class AuthStateProvider : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        string authTokenStorageKey = _config["authTokenStorageKey"];
+        string authTokenStorageKey = _config["authTokenStorageKey"]!;
         var token = await _localStorage.GetItemAsync<string>(authTokenStorageKey);
 
         if (string.IsNullOrEmpty(token))
