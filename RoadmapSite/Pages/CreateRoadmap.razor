@@ -56,7 +56,7 @@
 		await PageVerification();
 	}
 
-	private async Task<bool> PageVerification()
+	private async Task PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
@@ -64,7 +64,7 @@
 		{
 			navManager.NavigateTo("/login");
 
-			return false;
+			return;
 		}
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
@@ -73,47 +73,56 @@
 		{
 			navManager.NavigateTo("/notfound", true);
 
-			return false;
+			return;
 		}
 
 		if (LoggedInUserModel.IsConfirmed is false)
 		{
 			navManager.NavigateTo($"/emailnotconfirmed");
 
-			return false;
+			return;
 		}
 
 		if (LoggedInUserModel!.IsBanned is true)
 		{
 			navManager.NavigateTo("/banned");
 
-			return false;
+			return;
 		}
 
 		isInitialized = true;
 
-		return true;
+		return;
 	}
 
-	private async Task<string> ExecuteRoadmapCreation()
+	private async Task ExecuteRoadmapCreation()
 	{
-		Roadmap.UserId = LoggedInUserId;
-
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
+		if (LoggedInUserModel is null)
+		{
+			return;
+		}
+
+		Roadmap.UserId = LoggedInUserId;
 		Roadmap.AuthorName = LoggedInUserModel.Username;
 
 		var result = await roadmapServiceService.CreateRoadmap(Roadmap);
+
+		if (result is null)
+		{
+			return;
+		}
 
 		roadmapCreationMessage = result;
 
 		if (roadmapCreationMessage != "Roadmap criado com sucesso")
 		{
-			return "";
+			return;
 		}
 
 		navManager.NavigateTo($"/profile/{LoggedInUserModel.Username}");
 
-		return "";
+		return;
 	}
 }

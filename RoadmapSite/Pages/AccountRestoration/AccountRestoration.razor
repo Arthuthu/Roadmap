@@ -8,7 +8,7 @@
 
 <EditForm Model="User" OnValidSubmit="RestoreAccountEmail">
 	<div class="text-center">
-		<InputText id="email" class="form-input-text" @bind-Value="User.Email" placeholder="Email" />
+		<InputText id="email" class="form-input-text" @bind-Value="User!.Email" placeholder="Email" />
 	</div>
 	<div class="text-center">
 		<button type="submit" class="first-style-button">Recuperar</button>

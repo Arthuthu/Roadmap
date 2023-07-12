@@ -338,17 +338,9 @@
 		}
 
 		Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId!));
-
-		if (Roadmap is null)
-		{
-			navManager.NavigateTo("/notfound");
-
-			return;
-		}
-
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
-		if (LoggedInUserModel is null)
+		if (Roadmap is null || LoggedInUserModel is null)
 		{
 			navManager.NavigateTo("/notfound");
 

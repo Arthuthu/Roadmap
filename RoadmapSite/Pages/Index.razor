@@ -38,7 +38,7 @@
 		</div>
 
 		<div class="index-buscar-button-div" onclick="clearBuscarNomeInput()">
-			<button @onclick="async () => await GetRoadmapsByName(roadmapName)"
+			<button @onclick="async () => await GetRoadmapsByName(roadmapName!)"
 					class="index-sort-button">
 				Buscar
 			</button>
@@ -115,11 +115,11 @@
 			Categorias
 		</div>
 		<div class="index-categorias"
-			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.CSharp)">
+			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.CSharp)!">
 			C#
 		</div>
 		<div class="index-categorias"
-			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.Javascript)">
+			 @onclick="async () => await GetRoadmapsByCategory(CategoryModel.Javascript)!">
 			Javascript
 		</div>
 
@@ -128,7 +128,7 @@
 		</div>
 
 		<div>
-			<button @onclick="async () => await GetRoadmapsByCustomCategory(category)"
+			<button @onclick="async () => await GetRoadmapsByCustomCategory(category!)!"
 				class="first-style-button" id="index-buscar-button">
 				Buscar
 			</button>
@@ -142,7 +142,7 @@
 	private UserModel? User { get; set; }
 	private const string RoadmapList = "RoadmapList";
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
-	private string? category;
+	private string? category = string.Empty;
 	private string? roadmapName;
 
 
@@ -243,6 +243,13 @@
 		if (LoggedInUserId != Guid.Empty)
 		{
 			User = await userService.GetUserById(LoggedInUserId);
+
+			if (User is null)
+			{
+				navManager.NavigateTo("/login");
+
+				return;
+			}
 
 			if (User.IsBanned is true)
 			{

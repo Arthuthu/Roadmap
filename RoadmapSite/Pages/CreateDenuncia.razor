@@ -41,7 +41,7 @@
 		await PageVerification();
 	}
 
-	private async Task<bool> PageVerification()
+	private async Task PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
@@ -49,21 +49,14 @@
 		{
 			navManager.NavigateTo("/login");
 
-			return false;
+			return;
 		}
 
-		if (Type is null)
+		if (Type is null || Id is null)
 		{
 			navManager.NavigateTo("/notfound");
 
-			return false;
-		}
-
-		if (Id is null)
-		{
-			navManager.NavigateTo("/notfound");
-
-			return false;
+			return;
 		}
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
@@ -72,21 +65,21 @@
 		{
 			navManager.NavigateTo("/notfound");
 
-			return false;
+			return;
 		}
 
 		if (LoggedInUserModel!.IsConfirmed is false)
 		{
 			navManager.NavigateTo("/emailnotconfirmed");
 
-			return false;
+			return;
 		}
 
 		if (LoggedInUserModel!.IsBanned is true)
 		{
 			navManager.NavigateTo("/banned");
 
-			return false;
+			return;
 		}
 
 		if (Type == "User")
@@ -96,7 +89,7 @@
 
 		isInitialized = true;
 
-		return true;
+		return;
 	}
 
 	private async Task GetUsernameById()

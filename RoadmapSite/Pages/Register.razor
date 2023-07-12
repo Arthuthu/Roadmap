@@ -61,6 +61,12 @@
 
 		var result = await registrationService.RegisterUser(RegistrationUser);
 
+		if (result is null)
+		{
+			registrationMessage = "Ocorreu um erro para realizar o cadastro, tente novamente mais tarde";
+			return;
+		}
+
 		registrationMessage = result;
 		StateHasChanged();
 

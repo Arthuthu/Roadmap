@@ -11,13 +11,13 @@
 		await PageVerification();
 	}
 
-	private async Task<bool> PageVerification()
+	private async Task PageVerification()
 	{
 		if (ConfirmationCode is null)
 		{
 			navManager.NavigateTo("/");
 
-			return false;
+			return;
 		}
 
 		User = await userService.GetUserByConfirmationCode(new Guid(ConfirmationCode!));
@@ -26,21 +26,21 @@
 		{
 			navManager.NavigateTo("/");
 
-			return false;
+			return;
 		}
 
 		if (User!.IsConfirmed is true)
 		{
 			navManager.NavigateTo("/");
 
-			return false;
+			return;
 		}
 
 		if (User.ConfirmationCodeExpirationDate < DateTime.UtcNow.AddHours(-3))
 		{
 			navManager.NavigateTo($"/emailconfirmationexpired/{ConfirmationCode}", true);
 
-			return false;
+			return;
 		}
 
 		if (User!.ConfirmationCode.ToString() == ConfirmationCode)
@@ -49,9 +49,10 @@
 
 			navManager.NavigateTo("/emailconfirmationsuccess");
 
+			return;
 		}
 
-		return true;
+		return;
 	}
 
 	private async Task UpdateUser()

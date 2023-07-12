@@ -39,52 +39,23 @@
         await PageVerification();
     }
 
-    private async Task<bool> PageVerification()
+    private async Task PageVerification()
     {
-        if (UserId is null)
-        {
-            navManager.NavigateTo("/notfound");
-
-            return false;
-        }
-
         LoggedInUserId = await userService.GetLoggedInUserId();
-
-        if (LoggedInUserId == Guid.Empty)
-        {
-            navManager.NavigateTo("/notfound");
-
-            return false;
-        }
-
         AdministratorModel = await userService.GetUserById(LoggedInUserId);
-
-        if (AdministratorModel is null)
-        {
-            navManager.NavigateTo("/notfound");
-
-            return false;
-        }
-
-        if (AdministratorModel!.IsAdmin is false)
-        {
-            navManager.NavigateTo("/notfound");
-
-            return false;
-        }
-
         UserThatWillBeUnbanned = await userService.GetUserById(new Guid(UserId!));
 
-        if (UserThatWillBeUnbanned is null)
+        if (UserId is null || LoggedInUserId == Guid.Empty || AdministratorModel is null ||
+            AdministratorModel!.IsAdmin is false || UserThatWillBeUnbanned is null)
         {
             navManager.NavigateTo("/notfound");
 
-            return false;
+            return;
         }
 
         IsInitialized = true;
 
-        return true;
+        return;
     }
 
     private async Task UnbanTheUser()

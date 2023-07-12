@@ -147,7 +147,6 @@
 			</div>
 		}
 	}
-
 }
 
 @code {
@@ -168,7 +167,7 @@
 		await PageVerification();
 	}
 
-	private async Task<bool> PageVerification()
+	private async Task PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
@@ -176,30 +175,23 @@
 		{
 			navManager.NavigateTo("/notfound");
 
-			return false;
+			return;
 		}
 
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
-		if (LoggedInUserModel is null)
+		if (LoggedInUserModel is null || LoggedInUserModel!.IsAdmin is not true)
 		{
 			navManager.NavigateTo("/notfound");
 
-			return false;
-		}
-
-		if (LoggedInUserModel!.IsAdmin is not true)
-		{
-			navManager.NavigateTo("/notfound");
-
-			return false;
+			return;
 		}
 
 		await GetAllNotApprovedRoadmaps();
 
 		IsInitialized = true;
 
-		return true;
+		return;
 	}
 
 	private async Task GetAllNotApprovedRoadmaps()

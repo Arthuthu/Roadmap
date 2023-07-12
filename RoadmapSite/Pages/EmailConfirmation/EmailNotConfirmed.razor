@@ -26,7 +26,7 @@
 		await PageVerification();
 	}
 
-	private async Task<bool> PageVerification()
+	private async Task PageVerification()
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 
@@ -34,7 +34,7 @@
 		{
 			navManager.NavigateTo("/notfound");
 
-			return false;
+			return;
 		}
 
 		User = await userService.GetUserById(LoggedInUserId);
@@ -43,12 +43,12 @@
 		{
 			navManager.NavigateTo("/notfound");
 
-			return false;
+			return;
 		}
 
 		isInitialized = true;
 
-		return true;
+		return;
 	}
 
 	private async Task ResendRemail()

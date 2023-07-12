@@ -31,52 +31,30 @@
         await PageVerification();
     }
 
-    private async Task<bool> PageVerification()
+    private async Task PageVerification()
     {
         LoggedInUserId = await userService.GetLoggedInUserId();
 
-        if (LoggedInUserId == Guid.Empty)
+        if (LoggedInUserId == Guid.Empty || RoadmapId is null || new Guid(RoadmapId!) == Guid.Empty)
         {
             navManager.NavigateTo("/notfound");
 
-            return false;
-        }
-
-        if (RoadmapId is null)
-        {
-            navManager.NavigateTo("/notfound");
-
-            return false;
-        }
-
-        if (new Guid(RoadmapId!) == Guid.Empty)
-        {
-            navManager.NavigateTo("/notfound");
-
-            return false;
+            return;
         }
 
         Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId!));
+        LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
-        await GetUserModel();
-
-        if (LoggedInUserModel is null)
+        if (LoggedInUserModel is null || LoggedInUserId != Roadmap!.UserId)
         {
             navManager.NavigateTo("/notfound");
 
-            return false;
-        }
-
-        if (LoggedInUserId != Roadmap!.UserId)
-        {
-            navManager.NavigateTo("/notfound");
-
-            return false;
+            return;
         }
 
         isInitialized = true;
 
-        return true;
+        return;
     }
 
     private async Task DeleteRoadmap(Guid roadmapId)
@@ -84,10 +62,5 @@
         var deleteResponse = await roadmapService.DeleteRoadmap(roadmapId);
 
         navManager.NavigateTo($"/profile/{LoggedInUserModel!.Username}");
-    }
-
-    private async Task GetUserModel()
-    {
-        LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
     }
 }

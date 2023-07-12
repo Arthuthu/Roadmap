@@ -31,7 +31,7 @@
         await PageVerification();
     }
 
-    private async Task<bool> PageVerification()
+    private async Task PageVerification()
     {
         LoggedInUserId = await userService.GetLoggedInUserId();
 
@@ -39,21 +39,21 @@
         {
             navManager.NavigateTo("/notfound");
 
-            return false;
+            return;
         }
 
         if (RoadmapId is null)
         {
             navManager.NavigateTo("/notfound");
 
-            return false;
+            return;
         }
 
         if (new Guid(RoadmapId!) == Guid.Empty)
         {
             navManager.NavigateTo("/notfound");
 
-            return false;
+            return;
         }
 
         Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId!));
@@ -62,7 +62,7 @@
         {
             navManager.NavigateTo("/notfound");
 
-            return false;
+            return;
         }
 
         LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
@@ -71,19 +71,19 @@
         {
             navManager.NavigateTo("/notfound");
 
-            return false;
+            return;
         }
 
         if (LoggedInUserModel!.IsAdmin is false)
         {
             navManager.NavigateTo("/notfound");
 
-            return false;
+            return;
         }
 
         isInitialized = true;
 
-        return true;
+        return;
     }
 
     private async Task DeleteRoadmap(Guid roadmapId)

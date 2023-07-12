@@ -22,14 +22,25 @@
 		if (ConfirmationCode is null)
 		{
 			navManager.NavigateTo("/");
+
+			return;
 		}
 
 		User = await userService.GetUserByConfirmationCode(new Guid(ConfirmationCode!));
+
+		if (User is null)
+		{
+			navManager.NavigateTo("/");
+
+			return;
+		}
 
 		if (User.IsConfirmed is true ||
 		User.ConfirmationCodeExpirationDate > DateTime.UtcNow.AddHours(-3))
 		{
 			navManager.NavigateTo("/");
+
+			return;
 		}
 	}
 
