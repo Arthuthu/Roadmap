@@ -19,7 +19,7 @@ public class RegistrationService : IRegistrationService
         _logger = logger;
     }
 
-    public async Task<string> RegisterUser(RegistrationModel registrationUser)
+    public async Task<string?> RegisterUser(RegistrationModel registrationUser)
     {
         var data = new FormUrlEncodedContent(new[]
         {
@@ -34,8 +34,8 @@ public class RegistrationService : IRegistrationService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogInformation($"Ocorreu um eror durante o registro de conta de usuario {authContent}");
-            return authContent;
+            _logger.LogError("Ocorreu um eror durante o registro de conta de usuario {authContent}", authContent);
+            return null;
         }
 
         return await authResult.Content.ReadAsStringAsync();

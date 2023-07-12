@@ -8,15 +8,12 @@ namespace ComentarioSite.Services.Voting.Classes.ComentarioVotingService;
 public class ComentarioVotingService : IComentarioVotingService
 {
 	private readonly NavigationManager _navigationManager;
-	private readonly AuthenticationStateProvider _authenticationStateProvider;
 	private readonly IComentarioVotesService _comentarioVotesService;
 
 	public ComentarioVotingService(NavigationManager navigationManager,
-		AuthenticationStateProvider authenticationStateProvider,
 		IComentarioVotesService comentarioVotesService)
 	{
 		_navigationManager = navigationManager;
-		_authenticationStateProvider = authenticationStateProvider;
 		_comentarioVotesService = comentarioVotesService;
 	}
 

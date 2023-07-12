@@ -8,19 +8,33 @@ namespace ComentarioSite.Services.ComentarioVotes.Classes;
 public class ComentarioVotesService : IComentarioVotesService
 {
 	private readonly HttpClient _client;
-	private readonly ILocalStorageService _localStorage;
 	private readonly IConfiguration _config;
 	private readonly ILogger<ComentarioVotesService> _logger;
 
 	public ComentarioVotesService(HttpClient client,
-		ILocalStorageService localStorage,
 		IConfiguration config,
 		ILogger<ComentarioVotesService> logger)
 	{
 		_client = client;
-		_localStorage = localStorage;
 		_config = config;
 		_logger = logger;
+	}
+	public async Task<IList<ComentarioVotesModel>?> GetAllComentarioVotes(Guid? userId, Guid comentarioId)
+	{
+		string getAllComentariosVotesEndpoint = _config["apiLocation"] + _config["getAllComentarioVotesEndpoint"] + $"/{userId}" + $"/{comentarioId}";
+		var authResult = await _client.GetAsync(getAllComentariosVotesEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogError("Ocorreu um erro durante o carregamento dos votos: {authContent}",
+				authContent);
+			return null;
+		}
+
+		var comentarioVotesModel = JsonConvert.DeserializeObject<IList<ComentarioVotesModel>>(authContent);
+
+		return comentarioVotesModel;
 	}
 
 	public async Task<string?> AddComentarioVote(Guid? userId, Guid comentarioId)
@@ -44,25 +58,6 @@ public class ComentarioVotesService : IComentarioVotesService
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
-
-	public async Task<IList<ComentarioVotesModel>?> GetAllComentarioVotes(Guid? userId, Guid comentarioId)
-	{
-		string getAllComentariosVotesEndpoint = _config["apiLocation"] + _config["getAllComentarioVotesEndpoint"] + $"/{userId}" + $"/{comentarioId}";
-		var authResult = await _client.GetAsync(getAllComentariosVotesEndpoint);
-		var authContent = await authResult.Content.ReadAsStringAsync();
-
-		if (authResult.IsSuccessStatusCode is false)
-		{
-			_logger.LogError("Ocorreu um erro durante o carregamento dos votos: {authContent}",
-				authContent);
-			return null;
-		}
-
-		var comentarioVotesModel = JsonConvert.DeserializeObject<IList<ComentarioVotesModel>>(authContent);
-
-		return comentarioVotesModel;
-	}
-
 	public async Task<string?> RemoveComentarioVote(Guid comentarioVoteId)
 	{
 		string removeComentarioVoteEndpoint = _config["apiLocation"] + _config["removeComentarioVoteEndpoint"] + $"/{comentarioVoteId}";

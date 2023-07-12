@@ -9,15 +9,12 @@ namespace RoadmapSite.Services.Voting.Classes.RoadmapVotingService;
 public class RoadmapVotingService : IRoadmapVotingService
 {
     private readonly NavigationManager _navigationManager;
-    private readonly AuthenticationStateProvider _authenticationStateProvider;
     private readonly IRoadmapVotesService _roadmapVotesService;
 
     public RoadmapVotingService(NavigationManager navigationManager,
-        AuthenticationStateProvider authenticationStateProvider,
         IRoadmapVotesService roadmapVotesService)
     {
         _navigationManager = navigationManager;
-        _authenticationStateProvider = authenticationStateProvider;
         _roadmapVotesService = roadmapVotesService;
     }
 

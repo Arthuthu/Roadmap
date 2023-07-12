@@ -19,7 +19,97 @@ public class RoadmapService : IRoadmapService
 		_config = config;
 		_logger = logger;
 	}
+	public async Task<IList<RoadmapClassModel>?> GetAllRoadmaps()
+	{
+		string getAllRoadmapsEndpoint = _config["apiLocation"] + _config["getAllRoadmapsEndpoint"];
+		var authResult = await _client.GetAsync(getAllRoadmapsEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
 
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger
+				.LogError("Ocorreu um erro durante o carregamento de roadmaps: {authContent}",
+				authContent);
+			return null;
+		}
+
+		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
+
+		return roadmapClassModel;
+	}
+	public async Task<IList<RoadmapClassModel>?> GetAllApprovedRoadmaps()
+	{
+		string getAllApprovedRoadmapsEndpoint = _config["apiLocation"] + _config["getAllApprovedRoadmapsEndpoint"];
+		var authResult = await _client.GetAsync(getAllApprovedRoadmapsEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger
+				.LogError("Ocorreu um erro durante o carregamento de roadmaps aprovados: {authContent}",
+				authContent);
+			return null;
+		}
+
+		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
+
+		return roadmapClassModel;
+	}
+	public async Task<IList<RoadmapClassModel>?> GetAllNotApprovedRoadmaps()
+	{
+		string getAllNotApprovedRoadmapsEndpoint = _config["apiLocation"] + _config["getAllNotApprovedRoadmapsEndpoint"];
+		var authResult = await _client.GetAsync(getAllNotApprovedRoadmapsEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger
+				.LogError("Ocorreu um erro durante o carregamento de roadmaps não aprovados: {authContent}",
+				authContent);
+			return null;
+		}
+
+		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
+
+		return roadmapClassModel;
+	}
+	
+	public async Task<IList<RoadmapClassModel>?> GetRoadmapByUserId(Guid userId)
+	{
+		string getRoadmapByUserIdEndpoint = _config["apiLocation"] + _config["getRoadmapByUserIdEndpoint"] + $"/{userId}";
+		var authResult = await _client.GetAsync(getRoadmapByUserIdEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger
+				.LogError("Ocorreu um erro durante o carregamento dos roadmaps do usuario: {authContent}",
+				authContent);
+			return null;
+		}
+
+		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
+
+		return roadmapClassModel;
+	}
+	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
+	{
+		string getRoadmapByIdEndpoint = _config["apiLocation"] + _config["getRoadmapByIdEndpoint"] + $"/{id}";
+		var authResult = await _client.GetAsync(getRoadmapByIdEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger
+				.LogError("Ocorreu um erro durante o carregamento do roadmap: {authContent}",
+				authContent);
+			return null;
+		}
+
+		var roadmapClassModel = JsonConvert.DeserializeObject<RoadmapClassModel>(authContent);
+
+		return roadmapClassModel;
+	}
 	public async Task<string?> CreateRoadmap(RoadmapClassModel roadmap)
 	{
 		var data = new FormUrlEncodedContent(new[]
@@ -38,108 +128,14 @@ public class RoadmapService : IRoadmapService
 		if (authResult.IsSuccessStatusCode is false)
 		{
 			_logger
-				.LogInformation("Ocorreu um erro durante a criação do roadmap: {authContent}",
+				.LogError("Ocorreu um erro durante a criação do roadmap: {authContent}",
 				authContent);
 			return null;
 		}
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
-
-	public async Task<IList<RoadmapClassModel>?> GetAllRoadmaps()
-	{
-		string getAllRoadmapsEndpoint = _config["apiLocation"] + _config["getAllRoadmapsEndpoint"];
-		var authResult = await _client.GetAsync(getAllRoadmapsEndpoint);
-		var authContent = await authResult.Content.ReadAsStringAsync();
-
-		if (authResult.IsSuccessStatusCode is false)
-		{
-			_logger.LogInformation("Ocorreu um erro durante o carregamento de roadmaps: {authContent}",
-				authContent);
-			return null;
-		}
-
-		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
-
-		return roadmapClassModel;
-	}
-
-	public async Task<IList<RoadmapClassModel>?> GetAllApprovedRoadmaps()
-	{
-		string getAllApprovedRoadmapsEndpoint = _config["apiLocation"] + _config["getAllApprovedRoadmapsEndpoint"];
-		var authResult = await _client.GetAsync(getAllApprovedRoadmapsEndpoint);
-		var authContent = await authResult.Content.ReadAsStringAsync();
-
-		if (authResult.IsSuccessStatusCode is false)
-		{
-			_logger
-				.LogInformation("Ocorreu um erro durante o carregamento de roadmaps aprovados: {authContent}",
-				authContent);
-			return null;
-		}
-
-		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
-
-		return roadmapClassModel;
-	}
-
-	public async Task<IList<RoadmapClassModel>?> GetAllNotApprovedRoadmaps()
-	{
-		string getAllNotApprovedRoadmapsEndpoint = _config["apiLocation"] + _config["getAllNotApprovedRoadmapsEndpoint"];
-		var authResult = await _client.GetAsync(getAllNotApprovedRoadmapsEndpoint);
-		var authContent = await authResult.Content.ReadAsStringAsync();
-
-		if (authResult.IsSuccessStatusCode is false)
-		{
-			_logger
-				.LogInformation("Ocorreu um erro durante o carregamento de roadmaps não aprovados: {authContent}",
-				authContent);
-			return null;
-		}
-
-		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
-
-		return roadmapClassModel;
-	}
-
-	public async Task<IList<RoadmapClassModel>?> GetRoadmapByUserId(Guid userId)
-	{
-		string getRoadmapByUserIdEndpoint = _config["apiLocation"] + _config["getRoadmapByUserIdEndpoint"] + $"/{userId}";
-		var authResult = await _client.GetAsync(getRoadmapByUserIdEndpoint);
-		var authContent = await authResult.Content.ReadAsStringAsync();
-
-		if (authResult.IsSuccessStatusCode is false)
-		{
-			_logger.LogInformation("Ocorreu um erro durante o carregamento dos roadmaps do usuario: {authContent}",
-				authContent);
-			return null;
-		}
-
-		var roadmapClassModel = JsonConvert.DeserializeObject<IList<RoadmapClassModel>>(authContent);
-
-		return roadmapClassModel;
-	}
-
-	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
-	{
-		string getRoadmapByIdEndpoint = _config["apiLocation"] + _config["getRoadmapByIdEndpoint"] + $"/{id}";
-		var authResult = await _client.GetAsync(getRoadmapByIdEndpoint);
-		var authContent = await authResult.Content.ReadAsStringAsync();
-
-		if (authResult.IsSuccessStatusCode is false)
-		{
-			_logger
-				.LogInformation("Ocorreu um erro durante o carregamento do roadmap: {authContent}",
-				authContent);
-			return null;
-		}
-
-		var roadmapClassModel = JsonConvert.DeserializeObject<RoadmapClassModel>(authContent);
-
-		return roadmapClassModel;
-	}
-
-    public async Task<string?> UpdateRoadmap(RoadmapClassModel roadmap)
+	public async Task<string?> UpdateRoadmap(RoadmapClassModel roadmap)
 	{
 			var data = new FormUrlEncodedContent(new[]
 			{
@@ -158,7 +154,7 @@ public class RoadmapService : IRoadmapService
         if (authResult.IsSuccessStatusCode is false)
         {
             _logger
-				.LogInformation("Ocorreu um erro ao atualizar o roadmap: {authContent}",
+				.LogError("Ocorreu um erro ao atualizar o roadmap: {authContent}",
 				authContent);
             return null;
         }
@@ -176,7 +172,7 @@ public class RoadmapService : IRoadmapService
 		if (authResult.IsSuccessStatusCode is false)
 		{
 			_logger
-				.LogInformation("Ocorreu um erro para deletar o roadmap: {authContent}",
+				.LogError("Ocorreu um erro para deletar o roadmap: {authContent}",
 				authContent);
 			return null;
 		}
@@ -192,7 +188,8 @@ public class RoadmapService : IRoadmapService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogInformation("Ocorreu um erro para deletar os roadmaps: {authContent}",
+            _logger
+				.LogError("Ocorreu um erro para deletar os roadmaps: {authContent}",
 				authContent);
             return null;
         }

@@ -9,27 +9,57 @@ namespace RoadmapSite.Services.Node.Classes;
 public class NodeService : INodeService
 {
 	private readonly HttpClient _client;
-	private readonly ILocalStorageService _localStorage;
 	private readonly IConfiguration _config;
 	private readonly ILogger<RoadmapService> _logger;
 
 	public NodeService(HttpClient client,
-		ILocalStorageService localStorage,
 		IConfiguration config,
 		ILogger<RoadmapService> logger)
 	{
 		_client = client;
-		_localStorage = localStorage;
 		_config = config;
 		_logger = logger;
 	}
+	public async Task<IList<NodeModel>?> GetAllNodes(Guid roadmapId)
+	{
+		string getAllNodesEndpoint = _config["apiLocation"] + _config["getAllNodesEndpoint"] + $"/{roadmapId}";
+		var authResult = await _client.GetAsync(getAllNodesEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
 
-	public async Task<string> CreateNode(NodeModel node)
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogError("Ocorreu um erro durante o carregamento dos nodes: {authContent}",
+				authContent);
+			return null;
+		}
+
+		var nodeModel = JsonConvert.DeserializeObject<IList<NodeModel>>(authContent);
+
+		return nodeModel;
+	}
+	public async Task<NodeModel?> GetNodeById(Guid? nodeId)
+	{
+		string getNodeByIdEndpoint = _config["apiLocation"] + _config["getNodeByIdEndpoint"] + $"/{nodeId}";
+		var authResult = await _client.GetAsync(getNodeByIdEndpoint);
+		var authContent = await authResult.Content.ReadAsStringAsync();
+
+		if (authResult.IsSuccessStatusCode is false)
+		{
+			_logger.LogError("Ocorreu um erro durante o carregamento do comentario: {authContent}",
+				authContent);
+			return null;
+		}
+
+		var nodeModel = JsonConvert.DeserializeObject<NodeModel>(authContent);
+
+		return nodeModel;
+	}
+	public async Task<string?> CreateNode(NodeModel node)
 	{
 		var data = new FormUrlEncodedContent(new[]
 		{
 			new KeyValuePair<string, string>("name", node.Name),
-			new KeyValuePair<string, string>("description", node.Description),
+			new KeyValuePair<string, string>("description", node.Description!),
 			new KeyValuePair<string, string>("roadmapid", node.RoadmapId.ToString())
 		});
 
@@ -39,55 +69,20 @@ public class NodeService : INodeService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro durante a criação do node: {authContent}");
+			_logger.LogError("Ocorreu um erro durante a criação do node: {authContent}", authContent);
 			return null;
 		}
 
 		return await authResult.Content.ReadAsStringAsync();
 	}
-
-	public async Task<IList<NodeModel>?> GetAllNodes(Guid roadmapId)
-	{
-		string getAllNodesEndpoint = _config["apiLocation"] + _config["getAllNodesEndpoint"] + $"/{roadmapId}";
-		var authResult = await _client.GetAsync(getAllNodesEndpoint);
-		var authContent = await authResult.Content.ReadAsStringAsync();
-
-		if (authResult.IsSuccessStatusCode is false)
-		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento dos nodes: {authContent}");
-			return null;
-		}
-
-		var nodeModel = JsonConvert.DeserializeObject<IList<NodeModel>>(authContent);
-
-		return nodeModel;
-	}
-
-	public async Task<NodeModel> GetNodeById(Guid? nodeId)
-	{
-		string getNodeByIdEndpoint = _config["apiLocation"] + _config["getNodeByIdEndpoint"] + $"/{nodeId}";
-		var authResult = await _client.GetAsync(getNodeByIdEndpoint);
-		var authContent = await authResult.Content.ReadAsStringAsync();
-
-		if (authResult.IsSuccessStatusCode is false)
-		{
-			_logger.LogInformation($"Ocorreu um erro durante o carregamento do comentario: {authContent}");
-			return null;
-		}
-
-		var nodeModel = JsonConvert.DeserializeObject<NodeModel>(authContent);
-
-		return nodeModel;
-	}
-
-    public async Task<string> UpdateNode(NodeModel node)
+    public async Task<string?> UpdateNode(NodeModel node)
     {
         var data = new FormUrlEncodedContent(new[]
         {
-                new KeyValuePair<string, string>("id", node.Id.ToString()),
-                new KeyValuePair<string, string>("name", node.Name),
-                new KeyValuePair<string, string>("description", node.Description)
-            });
+            new KeyValuePair<string, string>("id", node.Id.ToString()),
+            new KeyValuePair<string, string>("name", node.Name),
+            new KeyValuePair<string, string>("description", node.Description!)
+        });
 
         string updateNodeEndpoint = _config["apiLocation"] + _config["updateNodeEndpoint"];
         var authResult = await _client.PutAsync(updateNodeEndpoint, data);
@@ -95,14 +90,13 @@ public class NodeService : INodeService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogInformation($"Ocorreu um erro ao atualizar o node: {authContent}");
+            _logger.LogError("Ocorreu um erro ao atualizar o node: {authContent}", authContent);
             return null;
         }
 
         return await authResult.Content.ReadAsStringAsync();
     }
-
-    public async Task<string> DeleteNode(Guid nodeId)
+    public async Task<string?> DeleteNode(Guid nodeId)
 	{
 		string deleteNodeEndpoint = _config["apiLocation"] + _config["deleteNodeEndpoint"] + $"/{nodeId}";
 		var authResult = await _client.DeleteAsync(deleteNodeEndpoint);
@@ -110,8 +104,8 @@ public class NodeService : INodeService
 
 		if (authResult.IsSuccessStatusCode is false)
 		{
-			_logger.LogInformation($"Ocorreu um erro para deletar o node: {authContent}");
-			return authContent;
+			_logger.LogError("Ocorreu um erro para deletar o node: {authContent}", authContent);
+			return null;
 		}
 
 		return authContent;
