@@ -9,7 +9,7 @@ namespace RoadmapRepository.Interfaces
 		Task<IEnumerable<RoadmapClassModel>> GetAllNotApprovedRoadmaps();
 		Task<IEnumerable<RoadmapClassModel>> GetAllApprovedRoadmapsByCategory();
 		Task<RoadmapClassModel?> GetRoadmapById(Guid id);
-		Task<IList<RoadmapClassModel>> GetRoadmapByUserId(Guid userId);
+		Task<IList<RoadmapClassModel>> GetRoadmapsByUserId(Guid userId);
 		Task AddRoadmap(RoadmapClassModel roadmap);
 		Task UpdateRoadmap(RoadmapClassModel roadmap);
 		Task DeleteRoadmap(Guid id);

@@ -159,7 +159,7 @@ public class RoadmapClassServiceTests
 		};
 
 
-		_roadmapRepository.GetRoadmapByUserId(userId).Returns(expectedRoadmaps);
+		_roadmapRepository.GetRoadmapsByUserId(userId).Returns(expectedRoadmaps);
 
 		//Act
 		var result = await _sut.GetRoadmapsByUserId(userId);
@@ -175,7 +175,7 @@ public class RoadmapClassServiceTests
 		//Arrange
 		var userId = Guid.NewGuid();
 
-		_roadmapRepository.GetRoadmapByUserId(userId).Returns((IList<RoadmapClassModel>)null!);
+		_roadmapRepository.GetRoadmapsByUserId(userId).Returns((IList<RoadmapClassModel>)null!);
 
         //Act
         Func<Task> action = async () => await _sut.GetRoadmapsByUserId(userId);

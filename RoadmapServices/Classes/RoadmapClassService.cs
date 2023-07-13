@@ -1,5 +1,6 @@
 ﻿using RoadmapRepository.Interfaces;
 using RoadmapRepository.Models;
+using RoadmapServices.Exceptions;
 using RoadmapServices.Interfaces;
 using RoadmapServices.Validators.Interfaces;
 
@@ -44,18 +45,18 @@ public class RoadmapClassService : IRoadmapClassService
 
 	public async Task<IList<RoadmapClassModel>> GetRoadmapsByUserId(Guid userId)
 	{
-		var results = await _roadmapRepository.GetRoadmapByUserId(userId);
+		var results = await _roadmapRepository.GetRoadmapsByUserId(userId);
 
-		return results is null ? throw new Exception("Usuario não tem roadmaps criados") : results;
+		return results;
 	}
 
 	public async Task<IList<string>?> AddRoadmap(RoadmapClassModel roadmap)
 	{
 		IList<string>? registrationMessages = _messageHandler.ValidateRoadmapCreation(roadmap);
 
-		if (registrationMessages is not null)
+		if (registrationMessages is null)
 		{
-			return registrationMessages;
+			registrationMessages = new List<string>();
 		}
 
 		roadmap.Id = Guid.NewGuid();
@@ -65,11 +66,11 @@ public class RoadmapClassService : IRoadmapClassService
 		try
 		{
 			await _roadmapRepository.AddRoadmap(roadmap);
-			registrationMessages!.Add("Roadmap criado com sucesso");
+			registrationMessages.Add("Roadmap criado com sucesso");
 		}
 		catch (Exception ex)
 		{
-			registrationMessages!.Add($"Ocorreu um erro durante a criação do roadmap: {ex.Message}");
+			registrationMessages.Add($"Ocorreu um erro durante a criação do roadmap: {ex.Message}");
 		}
 
 		return registrationMessages;
