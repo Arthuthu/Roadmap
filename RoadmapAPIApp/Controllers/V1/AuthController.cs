@@ -17,6 +17,7 @@ public class AuthController : ControllerBase
 	private readonly IMapper _mapper;
 	private readonly IUserService _userService;
 	private readonly IMessageHandler _messageHandler;
+	private const string tokenStartingLetters = "ey";
 
 	public AuthController(IMapper mapper,
 		IUserService userService,
@@ -37,17 +38,15 @@ public class AuthController : ControllerBase
 
 		string? token = loginResponse.FirstOrDefault()!;
 
-		if (!token.StartsWith("ey"))
+		if (!token.StartsWith(tokenStartingLetters))
 		{
-			token = null;
-
 			return BadRequest("Não foi possivel efetuar o login");
 		}
 
 		var output = new
 		{
 			Access_Token = token,
-			Username = loginUser.Username
+			loginUser.Username
 		};
 
 		return Ok(output);
@@ -60,7 +59,7 @@ public class AuthController : ControllerBase
 	{
 		var requestUser = _mapper.Map<UserModel>(registerRequest);
 		var registrationMessages = await _userService.AddUser(requestUser);
-		var cleanResponses = _messageHandler.ConcatRegistrationMessages(registrationMessages);
+		var cleanResponses = _messageHandler.ConcatRegistrationMessages(registrationMessages!);
 
 		return Ok(cleanResponses);
 	}

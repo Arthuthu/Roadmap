@@ -32,6 +32,11 @@ public class RoadmapClassService : IRoadmapClassService
 		return _roadmapRepository.GetAllNotApprovedRoadmaps();
 	}
 
+	public Task<IEnumerable<RoadmapClassModel>> GetAllApprovedRoadmapsByCategory()
+	{
+		return _roadmapRepository.GetAllApprovedRoadmapsByCategory();
+	}
+
 	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
 	{
 		return await _roadmapRepository.GetRoadmapById(id);
@@ -41,35 +46,30 @@ public class RoadmapClassService : IRoadmapClassService
 	{
 		var results = await _roadmapRepository.GetRoadmapByUserId(userId);
 
-		if (results is null)
-		{
-			throw new Exception("Usuario não tem roadmaps criados");
-		}
-
-		return results;
+		return results is null ? throw new Exception("Usuario não tem roadmaps criados") : results;
 	}
 
-	public async Task<IList<string?>> AddRoadmap(RoadmapClassModel roadmap)
+	public async Task<IList<string>?> AddRoadmap(RoadmapClassModel roadmap)
 	{
-		IList<string?> registrationMessages = new List<string?>();
+		IList<string>? registrationMessages = _messageHandler.ValidateRoadmapCreation(roadmap);
 
-		registrationMessages =  _messageHandler.ValidateRoadmapCreation(roadmap);
-
-		if (registrationMessages.Count != 0)
+		if (registrationMessages is not null)
 		{
 			return registrationMessages;
 		}
 
-		var createdRoadmap = InsertRoadmapData(roadmap);
+		roadmap.Id = Guid.NewGuid();
+		roadmap.IsApproved = false;
+		roadmap.CreatedDate = DateTime.UtcNow.AddHours(-3);
 
 		try
 		{
-			await _roadmapRepository.AddRoadmap(createdRoadmap);
-			registrationMessages.Add("Roadmap criado com sucesso");
+			await _roadmapRepository.AddRoadmap(roadmap);
+			registrationMessages!.Add("Roadmap criado com sucesso");
 		}
 		catch (Exception ex)
 		{
-			registrationMessages.Add($"Ocorreu um erro durante a criação do roadmap: {ex.Message}");
+			registrationMessages!.Add($"Ocorreu um erro durante a criação do roadmap: {ex.Message}");
 		}
 
 		return registrationMessages;
@@ -88,14 +88,5 @@ public class RoadmapClassService : IRoadmapClassService
     public Task DeleteRoadmap(Guid id)
 	{
 		return _roadmapRepository.DeleteRoadmap(id);
-	}
-
-	private RoadmapClassModel InsertRoadmapData(RoadmapClassModel roadmap)
-	{
-		roadmap.Id = Guid.NewGuid();
-		roadmap.IsApproved = false;
-		roadmap.CreatedDate = DateTime.UtcNow.AddHours(-3);
-
-		return roadmap;
 	}
 }

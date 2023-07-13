@@ -79,11 +79,11 @@ public class UserService : IUserService
 		return _userRepository.DeleteUser(id);
 	}
 
-	public async Task<IList<string?>> AddUser(UserModel user)
+	public async Task<IList<string>?> AddUser(UserModel user)
     {
-		IList<string?> registrationMessages = await UserRegistrationVerifications(user);
+		IList<string>? registrationMessages = await UserRegistrationVerifications(user);
 
-		if (registrationMessages.Count != 0)
+		if (registrationMessages is not null)
 		{
 			return registrationMessages;
 		}
@@ -94,11 +94,11 @@ public class UserService : IUserService
 		{
 			await _userRepository.AddUser(createdUser);
 			await SendConfirmationEmail(createdUser);
-			registrationMessages.Add("Usuario registrado com sucesso");
+			registrationMessages!.Add("Usuario registrado com sucesso");
 		}
 		catch (Exception ex)
 		{
-			registrationMessages.Add($"Ocorreu um erro durante o registro de usuario {ex.Message}");
+			registrationMessages!.Add($"Ocorreu um erro durante o registro de usuario {ex.Message}");
 		}
 
 		return registrationMessages;
@@ -127,24 +127,35 @@ public class UserService : IUserService
 	}
 
 	//Verifications
-	private async Task<IList<string?>> UserRegistrationVerifications(UserModel user)
+	private async Task<IList<string>?> UserRegistrationVerifications(UserModel user)
 	{
-		IList<string?> verificationMessages = new List<string?>
+		IList<string>? verificationMessages = new List<string>();
+
+		string? userAlreadyExistsMessage = await VerifyIfUserAlreadyExists(user);
+		if(userAlreadyExistsMessage is not null)
 		{
-			await VerifyIfUserAlreadyExists(user),
-			await VerifyIfEmailIsRegistered(user)
-		};
+			verificationMessages.Add(userAlreadyExistsMessage);
+		}
+
+		string? emailIsAlreadyRegisteredMessage = await VerifyIfEmailIsRegistered(user);
+		if (emailIsAlreadyRegisteredMessage is not null)
+		{
+			verificationMessages.Add(emailIsAlreadyRegisteredMessage);
+		}
 
 		var fluentValidationMessages = _messageHandler.ValidateUserRegistration(user);
 
-		foreach (var message in fluentValidationMessages)
+		if (fluentValidationMessages is not null)
 		{
-			verificationMessages.Add(message);
+			foreach (var message in fluentValidationMessages)
+			{
+				verificationMessages.Add(message);
+			}
 		}
 
 		var cleanMessages = verificationMessages.Where(x => !x.IsNullOrEmpty()).ToList();
 
-		return cleanMessages;
+		return cleanMessages is not null ? cleanMessages : null;
 	}
 
 	private async Task<IList<string?>> UserLoginVerifications(UserModel user)

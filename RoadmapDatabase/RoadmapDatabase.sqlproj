@@ -121,6 +121,7 @@
     <Build Include="dbo\StoredProcedures\User\spUser_UpdatePassword.sql" />
     <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_GetAllByApproved.sql" />
     <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_GetAllByNotApproved.sql" />
+    <Build Include="dbo\StoredProcedures\Roadmap\spRoadmap_GetAllApprovedByCategory.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\StoredProcedures\User\spUser_GetAll.sql" />

@@ -14,7 +14,7 @@ public class MessageHandler : IMessageHandler
 		_roadmapValidator = roadmapValidator;
 		_userValidator = userValidator;
 	}
-	public IList<string> ValidateUserRegistration(UserModel userData)
+	public IList<string>? ValidateUserRegistration(UserModel userData)
 	{
 		var validationResult = _userValidator.Validate(userData);
 
@@ -23,10 +23,10 @@ public class MessageHandler : IMessageHandler
 			return validationResult.Errors.Select(e => e.ErrorMessage).ToList();
 		}
 
-		return new List<string>();
+		return null;
 	}
 
-	public IList<string> ValidateRoadmapCreation(RoadmapClassModel roadmapData)
+	public IList<string>? ValidateRoadmapCreation(RoadmapClassModel roadmapData)
 	{
 		var validationResult = _roadmapValidator.Validate(roadmapData);
 
@@ -35,7 +35,7 @@ public class MessageHandler : IMessageHandler
 			return validationResult.Errors.Select(e => e.ErrorMessage).ToList();
 		}
 
-		return new List<string>();
+		return null;
 	}
 
 	public string ConcatRegistrationMessages(IList<string> responseMessages)

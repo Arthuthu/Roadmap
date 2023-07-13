@@ -188,18 +188,14 @@
 
 	private async Task? GetRoadmapsByCategory(CategoryModel category)
 	{
-		var roadmaps = await GetAllApprovedRoadmaps();
-
-		Roadmaps = roadmaps?.Where(x => x.Category == category.ToString()).ToList();
+		Roadmaps = await roadmapService.GetAllApprovedRoadmapsByCategory();
 
 		await FillRoadmapsButtons();
 	}
 
 	private async Task? GetRoadmapsByCustomCategory(string category)
 	{
-		var roadmaps = await GetAllApprovedRoadmaps();
-
-		Roadmaps = roadmaps?.Where(x => x.Category!.ToLower().Contains(category.ToLower())).ToList();
+		Roadmaps = await roadmapService.GetAllApprovedRoadmapsByCategory();
 
 		await FillRoadmapsButtons();
 	}

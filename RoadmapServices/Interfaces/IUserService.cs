@@ -9,7 +9,7 @@ namespace RoadmapServices.Interfaces
         Task<UserModel?> GetUserByName(string username);
         Task<UserModel?> GetUserByConfirmationCode(Guid confirmationCode);
         Task<UserModel?> GetUserByRestorationCode(Guid restorationCode);
-		Task<IList<string?>> AddUser(UserModel user);
+		Task<IList<string>?> AddUser(UserModel user);
 		Task<IEnumerable<string?>> Login(UserModel user);
 		Task UpdateUserEmailConfirmation(UserModel user);
         Task UpdateUserPassword(UserModel user);

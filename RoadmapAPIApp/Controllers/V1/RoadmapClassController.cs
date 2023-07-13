@@ -58,6 +58,16 @@ public class RoadmapClassController : ControllerBase
 		return Ok(responseRoadmaps);
 	}
 
+	[HttpGet]
+	[Route("/getallapprovedroadmapsbycategory")]
+	public async Task<ActionResult<List<RoadmapClassResponse>>> GetAllApprovedRoadmapsByCategory()
+	{
+		var roadmaps = await _roadmapService.GetAllApprovedRoadmapsByCategory();
+		var responseRoadmaps = roadmaps.Select(roadmap => _mapper.Map<RoadmapClassResponse>(roadmap));
+
+		return Ok(responseRoadmaps);
+	}
+
 	[Route("/getroadmapbyid/{id}")]
     [HttpGet]
     public async Task<ActionResult<RoadmapClassResponse>> GetRoadmapById(Guid id)
@@ -84,7 +94,7 @@ public class RoadmapClassController : ControllerBase
     {
         var requestRoadmap = _mapper.Map<RoadmapClassModel>(roadmap);
         var roadmapCreationMessages = await _roadmapService.AddRoadmap(requestRoadmap);
-        var cleanResponses = _messageHandler.ConcatRegistrationMessages(roadmapCreationMessages);
+		var cleanResponses = _messageHandler.ConcatRegistrationMessages(roadmapCreationMessages!);
 
         return Ok(cleanResponses);
     }

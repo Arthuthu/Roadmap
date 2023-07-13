@@ -28,6 +28,11 @@ public class RoadmapClassRepository : IRoadmapClassRepository
 		return _db.LoadData<RoadmapClassModel, dynamic>("dbo.spRoadmap_GetAllByNotApproved", new { });
 	}
 
+	public Task<IEnumerable<RoadmapClassModel>> GetAllApprovedRoadmapsByCategory()
+	{
+		return _db.LoadData<RoadmapClassModel, dynamic>("dbo.spRoadmap_GetAllApprovedByCategory", new { });
+	}
+
 	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
 	{
 		var results = await _db.LoadData<RoadmapClassModel, dynamic>(
