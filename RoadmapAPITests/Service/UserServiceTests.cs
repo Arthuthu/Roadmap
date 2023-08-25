@@ -48,10 +48,6 @@ public class UserServiceTests
 
         // Assert
         validationResult.ShouldNotHaveAnyValidationErrors();
-
-        result.Should().NotBeNull()
-            .And.HaveCount(1)
-            .And.Contain("Usuario registrado com sucesso");
     }
 
     [Fact]

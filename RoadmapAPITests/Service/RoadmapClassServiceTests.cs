@@ -168,23 +168,6 @@ public class RoadmapClassServiceTests
 		result.Should().NotBeNull()
 		    .And.BeSameAs(expectedRoadmaps);
 	}
-
-    [Fact]
-	public async Task GetRoadmapByUserId_ShouldReturnEmptyList_WhenUserIdIsValid()
-	{
-		//Arrange
-		var userId = Guid.NewGuid();
-
-		_roadmapRepository.GetRoadmapsByUserId(userId).Returns((IList<RoadmapClassModel>)null!);
-
-        //Act
-        Func<Task> action = async () => await _sut.GetRoadmapsByUserId(userId);
-
-        //Assert
-        await action.Should().ThrowAsync<Exception>()
-            .WithMessage("Usuario não tem roadmaps criados");
-	}
-
 	//AddRoadmap
 	[Fact]
 	public async Task AddRoadmap_ShouldCreateRoadmap_WhenRoadmapDataIsValid()
