@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RoadmapSite.Models;
 using RoadmapSite.Services.Comentario.Interfaces;
-using RoadmapSite.Services.Registration.Classes;
 
 namespace RoadmapSite.Services.Comentario.Classes;
 
