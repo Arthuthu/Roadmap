@@ -13,7 +13,49 @@ html {
 body {
     background-color: #171717;
     color: #FFF;
+    background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+body.light {
+    color: #000;
+    background-image: linear-gradient(#FFF, #FFF);
+}
+
+body.light .vote-button,
+body.light .vote-button-voted,
+body.light .vote-button-details,
+body.light .vote.button.details-voted,
+body.light .index-categorias-div,
+body.light .form-div {
+    color: #000;
+    border: solid #000;
+}
+
+body.light .details-roadmap-div,
+body.light .details-description-div,
+body.light .nodes-box,
+body.light .comment-count-buttons-div,
+body.light .index-buttons-searchbar-div,
+body.light .criar-denuncia-label,
+body.light .denuncia-input-text-area,
+body.light .bio-div,
+body.light .username-div,
+body.light .denuncias-div,
+body.light .comment-box {
+    background-color: transparent;
+    color: #000;
+    border: solid #000;
+}
+
+body.light .roadmap-author,
+body.light .comment-author {
+    color: #000;
+}
+
+body.light .first-style-button {
+    color: #FFF;
 }
 
 .display-flex {
@@ -69,6 +111,17 @@ body {
         background-color: var(--lightergray-color);
         color: #FFF;
     }
+
+.theme-button {
+    background-color: transparent;
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border: solid #FFF;
+    margin: 10px 0 0 40px;
+    border-radius: 13px;
+}
 
 /* Navbar */
 

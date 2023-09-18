@@ -1,12 +1,15 @@
 ﻿@inherits LayoutComponentBase
 
+@inject IJSRuntime JSRuntime
+
 <div class="page">
     <main>
         <nav class="navbar">
-            <div>
-                <NavLink class="logo" href="/">
+            <div class="d-flex align-items-center">
+                <a class="logo" href="/">
                     <span>Roadmaps</span>
-                </NavLink>
+                </a>
+                <button class="theme-button" id="light-button" @onclick="ToggleLightMode">@themeButtonName</button>
             </div>
             <div class="nav-links">
                 <AuthorizeView>
@@ -35,3 +38,20 @@
         </article>
     </main>
 </div>
+
+@code {
+    private string themeButtonName = "Dark";
+
+    private async Task ToggleLightMode()
+    {
+        await JSRuntime.InvokeVoidAsync("toggleLightMode");
+
+        if (themeButtonName == "Dark")
+        {
+            themeButtonName = "Light";
+            return;
+        };
+
+        themeButtonName = "Dark";
+    }
+}
