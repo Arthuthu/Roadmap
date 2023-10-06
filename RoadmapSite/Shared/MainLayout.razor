@@ -9,7 +9,9 @@
                 <a class="logo" href="/">
                     <span>Roadmaps</span>
                 </a>
-                <button class="theme-button" id="light-button" @onclick="ToggleLightMode">@themeButtonName</button>
+                <div @onclick="ToggleLightMode">
+                    <img src="@themeButton" class="theme-icon"/>
+                </div>
             </div>
             <div class="nav-links">
                 <AuthorizeView>
@@ -40,18 +42,18 @@
 </div>
 
 @code {
-    private string themeButtonName = "Dark";
+    private string themeButton = "https://static.vecteezy.com/system/resources/previews/009/664/677/original/sun-sun-ray-icon-transparent-free-png.png";
 
     private async Task ToggleLightMode()
     {
         await JSRuntime.InvokeVoidAsync("toggleLightMode");
 
-        if (themeButtonName == "Dark")
+        if (themeButton == "https://static.vecteezy.com/system/resources/previews/009/664/677/original/sun-sun-ray-icon-transparent-free-png.png")
         {
-            themeButtonName = "Light";
+            themeButton = "https://www.freeiconspng.com/uploads/moon-icon-32.png";
             return;
         };
 
-        themeButtonName = "Dark";
+        themeButton = "https://static.vecteezy.com/system/resources/previews/009/664/677/original/sun-sun-ray-icon-transparent-free-png.png";
     }
 }
