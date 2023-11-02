@@ -208,7 +208,6 @@ body.light .first-style-button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 75.7%;
     background-color: var(--lightgray-background-color);
     padding: 5px;
     border-radius: 10px;

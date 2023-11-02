@@ -1,5 +1,4 @@
-﻿using Blazored.LocalStorage;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RoadmapSite.Models;
 using RoadmapSite.Services.Roadmap.Interfaces;
 
@@ -91,7 +90,6 @@ public class RoadmapService : IRoadmapService
 
 		return roadmapClassModel;
 	}
-
 	public async Task<IList<RoadmapClassModel>?> GetRoadmapByUserId(Guid userId)
 	{
 		string getRoadmapByUserIdEndpoint = _config["apiLocation"] + _config["getRoadmapByUserIdEndpoint"] + $"/{userId}";
@@ -179,8 +177,6 @@ public class RoadmapService : IRoadmapService
 
         return await authResult.Content.ReadAsStringAsync();
     }
-
-
     public async Task<string?> DeleteRoadmap(Guid id)
 	{
 		string deleteRoadmapEndpoint = _config["apiLocation"] + _config["deleteRoadmapEndpoint"] + $"/{id}";
@@ -197,7 +193,6 @@ public class RoadmapService : IRoadmapService
 
 		return authContent;
 	}
-
     public async Task<string?> DeleteAllUserRoadmaps(Guid userId)
     {
         string deleteAllUserRoadmapsEndpoint = _config["apiLocation"] + _config["deleteAllUserRoadmapsEndpoint"] + $"/{userId}";

@@ -5,19 +5,17 @@
 @inject IRoadmapVotingService votingService
 @inject ILocalStorageService localStorage
 
-<div>
-	<div class="create-roadmap-button-div">
-		<a class="first-style-button" href="createroadmap">
-			Criar Roadmap
-		</a>
-	</div>
+<div class="create-roadmap-button-div">
+	<a class="first-style-button" href="createroadmap">
+		Criar Roadmap
+	</a>
 </div>
 
 <div class="index-buttons-searchbar-div">
-	<div>
+	<div class="d-flex">
 		<button class="index-sort-button"
-				@onclick="OnInitializedAsync">
-			Inicio
+				@onclick="CleanSearch">
+			Limpar
 		</button>
 
 		<button class="index-sort-button"
@@ -31,18 +29,10 @@
 		</button>
 	</div>
 
-	<div class="index-search-input-buttons-div">
-		<div>
-			<InputText class="index-search-input" @bind-Value="@roadmapName" 
-			placeholder="Procurar por nome" id="buscar-nome-input"/>
-		</div>
-
-		<div class="index-buscar-button-div" onclick="clearBuscarNomeInput()">
-			<button @onclick="async () => await GetRoadmapsByName(roadmapName!)"
-					class="index-sort-button">
-				Buscar
-			</button>
-		</div>
+	<div class="w-100">
+		<InputText @bind-Value="@roadmapName" class="index-search-input"
+		@oninput="(e) => FilterRoadmapByName(e.Value?.ToString()!)"
+			placeholder="Procurar roadmap por nome" />
 	</div>
 </div>
 
@@ -123,14 +113,9 @@
 		</div>
 
 		<div>
-			<InputText class="index-search-input" @bind-Value="@category" placeholder="Digite aqui uma categoria" />
-		</div>
-
-		<div>
-			<button @onclick="async () => await GetRoadmapsByCustomCategory(category!)!"
-				class="first-style-button" id="index-buscar-button">
-				Buscar
-			</button>
+			<InputText @bind-Value="@roadmapCategory" class="index-search-input"
+			@oninput="(e) => FilterRoadmapByCategory(e.Value?.ToString()!)"
+					   placeholder="Procurar roadmap por categoria" />
 		</div>
 	</div>
 </div>
@@ -138,11 +123,13 @@
 @code {
 	private Guid? LoggedInUserId;
 	private IList<RoadmapClassModel>? Roadmaps;
+	private IList<RoadmapClassModel>? TodosRoadmaps;
 	private UserModel? User { get; set; }
 	private const string RoadmapList = "RoadmapList";
 	private const string RoadmapCacheDate = "RoadmapCacheDate";
-	private string? category = string.Empty;
+	private string? category;
 	private string? roadmapName;
+	private string? roadmapCategory;
 
 
 	protected override async Task OnInitializedAsync()
@@ -154,10 +141,11 @@
 	{
 		LoggedInUserId = await userService.GetLoggedInUserId();
 		Roadmaps = await roadmapService.GetAllApprovedRoadmaps();
+		TodosRoadmaps = Roadmaps;
 
 		if (LoggedInUserId != Guid.Empty)
 		{
-			foreach (var roadmap in Roadmaps!)
+			foreach (var roadmap in TodosRoadmaps!)
 			{
 				string roadmapClass = await votingService.GetButtonColor(LoggedInUserId, roadmap.Id);
 				roadmap.RoadmapHtmlClass = roadmapClass;
@@ -168,7 +156,7 @@
 		}
 		else
 		{
-			foreach (var roadmap in Roadmaps!)
+			foreach (var roadmap in TodosRoadmaps!)
 			{
 				int roadmapTotalVotes = await votingService.GetRoadmapVotes(LoggedInUserId, roadmap.Id);
 
@@ -185,28 +173,6 @@
 		return roadmaps;
 	}
 
-	private async Task? GetRoadmapsByCategory(CategoryModel category)
-	{
-		Roadmaps = await roadmapService.GetAllApprovedRoadmapsByCategory();
-
-		await FillRoadmapsButtons();
-	}
-
-	private async Task? GetRoadmapsByCustomCategory(string category)
-	{
-		Roadmaps = await roadmapService.GetAllApprovedRoadmapsByCategory();
-
-		await FillRoadmapsButtons();
-	}
-
-	private async Task GetRoadmapsByName(string name)
-	{
-		var roadmaps = await GetAllApprovedRoadmaps();
-
-		Roadmaps = roadmaps?.Where(x => x.Name!.ToLower().Contains(name.ToLower())).ToList();
-
-		await FillRoadmapsButtons();
-	}
 
 	private async Task FillRoadmapsButtons()
 	{
@@ -256,6 +222,60 @@
 		await votingService.AddUserVote(LoggedInUserId, roadmapId);
 
 		await OnInitializedAsync();
+	}
+
+
+	private async Task? GetRoadmapsByCategory(CategoryModel category)
+	{
+		if (TodosRoadmaps is not null)
+			Roadmaps = TodosRoadmaps.Where(x => x.Category == category.ToString()).ToList();
+
+		await FillRoadmapsButtons();
+	}
+
+	private async Task GetRoadmapsByCustomCategory(string category)
+	{
+		if (TodosRoadmaps is not null)
+			Roadmaps = TodosRoadmaps.Where(x => x.Category == category).ToList();
+
+		await FillRoadmapsButtons();
+	}
+
+	private async Task GetRoadmapsByName(string name)
+	{
+		if (TodosRoadmaps is not null)
+			Roadmaps = TodosRoadmaps.Where(x => x.Name == name).ToList();
+
+		await FillRoadmapsButtons();
+	}
+
+	private void CleanSearch()
+	{
+		Roadmaps = TodosRoadmaps;
+	}
+
+	private void FilterRoadmapByName(string roadmapName)
+	{
+		if (roadmapName is not null)
+		{
+			Roadmaps = TodosRoadmaps!.Where(x => x.Name.ToLower()
+				.Contains(roadmapName.ToLower())).ToList();
+
+			if (roadmapName == string.Empty)
+				Roadmaps = TodosRoadmaps;
+		}
+	}
+
+	private void FilterRoadmapByCategory(string roadmapCategory)
+	{
+		if (roadmapCategory is not null)
+		{
+			Roadmaps = TodosRoadmaps!.Where(x => x.Category!.ToLower()
+				.Contains(roadmapCategory.ToLower())).ToList();
+
+			if (roadmapCategory == string.Empty)
+				Roadmaps = TodosRoadmaps;
+		}
 	}
 
 	private void SortRoadmapsByDate()
