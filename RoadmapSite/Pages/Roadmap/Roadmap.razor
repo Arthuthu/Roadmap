@@ -256,12 +256,11 @@
 						<div>
 							@if (comentario.AuthorId == LoggedInUserId || LoggedInUserModel!.IsAdmin is true)
 							{
-								<button @onclick="ToggleShowDeleteComment"
-								class="second-style-button">
+								<button @onclick="() => ToggleShowDeleteComment(comentario.Id)"
+										class="second-style-button">
 									Excluir
 								</button>
-
-								if (showDeleteComment)
+								@if (showDeleteComment.ContainsKey(comentario.Id) && showDeleteComment[comentario.Id])
 								{
 									<button @onclick="async () => await DeleteComment(comentario.Id)"
 									class="second-style-button" id="confirm-button">
@@ -298,18 +297,17 @@
 	private IList<NodeModel>? Nodes { get; set; }
 	private Dictionary<Guid, bool> showNodeContent = new Dictionary<Guid, bool>();
 	private Dictionary<Guid, bool> showDenunciaScreenComment = new Dictionary<Guid, bool>();
+	private Dictionary<Guid, bool> showDeleteComment = new Dictionary<Guid, bool>();
 	private RoadmapClassModel? PageRoadmap { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
 	private NodeModel? Node = new();
 	private ComentarioModel? Comentario = new();
 	private bool showDenunciaScreenRoadmap = false;
 	private bool showRoadmapEditOptions = false;
-	private bool showDeleteComment = false;
 	private bool showDeletePageAuthor = false;
 	private bool showDeletePageAdmin = false;
 	private bool isInitialized = false;
 	const string DefaultProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
-
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -554,9 +552,16 @@
 		showDeletePageAdmin = !showDeletePageAdmin;
 	}
 
-	private void ToggleShowDeleteComment()
+	private void ToggleShowDeleteComment(Guid comentarioId)
 	{
-		showDeleteComment = !showDeleteComment;
+		if (showDeleteComment.ContainsKey(comentarioId))
+		{
+			showDeleteComment[comentarioId] = !showDeleteComment[comentarioId];
+		}
+		else
+		{
+			showDeleteComment[comentarioId] = true;
+		}
 	}
 
 	private void ToggleShowDenunciaScreenRoadmap()

@@ -43,6 +43,7 @@ body.light .denuncia-input-text-area,
 body.light .bio-div,
 body.light .username-div,
 body.light .denuncias-div,
+body.light .comment-input-area,
 body.light .comment-box {
     background-color: transparent;
     color: #000;
@@ -617,11 +618,13 @@ body.light .first-style-button {
 
 .comment-input-area {
     width: 100%;
-    background: transparent;
+    background-color: #232323;
+    padding: 10px;
     color: #FFF;
     margin: 30px 0 0 0;
     border: none;
     border-bottom: solid #DCDCDC;
+    font-size: 18px;
 }
 
     .comment-input-area:focus {
@@ -657,15 +660,6 @@ body.light .first-style-button {
     margin: 0 0 0 10px;
 }
 
-
-
-
-
-
-
-
-
-
 #roadmap-details-management-button {
     margin: 0;
 }
@@ -673,7 +667,9 @@ body.light .first-style-button {
 .comment-box {
     display: flex;
     align-items: center;
-    margin: 0 0 32px 0;
+    margin: 0 0 15px 0;
+    background-color: #232323;
+    padding: 10px;
 }
 
 .comment-profile-picture-div {
