@@ -879,6 +879,7 @@ body.light .first-style-button {
 
 .node-content-description {
     margin: 20px 0 0 0;
+    word-break: break-all;
 }
 
 /* Ban Unban */

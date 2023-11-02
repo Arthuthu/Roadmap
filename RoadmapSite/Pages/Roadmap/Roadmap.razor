@@ -15,20 +15,20 @@
 	<div>
 		<div class="details-roadmap-div">
 			<div>
-				@Roadmap!.Name
+				@PageRoadmap!.Name
 			</div>
 
 			<div>
-				@Roadmap.Category
+				@PageRoadmap.Category
 			</div>
 		</div>
 		<div class="details-description-div">
-			@Roadmap.Description
+			@PageRoadmap.Description
 		</div>
 	</div>
 
 	<div class="nodes-box">
-		@if(Nodes is not null)
+		@if(Nodes is not null && Nodes.Count > 0)
 		{
 			@foreach (var node in Nodes)
 			{
@@ -44,7 +44,7 @@
 						{
 							<div>
 								<div class="mb-4">
-									@if (LoggedInUserId == Roadmap.UserId)
+									@if (LoggedInUserId == PageRoadmap.UserId)
 									{
 										<div class="node-edit-buttons">
 											<div>
@@ -79,12 +79,12 @@
 		}
 		else
 		{
-			<div>
+			<div class="my-5 fs-3 fw-bold">
 				Não existe nenhum conteudo nesse roadmap ainda.
 			</div>
 		}
 
-		@if (Roadmap.UserId == LoggedInUserId)
+		@if (PageRoadmap.UserId == LoggedInUserId)
 		{
 			<EditForm Model="@Node" OnValidSubmit="CreateNode" class="" Context="NodeForm">
 				<div class="text-center">
@@ -103,13 +103,13 @@
 	</div>
 
 	<div>
-		@if (LoggedInUserModel!.IsAdmin is true && Roadmap.IsApproved == false)
+		@if (LoggedInUserModel!.IsAdmin is true && PageRoadmap.IsApproved == false)
 		{
 			<div class="text-center text-info h4 my-4">
 				Este roadmap não foi aprovado
 			</div>
 			<div class="text-center my-4">
-				<button class="first-style-button" @onclick="async () => await ApproveRoadmap(Roadmap)">
+				<button class="first-style-button" @onclick="async () => await ApproveRoadmap(PageRoadmap)">
 					Aprovar
 				</button>
 			</div>
@@ -118,9 +118,9 @@
 
 	<div class="text-center">
 		<div onclick="toggleVoteButtonDetailsClass(this.querySelector('button'))">
-			<button class="@Roadmap.RoadmapHtmlClass" id="roadmap-vote-button"
-			@onclick="async () => await AddUserVoteOnRoadmap(Roadmap.Id)">
-				<span id="vote-count">@Roadmap.RoadmapTotalVotes</span>
+			<button class="@PageRoadmap.RoadmapHtmlClass" id="roadmap-vote-button"
+			@onclick="async () => await AddUserVoteOnRoadmap(PageRoadmap.Id)">
+				<span id="vote-count">@PageRoadmap.RoadmapTotalVotes</span>
 				<div class="vote-icon"><i class="fas fa-caret-up"></i></div>
 				Vote
 			</button>
@@ -134,7 +134,7 @@
 
 		@if (showRoadmapEditOptions)
 		{
-			@if (Roadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin is true)
+			@if (PageRoadmap.UserId == LoggedInUserId || LoggedInUserModel!.IsAdmin is true)
 			{
 				@if (LoggedInUserModel!.IsAdmin is false)
 				{
@@ -162,7 +162,7 @@
 
 			@if (showDenunciaScreenRoadmap)
 			{
-				<CreateDenuncia Type="Roadmap" Id="@Roadmap.Id.ToString()" />
+				<CreateDenuncia Type="Roadmap" Id="@PageRoadmap.Id.ToString()" />
 			}
 		}
 	</div>
@@ -188,7 +188,6 @@
 			</div>
 		</EditForm>
 	</div>
-
 
 	<div class="comment-count-buttons-div">
 		<div class="comment-count-div">
@@ -299,11 +298,10 @@
 	private IList<NodeModel>? Nodes { get; set; }
 	private Dictionary<Guid, bool> showNodeContent = new Dictionary<Guid, bool>();
 	private Dictionary<Guid, bool> showDenunciaScreenComment = new Dictionary<Guid, bool>();
-	private RoadmapClassModel? Roadmap { get; set; }
+	private RoadmapClassModel? PageRoadmap { get; set; }
 	private UserModel? LoggedInUserModel { get; set; }
 	private NodeModel? Node = new();
 	private ComentarioModel? Comentario = new();
-	private bool editMode = false;
 	private bool showDenunciaScreenRoadmap = false;
 	private bool showRoadmapEditOptions = false;
 	private bool showDeleteComment = false;
@@ -341,10 +339,10 @@
 			return;
 		}
 
-		Roadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId!));
+		PageRoadmap = await roadmapService.GetRoadmapById(new Guid(RoadmapId!));
 		LoggedInUserModel = await userService.GetUserById(LoggedInUserId);
 
-		if (Roadmap is null || LoggedInUserModel is null)
+		if (PageRoadmap is null || LoggedInUserModel is null)
 		{
 			navManager.NavigateTo("/notfound");
 
@@ -391,11 +389,11 @@
 
 	private async Task UpdateRoadmapVoteButton()
 	{
-		string roadmapClass = await GetButtonColorDetails(LoggedInUserId, Roadmap!.Id);
-		Roadmap.RoadmapHtmlClass = roadmapClass;
+		string roadmapClass = await GetButtonColorDetails(LoggedInUserId, PageRoadmap!.Id);
+		PageRoadmap.RoadmapHtmlClass = roadmapClass;
 
-		int roadmapTotalVotes = await roadmapVotingService.GetRoadmapVotes(LoggedInUserId, Roadmap.Id);
-		Roadmap.RoadmapTotalVotes = roadmapTotalVotes;
+		int roadmapTotalVotes = await roadmapVotingService.GetRoadmapVotes(LoggedInUserId, PageRoadmap.Id);
+		PageRoadmap.RoadmapTotalVotes = roadmapTotalVotes;
 	}
 
 	private async Task<string> GetButtonColorDetails(Guid? loggedInUserId, Guid roadmapId)
@@ -427,21 +425,36 @@
 
 		await nodeService.CreateNode(Node);
 
-		await GetAllNodes();
+		if (Nodes is not null)
+		{
+			Nodes.Add(Node);
+			return;
+		}
+
+		Nodes = new List<NodeModel>();
+		Nodes.Add(Node);
 	}
 
 	private async Task GetAllNodes()
 	{
 		var nodes = await nodeService.GetAllNodes(new Guid(RoadmapId!));
 
-		if (nodes is not null)
+		if (nodes.Count > 0)
 			Nodes = nodes.OrderBy(x => x.CreatedDate).ToList();
 	}
 
 	private async Task DeleteNode(Guid nodeId)
 	{
 		await nodeService.DeleteNode(nodeId);
-		await GetAllNodes();
+
+		if (Nodes is not null && Nodes.Count > 0)
+		{
+			var nodeToRemove = Nodes.Where(x => x.Id == nodeId).ToList();
+			foreach (var node in nodeToRemove)
+			{
+				Nodes.Remove(node);
+			}
+		}
 	}
 
 	//Comments
