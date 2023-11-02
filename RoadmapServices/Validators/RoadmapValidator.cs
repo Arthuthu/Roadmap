@@ -13,7 +13,7 @@ public class RoadmapValidator : AbstractValidator<RoadmapClassModel>
 			.MaximumLength(50).WithMessage("O campo nome pode ter no maximo 50 caracteres");
 
 		RuleFor(x => x.Description)
-			.MaximumLength(200).WithMessage("O campo descrição pode ter no maximo 200 caracteres");
+			.MaximumLength(2000).WithMessage("O campo descrição pode ter no maximo 200 caracteres");
 
 		RuleFor(x => x.Category)
 			.MaximumLength(50).WithMessage("O campo categoria pode ter no maximo 50 caracteres");

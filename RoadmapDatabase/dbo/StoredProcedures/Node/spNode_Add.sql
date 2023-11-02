@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spNode_Add]
 	@Id uniqueidentifier,
 	@Name nvarchar(50),
-	@Description nvarchar(20),
+	@Description nvarchar(2000),
 	@CreatedDate datetime2(7),
 	@RoadmapId uniqueidentifier
 AS

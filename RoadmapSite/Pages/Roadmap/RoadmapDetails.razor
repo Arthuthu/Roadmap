@@ -421,6 +421,10 @@
 	private async Task CreateNode()
 	{
 		Node!.RoadmapId = new Guid(RoadmapId!);
+
+		if(Node.Name is null || Node.Name.Length < 1)
+			return;
+
 		await nodeService.CreateNode(Node);
 
 		await GetAllNodes();
@@ -431,9 +435,7 @@
 		var nodes = await nodeService.GetAllNodes(new Guid(RoadmapId!));
 
 		if (nodes is not null)
-		{
 			Nodes = nodes.OrderBy(x => x.CreatedDate).ToList();
-		}
 	}
 
 	private async Task DeleteNode(Guid nodeId)

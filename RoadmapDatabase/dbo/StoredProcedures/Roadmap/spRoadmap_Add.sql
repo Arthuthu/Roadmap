@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spRoadmap_Add]
 	@Id uniqueidentifier,
 	@Name nvarchar(50),
-	@Description nvarchar(20),
+	@Description nvarchar(2000),
 	@Category nvarchar(50),
 	@IsApproved nvarchar(1),
 	@AuthorName nvarchar(50),

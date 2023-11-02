@@ -2,7 +2,7 @@
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
     [Name] NVARCHAR(50) NOT NULL, 
-    [Description] NVARCHAR(200) NULL,
+    [Description] NVARCHAR(2000) NULL,
     [Category] NVARCHAR(50) NULL, 
     [AuthorName] NVARCHAR(50) NULL, 
     [IsApproved] BIT NULL,
