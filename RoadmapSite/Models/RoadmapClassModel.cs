@@ -1,4 +1,4 @@
-﻿namespace RoadmapSite.Models;
+﻿namespace Site.Models;
 
 public class RoadmapClassModel
 {
@@ -12,7 +12,7 @@ public class RoadmapClassModel
 
 	public DateTime? CreatedDate { get; set; }
 	public DateTime? UpdatedDate { get; set; }
-				 
+
 
 	public string? RoadmapHtmlClass { get; set; }
 	public int RoadmapTotalVotes { get; set; }

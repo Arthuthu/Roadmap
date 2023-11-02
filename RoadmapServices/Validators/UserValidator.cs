@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using RoadmapRepository.Models;
+﻿using Domain.Models;
+using FluentValidation;
 
-namespace RoadmapServices.Validators;
+namespace Infra.Validators;
 
 public class UserValidator : AbstractValidator<UserModel>
 {
@@ -18,6 +18,6 @@ public class UserValidator : AbstractValidator<UserModel>
 			.MaximumLength(20).WithMessage("A senha nao pode ultrapassar 20 caracteres");
 
 		RuleFor(x => x.Bio)
-	.		MaximumLength(1000).WithMessage("A bio nao pode ultrapassar 1000 caracteres");
+	.MaximumLength(1000).WithMessage("A bio nao pode ultrapassar 1000 caracteres");
 	}
 }

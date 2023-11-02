@@ -1,4 +1,4 @@
-﻿namespace RoadmapSite.Models;
+﻿namespace Site.Models;
 
 public class NodeModel
 {

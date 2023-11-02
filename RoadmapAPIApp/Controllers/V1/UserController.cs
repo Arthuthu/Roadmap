@@ -1,60 +1,58 @@
 ﻿using AutoMapper;
+using Domain.Models;
+using Infra.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RoadmapAPIApp.Request;
-using RoadmapAPIApp.Response;
-using RoadmapRepository.Models;
-using RoadmapServices.Interfaces;
-using System.Security.Cryptography;
-using System.Text;
+using RoadmapAPI.Request;
+using RoadmapAPI.Response;
 
-namespace RoadmapAPIApp.Controllers.V1;
+namespace RoadmapAPI.Controllers.V1;
 
 [Route("api/v1/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IUserService _userService;
-    private readonly IMapper _mapper;
+	private readonly IUserService _userService;
+	private readonly IMapper _mapper;
 
-    public UserController(IUserService userService, IMapper mapper)
-    {
-        _userService = userService;
-        _mapper = mapper;
-    }
+	public UserController(IUserService userService, IMapper mapper)
+	{
+		_userService = userService;
+		_mapper = mapper;
+	}
 
-    [HttpGet]
-    [AllowAnonymous]
-    [Route("/getallusers")]
-    public async Task<ActionResult<List<UserResponse>>> GetAllUsers()
-    {
-        var users = await _userService.GetAllUsers();
-        var responseUsers = users.Select(user => _mapper.Map<UserResponse>(user));
+	[HttpGet]
+	[AllowAnonymous]
+	[Route("/getallusers")]
+	public async Task<ActionResult<List<UserResponse>>> GetAllUsers()
+	{
+		var users = await _userService.GetAllUsers();
+		var responseUsers = users.Select(user => _mapper.Map<UserResponse>(user));
 
-        return Ok(responseUsers);
-    }
+		return Ok(responseUsers);
+	}
 
-    [Route("/getuserbyid/{id}")]
-    [HttpGet]
-    public async Task<ActionResult<UserResponse>> GetUserById(Guid id)
-    {
-        var user = await _userService.GetUserById(id);
-        var responseUsers = _mapper.Map<UserResponse>(user);
+	[Route("/getuserbyid/{id}")]
+	[HttpGet]
+	public async Task<ActionResult<UserResponse>> GetUserById(Guid id)
+	{
+		var user = await _userService.GetUserById(id);
+		var responseUsers = _mapper.Map<UserResponse>(user);
 
-        return Ok(responseUsers);
-    }
+		return Ok(responseUsers);
+	}
 
-    [Route("/getuserbyname/{username}")]
-    [HttpGet]
-    public async Task<ActionResult<UserResponse>> GetUserByName(string username)
-    {
-        var user = await _userService.GetUserByName(username);
-        var responseUsers = _mapper.Map<UserResponse>(user);
+	[Route("/getuserbyname/{username}")]
+	[HttpGet]
+	public async Task<ActionResult<UserResponse>> GetUserByName(string username)
+	{
+		var user = await _userService.GetUserByName(username);
+		var responseUsers = _mapper.Map<UserResponse>(user);
 
-        return Ok(responseUsers);
-    }
+		return Ok(responseUsers);
+	}
 
-    [Route("/getuserbyconfirmationcode/{confirmationcode}")]
+	[Route("/getuserbyconfirmationcode/{confirmationcode}")]
 	[HttpGet]
 	[AllowAnonymous]
 	public async Task<ActionResult<UserResponse>> GetUserByConfirmationCode(Guid confirmationCode)
@@ -77,24 +75,24 @@ public class UserController : ControllerBase
 	}
 
 	[HttpPost]
-    [AllowAnonymous]
-    public async Task<ActionResult<List<UserResponse>>> CreateUser(UserRequest user)
-    {
-        var requestUser = _mapper.Map<UserModel>(user);
-        await _userService.AddUser(requestUser);
+	[AllowAnonymous]
+	public async Task<ActionResult<List<UserResponse>>> CreateUser(UserRequest user)
+	{
+		var requestUser = _mapper.Map<UserModel>(user);
+		await _userService.AddUser(requestUser);
 
-        return Ok(requestUser);
-    }
+		return Ok(requestUser);
+	}
 
-    [Route("/updateuser")]
-    [HttpPut]
-    public async Task<ActionResult<List<UserResponse>>> UpdateUser([FromForm] UserRequest user)
-    {
-        var requestUser = _mapper.Map<UserModel>(user);
-        await _userService.UpdateUser(requestUser);
+	[Route("/updateuser")]
+	[HttpPut]
+	public async Task<ActionResult<List<UserResponse>>> UpdateUser([FromForm] UserRequest user)
+	{
+		var requestUser = _mapper.Map<UserModel>(user);
+		await _userService.UpdateUser(requestUser);
 
-        return Ok("Perfil atualizado com sucesso");
-    }
+		return Ok("Perfil atualizado com sucesso");
+	}
 
 	[Route("/updateuseremailconfirmation")]
 	[HttpPut]
@@ -109,7 +107,7 @@ public class UserController : ControllerBase
 
 	[Route("/updateuserpassword")]
 	[HttpPut]
-    [AllowAnonymous]
+	[AllowAnonymous]
 	public async Task<ActionResult<List<UserResponse>>> UpdateUserPassword([FromForm] UserRequest user)
 	{
 		var requestUser = _mapper.Map<UserModel>(user);
@@ -141,10 +139,10 @@ public class UserController : ControllerBase
 	}
 
 	[HttpDelete("{id}")]
-    public async Task<ActionResult<UserResponse>> DeleteUser(Guid id)
-    {
-        await _userService.DeleteUser(id);
+	public async Task<ActionResult<UserResponse>> DeleteUser(Guid id)
+	{
+		await _userService.DeleteUser(id);
 
-        return Ok("User has been deleted");
-    }
+		return Ok("User has been deleted");
+	}
 }

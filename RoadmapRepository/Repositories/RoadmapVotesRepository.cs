@@ -1,8 +1,8 @@
-﻿using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapRepository.SqlDataAccess;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Domain.SqlDataAccess;
 
-namespace RoadmapRepository.Classes;
+namespace Domain.Repositories;
 
 public class RoadmapVotesRepository : IRoadmapVotesRepository
 {
@@ -19,13 +19,13 @@ public class RoadmapVotesRepository : IRoadmapVotesRepository
 			new { UserId = userId, RoadmapId = roadmapId });
 	}
 
-    public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotesByUserId(Guid userId)
-    {
-        return _db.LoadData<RoadmapVotesModel, dynamic>("dbo.spRoadmapVotes_GetAllByUserId",
+	public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotesByUserId(Guid userId)
+	{
+		return _db.LoadData<RoadmapVotesModel, dynamic>("dbo.spRoadmapVotes_GetAllByUserId",
 			new { UserId = userId });
-    }
+	}
 
-    public Task AddRoadmapVote(Guid Id, Guid userId, Guid roadmapId)
+	public Task AddRoadmapVote(Guid Id, Guid userId, Guid roadmapId)
 	{
 		return _db.SaveData("dbo.spRoadmapVotes_Add", new
 		{

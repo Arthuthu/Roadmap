@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
+using Infra.Interfaces;
+using Infra.Validators.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RoadmapAPIApp.Response;
-using RoadmapServices.Interfaces;
-using RoadmapServices.Validators.Interfaces;
+using RoadmapAPI.Response;
 
-namespace ComentarioAPIApp.Controllers.V1;
+namespace RoadmapAPI.Controllers.V1;
 
 [Route("api/v1/[controller]")]
 [ApiController]

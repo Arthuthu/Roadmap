@@ -1,17 +1,16 @@
+using Domain.Interfaces;
+using Domain.Models;
+using Domain.Repositories;
+using Domain.SqlDataAccess;
 using FluentValidation;
+using Infra.Interfaces;
+using Infra.Services;
+using Infra.Validators;
+using Infra.Validators.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NodeServices.Classes;
-using RoadmapRepository.Classes;
-using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapRepository.SqlDataAccess;
-using RoadmapServices.Classes;
-using RoadmapServices.Interfaces;
-using RoadmapServices.Validators;
-using RoadmapServices.Validators.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

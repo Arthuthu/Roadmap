@@ -1,8 +1,8 @@
-﻿using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapRepository.SqlDataAccess;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Domain.SqlDataAccess;
 
-namespace RoadmapRepository.Classes;
+namespace Domain.Repositories;
 
 public class NodeRepository : INodeRepository
 {

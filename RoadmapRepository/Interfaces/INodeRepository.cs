@@ -1,13 +1,13 @@
-﻿using RoadmapRepository.Models;
+﻿using Domain.Models;
 
-namespace RoadmapRepository.Interfaces
+namespace Domain.Interfaces
 {
-    public interface INodeRepository
-    {
+	public interface INodeRepository
+	{
 		Task<IEnumerable<NodeModel>> GetAllNodes(Guid roadmapId);
 		Task<NodeModel?> GetNodeById(Guid id);
 		Task AddNode(NodeModel node);
 		Task UpdateNode(NodeModel node);
 		Task DeleteNode(Guid id);
-    }
+	}
 }

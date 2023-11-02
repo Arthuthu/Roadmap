@@ -1,4 +1,4 @@
-﻿namespace RoadmapRepository.Models;
+﻿namespace Domain.Models;
 
 public class ComentarioVotesModel
 {

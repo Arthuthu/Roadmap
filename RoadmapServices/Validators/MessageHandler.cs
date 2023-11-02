@@ -1,8 +1,8 @@
-﻿using FluentValidation;
-using RoadmapRepository.Models;
-using RoadmapServices.Validators.Interfaces;
+﻿using Domain.Models;
+using FluentValidation;
+using Infra.Validators.Interfaces;
 
-namespace RoadmapServices.Validators;
+namespace Infra.Validators;
 public class MessageHandler : IMessageHandler
 {
 	private readonly IValidator<RoadmapClassModel> _roadmapValidator;

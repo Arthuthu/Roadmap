@@ -1,9 +1,9 @@
-﻿using RoadmapRepository.Models;
+﻿using Domain.Models;
 
-namespace RoadmapServices.Interfaces
+namespace Infra.Interfaces
 {
-    public interface IRoadmapClassService
-    {
+	public interface IRoadmapClassService
+	{
 		Task<IEnumerable<RoadmapClassModel>> GetAllRoadmaps();
 		Task<IEnumerable<RoadmapClassModel>> GetAllApprovedRoadmaps();
 		Task<IEnumerable<RoadmapClassModel>> GetAllNotApprovedRoadmaps();
@@ -12,7 +12,7 @@ namespace RoadmapServices.Interfaces
 		Task<IList<RoadmapClassModel>> GetRoadmapsByUserId(Guid userId);
 		Task<IList<string>?> AddRoadmap(RoadmapClassModel roadmap);
 		Task UpdateRoadmap(RoadmapClassModel roadmap);
-        Task DeleteAllUserRoadmaps(Guid userId);
-        Task DeleteRoadmap(Guid id);
-    }
+		Task DeleteAllUserRoadmaps(Guid userId);
+		Task DeleteRoadmap(Guid id);
+	}
 }

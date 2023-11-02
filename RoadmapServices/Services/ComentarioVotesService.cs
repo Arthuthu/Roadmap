@@ -1,9 +1,8 @@
-﻿using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapServices.Interfaces;
-using RoadmapServices.Validators.Interfaces;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Infra.Interfaces;
 
-namespace RoadmapServices.Classes;
+namespace Infra.Services;
 
 public class ComentarioVotesService : IComentarioVotesService
 {
@@ -20,7 +19,7 @@ public class ComentarioVotesService : IComentarioVotesService
 		return _comentarioVotesRepository.GetAllComentarioVotes(userId, comentarioId);
 	}
 
-    public async Task<string> AddComentarioVote(Guid userId, Guid comentarioId)
+	public async Task<string> AddComentarioVote(Guid userId, Guid comentarioId)
 	{
 		Guid comentarioVoteId = Guid.NewGuid();
 

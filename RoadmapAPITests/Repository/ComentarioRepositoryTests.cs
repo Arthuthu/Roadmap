@@ -1,9 +1,9 @@
 ﻿using AutoFixture;
+using Domain.Models;
+using Domain.Repositories;
+using Domain.SqlDataAccess;
 using FluentAssertions;
 using NSubstitute;
-using RoadmapRepository.Classes;
-using RoadmapRepository.Models;
-using RoadmapRepository.SqlDataAccess;
 
 namespace RoadmapAPITests.Repository;
 
@@ -13,10 +13,10 @@ public class ComentarioRepositoryTests
 	private readonly ISqlDataAccess _db = Substitute.For<ISqlDataAccess>();
 	private readonly IFixture _fixture = new Fixture();
 
-    public ComentarioRepositoryTests()
-    {
-        _sut = new ComentarioRepository(_db);
-    }
+	public ComentarioRepositoryTests()
+	{
+		_sut = new ComentarioRepository(_db);
+	}
 
 	//GetAllComentarios
 	[Fact]

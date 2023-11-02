@@ -1,8 +1,8 @@
-﻿using RoadmapSite.Models;
+﻿using Site.Models;
 
-namespace RoadmapSite.Services.Registration;
+namespace Site.Services.Registration;
 
 public interface IRegistrationService
 {
-    Task<string?> RegisterUser(RegistrationModel registrationUser);
+	Task<string?> RegisterUser(RegistrationModel registrationUser);
 }

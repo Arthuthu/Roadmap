@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace RoadmapRepository.SqlDataAccess;
+namespace Domain.SqlDataAccess;
 
 public class SqlDataAccess : ISqlDataAccess
 {

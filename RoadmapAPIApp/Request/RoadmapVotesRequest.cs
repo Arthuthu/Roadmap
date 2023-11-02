@@ -1,4 +1,4 @@
-﻿namespace RoadmapAPIApp.Request;
+﻿namespace RoadmapAPI.Request;
 
 public class RoadmapVotesRequest
 {

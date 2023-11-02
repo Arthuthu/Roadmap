@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using RoadmapAPIApp.Response;
-using RoadmapRepository.Models;
+using Domain.Models;
+using RoadmapAPI.Response;
 
-namespace RoadmapAPIApp.AutoMapper.Responses;
+namespace RoadmapAPI.AutoMapper.Responses;
 
 public class ResponseProfile : Profile
 {
@@ -28,11 +28,11 @@ public class ResponseProfile : Profile
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 
-        CreateMap<DenunciaResponse, DenunciaModel>()
+		CreateMap<DenunciaResponse, DenunciaModel>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 
-        CreateMap<NodeResponse, NodeModel>()
+		CreateMap<NodeResponse, NodeModel>()
 			.IgnoreAllPropertiesWithAnInaccessibleSetter()
 			.ReverseMap();
 	}

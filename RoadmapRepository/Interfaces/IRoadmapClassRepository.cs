@@ -1,6 +1,6 @@
-﻿using RoadmapRepository.Models;
+﻿using Domain.Models;
 
-namespace RoadmapRepository.Interfaces
+namespace Domain.Interfaces
 {
 	public interface IRoadmapClassRepository
 	{
@@ -14,5 +14,5 @@ namespace RoadmapRepository.Interfaces
 		Task UpdateRoadmap(RoadmapClassModel roadmap);
 		Task DeleteRoadmap(Guid id);
 		Task DeleteAllUserRoadmaps(Guid userId);
-    }
+	}
 }

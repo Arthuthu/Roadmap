@@ -1,9 +1,8 @@
-﻿using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapServices.Interfaces;
-using RoadmapServices.Validators.Interfaces;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Infra.Interfaces;
 
-namespace RoadmapServices.Classes;
+namespace Infra.Services;
 
 public class RoadmapVotesService : IRoadmapVotesService
 {
@@ -20,12 +19,12 @@ public class RoadmapVotesService : IRoadmapVotesService
 		return _roadmapVotesRepository.GetAllRoadmapVotes(userId, roadmapId);
 	}
 
-    public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotesByUserId(Guid userId)
-    {
-        return _roadmapVotesRepository.GetAllRoadmapVotesByUserId(userId);
-    }
+	public Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotesByUserId(Guid userId)
+	{
+		return _roadmapVotesRepository.GetAllRoadmapVotesByUserId(userId);
+	}
 
-    public async Task<string> AddRoadmapVote(Guid userId, Guid roadmapId)
+	public async Task<string> AddRoadmapVote(Guid userId, Guid roadmapId)
 	{
 		Guid roadmapVoteId = Guid.NewGuid();
 

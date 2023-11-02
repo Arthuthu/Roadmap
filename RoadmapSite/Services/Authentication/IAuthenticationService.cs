@@ -1,9 +1,9 @@
-﻿using RoadmapSite.Models;
+﻿using Site.Models;
 
-namespace RoadmapSite.Services.Authentication;
+namespace Site.Services.Authentication;
 
 public interface IAuthenticationService
 {
-    Task<AuthenticatedUserModel?> Login(AuthenticationUserModel userForAuthentication);
-    Task Logout();
+	Task<AuthenticatedUserModel?> Login(AuthenticationUserModel userForAuthentication);
+	Task Logout();
 }

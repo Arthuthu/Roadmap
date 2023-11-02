@@ -1,11 +1,10 @@
 ﻿using AutoFixture;
+using Domain.Interfaces;
+using Domain.Models;
 using FluentAssertions;
-using NodeServices.Classes;
+using Infra.Services;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-using RoadmapRepository.Classes;
-using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
 
 namespace RoadmapAPITests.Service;
 
@@ -15,10 +14,10 @@ public class NodeServiceTests
 	private readonly INodeRepository _nodeRepository = Substitute.For<INodeRepository>();
 	private readonly IFixture _fixture = new Fixture();
 
-    public NodeServiceTests()
-    {
-        _sut = new NodeService(_nodeRepository);
-    }
+	public NodeServiceTests()
+	{
+		_sut = new NodeService(_nodeRepository);
+	}
 
 	//GetAllNodes
 	[Fact]

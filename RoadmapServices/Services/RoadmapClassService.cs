@@ -1,10 +1,9 @@
-﻿using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapServices.Exceptions;
-using RoadmapServices.Interfaces;
-using RoadmapServices.Validators.Interfaces;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Infra.Interfaces;
+using Infra.Validators.Interfaces;
 
-namespace RoadmapServices.Classes;
+namespace Infra.Services;
 
 public class RoadmapClassService : IRoadmapClassService
 {
@@ -81,12 +80,12 @@ public class RoadmapClassService : IRoadmapClassService
 		roadmap.UpdatedDate = DateTime.UtcNow.AddHours(-3);
 		return _roadmapRepository.UpdateRoadmap(roadmap);
 	}
-    public Task DeleteAllUserRoadmaps(Guid userId)
-    {
-        return _roadmapRepository.DeleteAllUserRoadmaps(userId);
-    }
+	public Task DeleteAllUserRoadmaps(Guid userId)
+	{
+		return _roadmapRepository.DeleteAllUserRoadmaps(userId);
+	}
 
-    public Task DeleteRoadmap(Guid id)
+	public Task DeleteRoadmap(Guid id)
 	{
 		return _roadmapRepository.DeleteRoadmap(id);
 	}

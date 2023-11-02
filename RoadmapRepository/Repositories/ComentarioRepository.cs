@@ -1,8 +1,8 @@
-﻿using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapRepository.SqlDataAccess;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Domain.SqlDataAccess;
 
-namespace RoadmapRepository.Classes;
+namespace Domain.Repositories;
 
 public class ComentarioRepository : IComentarioRepository
 {
@@ -45,12 +45,12 @@ public class ComentarioRepository : IComentarioRepository
 	{
 		return _db.SaveData("dbo.spComentario_Update", comentario);
 	}
-    public Task DeleteAllUserComentarios(Guid userId)
-    {
-        return _db.SaveData("dbo.spComentario_DeleteAllUserComments", new { UserId = userId });
-    }
+	public Task DeleteAllUserComentarios(Guid userId)
+	{
+		return _db.SaveData("dbo.spComentario_DeleteAllUserComments", new { UserId = userId });
+	}
 
-    public Task DeleteComentario(Guid id)
+	public Task DeleteComentario(Guid id)
 	{
 		return _db.SaveData("dbo.spComentario_Delete", new { Id = id });
 	}

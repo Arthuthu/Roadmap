@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
+using Domain.Models;
+using Infra.Interfaces;
+using Infra.Validators.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RoadmapAPIApp.Request;
-using RoadmapAPIApp.Response;
-using RoadmapRepository.Models;
-using RoadmapServices.Interfaces;
-using RoadmapServices.Validators.Interfaces;
+using RoadmapAPI.Request;
+using RoadmapAPI.Response;
 
-namespace RoadmapAPIApp.Controllers.V1;
+namespace RoadmapAPI.Controllers.V1;
 
 [Route("api/v1/[controller]")]
 [ApiController]
@@ -69,16 +68,16 @@ public class ComentarioController : ControllerBase
 		return Ok(requestComentario);
 	}
 
-    [Route("/deleteallusercomentarios/{userid}")]
-    [HttpDelete]
-    public async Task<ActionResult<ComentarioResponse>> DeleteAllUserComentarios(Guid userId)
-    {
-        await _comentarioService.DeleteAllUserComentarios(userId);
+	[Route("/deleteallusercomentarios/{userid}")]
+	[HttpDelete]
+	public async Task<ActionResult<ComentarioResponse>> DeleteAllUserComentarios(Guid userId)
+	{
+		await _comentarioService.DeleteAllUserComentarios(userId);
 
-        return Ok("Comentario foi deletado com sucesso");
-    }
+		return Ok("Comentario foi deletado com sucesso");
+	}
 
-    [Route("/deletecomentario/{id}")]
+	[Route("/deletecomentario/{id}")]
 	[HttpDelete]
 	public async Task<ActionResult<ComentarioResponse>> DeleteRoadmap(Guid id)
 	{

@@ -1,31 +1,31 @@
-﻿using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapRepository.SqlDataAccess;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Domain.SqlDataAccess;
 
-namespace RoadmapRepository.Classes;
+namespace Domain.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly ISqlDataAccess _db;
+	private readonly ISqlDataAccess _db;
 
-    public UserRepository(ISqlDataAccess db)
-    {
-        _db = db;
-    }
+	public UserRepository(ISqlDataAccess db)
+	{
+		_db = db;
+	}
 
-    public Task<IEnumerable<UserModel>> GetAllUsers()
-    {
-        return _db.LoadData<UserModel, dynamic>("dbo.spUser_GetAll", new { });
-    }
+	public Task<IEnumerable<UserModel>> GetAllUsers()
+	{
+		return _db.LoadData<UserModel, dynamic>("dbo.spUser_GetAll", new { });
+	}
 
-    public async Task<UserModel?> GetUserById(Guid id)
-    {
-        var results = await _db.LoadData<UserModel, dynamic>(
-            "dbo.spUser_GetById",
-            new { Id = id });
+	public async Task<UserModel?> GetUserById(Guid id)
+	{
+		var results = await _db.LoadData<UserModel, dynamic>(
+			"dbo.spUser_GetById",
+			new { Id = id });
 
-        return results.FirstOrDefault();
-    }
+		return results.FirstOrDefault();
+	}
 
 	public async Task<UserModel?> GetUserByConfirmationCode(Guid confirmationCode)
 	{
@@ -64,38 +64,39 @@ public class UserRepository : IUserRepository
 	}
 
 	public Task AddUser(UserModel user)
-    {
-        return _db.SaveData("dbo.spUser_Add",
-        new { 
-            user.Id,
-            user.Username,
-            user.Email,
-            user.Password,
-            user.ConfirmationCode,
-            user.ConfirmationCodeExpirationDate,
-            user.PasswordHash,
-            user.PasswordSalt,
-            user.CreatedDate
-        });
-    }
+	{
+		return _db.SaveData("dbo.spUser_Add",
+		new
+		{
+			user.Id,
+			user.Username,
+			user.Email,
+			user.Password,
+			user.ConfirmationCode,
+			user.ConfirmationCodeExpirationDate,
+			user.PasswordHash,
+			user.PasswordSalt,
+			user.CreatedDate
+		});
+	}
 
-    public Task UpdateUser(UserModel user)
-    {
-        return _db.SaveData("dbo.spUser_Update", new 
-        {
-            user.Id,
-            user.Username,
-            user.Password,
-            user.ConfirmationCode,
-            user.ConfirmationCodeExpirationDate,
+	public Task UpdateUser(UserModel user)
+	{
+		return _db.SaveData("dbo.spUser_Update", new
+		{
+			user.Id,
+			user.Username,
+			user.Password,
+			user.ConfirmationCode,
+			user.ConfirmationCodeExpirationDate,
 			user.RestorationCode,
 			user.RestorationCodeExpirationDate,
 			user.Bio,
-            user.IsBanned,
-            user.IsConfirmed,
-            user.UpdatedDate
-        });
-    }
+			user.IsBanned,
+			user.IsConfirmed,
+			user.UpdatedDate
+		});
+	}
 
 	public Task UpdateUserEmailConfirmation(UserModel user)
 	{
@@ -121,7 +122,7 @@ public class UserRepository : IUserRepository
 	}
 
 	public Task DeleteUser(Guid id)
-    {
-        return _db.SaveData("dbo.spUser_Delete", new { Id = id });
-    }
+	{
+		return _db.SaveData("dbo.spUser_Delete", new { Id = id });
+	}
 }

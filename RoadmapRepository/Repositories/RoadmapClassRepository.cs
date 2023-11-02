@@ -1,8 +1,8 @@
-﻿using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapRepository.SqlDataAccess;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Domain.SqlDataAccess;
 
-namespace RoadmapRepository.Classes;
+namespace Domain.Repositories;
 
 public class RoadmapClassRepository : IRoadmapClassRepository
 {
@@ -82,10 +82,10 @@ public class RoadmapClassRepository : IRoadmapClassRepository
 
 	public Task DeleteAllUserRoadmaps(Guid userId)
 	{
-        return _db.SaveData("dbo.spRoadmap_DeleteAllUserRoadmaps", new { UserId = userId });
-    }
+		return _db.SaveData("dbo.spRoadmap_DeleteAllUserRoadmaps", new { UserId = userId });
+	}
 
-    public Task DeleteRoadmap(Guid id)
+	public Task DeleteRoadmap(Guid id)
 	{
 		return _db.SaveData("dbo.spRoadmap_Delete", new { Id = id });
 	}

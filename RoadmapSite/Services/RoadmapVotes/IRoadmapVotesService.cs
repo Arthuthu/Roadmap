@@ -1,11 +1,11 @@
-﻿using RoadmapSite.Models;
+﻿using Site.Models;
 
-namespace RoadmapSite.Services.RoadmapVotes;
+namespace Site.Services.RoadmapVotes;
 
 public interface IRoadmapVotesService
 {
-    Task<IList<RoadmapVotesModel>?> GetAllRoadmapVotes(Guid? userId, Guid roadmapId);
-    Task<IList<RoadmapVotesModel>?> GetAllRoadmapVotesByUserId(Guid? userId);
-    Task<string?> AddRoadmapVote(Guid? userId, Guid roadmapId);
-    Task<string?> RemoveRoadmapVote(Guid roadmapVoteId);
+	Task<IList<RoadmapVotesModel>?> GetAllRoadmapVotes(Guid? userId, Guid roadmapId);
+	Task<IList<RoadmapVotesModel>?> GetAllRoadmapVotesByUserId(Guid? userId);
+	Task<string?> AddRoadmapVote(Guid? userId, Guid roadmapId);
+	Task<string?> RemoveRoadmapVote(Guid roadmapVoteId);
 }

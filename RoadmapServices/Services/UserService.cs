@@ -1,44 +1,44 @@
-﻿using MailKit.Net.Smtp;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Infra.Interfaces;
+using Infra.Validators.Interfaces;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 using MimeKit.Text;
-using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapServices.Interfaces;
-using RoadmapServices.Validators.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace RoadmapServices.Classes;
+namespace Infra.Services;
 
 public class UserService : IUserService
 {
-    private readonly IUserRepository _userRepository;
+	private readonly IUserRepository _userRepository;
 	private readonly IConfiguration _configuration;
 	private readonly IMessageHandler _messageHandler;
 
 	public UserService(IUserRepository userRepository,
 		IConfiguration configuration,
 		IMessageHandler messageHandler)
-    {
-        _userRepository = userRepository;
+	{
+		_userRepository = userRepository;
 		_configuration = configuration;
 		_messageHandler = messageHandler;
 	}
 
-    public Task<IEnumerable<UserModel>> GetAllUsers()
-    {
-        return _userRepository.GetAllUsers();
-    }
+	public Task<IEnumerable<UserModel>> GetAllUsers()
+	{
+		return _userRepository.GetAllUsers();
+	}
 
-    public async Task<UserModel?> GetUserById(Guid id)
-    {
-        return await _userRepository.GetUserById(id);
-    }
+	public async Task<UserModel?> GetUserById(Guid id)
+	{
+		return await _userRepository.GetUserById(id);
+	}
 
 	public async Task<UserModel?> GetUserByName(string username)
 	{
@@ -80,7 +80,7 @@ public class UserService : IUserService
 	}
 
 	public async Task<IList<string>?> AddUser(UserModel user)
-    {
+	{
 		IList<string>? registrationMessages = await UserRegistrationVerifications(user);
 
 		if (registrationMessages is not null)
@@ -88,7 +88,7 @@ public class UserService : IUserService
 			return registrationMessages;
 		}
 
-        var createdUser = InsertUserData(user);
+		var createdUser = InsertUserData(user);
 
 		try
 		{
@@ -102,10 +102,10 @@ public class UserService : IUserService
 		}
 
 		return registrationMessages;
-    }
+	}
 
-    public async Task<IEnumerable<string?>> Login(UserModel user)
-    {
+	public async Task<IEnumerable<string?>> Login(UserModel user)
+	{
 		IList<string?> loginVerifications = new List<string?>();
 
 		loginVerifications = await UserLoginVerifications(user);
@@ -123,7 +123,7 @@ public class UserService : IUserService
 
 		var loginReturn = loginVerifications.Where(x => x != null);
 
-        return loginReturn;
+		return loginReturn;
 	}
 
 	//Verifications
@@ -132,7 +132,7 @@ public class UserService : IUserService
 		IList<string>? verificationMessages = new List<string>();
 
 		string? userAlreadyExistsMessage = await VerifyIfUserAlreadyExists(user);
-		if(userAlreadyExistsMessage is not null)
+		if (userAlreadyExistsMessage is not null)
 		{
 			verificationMessages.Add(userAlreadyExistsMessage);
 		}
@@ -183,8 +183,8 @@ public class UserService : IUserService
 		return loginMessages;
 	}
 
-    private async Task<string?> VerifyIfUserAlreadyExists(UserModel user)
-    {
+	private async Task<string?> VerifyIfUserAlreadyExists(UserModel user)
+	{
 		var requestedUser = await _userRepository.GetUserByName(user.Username);
 
 		if (requestedUser is not null)
@@ -192,7 +192,7 @@ public class UserService : IUserService
 			return "Usuario ja esta cadastrado";
 		}
 
-        return null;
+		return null;
 	}
 
 	private async Task<string?> VerifyIfEmailIsRegistered(UserModel user)
@@ -223,10 +223,10 @@ public class UserService : IUserService
 	{
 		var requestedUser = await _userRepository.GetUserByName(user.Username);
 
-        if (requestedUser!.Password != user.Password)
-        {
-            return "Usuario ou senha incorretos";
-        }
+		if (requestedUser!.Password != user.Password)
+		{
+			return "Usuario ou senha incorretos";
+		}
 
 		return null;
 	}
@@ -236,7 +236,7 @@ public class UserService : IUserService
 		byte[]? passwordHash,
 		byte[]? passwordSalt)
 	{
-		if (password is not null && passwordHash is not null  && passwordSalt is not null)
+		if (password is not null && passwordHash is not null && passwordSalt is not null)
 		{
 			using (var hmac = new HMACSHA512(passwordSalt))
 			{
@@ -265,7 +265,7 @@ public class UserService : IUserService
 	}
 
 	private static UserModel InsertUserData(UserModel user)
-    {
+	{
 		CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
 		user.Id = Guid.NewGuid();
@@ -273,8 +273,8 @@ public class UserService : IUserService
 		user.PasswordSalt = passwordSalt;
 		user.CreatedDate = DateTime.UtcNow.AddHours(-3);
 
-        return user;
-    }
+		return user;
+	}
 
 	private async Task<UserModel?> InsertConfirmationData(UserModel user)
 	{
@@ -302,7 +302,7 @@ public class UserService : IUserService
 		{
 			requestedUser.RestorationCode = Guid.NewGuid();
 			requestedUser.RestorationCodeExpirationDate = DateTime.UtcNow.AddDays(1)
-                .AddHours(-3);
+				.AddHours(-3);
 
 			await _userRepository.UpdateUser(requestedUser);
 
@@ -343,7 +343,7 @@ public class UserService : IUserService
 		{
 			throw new Exception($"Ocorreu um erro ao enviar o email de confirmação, {ex.Message}");
 		}
-		
+
 	}
 
 	public async Task SendRestorationEmail(UserModel user)
@@ -380,7 +380,7 @@ public class UserService : IUserService
 	}
 
 	private string CreateToken(UserModel user)
-    {
+	{
 		List<Claim> claims = new()
 		{
 			new Claim(ClaimTypes.Name, user.Username),
@@ -390,18 +390,18 @@ public class UserService : IUserService
 		};
 
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+		var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
 			_configuration.GetSection("AppSettings:Token").Value!));
 
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+		var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-        var token = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.UtcNow.AddDays(2),
-            signingCredentials: credentials);
+		var token = new JwtSecurityToken(
+			claims: claims,
+			expires: DateTime.UtcNow.AddDays(2),
+			signingCredentials: credentials);
 
-        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+		var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-        return jwt;
-    }
+		return jwt;
+	}
 }

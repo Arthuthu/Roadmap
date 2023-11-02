@@ -1,12 +1,12 @@
-﻿using RoadmapRepository.Models;
+﻿using Domain.Models;
 
-namespace RoadmapServices.Interfaces
+namespace Infra.Interfaces
 {
-    public interface IRoadmapVotesService
-    {
-        Task<string> AddRoadmapVote(Guid userId, Guid roadmapId);
+	public interface IRoadmapVotesService
+	{
+		Task<string> AddRoadmapVote(Guid userId, Guid roadmapId);
 		Task DeleteRoadmapVote(Guid id);
-        Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotesByUserId(Guid userId);
-        Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotes(Guid userId, Guid roadmapId);
+		Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotesByUserId(Guid userId);
+		Task<IEnumerable<RoadmapVotesModel>> GetAllRoadmapVotes(Guid userId, Guid roadmapId);
 	}
 }

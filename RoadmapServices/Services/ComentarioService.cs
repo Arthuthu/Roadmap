@@ -1,8 +1,8 @@
-﻿using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapServices.Interfaces;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Infra.Interfaces;
 
-namespace RoadmapServices.Classes;
+namespace Infra.Services;
 
 public class ComentarioService : IComentarioService
 {
@@ -35,12 +35,12 @@ public class ComentarioService : IComentarioService
 		comentario.UpdatedDate = DateTime.UtcNow.AddHours(-3);
 		return _comentarioRepository.UpdateComentario(comentario);
 	}
-    public Task DeleteAllUserComentarios(Guid userId)
-    {
-        return _comentarioRepository.DeleteAllUserComentarios(userId);
-    }
+	public Task DeleteAllUserComentarios(Guid userId)
+	{
+		return _comentarioRepository.DeleteAllUserComentarios(userId);
+	}
 
-    public Task DeleteComentario(Guid id)
+	public Task DeleteComentario(Guid id)
 	{
 		return _comentarioRepository.DeleteComentario(id);
 	}

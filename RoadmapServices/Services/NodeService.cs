@@ -1,8 +1,8 @@
-﻿using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapServices.Interfaces;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Infra.Interfaces;
 
-namespace NodeServices.Classes;
+namespace Infra.Services;
 
 public class NodeService : INodeService
 {

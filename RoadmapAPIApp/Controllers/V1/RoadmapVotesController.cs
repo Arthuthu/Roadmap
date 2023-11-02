@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
+using Infra.Interfaces;
+using Infra.Validators.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RoadmapAPIApp.Response;
-using RoadmapServices.Interfaces;
-using RoadmapServices.Validators.Interfaces;
+using RoadmapAPI.Response;
 
-namespace RoadmapAPIApp.Controllers.V1;
+namespace RoadmapAPI.Controllers.V1;
 
 [Route("api/v1/[controller]")]
 [ApiController]
@@ -35,16 +35,16 @@ public class RoadmapVotesController : ControllerBase
 		return Ok(responseRoadmapVotes);
 	}
 
-    [Route("/getallroadmapvotesbyuserid/{userId}")]
-    [HttpGet]
-    public async Task<ActionResult<string>> CreateRoadmapVote(Guid userId)
-    {
-        var roadmapVotingResponseMessage = await _roadmapVotesService.GetAllRoadmapVotesByUserId(userId);
+	[Route("/getallroadmapvotesbyuserid/{userId}")]
+	[HttpGet]
+	public async Task<ActionResult<string>> CreateRoadmapVote(Guid userId)
+	{
+		var roadmapVotingResponseMessage = await _roadmapVotesService.GetAllRoadmapVotesByUserId(userId);
 
-        return Ok(roadmapVotingResponseMessage);
-    }
+		return Ok(roadmapVotingResponseMessage);
+	}
 
-    [Route("/addroadmapvote/{userId}/{roadmapId}")]
+	[Route("/addroadmapvote/{userId}/{roadmapId}")]
 	[HttpPost]
 	public async Task<ActionResult<string>> CreateRoadmapVote(Guid userId, Guid roadmapId)
 	{

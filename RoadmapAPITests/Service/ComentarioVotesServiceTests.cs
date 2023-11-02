@@ -1,10 +1,10 @@
 ﻿using AutoFixture;
+using Domain.Interfaces;
+using Domain.Models;
 using FluentAssertions;
+using Infra.Services;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapServices.Classes;
 
 namespace RoadmapAPITests.Service;
 
@@ -14,10 +14,10 @@ public class ComentarioVotesServiceTests
 	private readonly IComentarioVotesRepository _comentarioVotesRepository = Substitute.For<IComentarioVotesRepository>();
 	private readonly IFixture _fixture = new Fixture();
 
-    public ComentarioVotesServiceTests()
-    {
-        _sut = new ComentarioVotesService(_comentarioVotesRepository);
-    }
+	public ComentarioVotesServiceTests()
+	{
+		_sut = new ComentarioVotesService(_comentarioVotesRepository);
+	}
 
 	//GetAllComentarioVotes
 	[Fact]

@@ -1,4 +1,4 @@
-﻿namespace RoadmapRepository.SqlDataAccess
+﻿namespace Domain.SqlDataAccess
 {
 	public interface ISqlDataAccess
 	{

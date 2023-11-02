@@ -1,9 +1,9 @@
 ﻿using AutoFixture;
+using Domain.Interfaces;
+using Domain.Models;
 using FluentAssertions;
+using Infra.Services;
 using NSubstitute;
-using RoadmapRepository.Interfaces;
-using RoadmapRepository.Models;
-using RoadmapServices.Classes;
 
 namespace RoadmapAPITests.Service;
 
