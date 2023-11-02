@@ -1,4 +1,4 @@
-﻿@page "/roadmapdetails/{roadmapid}"
+﻿@page "/roadmap/{roadmapid}"
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navManager
 @inject IUserService userService
@@ -32,37 +32,45 @@
 		{
 			@foreach (var node in Nodes)
 			{
-				<div class="text-center">
-					<button class="node" @onclick="() => ToggleShowNodeContent(node.Id)">
-						@node.Name
-					</button>
-					@if (editMode)
-					{
-						<div class="node-edit-buttons">
-							<div>
-								<button class="second-style-button"
-						@onclick="async () => await DeleteNode(node.Id)">
-									Excluir
-								</button>
-							</div>
-							<div>
-								<a class="second-style-button" href="/editnode/@node.Id">
-									Editar
-								</a>
-							</div>
-						</div>
-					}
-				</div>
-
-				if (showNodeContent.ContainsKey(node.Id) && showNodeContent[node.Id])
-				{
+				<div>
 					<div>
-						<NodeContent NodeId="@node.Id" Description="@node.Description" />
-					</div>
-				}
+						<div class="text-center">
+							<button class="node" @onclick="() => ToggleShowNodeContent(node.Id)">
+								@node.Name
+							</button>
+						</div>
 
-				<div class="text-center">
-					<i class="fa-solid fa-arrow-down" id="arrow-icon"></i>
+						@if (showNodeContent.ContainsKey(node.Id) && showNodeContent[node.Id])
+						{
+							<div>
+								<div class="mb-4">
+									@if (LoggedInUserId == Roadmap.UserId)
+									{
+										<div class="node-edit-buttons">
+											<div>
+												<button class="second-style-button"
+												@onclick="async () => await DeleteNode(node.Id)">
+													Excluir
+												</button>
+											</div>
+											<div>
+												<a class="second-style-button" href="/editnode/@node.Id">
+													Editar
+												</a>
+											</div>
+										</div>
+									}
+								</div>
+								<div>
+									<NodeContent NodeId="@node.Id" Description="@node.Description" />
+								</div>
+							</div>
+						}
+
+						<div class="text-center">
+							<i class="fa-solid fa-arrow-down" id="arrow-icon"></i>
+						</div>
+					</div>
 				</div>
 			}
 			<button class="node">
@@ -89,10 +97,6 @@
 				<div>
 					<button type="submit" class="first-style-button" id="adicionar-node-button"
 					onclick="clearNodeInput()">Adicionar</button>
-
-					<button class="first-style-button" @onclick=ToggleEditMode>
-						Editar
-					</button>
 				</div>
 			</EditForm>
 		}
@@ -523,11 +527,6 @@
 	private void ToggleShowRoadmapEditOptions()
 	{
 		showRoadmapEditOptions = !showRoadmapEditOptions;
-	}
-
-	private void ToggleEditMode()
-	{
-		editMode = !editMode;
 	}
 
 	private void ToggleShowDeletePageAuthor()

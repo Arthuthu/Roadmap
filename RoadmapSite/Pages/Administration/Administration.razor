@@ -37,7 +37,7 @@
 				@if (denuncia.Type == "Roadmap")
 				{
 					<div class="text-center my-4">
-						<a href="/roadmapdetails/@denuncia.RoadmapId" class="second-style-button">
+						<a href="/roadmap/@denuncia.RoadmapId" class="second-style-button">
 							Roadmap
 						</a>
 					</div>
@@ -82,7 +82,7 @@
 			</div>
 			<Virtualize Items="@Roadmaps" Context="roadmap" OverscanCount="50">
 				<div class="roadmap-div">
-					<a class="roadmap-name-label" href="roadmapdetails/@roadmap.Id">
+					<a class="roadmap-name-label" href="roadmap/@roadmap.Id">
 						<p class="roadmap-name-background">@roadmap.Name</p>
 					</a>
 

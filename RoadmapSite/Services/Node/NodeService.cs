@@ -43,7 +43,7 @@ public class NodeService : INodeService
 
         if (authResult.IsSuccessStatusCode is false)
         {
-            _logger.LogError("Ocorreu um erro durante o carregamento do comentario: {authContent}",
+            _logger.LogError("Ocorreu um erro durante o carregamento do node: {authContent}",
                 authContent);
             return null;
         }

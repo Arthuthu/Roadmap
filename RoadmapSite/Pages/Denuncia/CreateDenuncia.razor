@@ -106,7 +106,7 @@
 			Denuncia.AuthorId = LoggedInUserId;
 			Denuncia.RoadmapId = new Guid(Id!);
 			await denunciaService.CreateDenuncia(Denuncia);
-			navManager.NavigateTo($"/roadmapdetails/{Denuncia.RoadmapId}", true);
+			navManager.NavigateTo($"/roadmap/{Denuncia.RoadmapId}", true);
 		}
 
 		if (Type == "User")

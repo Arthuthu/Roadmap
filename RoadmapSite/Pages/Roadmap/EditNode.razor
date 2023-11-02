@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="text-center">
-        <div>
+        <div class="d-flex justify-content-center">
             <div>
                 <button class="second-style-button" @onclick=ToggleShowDeleteConfirmation>
                     Excluir Node
@@ -29,12 +29,15 @@
                     </button>
                 </div>
             }
-        </div>
-        <div>
-            <button class="second-style-button" @onclick=ToggleShowNodeEditing>
-                Editar Node
-            </button>
 
+            <div>
+                <button class="second-style-button" @onclick=ToggleShowNodeEditing>
+                    Editar Node
+                </button>
+            </div>
+        </div>
+
+        <div>
             @if (showNodeEditing)
             {
                 <EditForm Model="Node" OnValidSubmit="UpdateNode">
@@ -100,7 +103,7 @@
 
             return;
         }
-        
+
         if (LoggedInUserModel.IsConfirmed is false)
         {
             navManager.NavigateTo("/emailnotconfirmed");
@@ -134,14 +137,14 @@
     {
         await nodeService.DeleteNode(new Guid(NodeId!));
 
-        navManager.NavigateTo($"/roadmapdetails/{Node!.RoadmapId}");
+        navManager.NavigateTo($"/roadmap/{Node!.RoadmapId}");
     }
 
     private async Task UpdateNode()
     {
         await nodeService.UpdateNode(Node!);
 
-        await OnInitializedAsync();
+        navManager.NavigateTo($"/roadmap/{Node!.RoadmapId}");
     }
 
     private void ToggleShowDeleteConfirmation()
