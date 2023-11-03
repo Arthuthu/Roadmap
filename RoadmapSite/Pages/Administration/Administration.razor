@@ -133,18 +133,17 @@
 								</a>
 							</div>
 						</div>
-					</div>
-
-					<div class="administration-button-div">
-						<button class="second-style-button"
-						@onclick="async () => await ApproveRoadmap(roadmap)">
-							Aprovar
-						</button>
+						<div class="administration-button-div">
+							<button class="second-style-button"
+							@onclick="async () => await ApproveRoadmap(roadmap)">
+								Aprovar
+							</button>
 
 
-						<button @onclick="ToggleShowDeletePage" class="second-style-button">
-							Excluir
-						</button>
+							<button @onclick="ToggleShowDeletePage" class="second-style-button">
+								Excluir
+							</button>
+						</div>
 					</div>
 
 					@if (showDeletePage)

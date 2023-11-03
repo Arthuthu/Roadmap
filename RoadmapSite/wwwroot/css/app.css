@@ -805,6 +805,7 @@ body.light .first-style-button {
 .denuncias-div {
     border: solid #FFF;
     margin: 0 0 15px 0;
+    background-color: #232323;  
 }
 
 .denuncia-type {
