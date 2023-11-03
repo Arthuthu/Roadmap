@@ -48,7 +48,7 @@
 	{
 		@if (User.Id == LoggedInUserId)
 		{
-			<div class="text-center m-4">
+			<div class="text-center my-2">
 				<a class="second-style-button" href="/editprofile/@User.Id">
 					Editar Perfil
 				</a>
@@ -57,26 +57,20 @@
 
 		@if (User.IsAdmin is true)
 		{
-			<div class="text-center m-4">
+			<div class="text-center my-2">
 				<a class="second-style-button" href="/administration">Administrar</a>
 			</div>
 		}
 
-		@if (LoggedInUserModel!.IsAdmin is true && User!.IsBanned is false)
+		<div class="text-center">
+			<button class="second-style-button" @onclick=ToggleShowDenunciaScreen>
+				Denunciar
+			</button>
+		</div>
+
+		@if (showDenunciaScreen)
 		{
-			<div class="text-center">
-				<button class="second-style-button" @onclick=ToggleShowBanConfirmation>
-					Banir
-				</button>
-			</div>
-
-			if (showBanConfirmation)
-			{
-				<div class="text-center m-4">
-					<BanUser UserId="@User.Id.ToString()" />
-				</div>
-			}
-
+			<CreateDenuncia Type="User" Id="@User.Id.ToString()" />
 		}
 
 		@if (LoggedInUserModel!.IsAdmin is true && User!.IsBanned is true)
@@ -89,21 +83,26 @@
 
 			if (showUnbanConfirmation)
 			{
-				<div class="text-center m-4">
+				<div class="text-center">
 					<UnbanUser UserId="@User.Id.ToString()" />
 				</div>
 			}
 		}
 
-		<div class="text-center m-4">
-			<button class="second-style-button" @onclick=ToggleShowDenunciaScreen>
-				Denunciar
-			</button>
-		</div>
-
-		@if (showDenunciaScreen)
+		@if (LoggedInUserModel!.IsAdmin is true && User!.IsBanned is false)
 		{
-			<CreateDenuncia Type="User" Id="@User.Id.ToString()" />
+			<div class="text-center">
+				<button class="second-style-button" @onclick=ToggleShowBanConfirmation>
+					Banir
+				</button>
+			</div>
+
+			if (showBanConfirmation)
+			{
+				<div class="text-center">
+					<BanUser UserId="@User.Id.ToString()" />
+				</div>
+			}
 		}
 	}
 

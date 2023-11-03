@@ -30,7 +30,7 @@ body.light .vote.button.details-voted,
 body.light .index-categorias-div,
 body.light .form-div {
     color: #000;
-    border: solid #000;
+    border: solid #232323;
 }
 
 body.light .details-roadmap-div,
@@ -47,12 +47,13 @@ body.light .comment-input-area,
 body.light .comment-box {
     background-color: transparent;
     color: #000;
-    border: solid #000;
+    border: solid #232323;
 }
 
 body.light .roadmap-author,
 body.light .comment-author {
     color: #000;
+    border: solid #232323;
 }
 
 body.light .first-style-button {
@@ -781,11 +782,24 @@ body.light .first-style-button {
     background-image: linear-gradient(#F1AF2A, #D78F00);
 }
 
+.roadmap-delete-confirmation-box {
+    text-align: center;
+    width: 50%;
+    margin: 10px auto;
+    border: solid #232323;
+}
+
 /* Administration */
 .administration-button-div {
     display: flex;
     justify-content: space-evenly;
     margin: 0 0 20px 0;
+}
+
+.administration-content-box {
+    padding: 10px;
+    border: solid #858383;
+    margin: 20px 10px;
 }
 
 .denuncias-div {

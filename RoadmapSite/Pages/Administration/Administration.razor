@@ -20,130 +20,144 @@
 
 	if (showDenuncias)
 	{
-		<div class="text-center h4 my-5">
-			Denuncias
-		</div>
-		<Virtualize Items="@Denuncias" Context="denuncia" OverscanCount="50">
-			<div class="denuncias-div">
-				<div class="denuncia-type">
-					@denuncia.Type
+		if(Denuncias is not null)
+		{
+
+			<div class="administration-content-box">
+				<div class="text-center h4 my-5">
+					Denuncias
 				</div>
-				<div class="denuncia-description">
-					@denuncia.Description
-				</div>
-				<div class="denuncia-date">
-					Criada em: @denuncia.CreatedDate
-				</div>
-				@if (denuncia.Type == "Roadmap")
-				{
-					<div class="text-center my-4">
-						<a href="/roadmap/@denuncia.RoadmapId" class="second-style-button">
-							Roadmap
-						</a>
-					</div>
-				}
-				else if (denuncia.Type == "User")
-				{
-					<div class="text-center my-4">
-						<a href="/profile/@denuncia.Username" class="second-style-button">
-							Usuario
-						</a>
-					</div>
-				}
-				else if (denuncia.Type == "Comment")
-				{
-					<DisplayComment CommentId="@denuncia.CommentId" />
-				}
-				<div class="text-center">
-					<div>
-						<button class="second-style-button" @onclick=ToggleShowExcluirDenuncia>
-							Excluir
-						</button>
-					</div>
-					@if (showExcluirDenuncia)
-					{
-						<div>
-							<button class="second-style-button" @onclick="async () => await DeleteDenuncia(denuncia.Id)">
-								Confirmar
-							</button>
+				<Virtualize Items="@Denuncias" Context="denuncia" OverscanCount="50">
+					<div class="denuncias-div">
+						<div class="denuncia-type">
+							@denuncia.Type
 						</div>
-					}
-				</div>
+						<div class="denuncia-description">
+							@denuncia.Description
+						</div>
+						<div class="denuncia-date">
+							Criada em: @denuncia.CreatedDate
+						</div>
+						@if (denuncia.Type == "Roadmap")
+						{
+							<div class="text-center my-4">
+								<a href="/roadmap/@denuncia.RoadmapId" class="second-style-button">
+									Roadmap
+								</a>
+							</div>
+						}
+						else if (denuncia.Type == "User")
+						{
+							<div class="text-center my-4">
+								<a href="/profile/@denuncia.Username" class="second-style-button">
+									Usuario
+								</a>
+							</div>
+						}
+						else if (denuncia.Type == "Comment")
+						{
+							<DisplayComment CommentId="@denuncia.CommentId" />
+						}
+						<div class="text-center">
+							<div>
+								<button class="second-style-button" @onclick=ToggleShowExcluirDenuncia>
+									Excluir
+								</button>
+							</div>
+							@if (showExcluirDenuncia)
+							{
+								<div>
+									<button class="second-style-button" @onclick="async () => await DeleteDenuncia(denuncia.Id)">
+										Confirmar
+									</button>
+								</div>
+							}
+						</div>
+					</div>
+				</Virtualize>
 			</div>
-		</Virtualize>
+		}
+		else
+		{
+			<div class="text-center fs-3 fw-bold my-5">
+				Não há denuncias.
+			</div>
+		}
 	}
 
 	if (showRoadmapsToApprove)
 	{
 		@if (Roadmaps is not null)
 		{
-			<div class="text-center h4 my-5">
-				Roadmaps
+			<div class="administration-content-box">
+				<div class="text-center h4 my-5">
+					Roadmaps
+				</div>
+				<Virtualize Items="@Roadmaps" Context="roadmap" OverscanCount="50">
+					<div class="roadmap-div">
+						<a class="roadmap-name-label" href="roadmap/@roadmap.Id">
+							<p class="roadmap-name-background">@roadmap.Name</p>
+						</a>
+
+						<div class="roadmap-description">
+							<p>@roadmap.Description</p>
+						</div>
+
+						<div>
+							<div class="display-flex">
+								<div class="roadmap-category-label">
+									<p>Categoria:</p>
+								</div>
+								<div class="roadmap-category">
+									@roadmap.Category
+								</div>
+							</div>
+						</div>
+
+						<div class="roadmap-date-author-div">
+							<div class="display-flex">
+								<div class="roadmap-created-label">
+									<p>Criado:</p>
+								</div>
+								<div>
+									@roadmap.CreatedDate
+								</div>
+							</div>
+
+							<div class="roadmap-author-div">
+								<div class="roadmap-author-label">
+									<p>Autor: </p>
+								</div>
+								<a class="roadmap-author" href="profile/@roadmap.AuthorName">
+									@roadmap.AuthorName
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="administration-button-div">
+						<button class="second-style-button"
+						@onclick="async () => await ApproveRoadmap(roadmap)">
+							Aprovar
+						</button>
+
+
+						<button @onclick="ToggleShowDeletePage" class="second-style-button">
+							Excluir
+						</button>
+					</div>
+
+					@if (showDeletePage)
+					{
+						<AdminDeleteRoadmapConfirmation RoadmapId="@roadmap.Id.ToString()" />
+					}
+				</Virtualize>
 			</div>
-			<Virtualize Items="@Roadmaps" Context="roadmap" OverscanCount="50">
-				<div class="roadmap-div">
-					<a class="roadmap-name-label" href="roadmap/@roadmap.Id">
-						<p class="roadmap-name-background">@roadmap.Name</p>
-					</a>
-
-					<div class="roadmap-description">
-						<p>@roadmap.Description</p>
-					</div>
-
-					<div>
-						<div class="display-flex">
-							<div class="roadmap-category-label">
-								<p>Categoria:</p>
-							</div>
-							<div class="roadmap-category">
-								@roadmap.Category
-							</div>
-						</div>
-					</div>
-
-					<div class="roadmap-date-author-div">
-						<div class="display-flex">
-							<div class="roadmap-created-label">
-								<p>Criado:</p>
-							</div>
-							<div>
-								@roadmap.CreatedDate
-							</div>
-						</div>
-
-						<div class="roadmap-author-div">
-							<div class="roadmap-author-label">
-								<p>Autor: </p>
-							</div>
-							<a class="roadmap-author" href="profile/@roadmap.AuthorName">
-								@roadmap.AuthorName
-							</a>
-						</div>
-					</div>
-				</div>
-
-				<div class="administration-button-div">
-					<button class="second-style-button"
-				@onclick="async () => await ApproveRoadmap(roadmap)">
-						Aprovar
-					</button>
-
-
-					<button @onclick="ToggleShowDeletePage" class="second-style-button">
-						Excluir
-					</button>
-				</div>
-
-				@if (showDeletePage)
-				{
-					<AdminDeleteRoadmapConfirmation RoadmapId="@roadmap.Id.ToString()" />
-				}
-			</Virtualize>
 		}
 		else
 		{
-			<div class="text-center">
-				Não há nada aqui
+			<div class="text-center fs-3 fw-bold my-5">
+				Não há roadmaps para serem aprovados.
 			</div>
 		}
 	}
