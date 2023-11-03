@@ -1,9 +1,9 @@
-﻿using Site.Models;
+﻿using RoadmapBlazor.Models;
 
-namespace Site.Services.Authentication;
+namespace RoadmapBlazor.Services.Authentication;
 
 public interface IAuthenticationService
 {
-	Task<AuthenticatedUserModel?> Login(AuthenticationUserModel userForAuthentication);
-	Task Logout();
+    Task<AuthenticatedUserModel?> Login(AuthenticationUserModel userForAuthentication);
+    Task Logout();
 }

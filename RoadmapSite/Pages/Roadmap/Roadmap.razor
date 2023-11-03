@@ -423,21 +423,17 @@
 
 		await nodeService.CreateNode(Node);
 
-		if (Nodes is not null)
-		{
-			Nodes.Add(Node);
-			return;
-		}
+		Nodes = await nodeService.GetAllNodes(new Guid(RoadmapId!));
 
-		Nodes = new List<NodeModel>();
-		Nodes.Add(Node);
+		if(Nodes is not null)
+			Nodes = Nodes.OrderBy(x => x.CreatedDate).ToList();
 	}
 
 	private async Task GetAllNodes()
 	{
 		var nodes = await nodeService.GetAllNodes(new Guid(RoadmapId!));
 
-		if (nodes.Count > 0)
+		if (nodes is not null && nodes.Count > 0)
 			Nodes = nodes.OrderBy(x => x.CreatedDate).ToList();
 	}
 

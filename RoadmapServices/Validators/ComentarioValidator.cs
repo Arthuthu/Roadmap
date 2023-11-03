@@ -1,7 +1,7 @@
-﻿using Domain.Models;
-using FluentValidation;
+﻿using FluentValidation;
+using Roadmap.Domain.Models;
 
-namespace Infra.Validators;
+namespace Roadmap.Infra.Validators;
 
 public class ComentarioValidator : AbstractValidator<ComentarioModel>
 {

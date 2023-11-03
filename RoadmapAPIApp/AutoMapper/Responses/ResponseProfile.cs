@@ -1,39 +1,39 @@
 ﻿using AutoMapper;
-using Domain.Models;
-using RoadmapAPI.Response;
+using Roadmap.API.Response;
+using Roadmap.Domain.Models;
 
-namespace RoadmapAPI.AutoMapper.Responses;
+namespace Roadmap.API.AutoMapper.Responses;
 
 public class ResponseProfile : Profile
 {
-	public ResponseProfile()
-	{
-		CreateMap<UserResponse, UserModel>()
-			.IgnoreAllPropertiesWithAnInaccessibleSetter()
-			.ReverseMap();
+    public ResponseProfile()
+    {
+        CreateMap<UserResponse, UserModel>()
+            .IgnoreAllPropertiesWithAnInaccessibleSetter()
+            .ReverseMap();
 
-		CreateMap<ComentarioResponse, ComentarioModel>()
-			.IgnoreAllPropertiesWithAnInaccessibleSetter()
-			.ReverseMap();
+        CreateMap<ComentarioResponse, ComentarioModel>()
+            .IgnoreAllPropertiesWithAnInaccessibleSetter()
+            .ReverseMap();
 
-		CreateMap<RoadmapClassResponse, RoadmapClassModel>()
-			.IgnoreAllPropertiesWithAnInaccessibleSetter()
-			.ReverseMap();
+        CreateMap<RoadmapClassResponse, RoadmapClassModel>()
+            .IgnoreAllPropertiesWithAnInaccessibleSetter()
+            .ReverseMap();
 
-		CreateMap<RoadmapVotesResponse, RoadmapVotesModel>()
-			.IgnoreAllPropertiesWithAnInaccessibleSetter()
-			.ReverseMap();
+        CreateMap<RoadmapVotesResponse, RoadmapVotesModel>()
+            .IgnoreAllPropertiesWithAnInaccessibleSetter()
+            .ReverseMap();
 
-		CreateMap<ComentarioVotesResponse, ComentarioVotesModel>()
-			.IgnoreAllPropertiesWithAnInaccessibleSetter()
-			.ReverseMap();
+        CreateMap<ComentarioVotesResponse, ComentarioVotesModel>()
+            .IgnoreAllPropertiesWithAnInaccessibleSetter()
+            .ReverseMap();
 
-		CreateMap<DenunciaResponse, DenunciaModel>()
-			.IgnoreAllPropertiesWithAnInaccessibleSetter()
-			.ReverseMap();
+        CreateMap<DenunciaResponse, DenunciaModel>()
+            .IgnoreAllPropertiesWithAnInaccessibleSetter()
+            .ReverseMap();
 
-		CreateMap<NodeResponse, NodeModel>()
-			.IgnoreAllPropertiesWithAnInaccessibleSetter()
-			.ReverseMap();
-	}
+        CreateMap<NodeResponse, NodeModel>()
+            .IgnoreAllPropertiesWithAnInaccessibleSetter()
+            .ReverseMap();
+    }
 }

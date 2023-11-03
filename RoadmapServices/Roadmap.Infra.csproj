@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RoadmapRepository\Domain.csproj" />
+    <ProjectReference Include="..\RoadmapRepository\Roadmap.Domain.csproj" />
   </ItemGroup>
 
 </Project>

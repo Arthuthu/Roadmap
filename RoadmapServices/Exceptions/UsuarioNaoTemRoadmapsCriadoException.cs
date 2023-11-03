@@ -1,9 +1,9 @@
-﻿namespace Infra.Exceptions;
+﻿namespace Roadmap.Infra.Exceptions;
 
 internal class UsuarioNaoTemRoadmapsCriadoException : Exception
 {
-	public UsuarioNaoTemRoadmapsCriadoException()
-		: base("Usuario não tem roadmaps criados")
-	{
-	}
+    public UsuarioNaoTemRoadmapsCriadoException()
+        : base("Usuario não tem roadmaps criados")
+    {
+    }
 }

@@ -1,13 +1,13 @@
-﻿using Site.Models;
+﻿using RoadmapBlazor.Models;
 
-namespace Site.Services.Comentario;
+namespace RoadmapBlazor.Services.Comentario;
 
 public interface IComentarioService
 {
-	Task<IList<ComentarioModel>?> GetAllComentariosByRoadmapId(Guid roadmapId);
-	Task<ComentarioModel?> GetComentarioById(Guid? comentarioId);
-	Task<string?> CreateComentario(ComentarioModel comentario);
-	Task<string?> UpdateComentario(ComentarioModel comentario);
-	Task<string?> DeleteComentario(Guid id);
-	Task<string?> DeleteAllUserComentarios(Guid userId);
+    Task<IList<ComentarioModel>?> GetAllComentariosByRoadmapId(Guid roadmapId);
+    Task<ComentarioModel?> GetComentarioById(Guid? comentarioId);
+    Task<string?> CreateComentario(ComentarioModel comentario);
+    Task<string?> UpdateComentario(ComentarioModel comentario);
+    Task<string?> DeleteComentario(Guid id);
+    Task<string?> DeleteAllUserComentarios(Guid userId);
 }

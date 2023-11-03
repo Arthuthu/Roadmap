@@ -1,7 +1,7 @@
-﻿namespace Site.Models;
+﻿namespace RoadmapBlazor.Models;
 
 enum CategoryModel
 {
-	CSharp,
-	Javascript
+    CSharp,
+    Javascript
 }

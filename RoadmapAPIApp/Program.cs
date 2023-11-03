@@ -1,16 +1,16 @@
-using Domain.Interfaces;
-using Domain.Models;
-using Domain.Repositories;
-using Domain.SqlDataAccess;
 using FluentValidation;
-using Infra.Interfaces;
-using Infra.Services;
-using Infra.Validators;
-using Infra.Validators.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Roadmap.Domain.Interfaces;
+using Roadmap.Domain.Models;
+using Roadmap.Domain.Repositories;
+using Roadmap.Domain.SqlDataAccess;
+using Roadmap.Infra.Interfaces;
+using Roadmap.Infra.Services;
+using Roadmap.Infra.Validators;
+using Roadmap.Infra.Validators.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,11 +18,11 @@ var builder = WebApplication.CreateBuilder(args);
 //Cors
 builder.Services.AddCors(policy =>
 {
-	policy.AddPolicy("OpenCorsPolicy", opt =>
-		opt
-		.AllowAnyOrigin()
-		.AllowAnyHeader()
-		.AllowAnyMethod());
+    policy.AddPolicy("OpenCorsPolicy", opt =>
+        opt
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod());
 });
 
 //Dependency Injection
@@ -60,45 +60,45 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 //SwaggerGen
 builder.Services.AddSwaggerGen(x =>
 {
-	x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-	{
-		Description = "JWT Authorization header using the bearer scheme",
-		Name = "Authorization",
-		In = ParameterLocation.Header,
-		Type = SecuritySchemeType.ApiKey
-	});
-	x.AddSecurityRequirement(new OpenApiSecurityRequirement
-	{
-		{new OpenApiSecurityScheme{Reference = new OpenApiReference
-		{
-			Id = "Bearer",
-			Type = ReferenceType.SecurityScheme
-		}}, new List<string>()}
-	});
+    x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the bearer scheme",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey
+    });
+    x.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {new OpenApiSecurityScheme{Reference = new OpenApiReference
+        {
+            Id = "Bearer",
+            Type = ReferenceType.SecurityScheme
+        }}, new List<string>()}
+    });
 });
 
 //Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-	.AddJwtBearer(
-		options =>
-		{
-			options.TokenValidationParameters = new TokenValidationParameters
-			{
-				ValidateIssuerSigningKey = true,
-				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-					.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
-				ValidateIssuer = false,
-				ValidateAudience = false
-			};
-		});
+    .AddJwtBearer(
+        options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                    .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            };
+        });
 
 // Authorization
 builder.Services.AddAuthorization(options =>
 {
-	options.FallbackPolicy = new AuthorizationPolicyBuilder()
-	.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-	.RequireAuthenticatedUser()
-	.Build();
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+    .RequireAuthenticatedUser()
+    .Build();
 });
 
 builder.Services.AddControllers();

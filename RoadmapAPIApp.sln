@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "RoadmapAPIApp\API.csproj", "{FFA6FACD-092C-4CBF-8B93-ACE9192F5138}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roadmap.API", "RoadmapAPIApp\Roadmap.API.csproj", "{FFA6FACD-092C-4CBF-8B93-ACE9192F5138}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra", "RoadmapServices\Infra.csproj", "{5E56AAD1-E5E7-46B9-9A82-251567ED5BEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roadmap.Infra", "RoadmapServices\Roadmap.Infra.csproj", "{5E56AAD1-E5E7-46B9-9A82-251567ED5BEA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "RoadmapRepository\Domain.csproj", "{1785F8C8-EFD3-4C13-A111-289D98487990}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roadmap.Domain", "RoadmapRepository\Roadmap.Domain.csproj", "{1785F8C8-EFD3-4C13-A111-289D98487990}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "RoadmapDatabase\Database.sqlproj", "{BE30F41E-F895-4975-A682-7C895C44BE55}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Roadmap.Database", "RoadmapDatabase\Roadmap.Database.sqlproj", "{BE30F41E-F895-4975-A682-7C895C44BE55}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site", "RoadmapSite\Site.csproj", "{5EC9DAD0-531F-4E28-B1EC-B558A5E006D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoadmapBlazor", "RoadmapSite\RoadmapBlazor.csproj", "{5EC9DAD0-531F-4E28-B1EC-B558A5E006D3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoadmapAPITests", "RoadmapAPITests\RoadmapAPITests.csproj", "{F87B6A11-F4E1-47B4-A5F3-772BA69BACC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roadmap.Tests", "RoadmapAPITests\Roadmap.Tests.csproj", "{F87B6A11-F4E1-47B4-A5F3-772BA69BACC1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FDCC2E0B-6759-4D9A-865C-0F1F9E063240}"
 EndProject

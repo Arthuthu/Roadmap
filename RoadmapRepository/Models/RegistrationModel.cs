@@ -1,7 +1,7 @@
-﻿namespace Domain.Models;
+﻿namespace Roadmap.Domain.Models;
 
 public class RegistrationModel
 {
-	public string Username { get; set; } = string.Empty;
-	public string Password { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }

@@ -1,44 +1,44 @@
-﻿using Domain.Interfaces;
-using Domain.Models;
-using Infra.Interfaces;
+﻿using Roadmap.Domain.Interfaces;
+using Roadmap.Domain.Models;
+using Roadmap.Infra.Interfaces;
 
-namespace Infra.Services;
+namespace Roadmap.Infra.Services;
 
 public class ComentarioVotesService : IComentarioVotesService
 {
-	private readonly IComentarioVotesRepository _comentarioVotesRepository;
-	private string comentarioVotingResponseMessage = "";
+    private readonly IComentarioVotesRepository _comentarioVotesRepository;
+    private string comentarioVotingResponseMessage = "";
 
-	public ComentarioVotesService(IComentarioVotesRepository comentarioVotesRepository)
-	{
-		_comentarioVotesRepository = comentarioVotesRepository;
-	}
+    public ComentarioVotesService(IComentarioVotesRepository comentarioVotesRepository)
+    {
+        _comentarioVotesRepository = comentarioVotesRepository;
+    }
 
-	public Task<IEnumerable<ComentarioVotesModel>> GetAllComentarioVotes(Guid userId, Guid comentarioId)
-	{
-		return _comentarioVotesRepository.GetAllComentarioVotes(userId, comentarioId);
-	}
+    public Task<IEnumerable<ComentarioVotesModel>> GetAllComentarioVotes(Guid userId, Guid comentarioId)
+    {
+        return _comentarioVotesRepository.GetAllComentarioVotes(userId, comentarioId);
+    }
 
-	public async Task<string> AddComentarioVote(Guid userId, Guid comentarioId)
-	{
-		Guid comentarioVoteId = Guid.NewGuid();
+    public async Task<string> AddComentarioVote(Guid userId, Guid comentarioId)
+    {
+        Guid comentarioVoteId = Guid.NewGuid();
 
-		try
-		{
-			await _comentarioVotesRepository.AddComentarioVote(comentarioVoteId, userId, comentarioId);
-		}
-		catch
-		{
-			comentarioVotingResponseMessage = "Ocorreu um erro ao adicionar o voto";
-			return comentarioVotingResponseMessage;
-		}
+        try
+        {
+            await _comentarioVotesRepository.AddComentarioVote(comentarioVoteId, userId, comentarioId);
+        }
+        catch
+        {
+            comentarioVotingResponseMessage = "Ocorreu um erro ao adicionar o voto";
+            return comentarioVotingResponseMessage;
+        }
 
-		comentarioVotingResponseMessage = "Voto adicionado com sucesso";
-		return comentarioVotingResponseMessage;
-	}
+        comentarioVotingResponseMessage = "Voto adicionado com sucesso";
+        return comentarioVotingResponseMessage;
+    }
 
-	public Task DeleteComentarioVote(Guid id)
-	{
-		return _comentarioVotesRepository.DeleteComentarioVote(id);
-	}
+    public Task DeleteComentarioVote(Guid id)
+    {
+        return _comentarioVotesRepository.DeleteComentarioVote(id);
+    }
 }

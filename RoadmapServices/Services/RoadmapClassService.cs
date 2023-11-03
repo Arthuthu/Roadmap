@@ -1,92 +1,92 @@
-﻿using Domain.Interfaces;
-using Domain.Models;
-using Infra.Interfaces;
-using Infra.Validators.Interfaces;
+﻿using Roadmap.Domain.Interfaces;
+using Roadmap.Domain.Models;
+using Roadmap.Infra.Interfaces;
+using Roadmap.Infra.Validators.Interfaces;
 
-namespace Infra.Services;
+namespace Roadmap.Infra.Services;
 
 public class RoadmapClassService : IRoadmapClassService
 {
-	private readonly IRoadmapClassRepository _roadmapRepository;
-	private readonly IMessageHandler _messageHandler;
+    private readonly IRoadmapClassRepository _roadmapRepository;
+    private readonly IMessageHandler _messageHandler;
 
-	public RoadmapClassService(IRoadmapClassRepository roadmapRepository,
-		IMessageHandler messageHandler)
-	{
-		_roadmapRepository = roadmapRepository;
-		_messageHandler = messageHandler;
-	}
+    public RoadmapClassService(IRoadmapClassRepository roadmapRepository,
+        IMessageHandler messageHandler)
+    {
+        _roadmapRepository = roadmapRepository;
+        _messageHandler = messageHandler;
+    }
 
-	public Task<IEnumerable<RoadmapClassModel>> GetAllRoadmaps()
-	{
-		return _roadmapRepository.GetAllRoadmaps();
-	}
+    public Task<IEnumerable<RoadmapClassModel>> GetAllRoadmaps()
+    {
+        return _roadmapRepository.GetAllRoadmaps();
+    }
 
-	public Task<IEnumerable<RoadmapClassModel>> GetAllApprovedRoadmaps()
-	{
-		return _roadmapRepository.GetAllApprovedRoadmaps();
-	}
+    public Task<IEnumerable<RoadmapClassModel>> GetAllApprovedRoadmaps()
+    {
+        return _roadmapRepository.GetAllApprovedRoadmaps();
+    }
 
-	public Task<IEnumerable<RoadmapClassModel>> GetAllNotApprovedRoadmaps()
-	{
-		return _roadmapRepository.GetAllNotApprovedRoadmaps();
-	}
+    public Task<IEnumerable<RoadmapClassModel>> GetAllNotApprovedRoadmaps()
+    {
+        return _roadmapRepository.GetAllNotApprovedRoadmaps();
+    }
 
-	public Task<IEnumerable<RoadmapClassModel>> GetAllApprovedRoadmapsByCategory()
-	{
-		return _roadmapRepository.GetAllApprovedRoadmapsByCategory();
-	}
+    public Task<IEnumerable<RoadmapClassModel>> GetAllApprovedRoadmapsByCategory()
+    {
+        return _roadmapRepository.GetAllApprovedRoadmapsByCategory();
+    }
 
-	public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
-	{
-		return await _roadmapRepository.GetRoadmapById(id);
-	}
+    public async Task<RoadmapClassModel?> GetRoadmapById(Guid id)
+    {
+        return await _roadmapRepository.GetRoadmapById(id);
+    }
 
-	public async Task<IList<RoadmapClassModel>> GetRoadmapsByUserId(Guid userId)
-	{
-		var results = await _roadmapRepository.GetRoadmapsByUserId(userId);
+    public async Task<IList<RoadmapClassModel>> GetRoadmapsByUserId(Guid userId)
+    {
+        var results = await _roadmapRepository.GetRoadmapsByUserId(userId);
 
-		return results;
-	}
+        return results;
+    }
 
-	public async Task<IList<string>?> AddRoadmap(RoadmapClassModel roadmap)
-	{
-		IList<string>? registrationMessages = _messageHandler.ValidateRoadmapCreation(roadmap);
+    public async Task<IList<string>?> AddRoadmap(RoadmapClassModel roadmap)
+    {
+        IList<string>? registrationMessages = _messageHandler.ValidateRoadmapCreation(roadmap);
 
-		if (registrationMessages is null)
-		{
-			registrationMessages = new List<string>();
-		}
+        if (registrationMessages is null)
+        {
+            registrationMessages = new List<string>();
+        }
 
-		roadmap.Id = Guid.NewGuid();
-		roadmap.IsApproved = false;
-		roadmap.CreatedDate = DateTime.UtcNow.AddHours(-3);
+        roadmap.Id = Guid.NewGuid();
+        roadmap.IsApproved = false;
+        roadmap.CreatedDate = DateTime.UtcNow.AddHours(-3);
 
-		try
-		{
-			await _roadmapRepository.AddRoadmap(roadmap);
-			registrationMessages.Add("Roadmap criado com sucesso");
-		}
-		catch (Exception ex)
-		{
-			registrationMessages.Add($"Ocorreu um erro durante a criação do roadmap: {ex.Message}");
-		}
+        try
+        {
+            await _roadmapRepository.AddRoadmap(roadmap);
+            registrationMessages.Add("Roadmap criado com sucesso");
+        }
+        catch (Exception ex)
+        {
+            registrationMessages.Add($"Ocorreu um erro durante a criação do roadmap: {ex.Message}");
+        }
 
-		return registrationMessages;
-	}
+        return registrationMessages;
+    }
 
-	public Task UpdateRoadmap(RoadmapClassModel roadmap)
-	{
-		roadmap.UpdatedDate = DateTime.UtcNow.AddHours(-3);
-		return _roadmapRepository.UpdateRoadmap(roadmap);
-	}
-	public Task DeleteAllUserRoadmaps(Guid userId)
-	{
-		return _roadmapRepository.DeleteAllUserRoadmaps(userId);
-	}
+    public Task UpdateRoadmap(RoadmapClassModel roadmap)
+    {
+        roadmap.UpdatedDate = DateTime.UtcNow.AddHours(-3);
+        return _roadmapRepository.UpdateRoadmap(roadmap);
+    }
+    public Task DeleteAllUserRoadmaps(Guid userId)
+    {
+        return _roadmapRepository.DeleteAllUserRoadmaps(userId);
+    }
 
-	public Task DeleteRoadmap(Guid id)
-	{
-		return _roadmapRepository.DeleteRoadmap(id);
-	}
+    public Task DeleteRoadmap(Guid id)
+    {
+        return _roadmapRepository.DeleteRoadmap(id);
+    }
 }

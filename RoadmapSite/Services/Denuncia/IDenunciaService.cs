@@ -1,10 +1,10 @@
-﻿using Site.Models;
+﻿using RoadmapBlazor.Models;
 
-namespace Site.Services.Denuncia;
+namespace RoadmapBlazor.Services.Denuncia;
 
 public interface IDenunciaService
 {
-	Task<IList<DenunciaModel>?> GetAllDenuncias();
-	Task<string?> CreateDenuncia(DenunciaModel denuncia);
-	Task<string?> DeleteDenuncia(Guid id);
+    Task<IList<DenunciaModel>?> GetAllDenuncias();
+    Task<string?> CreateDenuncia(DenunciaModel denuncia);
+    Task<string?> DeleteDenuncia(Guid id);
 }

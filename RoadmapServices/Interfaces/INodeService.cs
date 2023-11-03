@@ -1,13 +1,13 @@
-﻿using Domain.Models;
+﻿using Roadmap.Domain.Models;
 
-namespace Infra.Interfaces
+namespace Roadmap.Infra.Interfaces
 {
-	public interface INodeService
-	{
-		Task<IEnumerable<NodeModel>> GetAllNodes(Guid roadmapId);
-		Task<NodeModel?> GetNodeById(Guid id);
-		Task AddNode(NodeModel node);
-		Task UpdateNode(NodeModel node);
-		Task DeleteNode(Guid id);
-	}
+    public interface INodeService
+    {
+        Task<IEnumerable<NodeModel>> GetAllNodes(Guid roadmapId);
+        Task<NodeModel?> GetNodeById(Guid id);
+        Task AddNode(NodeModel node);
+        Task UpdateNode(NodeModel node);
+        Task DeleteNode(Guid id);
+    }
 }

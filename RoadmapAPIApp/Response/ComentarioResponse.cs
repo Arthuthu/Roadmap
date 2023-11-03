@@ -1,15 +1,15 @@
-﻿namespace RoadmapAPI.Response;
+﻿namespace Roadmap.API.Response;
 
 public class ComentarioResponse
 {
-	public Guid Id { get; set; }
-	public string Description { get; set; } = string.Empty;
-	public string AuthorName { get; set; } = string.Empty;
+    public Guid Id { get; set; }
+    public string Description { get; set; } = string.Empty;
+    public string AuthorName { get; set; } = string.Empty;
 
-	public DateTime CreatedDate { get; set; }
-	public DateTime UpdatedDate { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public DateTime UpdatedDate { get; set; }
 
-	public Guid UserId { get; set; }
-	public Guid RoadmapId { get; set; }
+    public Guid UserId { get; set; }
+    public Guid RoadmapId { get; set; }
 
 }

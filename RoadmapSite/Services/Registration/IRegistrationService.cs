@@ -1,8 +1,8 @@
-﻿using Site.Models;
+﻿using RoadmapBlazor.Models;
 
-namespace Site.Services.Registration;
+namespace RoadmapBlazor.Services.Registration;
 
 public interface IRegistrationService
 {
-	Task<string?> RegisterUser(RegistrationModel registrationUser);
+    Task<string?> RegisterUser(RegistrationModel registrationUser);
 }
