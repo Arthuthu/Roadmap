@@ -18,7 +18,6 @@ public class ComentarioVotesRepository : IComentarioVotesRepository
         return _db.LoadData<ComentarioVotesModel, dynamic>("dbo.spComentarioVotes_GetAll",
             new { UserId = userId, ComentarioId = comentarioId });
     }
-
     public Task AddComentarioVote(Guid Id, Guid userId, Guid comentarioId)
     {
         return _db.SaveData("dbo.spComentarioVotes_Add", new

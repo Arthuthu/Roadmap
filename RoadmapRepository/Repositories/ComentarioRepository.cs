@@ -49,7 +49,6 @@ public class ComentarioRepository : IComentarioRepository
     {
         return _db.SaveData("dbo.spComentario_DeleteAllUserComments", new { UserId = userId });
     }
-
     public Task DeleteComentario(Guid id)
     {
         return _db.SaveData("dbo.spComentario_Delete", new { Id = id });
